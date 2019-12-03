@@ -1,0 +1,28 @@
+mat-sidenav-container {
+  width: 100vw;
+  height: 100vh;
+
+  mat-sidenav {
+
+    .drawerItem {
+      padding: 1em 1.25em;
+
+      a {
+        text-decoration: none;
+        transition: .2s;
+        color: #aaa;
+      }
+      a:hover {
+        color: var(--color-primary);
+      }
+    }
+  }
+  mat-sidenav-content button {
+      color: var(--color-font);
+  }
+  @media (min-width: 768px) {
+    mat-sidenav {
+      width: 300px;
+    }
+  }
+}

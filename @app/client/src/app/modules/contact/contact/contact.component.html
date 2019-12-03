@@ -1,0 +1,60 @@
+<app-pagewrapper>
+  <div class="contactContainer">
+    <div class="wrapper">
+      <form 
+        [formGroup]="contactForm" 
+        #formDirective="ngForm" 
+        (ngSubmit)="submitContact(formDirective)"
+      >
+        <h1>Contact Us</h1>
+        <mat-form-field>
+          <mat-select placeholder="Topic" formControlName="topic" required>
+            <mat-option *ngFor="let topic of topics" [value]="topic">
+              {{topic}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngFor="let validation of formValidationMessages.topic">
+            <mat-error class="error-message" *ngIf="contactForm.get('topic').hasError(validation.type) && (contactForm.get('topic').dirty || contactForm.get('topic').touched)">{{validation.message}}</mat-error>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            matInput
+            placeholder="Name" 
+            formControlName="name"
+          />
+          <mat-error *ngFor="let validation of formValidationMessages.name">
+            <mat-error class="error-message" *ngIf="contactForm.get('name').hasError(validation.type) && (contactForm.get('name').dirty || contactForm.get('name').touched)">{{validation.message}}</mat-error>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            matInput
+            placeholder="Email" 
+            formControlName="email"
+          />
+          <mat-error *ngFor="let validation of formValidationMessages.email">
+            <mat-error class="error-message" *ngIf="contactForm.get('email').hasError(validation.type) && (contactForm.get('email').dirty || contactForm.get('email').touched)">{{validation.message}}</mat-error>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field hintLabel="Max 500 characters">
+          <textarea 
+            matInput 
+            placeholder="Message" 
+            #input 
+            maxlength="500" 
+            formControlName="message" 
+            rows="3"
+          ></textarea>
+          <mat-hint align="end">{{input.value?.length || 0}}/500</mat-hint>
+          <mat-error *ngFor="let validation of formValidationMessages.message">
+            <mat-error class="error-message" *ngIf="contactForm.get('message').hasError(validation.type) && (contactForm.get('message').dirty || contactForm.get('message').touched)">{{validation.message}}</mat-error>
+          </mat-error>
+        </mat-form-field>
+        <div class="btnWrapper">
+          <button mat-flat-button color="primary" type="submit" [disabled]="!formDirective.valid">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</app-pagewrapper>

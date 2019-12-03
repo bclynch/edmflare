@@ -1,0 +1,22 @@
+.getAppContainer {
+  width: 13em;
+  text-align: center;
+  margin: 0 auto;
+
+  h4 {
+    font-style: italic;
+  }
+  .storesWrapper {
+    display: flex;
+    justify-content: space-around;
+
+    button {
+      line-height: 4em;
+      padding: 0 2em;
+
+      fa-icon {
+        font-size: 3em !important;
+      }
+    }
+  }
+}

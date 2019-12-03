@@ -1,0 +1,52 @@
+query userByUsername($username: String!, $userId: Int!) {
+  userByUsername(username: $username) {
+    username,
+    profilePhoto,
+    watchLists {
+      totalCount,
+      nodes {
+        event {
+          id,
+          name,
+          startDate,
+          ticketproviderurl,
+          ticketproviderid,
+          venue,
+          createdAt,
+          artistToEvents(first: 1) {
+            nodes {
+              artist {
+                photo
+              }
+            }
+          },
+          watchLists (
+            filter: {
+              userId: {
+                equalTo: $userId
+              }
+            }
+          ) {
+            nodes {
+              id
+            }
+          }
+        }
+      }
+    },
+    followLists {
+      totalCount,
+      nodes {
+        id,
+        artist {
+          name,
+          photo
+        },
+        venue {
+          name,
+          photo
+        }
+      }
+    }
+  }
+}

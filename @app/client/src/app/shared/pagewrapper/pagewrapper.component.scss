@@ -1,0 +1,15 @@
+.pageWrapperContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+  margin-top: var(--height-navbar);
+  background: var(--color-background);
+
+  &.noMargin {
+    margin-top: 0;
+  }
+}
+

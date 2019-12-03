@@ -1,0 +1,10 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "xyz.appmaker.lushoi",
+      "sha256_cert_fingerprints": ["11:7C:FB:42:02:4B:FD:69:2C:30:45:D1:8B:B0:1A:C1:7B:44:BC:D6:10:07:81:1D:6B:73:33:25:99:1B:9B:76", "6D:10:6E:39:55:12:DB:CC:AF:7C:BD:F6:60:B7:35:43:F7:0C:4E:61:2B:1E:71:D6:05:3F:41:34:C0:32:9D:BE"]
+    }
+  }
+]

@@ -1,0 +1,9 @@
+mutation deletePushSubscriptionById($id: Int!) {
+  deletePushSubscription (
+    input: {
+      id: $id
+    }
+  ) {
+    clientMutationId
+  }
+}

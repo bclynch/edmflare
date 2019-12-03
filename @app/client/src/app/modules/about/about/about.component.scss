@@ -1,0 +1,22 @@
+.aboutContainer {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+
+  .wrapper {
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  .logoWrapper {
+    margin-top: 35px;
+
+    img {
+      width: 96px;
+    }
+  }
+  section {
+    max-width: 800px;
+    text-align: left;
+  }
+}

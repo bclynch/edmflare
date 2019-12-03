@@ -1,0 +1,28 @@
+query allLocations($currentDate: BigInt!) {
+  regions {
+    nodes {
+      name,
+      lat,
+      lon,
+      citiesByRegion(orderBy: REGION_ASC) {
+        nodes {
+          id,
+          name,
+          venuesByCity {
+            nodes {
+              eventsByVenue(
+                filter: {
+                  startDate: {
+                    greaterThanOrEqualTo: $currentDate
+                  }
+                }
+              ) {
+                totalCount
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

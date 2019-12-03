@@ -1,0 +1,114 @@
+<app-pagewrapper>
+  <div class="eventContainer">
+    <div class="wrapper">
+      <div class="header">
+        <div class="topWrapper">
+          <div class="bannerWrapper">
+            <div class="bannerImage" *ngIf="event?.banner" [ngStyle]="{ 'background-image': 'url(' + event?.banner + ')'}"></div>
+            <div class="bannerImage backup" *ngIf="!event?.banner"></div>
+            <div class="eventInfo">
+              <h1>{{event?.name}}</h1>
+              <a [routerLink]="['/venue/' + event?.venueByVenue.name]">{{event?.venueByVenue.name.split('-')[0]}}</a>
+              <div>{{event?.startDate | date:'MMM d'}}</div>
+            </div>
+          </div>
+          <!-- <div class="eventInfo">
+            <h1>{{event?.name}}</h1>
+            <a [routerLink]="['/venue/' + event?.venueByVenue.name]">{{event?.venueByVenue.name.split('-')[0]}}</a>
+            <div>{{event?.startDate | date:'MMM d'}}</div>
+          </div> -->
+        </div>
+        <div class="bottomWrapper">
+          <div class="optionsWrapper">
+            <button mat-button matTooltip="Share">
+              <mat-icon (click)="share()">share</mat-icon>
+            </button>
+            <button 
+              *ngIf="watchId"
+              mat-button 
+              matTooltip="Remove from watched"
+              class="watched" 
+              (click)="removeWatch()"
+            >
+              <mat-icon>star</mat-icon>
+            </button>
+            <button 
+              *ngIf="!watchId"
+              mat-button 
+              matTooltip="Add to watched" 
+              (click)="addWatch()"
+            >
+              <mat-icon>star_border</mat-icon>
+            </button>
+          </div>
+          <a 
+            [href]="event?.ticketproviderurl" 
+            target="_blank" 
+            rel="nofollow"
+            *ngIf="event?.ticketproviderurl"
+          >
+            <button 
+              class="ticketBtn" 
+              mat-flat-button 
+              color="accent"
+            >Tickets</button>
+          </a>
+          <!-- <button
+            class="ticketBtn" 
+            mat-flat-button 
+            color="accent" 
+            (click)="buyTickets()"
+          >Tickets</button> -->
+        </div>
+      </div>
+      <div class="infoContainer" *ngIf="event">
+        <div class="generalInfo">
+          <div class="section">
+            <h3 class="sectionHeader">Artists</h3>
+            <a 
+              [routerLink]="['/artist/' + artist.artist.name]"
+              *ngFor="let artist of event.artistToEvents.nodes; let i = index;" 
+              class="artist"  
+            >{{artist.artist.name}}{{i + 1 < event.artistToEvents.nodes.length ? ',' : ''}}</a>
+          </div>
+          <div class="section">
+            <h3 class="sectionHeader">Date And Time</h3>
+            <div>{{event.startDate | date:'EEE, MMM d'}}</div>
+            <a [href]="calendarLink" target="_blank" rel="nofollow">Add to Google Calendar</a>
+          </div>
+          <div class="section">
+            <h3 class="sectionHeader">Location</h3>
+            <div>{{event.venueByVenue.name.split('-')[0]}}</div>
+            <div>{{event.venueByVenue.address}}</div>
+            <a (click)="scrollTo('locationAnchor')">View Map</a>
+          </div>
+        </div>
+        <div class="description" *ngIf="event.description">
+          <div class="section">
+            <h3 class="sectionHeader">Description</h3>
+            <div [innerHTML]="event.description"></div>
+          </div>
+        </div>
+      </div>
+      <div class="mapContainer" id="locationAnchor">
+        <app-venue-map 
+          *ngIf="event && event.venueByVenue.lat" 
+          [lat]="+event.venueByVenue.lat" 
+          [lon]="+event.venueByVenue.lon"
+          [venueName]="event.venueByVenue.name.split('-')[0]"
+          [address]="event.venueByVenue.address"
+          [eventName]="event.name"
+        ></app-venue-map>
+      </div>
+      <div class="commentContainer" [ngClass]="!loadComments && 'notLoaded'">
+        <div 
+          class="load" 
+          mat-button 
+          *ngIf="!loadComments" 
+          (click)="loadComments = true"
+        >Load Comments</div>
+        <disqus [identifier]="disqusId" *ngIf="disqusId && loadComments"></disqus>
+      </div>
+    </div>
+  </div>
+</app-pagewrapper>

@@ -1,0 +1,33 @@
+.contactContainer {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+
+  .wrapper {
+    display: flex;
+    justify-content: center;
+  }
+  form {
+    padding: 10px;
+    width: calc(100% - 20px);
+    max-width: 800px;
+
+    .mat-form-field {
+      display: block;
+    }
+    .btnWrapper {
+      display: flex;
+      justify-content: center;
+
+      button[type='submit'] {
+        color: white;
+        width: 50%;
+        margin: 25px 0;      
+      }
+    }
+    .toggle {
+      margin-top: 15px;
+    }
+  }
+}

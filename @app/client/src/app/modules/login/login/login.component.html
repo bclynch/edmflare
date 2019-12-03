@@ -1,0 +1,31 @@
+<app-pagewrapper>
+  <div class="loginContainer">
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
+      <h1>Login</h1>
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Username" 
+          formControlName="username"
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Password"
+          type="password" 
+          formControlName="password"
+        />
+      </mat-form-field>
+      <div class="linkWrapper"><a [routerLink]="['/password-reset']">Forgot your password?</a></div>
+      <button mat-flat-button color="primary" type="submit">Login</button>
+      <button mat-flat-button color="primary" (click)="github($event)">Github</button>
+      <div class="new">New to EDM Flare? 
+        <a [routerLink]="['/signup']" [queryParams]="{ redirect: redirect }">
+          <button mat-button color="primary" class="createNewBtn">Create a New Account</button>
+        </a>
+      </div>
+    </form>
+    <app-get-app></app-get-app>
+  </div>
+</app-pagewrapper>

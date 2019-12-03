@@ -1,0 +1,47 @@
+<app-pagewrapper>
+  <div class="createContainer">
+    <!-- Requirements: city search, date search, artist(s) (separate inputs for ea), venue (search / autofill),  -->
+    <form [formGroup]="createForm" (ngSubmit)="create()">
+      <h1>Submit New Event</h1>
+      <mat-form-field color="accent">
+        <input
+          type="text"
+          matInput
+          placeholder="Venue" 
+          autocomplete="off"
+          [matAutocomplete]="auto"
+          formControlName="venue"
+        />
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectVenue()">
+          <mat-option *ngFor="let venue of venues | async" [value]="venue">
+            {{venue}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      <div formArrayName="artists">
+        <h3>Artists</h3> <button mat-flat-button color="primary" class="addArtistBtn" (click)="addArtist()">Add Artist</button>
+      
+        <div *ngFor="let artist of artists.controls; let i=index">
+          <label>
+            Artist:
+            <input type="text" [formControlName]="i">
+          </label>
+        </div>
+      </div>
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Event Link" 
+          formControlName="link"
+          type="url"
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput [matDatepicker]="picker" placeholder="Choose a date" formControlName="date">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <button mat-flat-button color="accent" type="submit">Create Show</button>
+    </form>
+  </div>
+</app-pagewrapper>

@@ -1,0 +1,58 @@
+query artistByName($name: String!, $userId: Int!) {
+  artist(name: $name) {
+    name,
+    description,
+    photo,
+    twitterUsername,
+    twitterUrl,
+    facebookUsername,
+    facebookUrl,
+    instagramUsername,
+    instagramUrl,
+    soundcloudUsername,
+    soundcloudUrl,
+    youtubeUsername,
+    youtubeUrl,
+    spotifyUrl, 
+    homepage,
+    genreToArtists {
+      nodes {
+        genreId
+      }
+    },
+    followLists(
+      filter: {
+        userId: {
+          equalTo: $userId
+        }
+    	}
+    ) {
+      nodes {
+        id
+      }
+    },
+    artistToEvents {
+      nodes {
+        event {
+          name,
+          venue,
+          startDate,
+          id,
+          ticketproviderurl,
+          ticketproviderid,
+          watchLists(
+            filter: {
+              userId: {
+                equalTo: $userId
+              }
+            }
+          ) {
+            nodes {
+              id
+            }
+          }
+        }
+      }
+    }
+  }
+}

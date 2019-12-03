@@ -1,0 +1,31 @@
+.preferencesContainer {
+  padding: 0 20px;
+  margin-bottom: 50px;
+
+  .settingsHeader {
+    border-bottom: solid 1px var(--color-border);
+    padding-bottom: 20px;
+    width: 100%;
+  }
+  .locationsContainer {
+
+    .locationRow {
+      display: flex;
+      align-items: center;
+    }
+    .removeBtn {
+      color: red;
+    }
+  }
+  .formWrapper {
+    width: 100%;
+    max-width: 500px;
+
+    .mat-form-field {
+      display: block;
+    }
+  }
+  h6 {
+    font-size: .8em;
+  }
+}

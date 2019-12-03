@@ -1,0 +1,10 @@
+.env
+.next
+node_modules
+dist
+/heroku-setup
+/yarn-error.log
+/@app/e2e/cypress/videos
+/@app/graphql/index.*
+.agignore
+*.tsbuildinfo

@@ -1,0 +1,75 @@
+<app-pagewrapper>
+  <div class="artistContainer">
+    <div class="wrapper">
+      <div class="header">
+        <h1>{{artist?.name}}</h1>
+        <div class="socialOptions">
+          <div class="socialOption" *ngFor="let option of socialOptions;">
+            <a 
+              [href]="option.url" 
+              target="_blank" 
+              rel="nofollow"
+              *ngIf="option.url"
+            >
+              <button mat-button>
+                <fa-icon [icon]="option.icon"></fa-icon>
+              </button>
+            </a>
+          </div>
+        </div>
+        <div class="followContainer">
+          <button 
+            mat-flat-button 
+            (click)="followArtist()" 
+            color="accent" 
+            *ngIf="!artist?.followLists.nodes.length"
+          >Follow</button>
+          <button 
+            mat-flat-button
+            (click)="unfollowArtist()" 
+            color="primary" 
+            *ngIf="artist?.followLists.nodes.length"
+          >Following</button>
+        </div>
+        <div class="genresContainer" *ngIf="artist?.genreToArtists.nodes.length">
+          <div>Genres:</div>
+          <a *ngFor="let genre of artist.genreToArtists.nodes"><button mat-button>#{{genre.genreId}}</button></a>
+        </div>
+      </div>
+      <div class="contentWrapper">
+        <div class="infoContainer">
+          <div class="upcomingContainer">
+            <div class="eventsWrapper" *ngIf="events">
+              <h2>Upcoming Shows</h2>
+              <app-event-card
+                *ngFor="let event of events"
+                [name]="event.name"
+                [location]="event.venue"
+                [date]="event.startDate"
+                [id]="event.id"
+                [externalUrl]="event.ticketproviderurl"
+                [ticketProviderId]="event.ticketproviderid"
+                [image]="artist.photo"
+                [watchId]="event.watchLists.nodes.length && event.watchLists.nodes[0].id"
+              ></app-event-card>
+            </div>
+          </div>
+          <div class="bioContainer" *ngIf="artist?.description">
+            <h2>Bio</h2>
+            <div class="description" [innerHTML]="artist.description"></div>
+          </div>
+        </div>
+        <div class="soundcloudWrapper" *ngIf="soundcloudUrl">
+          <iframe 
+            class="iframe" 
+            width="100%" 
+            scrolling="no" 
+            frameborder="no"
+            height="400" 
+            [src]="soundcloudUrl"
+          ></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-pagewrapper>

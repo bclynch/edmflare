@@ -1,0 +1,22 @@
+.policiesContainer {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+
+  mat-tab-group {
+    max-height: calc(100vh - var(--height-navbar) - 2em);
+    width: calc(100% - 1.25em);
+    max-width: 800px;
+    margin-top: 1.5em;
+
+    .policyContainer {
+      padding: .125em;
+    }
+  }
+  @media (min-width: 1024px) {
+    mat-tab-group {
+      max-width: 80%;
+    }
+  }
+}

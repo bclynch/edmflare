@@ -1,0 +1,55 @@
+query searchEventsByRegion(
+    $query: String!,
+    $regionName: String!,
+    $userId: Int!,
+    $greaterThan: BigInt!,
+    $lessThan: BigInt!,
+    $batchSize: Int,
+    $offset: Int
+  ) {
+  searchEventsByRegion(
+    query: $query, 
+    regionName: $regionName,
+  	filter: {
+      startDate: {
+        greaterThanOrEqualTo: $greaterThan,
+        lessThanOrEqualTo: $lessThan
+      }
+    },
+    first: $batchSize,
+    offset: $offset
+  ) {
+    totalCount,
+    nodes {
+      id,
+      name,
+      startDate,
+      ticketproviderurl,
+      ticketproviderid,
+      venue,
+      createdAt,
+      venueByVenue {
+        lat,
+        lon
+      }
+      artistToEvents(first: 1) {
+        nodes {
+          artist {
+            photo
+          }
+        }
+      },
+      watchLists(
+        filter: {
+          userId: {
+            equalTo: $userId
+          }
+        }
+      ) {
+        nodes {
+          id
+        }
+      }
+    }
+  }
+}

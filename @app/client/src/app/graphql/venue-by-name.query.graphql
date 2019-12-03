@@ -1,0 +1,46 @@
+query venueByName($name: String!, $userId: Int!, $currentDate: BigInt!) {
+  venue(name: $name) {
+    name,
+    description,
+    lat,
+    lon,
+    city,
+    address,
+    photo,
+    logo,
+    followLists(
+      filter: {
+        userId: {
+          equalTo: $userId
+        }
+      }
+    ) {
+      nodes {
+        id
+      }
+    }
+    eventsByVenue(
+      orderBy: START_DATE_ASC,
+      filter: {
+        startDate: {
+          greaterThanOrEqualTo: $currentDate
+        }
+      }
+    ) {
+      nodes {
+        name,
+        startDate,
+        ticketproviderurl,
+        ticketproviderid,
+        id,
+        artistToEvents(first: 1) {
+          nodes {
+            artist {
+              photo
+            }
+          }
+        }
+      }
+    }
+  }
+}

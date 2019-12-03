@@ -1,0 +1,15 @@
+<app-pagewrapper>
+  <div class="faqsContainer">
+    <div class="wrapper">
+      <h1>FAQs</h1>
+      <mat-accordion>
+        <mat-expansion-panel *ngFor="let faq of faqs; let i = index;" [expanded]="i === expanded">
+          <mat-expansion-panel-header>
+            <mat-panel-title>{{faq.title}}</mat-panel-title>
+          </mat-expansion-panel-header>
+          <p [innerHTML]="faq.content"></p>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+  </div>
+</app-pagewrapper>

@@ -1,0 +1,37 @@
+query eventById($eventId: String!, $userId: Int!) {
+  event(id: $eventId) {
+    id,
+    name,
+    startDate,
+    endDate,
+    ticketproviderurl,
+    ticketproviderid
+    description,
+    banner,
+    venueByVenue {
+      name,
+      lat,
+      lon,
+      city,
+      address
+    },
+    watchLists(
+      filter: {
+        userId: {
+          equalTo: $userId
+        }
+      }
+    ) {
+      nodes {
+        id
+      }
+    },
+    artistToEvents {
+      nodes {
+        artist {
+          name
+        }
+      }
+    }
+  }
+}

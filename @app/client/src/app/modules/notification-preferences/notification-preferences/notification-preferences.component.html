@@ -1,0 +1,42 @@
+<app-pagewrapper>
+  <app-settings-wrapper>
+    <div class="preferencesContainer">
+      <h1 class="settingsHeader">Notification Preferences</h1>
+      <div class="formWrapper">
+        <div class="frequencyContainer">
+          <h5>Frequency To Receive New Show Updates</h5>
+          <mat-form-field>
+            <mat-select name="frequencyInput" [(ngModel)]="frequency" (selectionChange)="changeFrequency()">
+              <mat-option *ngFor="let frequency of frequencies;" [value]="frequency.value">
+                {{frequency.label}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <!-- <div class="pushContainer">
+          <h5>Mobile Push Notifications</h5>
+          <mat-checkbox [(ngModel)]="pushNotification" (change)="togglePushNotifications()">Receive push notifications about newly added shows</mat-checkbox>
+        </div>  -->
+        <div class="emailContainer">
+          <h5>Email Notifications</h5>
+          <mat-checkbox [(ngModel)]="emailNotification" (change)="toggleEmailNotifications()">Receive email notifications about newly added shows</mat-checkbox>
+          <div class="locationsContainer" *ngIf="emailNotification">
+            <h6>Locations to Receive Email Updates For (up to 5)</h6>
+            <div class="locationsWrapper">
+              <div *ngFor="let location of locations; let i = index" class="locationRow">
+                <div>{{location.label}}</div>
+                <button mat-button (click)="removeLocation($event, location.id, i)" class="removeBtn">Remove</button>
+              </div>
+            </div>
+            <app-location-search
+              placeholder="Search Location"
+              autocomplete="off"
+              (selected)="selectLocation($event)"
+              [value]="locationValue"
+            ></app-location-search>
+          </div>
+        </div> 
+      </div>
+    </div>
+  </app-settings-wrapper>
+</app-pagewrapper>
