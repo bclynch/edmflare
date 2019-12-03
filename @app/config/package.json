@@ -1,0 +1,14 @@
+{
+  "name": "@app/config",
+  "private": true,
+  "version": "0.0.0",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "build:essential": "yarn run build",
+    "watch": "tsc -w"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0"
+  }
+}

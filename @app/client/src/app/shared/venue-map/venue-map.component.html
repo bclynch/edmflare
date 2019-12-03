@@ -1,0 +1,41 @@
+<div class="mapContainer">
+  <div class="mapWrapper" *ngIf="inited">
+    <agm-map 
+      [latitude]="coords.lat" 
+      [longitude]="coords.lon"
+      [disableDefaultUI]="true"
+      [streetViewControl]="false"
+      [styles]=mapStyle
+      [zoom]="zoomLevel"
+      [scrollwheel]="false"
+      [fullscreenControl]="true"
+      mapTypeId="terrain"
+    >
+      <agm-marker 
+        [latitude]= "coords.lat" 
+        [longitude]= "coords.lon"
+      ></agm-marker>
+    </agm-map>
+  </div>
+  <div class="infoContainer">
+    <div *ngIf="eventName">
+      <div class="bold">{{eventName}}</div>
+      <div>at</div>
+    </div>
+    <div class="bold">{{venueName}}</div>
+    <div>{{address}}</div>
+    <div class="navOptions">
+      <a 
+        class="navOption" 
+        *ngFor="let option of navOptions;" 
+        [href]="option.link" 
+        target="_blank" 
+        rel="nofollow"
+      >
+        <button mat-button>
+          <mat-icon>{{option.icon}}</mat-icon>
+        </button>
+      </a>
+    </div>
+  </div>
+</div>

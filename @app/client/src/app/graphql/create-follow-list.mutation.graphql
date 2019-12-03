@@ -1,0 +1,15 @@
+mutation createFollowList($userId: Int!, $artistId: String, $venueId: String) {
+  createFollowList(
+    input: {
+      followList: {
+        userId: $userId,
+        artistId: $artistId,
+        venueId: $venueId
+      }
+    }
+  ) {
+    followList {
+      id
+    }
+  }
+}

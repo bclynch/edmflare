@@ -1,0 +1,29 @@
+<div class="modalContainer">
+  <div class="mobilePromptClose" (click)="dismiss()">
+    <button mat-button><mat-icon>close</mat-icon></button>
+  </div>
+  <h3 class="header">Share With Friends</h3>
+  <div class="shareContainer">
+    <share-buttons [theme]="'material-dark'"
+      [showCount]="false"
+      [include]="['facebook','twitter','whatsapp','messenger','telegram','sms','email']"
+      [size]="-1"
+      [url]="data.shareUrl"
+      title="Upcoming EDM Event"
+      description="Check out this new show coming up!"
+    ></share-buttons>
+  </div>
+  <div class="urlContainer">
+    <div class="wrapper">
+      <div>Event URL</div>
+      <div>{{data.shareUrl}}</div>
+    </div>
+    <button 
+      mat-button 
+      (click)="copy()" 
+      matTooltip="Copy"
+    >
+      <mat-icon>file_copy</mat-icon>
+    </button>
+  </div>
+</div>

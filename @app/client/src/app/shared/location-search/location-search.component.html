@@ -1,0 +1,27 @@
+<mat-form-field color="accent" [floatLabel]="floatLabel ? 'auto' : 'never'">
+  <input
+    type="text"
+    matInput
+    [placeholder]="placeholder" 
+    [autocomplete]="autocomplete"
+    [matAutocomplete]="auto"
+    [formControl]="myControl"
+    [style.color]="color"
+  />
+  <button 
+    mat-button 
+    *ngIf="myControl.value" 
+    matSuffix 
+    mat-icon-button 
+    aria-label="Clear" 
+    (click)="resetInput($event)"
+    class="resetBtn"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectOption()" [autoActiveFirstOption]="true">
+    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+      {{option}}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

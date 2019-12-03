@@ -1,0 +1,18 @@
+query currentUser {
+  currentUser {
+    username,
+    notificationFrequency,
+    pushNotification,
+    emailNotification,
+    profilePhoto,
+    id,
+    watchLists {
+      totalCount
+    },
+    pushSubscriptions {
+      nodes {
+        id
+      }
+    }
+  }
+}

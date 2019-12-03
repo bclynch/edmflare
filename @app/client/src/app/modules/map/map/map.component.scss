@@ -1,0 +1,14 @@
+.mapContainer {
+  height: calc(100vh - var(--height-navbar));
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .mapWrapper {
+    height: 100%;
+    width: 100%;
+
+    // styling for map in styles.scss
+  }
+}

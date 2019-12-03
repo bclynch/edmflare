@@ -1,0 +1,325 @@
+/* You can add global styles to this file, and also import other style files */
+@import './app/theme.scss';
+@import '~@ngx-share/button/themes/material/material-dark-theme';
+
+
+// global css4 vars
+:root {
+  --height-navbar: 9vh;
+  --height-footer: 350px;
+}
+
+// fluid fonts / scaling
+// https://zellwk.com/blog/viewport-based-typography/
+// https://codepen.io/MadeByMike/pen/VvwqvW
+
+html { 
+  font-size: calc(112.5% + 0.25vw) !important;
+  background: var(--color-background);
+
+  mat-icon {
+    font-size: 2em !important;
+    height: 1em !important;
+    width: 1em !important;
+  }
+  fa-icon {
+    font-size: 1.5em !important;
+  }
+  h1 {
+    font-size: 2em;
+  }
+  
+  h2 {font-size: 1.8em; margin: 1em 0;}
+  
+  h3 {font-size: 1.6em; margin: 1em 0;}
+  
+  h4 {
+    font-size: 1.4em;
+    margin: 1em 0;
+  }
+  
+  h5 {font-size: 1.2em; margin: 1em 0;}
+
+  h6 {font-size: 1.05em; margin: 1em 0;}
+
+  input,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  div,
+  .mat-select-value,
+  .mat-expansion-panel-header-title,
+  .mat-expansion-indicator:after,
+  .mat-option {
+    color: var(--color-font);
+  }
+
+  .mat-drawer-container,
+  .mat-option,
+  .mat-expansion-panel {
+    background: var(--color-background);
+  }
+}
+@media (min-width: 1200px) {
+  html { 
+    // font-size: calc(112.5% + 0.3vw) !important;
+
+    mat-icon {
+      font-size: 2.25em !important;
+
+      &.smallIcon {
+        font-size: 2em !important;
+      }
+    }
+    fa-icon {
+      font-size: 1.8em !important;
+    }
+  }
+}
+@media (min-width: 1600px) {
+  html {
+    font-size: calc(112.5% + 0.5vw) !important;
+
+    mat-icon {
+      font-size: 3em !important;
+
+      &.smallIcon {
+        font-size: 2.75em !important;
+      }
+    }
+    fa-icon {
+      font-size: 2.25em !important;
+    }
+  }
+}
+@media (min-width: 2000px) {
+  html { 
+    font-size: calc(112.5% + 0.75vw) !important;
+
+    mat-icon {
+      font-size: 4em !important;
+
+      &.smallIcon {
+        font-size: 3.5em !important;
+      }
+    }
+    fa-icon {
+      font-size: 2.5em !important;
+    }
+  }
+}
+@media (min-width: 3000px) {
+  html { 
+    font-size: calc(112.5% + 1vw) !important;
+
+    mat-icon {
+      font-size: 6.5em !important;
+
+      &.smallIcon {
+        font-size: 5em !important;
+      }
+    }
+    fa-icon {
+      font-size: 3.5em !important;
+    }
+  }
+}
+
+.boldFont {
+  font-weight: 500;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+}
+
+app-pagewrapper {
+  position: fixed;
+  top:        0;
+  bottom:     0;
+  left:       0;
+  right:      0;
+  overflow:   scroll;
+  -ms-overflow-style: none;
+  font-family: 'Helvetica Neue', 'RobotoLight', sans-serif;
+}
+
+.wrapper {
+  width: 100%;
+  background: var(--color-background);
+}
+@media (min-width: 1200px) {
+  .wrapper {
+    width: 100% !important;
+  }
+}
+
+app-footer {
+  width: 100vw;
+}
+
+app-events {
+  app-footer {
+    position: absolute;
+    top: 100vh;
+    z-index: 999;
+    width: 100vw;
+  }
+}
+
+app-navbar {
+  width: 100vw;
+}
+
+app-events {
+  .pageWrapperContainer {
+    margin-top: 0 !important;
+  }
+}
+
+// hacky css editing of material inputs
+.searchWrapper {
+  .mat-form-field-infix {
+    padding-top: 0 !important;
+    border-top: 0 !important;
+    padding-bottom: 5px !important;
+  }
+  .mat-form-field-label-wrapper {
+    top: 0 !important;
+
+    .mat-form-field-label {
+      top: 0 !important;
+    }
+  }
+}
+
+.homeContainer {
+  .mat-select-value-text {
+    color: white;
+  }
+}
+
+.sharedialog-panel {
+  width: 600px !important;
+  max-width: 90% !important;
+
+  mat-dialog-container {
+    padding: 0;
+  }
+}
+@media (min-width: 1200px) {
+  .sharedialog-panel {
+    width: 60vw !important;
+  }
+}
+
+.mat-menu-content {
+  a {
+    text-decoration: none;
+  }
+}
+
+// event page style to override the inner html style
+.infoContainer {
+ 
+  .description {
+    img {
+      max-width: 100% !important;
+    }
+  }
+}
+
+// share button
+share-button {
+  .sb-wrapper {
+    height: auto;
+  }
+}
+
+// nav bar mat menu scaling
+.mat-menu-panel {
+  max-width: 100% !important;
+
+
+  .mat-menu-item {
+    font-size: 1em;
+    height: auto;
+    line-height: normal;
+    padding: .15em 1em;
+  }
+  @media (min-width: 1200px) {
+    .mat-menu-item {
+      font-size: 1.25em;
+      height: auto;
+      line-height: normal;
+      padding: .15em 1em;
+    }
+  }
+}
+
+// policies mat style override
+@media (min-width: 1200px) {
+  app-policies {
+    .mat-tab-label {
+      height: auto;
+      font-size: 1.5em;
+      padding: .25em 1.5em;
+    }
+  }
+}
+
+.featureContent {
+  a {
+    color: #3659e3;
+  }
+}
+
+// map for map page styling
+agm-map {
+  height: 100%;
+  width: 100%;
+
+  .si-wrapper-left {
+    // margin-top: 0;
+    // margin-left: -20px;
+    height: 30vh;
+    width: 300px;
+
+    .si-content-wrapper {
+      padding: 0;
+      height: 100%;
+      background: var(--color-background);
+
+      button {
+        color: var(--color-font);
+        opacity: .85;
+      }
+      .si-content {
+        height: 100%;
+        max-height: 100%!important;
+        max-width: 100%!important;
+
+        > div {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          height: 100%;
+          padding: 5%;
+
+          h1 {
+            margin-top: 0;
+          }
+          button {
+            margin-top: 10%;
+            color: white;
+          }
+        }
+      }
+    }
+    .si-pointer-left {
+      display: none;
+    }
+  }
+}

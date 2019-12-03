@@ -1,0 +1,73 @@
+<app-pagewrapper [collapsibleNav]="false">
+  <div class="eventsContainer">
+    <div class="toggleContainer boldFont" (click)="collapsed = !collapsed">
+      <div>{{collapsed ? 'Expand Search' : 'Collapse Search'}}</div>
+      <mat-icon>search</mat-icon>
+    </div>
+    <div class="searchContainer" [ngClass]="collapsed ? 'collapsed' : ''">
+      <form (submit)="changeUrlPath()">
+        <div class="searchWrapper">
+          <mat-form-field color="accent" floatLabel="never">
+            <input
+              matInput
+              placeholder="Search"
+              autocomplete="off"
+              [formControl]="searchQueryControl"
+            />
+          </mat-form-field>
+          <div class="locationWrapper">
+            <span class="in">in</span>
+            <app-location-search
+              placeholder="Location"
+              autocomplete="off"
+              (selected)="setLocation($event)"
+              [value]="selectedLocation"
+              [floatLabel]="false"
+            ></app-location-search>
+            <a [routerLink]="['/map']">
+              <button mat-button matTooltip="Use map view">
+                <mat-icon>map</mat-icon>
+              </button>
+            </a>
+          </div>
+          <div class="dateWrapper">
+            <app-select-date (date)="selectDate($event)" [value]="dateRange" placeholder="Select Date Range"></app-select-date>
+          </div>
+        </div>
+        <button mat-button class="searchBtn" type="submit"><mat-icon>search</mat-icon></button>
+      </form>
+    </div>
+    <div *ngIf="!location">Select a city to search for shows in to get started</div>
+    <!-- item size is number of pixels in height for ea item -->
+    <cdk-virtual-scroll-viewport 
+      class="eventsWrapper" 
+      itemSize="135" 
+      [ngClass]="collapsed ? 'collapsed' : ''" 
+      (scrolledIndexChange)="nextBatch()"
+    >
+      <app-event-card
+      *cdkVirtualFor="let event of eventsObservable | async"
+        [name]="event.name"
+        [location]="event.venue"
+        [date]="event.startDate"
+        [id]="event.id"
+        [externalUrl]="event.ticketproviderurl"
+        [ticketProviderId]="event.ticketproviderid"
+        [image]="event.artistToEvents.nodes[0]?.artist.photo"
+        [watchId]="event.watchLists.nodes.length && event.watchLists.nodes[0].id"
+        size="half"
+        [new]="event.new"
+      ></app-event-card>
+      <div class="eventFallback" *ngIf="!(eventsObservable | async)?.length && eventsInited">
+        <div class="wrapper">
+          <img class="logoImg" src="assets/icons/icon-192x192.png" alt="EDM Flare Logo" />
+        </div>
+        <h2>No events. Try a new search.</h2>
+      </div>
+    </cdk-virtual-scroll-viewport>
+    <app-ghost-list
+      [ghosts]="ghosts" 
+      [@fadeOut]="!ghosts.length"
+    ></app-ghost-list>
+  </div>
+</app-pagewrapper>

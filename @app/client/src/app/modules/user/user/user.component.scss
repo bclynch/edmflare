@@ -1,0 +1,125 @@
+.userContainer {
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+
+  .userWrapper {
+    padding: 5% 5% 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .profile {
+      height: 120px;
+      width: 120px;
+      background-size: cover;
+      border-radius: 50%;
+
+      &.backupImg {
+        background: purple;
+      }
+    }
+    .trackingWrapper {
+      display: flex;
+
+      .spacer {
+        margin: 0 5px;
+      }
+    }
+  }
+  .watchingContainer {
+    padding: 5% 5% 0;
+
+    app-event-card-alt {
+      width: 100%;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+  }
+  .followingContainer {
+    padding: 5% 5% 0;
+
+    .followingWrapper {
+      .followCard {
+        padding: 18px;
+        transition: .3s;
+
+        .followCardWrapper {
+          display: flex;
+          align-items: center;
+
+          .imageWrapper {
+            margin-right: 15px;
+
+            .img {
+              height: 75px;
+              width: 75px;
+              cursor: pointer;
+              background-size: contain;
+              border-radius: 50%;
+
+              &.venue {
+                background-size: cover;
+              }
+            }
+            .backupImg {
+              border-radius: 0;
+            }
+          }
+          a {
+            color: var(--color-font);
+            text-decoration: none;
+          }
+          a:hover {
+            text-decoration: underline;
+            color: var(--color-accent);
+          }
+        }
+      }
+      .followCard:hover {
+        box-shadow: 0 4px 15px 0 rgba(40,44,53,.06), 0 2px 2px 0 rgba(40,44,53,.08);
+        background-color: #fff;
+        border-radius: 4px;
+      }
+    }
+  }
+  .verticalSpacer {
+    padding: 32px 0;
+
+    .line {
+      height: 1px;
+      background: #ddd;
+      width: 100%;
+    }
+  }
+  @media (min-width: 768px) {
+    .userWrapper {
+  
+      .profile {
+        height: 200px;
+        width: 200px;
+      }
+    }
+    .watchingContainer {
+
+      .watchingWrapper {
+        display: flex;
+        flex-wrap: wrap;
+
+        app-event-card-alt {
+          width: 50%;
+        }
+      }
+    }
+  }
+  @media (min-width: 1024px) {
+    .watchingContainer {
+     
+      .watchingWrapper {
+        app-event-card-alt {
+          width: 33.33%;
+        }
+      }
+    }
+  }
+}

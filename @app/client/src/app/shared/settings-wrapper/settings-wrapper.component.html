@@ -1,0 +1,20 @@
+<mat-sidenav-container class="example-sidenav-container">
+  <mat-sidenav
+    #snav 
+    [mode]="mobileQuery.matches ? 'over' : 'side'"
+    [fixedInViewport]="mobileQuery.matches"
+    fixedTopGap="54"
+    [opened]="!mobileQuery.matches"
+  >
+    <div class="drawerItem" *ngFor="let option of navOptions;">
+      <a [routerLink]="option.path">{{option.label}}</a>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <button *ngIf="mobileQuery.matches" mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
+    <ng-content></ng-content>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+  

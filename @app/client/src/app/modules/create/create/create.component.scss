@@ -1,0 +1,35 @@
+.createContainer {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+
+  form {
+    padding: 5%;
+    max-width: 400px;
+    width: 100%;
+
+    h1 {
+      text-align: center;
+    }
+    .mat-form-field {
+      display: block;
+    }
+    .addArtistBtn {
+      font-size: .8em;
+      line-height: 1.4em;
+      padding: 0 .8em;
+    }
+    button[type='submit'] {
+      color: white;
+      font-size: 1.2em;
+      line-height: 2em;
+      padding: 0 1.2em;
+    }
+  }
+  @media (min-width: 1024px) {
+    form {
+      max-width: 50vw;
+    }
+  }
+}

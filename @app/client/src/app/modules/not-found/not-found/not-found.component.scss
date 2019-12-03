@@ -1,0 +1,31 @@
+.logoWrapper {
+  min-height: calc(100vh - var(--height-navbar));
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0 5%;
+  box-sizing: border-box;
+
+  img {
+    margin-top: 2em;
+  }
+  button {
+    color: white;
+    width: 60vw;
+    font-size: 1.2em;
+    line-height: 2em;
+    padding: 0 1.2em;
+    margin-bottom: 5em;
+  }
+  @media (min-width: 768px) {
+
+    img {
+      margin-top: 4em;
+    }
+    button {
+      width: 25vw;
+    }
+  }
+}

@@ -1,0 +1,17 @@
+<mat-form-field color="accent">
+  <mat-select [placeholder]="placeholder" [value]="value" #dateSelect>
+    <mat-option 
+      *ngFor="let date of dateOptions" 
+      [value]="date.value" 
+      (click)="selection(date.value)"
+    >
+      <div *ngIf="date.value !== 'pick'">{{date.label}}</div>
+      <div *ngIf="date.value === 'pick'">
+        <input matInput [matDatepicker]="picker" [style.display]="'none'" [(ngModel)]="pickedDate">
+        <mat-datepicker #picker (closed)="dateSelected($event)"></mat-datepicker>
+        <div (click)="picker.open()" *ngIf="pickedDate === 'Pick a Date'">{{pickedDate}}</div>
+        <div (click)="picker.open()" *ngIf="pickedDate !== 'Pick a Date'">{{pickedDate | date: 'MMM d'}}</div>
+      </div>
+    </mat-option>
+  </mat-select>
+</mat-form-field>

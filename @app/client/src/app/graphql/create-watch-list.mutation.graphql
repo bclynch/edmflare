@@ -1,0 +1,14 @@
+mutation createWatchList($userId: Int!, $eventId: String!) {
+  createWatchList(
+    input: {
+      watchList: {
+        userId: $userId,
+        eventId: $eventId
+      }
+    }
+  ) {
+    watchList {
+      id
+    }
+  }
+}

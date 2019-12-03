@@ -1,0 +1,124 @@
+.cardContainer {
+  display: flex;
+  align-items: center;
+  padding: .5em;
+  transition: .3s;
+  position: relative;
+
+  .imageWrapper {
+
+    .img {
+      height: 5em;
+      width: 5em;
+      cursor: pointer;
+      background-size: contain;
+      border-radius: 50%;
+    }
+    .backupImg {
+      border-radius: 0;
+    }
+  }
+  .eventInfo {
+    display: flex;
+    flex-direction: column;
+    margin-left: 24px;
+    flex: 1;
+
+    a {
+      text-decoration: none;
+      transition: .2s;
+    }
+    a:hover {
+      h3 {
+        color: var(--color-accent);
+      }
+    }
+    > div {
+      font-size: .8em;
+      color: #6f7287;
+    }
+    .eventName {
+      cursor: pointer;
+      font-size: 1.25em;
+      color: var(--color-font);
+      margin: 0 0 5px;
+    }
+    .eventDate {
+      font-size: .9em;
+    }
+    .eventOptions {
+      align-self: flex-end;
+
+      button {
+        padding: 0 10px;
+        min-width: auto;
+        cursor: pointer;
+
+        mat-icon {
+          margin-right: 10px;
+          font-size: 2em;
+          height: 1em;
+          width: 1em;
+        }
+        mat-icon:last-child {
+          margin-right: 0;
+        }
+        &.watched {
+          color: gold;
+        }
+      }
+      a {
+        text-decoration: none;
+        color: #6f7287;
+
+        fa-icon {
+          font-size: 1.5em;
+        }
+      }
+    }
+  }
+  .tooltip {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 1.5em;
+    width: 1.5em;
+    z-index: 999;
+  }
+  @media (min-width: 768px) {
+
+    .cardContainer {
+      padding: 1.5em;
+    }
+    &.half {
+      width: 50vw;
+      box-sizing: border-box;
+      margin-left: 50vw;
+    }
+  }
+}
+.cardContainer:hover {
+  box-shadow: 0 4px 15px 0 rgba(173, 173, 173, 0.74), 0 2px 2px 0 rgba(173, 173, 173, 0.74);
+  border-radius: 4px;
+}
+.newEvent::before,
+.newEvent::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  border-color: transparent;
+  border-style: solid;
+}
+
+.newEvent::before {
+  border-width: 1em;
+  border-right-color: var(--color-accent);
+  border-top-color: var(--color-accent);; 
+}
+
+.newEvent::after {
+  border-width: 1em;
+  border-right-color: var(--color-accent);;
+  border-top-color: var(--color-accent);; 
+}

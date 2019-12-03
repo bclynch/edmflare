@@ -1,0 +1,58 @@
+<app-pagewrapper>
+  <div class="signupContainer">
+    <form [formGroup]="signupForm" (ngSubmit)="signup()">
+      <h1>Create New Account</h1>
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Email" 
+          formControlName="email"
+        />
+        <mat-error *ngFor="let validation of formValidationMessages.email">
+          <mat-error class="error-message" *ngIf="signupForm.get('email').hasError(validation.type) && (signupForm.get('email').dirty || signupForm.get('email').touched)">{{validation.message}}</mat-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Username" 
+          formControlName="username"
+        />
+        <mat-error *ngFor="let validation of formValidationMessages.username">
+          <mat-error class="error-message" *ngIf="signupForm.get('username').hasError(validation.type) && (signupForm.get('username').dirty || signupForm.get('username').touched)">{{validation.message}}</mat-error>
+        </mat-error>
+      </mat-form-field>
+      <ng-container formGroupName="matchingPassword">
+        <mat-form-field>
+          <input
+            matInput
+            placeholder="Password"
+            type="password" 
+            formControlName="password"
+          />
+          <mat-error *ngFor="let validation of formValidationMessages.password">
+            <mat-error class="error-message" *ngIf="signupForm.get('matchingPassword').get('password').hasError(validation.type) && (signupForm.get('matchingPassword').get('password').dirty || signupForm.get('matchingPassword').get('password').touched)">{{validation.message}}</mat-error>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            matInput
+            placeholder="Confirm Password"
+            type="password" 
+            formControlName="confirmPassword"
+          />
+          <mat-error *ngFor="let validation of formValidationMessages.confirmPassword">
+            <mat-error class="error-message" *ngIf="(signupForm.get('matchingPassword').get('confirmPassword').hasError(validation.type)|| signupForm.get('matchingPassword').hasError(validation.type)) && (signupForm.get('matchingPassword').get('confirmPassword').dirty || signupForm.get('matchingPassword').get('confirmPassword').touched)">{{validation.message}}</mat-error>
+          </mat-error>
+        </mat-form-field>
+      </ng-container>
+      <button mat-flat-button color="primary" type="submit">Signup</button>
+      <div class="existing">Have an Account? 
+        <a [routerLink]="['/login']" [queryParams]="{ redirect: redirect }">
+          <button mat-button class="existingBtn" color="primary">Go To Login</button>
+        </a>
+      </div>
+    </form>
+    <app-get-app></app-get-app>
+  </div>
+</app-pagewrapper>

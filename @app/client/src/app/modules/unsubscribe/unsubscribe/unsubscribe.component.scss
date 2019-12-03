@@ -1,0 +1,19 @@
+.unsubscribeContainer {
+  min-height: calc(100vh - var(--height-navbar));
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0 5%;
+  box-sizing: border-box;
+
+  .logoImg {
+    margin: 50px 0;
+  }
+  a {
+    margin-top: 20px;
+    text-decoration: underline;
+    color: var(--color-primary);
+  }
+}

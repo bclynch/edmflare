@@ -1,0 +1,15 @@
+mutation createPushSubscription($userId: Int!, $endpoint: String!, $p256Dh: String!, $auth: String!) {
+  createPushSubscription(
+    input: {
+      pushSubscription: {
+        userId: $userId,
+        endpoint: $endpoint,
+        expirationTime: null,
+        p256Dh: $p256Dh,
+        auth: $auth
+      }
+    }
+  ) {
+    clientMutationId
+  }
+}

@@ -1,0 +1,214 @@
+.homeContainer {
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  position: relative;
+
+  .carousel {
+    height: 75vh;
+    width: 100vw;
+    position: absolute;
+    left: 0;
+
+    .slide {
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+
+      .slideImg {
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
+        transition: .5s ease-in;
+        width: 100%;
+        height: 100%;
+      }
+      .slideCallout {
+        justify-content: center;
+        align-items: center;
+        display: flex;
+
+        .calloutWrapper {
+          position: absolute;
+          font-size: 1.75em;
+          top: 10%;
+          left: 5%;
+
+          > div {
+            color: white!important;
+          }
+
+          .tagline {
+            transition: top .5s ease-in;
+            position: relative;
+            opacity: 0;
+            top: -25px;
+            -webkit-text-stroke: 0;
+
+            &.active {
+              opacity: 1;
+              top: 0;
+            }
+          }
+        }
+      }
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      background: var(--color-primary);
+      width: calc(100vw - 10%);
+      position: absolute;
+      bottom: 5%;
+      left: 5%;
+
+      .section {
+        color: white;
+        padding: 8px 8px 0;
+        flex: 2;
+
+        .label {
+          font-size: .8em;
+          margin-bottom: .6em;
+          color: white;
+        }
+        &.btnSection {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex: 1;
+          padding-bottom: 8px;
+
+          .searchBtn {
+            background: var(--color-accent);
+          }
+        }
+        a {
+          color: white;
+          font-size: .5em;
+
+          button {
+            min-width: auto;
+            padding: 0 4px;
+          }
+        }
+      }
+    }
+  }
+  .featuresContainer {
+    display: flex;
+    flex-direction: column;
+    margin: calc(75vh + 80px) auto 3em;
+    padding: 5%;
+
+    .featureContainer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 15px;
+      font-weight: 400;
+      line-height: 1.5em;
+      color: var(--color-font);
+
+      fa-icon {
+        color: var(--color-accent);
+      }
+      .featureHeader {
+        color: var(--color-accent);
+        text-align: center;
+      }
+    }
+  }
+  .featuredContainer {
+    padding: 5%;
+    margin: 0 auto;
+
+    h1 {
+      color: var(--color-font);
+    }
+    app-event-card-alt {
+      width: 100%;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+    .moreWrapper {
+      margin-top: 20px;
+      font-size: 1.5em;
+      text-align: center;
+
+      a {
+        color: var(--color-font);
+        transition: .3s;
+      }
+      a:hover {
+        color: var(--color-accent);
+      }
+    }
+  }
+  @media (min-width: 768px) {
+
+    .carousel {
+  
+      .slide {
+
+        .slideCallout {
+
+          .calloutWrapper {
+            font-size: 3.75rem;
+            width: 60vw;
+            top: 8%;
+            right: 5%;
+            left: auto;
+  
+            .tagline {
+              font-size: 3rem;
+            }
+          }
+        }
+      }
+      form {
+        flex-direction: row;
+
+        .section {
+          padding: 1em;
+
+          .label {
+            height: 2.5em;
+            display: flex;
+            align-items: center;
+          }
+        }
+        .section:first-child {
+          border-right: solid 1px white;
+        }
+      }
+    }
+    .featuresContainer {
+      justify-content: space-around;
+      flex-direction: row;
+    }
+    .featuredContainer {
+      
+      .featuredWrapper {
+        display: flex;
+        flex-wrap: wrap;
+
+        app-event-card-alt {
+          width: 50%;
+        }
+      }
+    }
+  }
+  @media (min-width: 1024px) {
+    .featuredContainer {
+     
+      .featuredWrapper {
+        app-event-card-alt {
+          width: 33.33%;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,41 @@
+.modalContainer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--color-background);
+
+  .mobilePromptClose {
+    position: absolute;
+    top: .33em;
+    right: .33em;
+
+    button {
+      padding: 0 10px;
+      min-width: auto;
+    }
+  }
+  .header {
+    text-align: center;
+    width: 100%;
+  }
+  .shareContainer {
+    margin-bottom: 3em;
+  }
+  .urlContainer {
+    display: flex;
+    padding: 8px;
+    border: solid 1px var(--color-primary);
+    width: 90%;
+    margin-bottom: 3em;
+
+    .wrapper {
+      flex: 1;
+      overflow: hidden;
+    }
+    button {
+      padding: 0 5px;
+      min-width: auto;
+    }
+  }
+}

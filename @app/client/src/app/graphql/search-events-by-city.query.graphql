@@ -1,0 +1,55 @@
+query searchEventsByCity(
+    $query: String!,
+    $cityId: Int!,
+    $userId: Int!,
+    $greaterThan: BigInt!,
+    $lessThan: BigInt!,
+    $batchSize: Int,
+    $offset: Int
+  ) {
+  searchEventsByCity(
+    query: $query, 
+    cityid: $cityId,
+  	filter: {
+      startDate: {
+        greaterThanOrEqualTo: $greaterThan,
+        lessThanOrEqualTo: $lessThan
+      }
+    },
+    first: $batchSize,
+    offset: $offset
+  ) {
+    totalCount,
+    nodes {
+      id,
+      name,
+      startDate,
+      ticketproviderurl,
+      ticketproviderid,
+      venue,
+      createdAt,
+      venueByVenue {
+        lat,
+        lon
+      }
+      artistToEvents(first: 1) {
+        nodes {
+          artist {
+            photo
+          }
+        }
+      },
+      watchLists(
+        filter: {
+          userId: {
+            equalTo: $userId
+          }
+        }
+      ) {
+        nodes {
+          id
+        }
+      }
+    }
+  }
+}

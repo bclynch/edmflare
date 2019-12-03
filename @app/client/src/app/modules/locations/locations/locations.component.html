@@ -1,0 +1,21 @@
+<app-pagewrapper>
+  <div class="locationsContainer">
+    <div class="wrapper">
+      <div class="headerWrapper">
+        <h2>Local Shows Directory</h2>
+      </div>
+      <div class="regionContainer" *ngFor="let region of locations;">
+        <div class="linkWrapper">
+          <a [routerLink]="['/events']" [queryParams]="{ location: region.name, dates: 'any' }">
+            <h3>{{region.name}}</h3>
+          </a>
+        </div>
+        <div class="citiesContainer">
+          <div class="linkWrapper" *ngFor="let city of region.citiesByRegion.nodes">
+            <a [routerLink]="['/events']" [queryParams]="{ location: city.name, dates: 'any' }">{{city.name}}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-pagewrapper>

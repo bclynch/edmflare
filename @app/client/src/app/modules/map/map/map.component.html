@@ -1,0 +1,28 @@
+<app-pagewrapper>
+  <div class="mapContainer">
+    <div class="mapWrapper" *ngIf="mapInited">
+      <agm-map 
+        [disableDefaultUI]="true"
+        [streetViewControl]="false"
+        [fitBounds]="latlngBounds"
+        [styles]=mapStyle
+        mapTypeId="terrain"
+      >
+      <agm-marker 
+        *ngFor= "let marker of eventMarkers; let i = index;"
+        [latitude]= "marker.lat" 
+        [longitude]= "marker.lon"
+      >
+        <agm-snazzy-info-window placement="left" [closeWhenOthersOpen]="true">
+            <ng-template>
+              <h1>{{eventMarkers[i].name}} Region</h1>
+              <div>Check out cities like {{eventMarkers[i].cities.cities}} <span *ngIf="eventMarkers[i].cities.total > 0">and {{eventMarkers[i].cities.total}} other<span *ngIf="eventMarkers[i].cities.total !== 1">s</span></span></div>
+              <a [routerLink]="['/events']" [queryParams]="{ location: eventMarkers[i].name, dates: 'any' }"><button mat-flat-button color="primary">See Upcoming Events</button></a>
+            </ng-template>
+          </agm-snazzy-info-window>
+        </agm-marker>
+      </agm-map>
+    </div>
+    <div class="spinnerWrapper" *ngIf="!mapInited"><mat-spinner></mat-spinner></div>
+  </div>
+</app-pagewrapper>

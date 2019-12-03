@@ -1,0 +1,49 @@
+<app-pagewrapper>
+  <div class="venueContainer">
+    <div class="wrapper">
+      <div *ngIf="venue" class="header">
+        <div class="bannerImg" *ngIf="venue.photo" [ngStyle]="{ 'background-image': 'url(' + venue.photo + ')'}"></div>
+        <div class="bannerImg backup" *ngIf="!venue.photo"></div>
+        <h1>{{venue?.name.split('-')[0]}}</h1>
+        <div class="followContainer">
+          <button 
+            mat-flat-button 
+            (click)="followVenue()" 
+            color="accent" 
+            *ngIf="!venue?.followLists.nodes.length"
+          >Follow</button>
+          <button 
+            mat-flat-button
+            (click)="unfollowVenue()" 
+            color="primary" 
+            *ngIf="venue?.followLists.nodes.length"
+          >Following</button>
+        </div>
+      </div>
+      <div class="upcomingContainer">
+        <div class="eventsWrapper" *ngIf="venue?.eventsByVenue.nodes.length">
+          <h2>Upcoming Shows</h2>
+          <app-event-card
+            *ngFor="let event of venue.eventsByVenue.nodes"
+            [name]="event.name"
+            [location]="venue.name"
+            [date]="event.startDate"
+            [id]="event.id"
+            [externalUrl]="event.ticketproviderurl"
+            [ticketProviderId]="event.ticketproviderid"
+            [image]="event.artistToEvents.nodes.length && event.artistToEvents.nodes[0].artist.photo"
+          ></app-event-card>
+        </div>
+      </div>
+      <div class="mapContainer" *ngIf="venue?.lat">
+        <app-venue-map 
+          *ngIf="venue" 
+          [lat]="+venue.lat" 
+          [lon]="+venue.lon"
+          [venueName]="venue.name.split('-')[0]"
+          [address]="venue.address"
+        ></app-venue-map>
+      </div>
+    </div>
+  </div>
+</app-pagewrapper>

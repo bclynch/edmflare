@@ -1,0 +1,48 @@
+.locationsContainer {
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+
+  .headerWrapper {
+    padding: 30px 15px;
+    border-bottom: solid 1px var(--color-border);
+  }
+  .regionContainer {
+    padding: 0 15px;
+    margin-top: 20px;
+
+    .linkWrapper {
+
+      a {
+        color:#3659e3;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    }
+    .citiesContainer {
+      display: flex;
+      flex-wrap: wrap;
+
+      .linkWrapper {
+        width: 100%;
+      }
+    }
+  }
+  .regionContainer:last-child {
+    margin-bottom: 50px;
+  }
+  @media (min-width: 768px) {
+    .regionContainer {
+  
+      .citiesContainer {
+  
+        .linkWrapper {
+          width: 33.33%;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,47 @@
+.venueContainer {
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+
+  .header {
+    padding: 0 5%;
+    height: 35vh;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    position: relative;
+
+    .bannerImg {
+      position: absolute;
+      width: 100vw;
+      height: 35vh;
+      left: 0;
+      background-size: cover;
+      background-position: center;
+
+      &.backup {
+        background: var(--color-primary);
+      }
+    }
+    h1 {
+      color: white;
+      z-index: 99;
+    }
+    .followContainer {
+      button {
+        color: white;
+        font-size: 1.2em;
+        line-height: 2em;
+        padding: 0 1.2em;
+      }
+    }
+  }
+  .upcomingContainer {
+    margin: 50px 5%;
+  }
+  @media (min-width: 768px) {
+    .upcomingContainer {
+      width: 50%;
+    }
+  }
+}
