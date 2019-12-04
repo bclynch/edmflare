@@ -4,30 +4,30 @@ import {
   PostGraphileOptions,
   Middleware,
   enhanceHttpServerWithSubscriptions,
-} from "postgraphile";
-import { makePgSmartTagsFromFilePlugin } from "postgraphile/plugins";
-import { NodePlugin } from "graphile-build";
-import { Pool } from "pg";
-import { Express, Request, Response } from "express";
-import PgPubsub from "@graphile/pg-pubsub";
-import PgSimplifyInflectorPlugin from "@graphile-contrib/pg-simplify-inflector";
-import PassportLoginPlugin from "../plugins/PassportLoginPlugin";
-import PrimaryKeyMutationsOnlyPlugin from "../plugins/PrimaryKeyMutationsOnlyPlugin";
-import SubscriptionsPlugin from "../plugins/SubscriptionsPlugin";
-import handleErrors from "../utils/handleErrors";
-import { getWebsocketMiddlewares, getHttpServer } from "../app";
-import { getAuthPgPool, getRootPgPool } from "./installDatabasePools";
-import { resolve } from "path";
+} from 'postgraphile';
+import { makePgSmartTagsFromFilePlugin } from 'postgraphile/plugins';
+import { NodePlugin } from 'graphile-build';
+import { Pool } from 'pg';
+import { Express, Request, Response } from 'express';
+import PgPubsub from '@graphile/pg-pubsub';
+import PgSimplifyInflectorPlugin from '@graphile-contrib/pg-simplify-inflector';
+import PassportLoginPlugin from '../plugins/PassportLoginPlugin';
+import PrimaryKeyMutationsOnlyPlugin from '../plugins/PrimaryKeyMutationsOnlyPlugin';
+import SubscriptionsPlugin from '../plugins/SubscriptionsPlugin';
+import handleErrors from '../utils/handleErrors';
+import { getWebsocketMiddlewares, getHttpServer } from '../app';
+import { getAuthPgPool, getRootPgPool } from './installDatabasePools';
+import { resolve } from 'path';
 
 const TagsFilePlugin = makePgSmartTagsFromFilePlugin(
   // We're using JSONC for VSCode compatibility; also using an explicit file
   // path keeps the tests happy.
-  resolve(__dirname, "../../postgraphile.tags.jsonc")
+  resolve(__dirname, '../../postgraphile.tags.jsonc')
 );
 
 type UUID = string;
 
-const isTest = process.env.NODE_ENV === "test";
+const isTest = process.env.NODE_ENV === 'test';
 
 function uuidOrNull(input: string | number | null): UUID | null {
   if (!input) return null;
@@ -43,8 +43,8 @@ function uuidOrNull(input: string | number | null): UUID | null {
   }
 }
 
-const isDev = process.env.NODE_ENV === "development";
-//const isTest = process.env.NODE_ENV === "test";
+const isDev = process.env.NODE_ENV === 'development';
+//const isTest = process.env.NODE_ENV === 'test';
 
 const pluginHook = makePluginHook([
   // Add the pub/sub realtime provider
@@ -115,21 +115,21 @@ export function getPostGraphileOptions({
         extendedErrors:
           isDev || isTest
             ? [
-                "errcode",
-                "severity",
-                "detail",
-                "hint",
-                "positon",
-                "internalPosition",
-                "internalQuery",
-                "where",
-                "schema",
-                "table",
-                "column",
-                "dataType",
-                "constraint",
+                'errcode',
+                'severity',
+                'detail',
+                'hint',
+                'positon',
+                'internalPosition',
+                'internalQuery',
+                'where',
+                'schema',
+                'table',
+                'column',
+                'dataType',
+                'constraint',
               ]
-            : ["errcode"],
+            : ['errcode'],
         showErrorStack: isDev || isTest,
         */
 
@@ -194,16 +194,16 @@ export function getPostGraphileOptions({
      */
     async pgSettings(req) {
       return {
-        // Everyone uses the "visitor" role currently
+        // Everyone uses the 'visitor' role currently
         role: process.env.DATABASE_VISITOR,
 
         /*
-         * Note, though this says "jwt" it's not actually anything to do with
+         * Note, though this says 'jwt' it's not actually anything to do with
          * JWTs, we just know it's a safe namespace to use, and it means you
          * can use JWTs too, if you like, and they'll use the same settings
          * names reducing the amount of code you need to write.
          */
-        "jwt.claims.session_id": req.user && uuidOrNull(req.user.session_id),
+        'jwt.claims.session_id': req.user && uuidOrNull(req.user.session_id),
       };
     },
 
@@ -242,14 +242,14 @@ export default function installPostGraphile(app: Express) {
   const rootPgPool = getRootPgPool(app);
   const middleware = postgraphile<Request, Response>(
     authPgPool,
-    "edm",
+    'edm',
     getPostGraphileOptions({
       websocketMiddlewares,
       rootPgPool,
     })
   );
 
-  app.set("postgraphileMiddleware", middleware);
+  app.set('postgraphileMiddleware', middleware);
 
   app.use(middleware);
 
