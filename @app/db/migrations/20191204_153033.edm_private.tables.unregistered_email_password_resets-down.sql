@@ -1,0 +1,1 @@
+drop table edm_private.unregistered_email_password_resets;

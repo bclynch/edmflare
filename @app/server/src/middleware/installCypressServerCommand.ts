@@ -96,7 +96,7 @@ async function runCommand(
 ): Promise<object | null> {
   if (command === "clearTestUsers") {
     await rootPgPool.query(
-      "delete from app_public.users where username like 'testuser%'"
+      "delete from edm.users where username like 'testuser%'"
     );
     return { success: true };
   } else if (command === "createUser") {
@@ -184,12 +184,12 @@ async function reallyCreateUser(
   const {
     rows: [user],
   } = await rootPgPool.query(
-    `SELECT * FROM app_private.really_create_user(
+    `SELECT * FROM edm_private.really_create_user(
         username := $1,
         email := $2,
         email_is_verified := $3,
         name := $4,
-        avatar_url := $5,
+        profile_photo := $5,
         password := $6
       )`,
     [username, email, verified, name, avatarUrl, password]
@@ -202,7 +202,7 @@ async function createSession(rootPgPool: Pool, userId: number) {
     rows: [session],
   } = await rootPgPool.query(
     `
-      insert into app_private.sessions (user_id)
+      insert into edm_private.sessions (user_id)
       values ($1)
       returning *
     `,
@@ -217,10 +217,10 @@ async function getUserEmailSecrets(rootPgPool: Pool, email: string) {
   } = await rootPgPool.query(
     `
       select *
-      from app_private.user_email_secrets
+      from edm_private.user_email_secrets
       where user_email_id = (
         select id
-        from app_public.user_emails
+        from edm.user_emails
         where email = $1
         order by id desc
         limit 1

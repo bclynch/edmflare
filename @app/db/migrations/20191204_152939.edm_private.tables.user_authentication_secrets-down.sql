@@ -1,0 +1,1 @@
+drop table edm_private.user_authentication_secrets;

@@ -12,8 +12,8 @@
   "config": {
     "class": {
       // Equivalent to:
-      // COMMENT ON TABLE app_public.users IS E'@omit all\nA user who can log in to the application.';
-      "app_public.users": {
+      // COMMENT ON TABLE edm.users IS E'@omit all\nA user who can log in to the application.';
+      "edm.users": {
         "tags": {
           /*
            * By doing `@omit all` we prevent the `allUsers` field from appearing in
@@ -28,7 +28,7 @@
         },
         "description": "A user who can log in to the application."
       },
-      "app_public.user_emails": {
+      "edm.user_emails": {
         "tags": {
           /*
            * `@omit all` because there's no point exposing `allUserEmails` -
@@ -51,7 +51,7 @@
           }
         }
       },
-      "app_public.user_authentications": {
+      "edm.user_authentications": {
         "tags": {
           "omit": "all",
           "simpleCollections": "only"
@@ -78,44 +78,44 @@
       }
     },
     "procedure": {
-      "app_public.current_session_id": {
+      "edm.current_session_id": {
         "tags": { "omit": true }
       },
-      "app_public.current_user_id": {
+      "edm.current_user_id": {
         "tags": { "omit": true }
       },
-      "app_public.logout": {
+      "edm.logout": {
         "tags": {
           // We add our own logout method, so we don't want to expose this via GraphQL
           "omit": true
         }
       },
-      "app_public.change_password": {
+      "edm.change_password": {
         "tags": {
           "resultFieldName": "success"
         }
       },
-      "app_public.reset_password": {
+      "edm.reset_password": {
         "tags": {
           "resultFieldName": "success"
         }
       },
-      "app_public.request_account_deletion": {
+      "edm.request_account_deletion": {
         "tags": {
           "resultFieldName": "success"
         }
       },
-      "app_public.confirm_account_deletion": {
+      "edm.confirm_account_deletion": {
         "tags": {
           "resultFieldName": "success"
         }
       },
-      "app_public.resend_email_verification_code": {
+      "edm.resend_email_verification_code": {
         "tags": {
           "resultFieldName": "success"
         }
       },
-      "app_public.verify_email": {
+      "edm.verify_email": {
         "tags": {
           "resultFieldName": "success"
         }

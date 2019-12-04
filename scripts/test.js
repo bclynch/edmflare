@@ -16,8 +16,8 @@ const opts = {
 };
 
 // Reset the test database
-execSync("yarn db gm reset --shadow", opts);
-execSync("yarn db watch --once --shadow", opts);
+// execSync("yarn db gm reset --shadow", opts);
+// execSync("yarn db watch --once --shadow", opts);
 
 // If we're in watch mode
 const arg = process.argv[2];
@@ -34,11 +34,11 @@ if (process.argv.length > 3) {
         command: `node --inspect=9876 node_modules/.bin/jest -i ${arg}`,
         prefixColor: "greenBright",
       },
-      {
-        name: "testdb",
-        command: "yarn db watch --shadow",
-        prefixColor: "blue",
-      },
+      // {
+      //   name: "testdb",
+      //   command: "yarn db watch --shadow",
+      //   prefixColor: "blue",
+      // },
     ],
     {
       killOthers: ["failure"],

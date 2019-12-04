@@ -85,7 +85,7 @@ export const setup = async () => {
   const options = getPostGraphileOptions({ rootPgPool });
   const schema = await createPostGraphileSchema(
     rootPgPool,
-    "app_public",
+    "edm",
     options
   );
 

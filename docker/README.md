@@ -46,39 +46,6 @@ and may make it harder to reproduce issues.
 run
 [docker-volume-watcher](https://github.com/merofeev/docker-windows-volume-watcher)
 
-#### Use Case Example:
-
-> Attach to `dev`, run `yarn db commit` to commit the latest migration, then
-> keep on developing on your React client with hot reloading:
-
-```sh
-# make sure everything is ready to start and no ports are blocked
-$ docker-compose down
-# start dev (and linked db) service in detached mode (so we can continue typing)
-$ docker-compose up -d dev
-# attach to dev container shell
-$ docker-compose exec dev bash
-# commit migration from inside container
-@dev $ yarn db commit
-# develop on client with hot reloading
-@dev $ yarn start
-# when it prompts you to do so, open `http://localhost:5000` in your browser
-```
-
-> Compact alias for above:
-
-```sh
-# make sure everything is ready to start and no ports are blocked
-# start dev (and linked db) service in detached mode (so we can continue typing)
-# attach to dev container shell
-$ yarn docker dev
-# commit migration from inside container
-@dev $ yarn db commit
-# develop on client with hot reloading
-@dev $ yarn start
-# when it prompts you to do so, open `http://localhost:5000` in your browser
-```
-
 ### About `dev` docker-compose service
 
 There is another "secret" service, `dev`, inside `docker-compose.yml` which

@@ -1,5 +1,5 @@
 import { mapValues } from "lodash";
-import { PoolClient } from "pg";
+import { PoolClient } from "./edm/functions/node_modules/pg";
 import {
   TEST_DATABASE_URL,
   poolFromUrl,
@@ -99,7 +99,7 @@ export const becomeUser = async (
 
 export const getSessions = async (client: PoolClient, userId: number) => {
   const { rows } = await asRoot(client, () =>
-    client.query(`select * from app_private.sessions where user_id = $1`, [
+    client.query(`select * from edm_private.sessions where user_id = $1`, [
       userId,
     ])
   );

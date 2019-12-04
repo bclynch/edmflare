@@ -13,6 +13,8 @@
 ## Todos
 
 - Do db migration stuff with existing model
+  - Trying to run setup script is not creating db in postgres. Template db
+    exists, but is not in pgadmin
 - Wire up client to play nice here
   - [Proxy info with angular to play nice CORS](https://levelup.gitconnected.com/simple-application-with-angular-6-node-js-express-2873304fff0f)
   - Fix createdAt filter for search queries
@@ -31,8 +33,7 @@
 
 ## Features
 
-**Speedy development**: hot reloading, easy debugging, Graphile's
-[idempotent migration system](https://github.com/graphile/migrate),
+**Speedy development**: hot reloading, easy debugging,
 [job queue](/TECHNICAL_DECISIONS.md#job-queue) and server middleware ready to
 use; not to mention deep integration with VSCode should you use that editor:
 plugin recommendations, preconfigured settings, ESLint and Prettier integration
