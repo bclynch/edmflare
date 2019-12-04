@@ -11,10 +11,10 @@ cd $DIR/..
 # run this on development!
 echo -n "Dumping DB..."
 echo "DROP SCHEMA postgraphile_watch CASCADE;" | psql -X "$DATABASE_URL" >/dev/null 2>&1
-pg_dump -s -O -f data/schema.sql "$DATABASE_URL"
-if [ -f node_modules/postgraphile/node_modules/graphile-build-pg/res/watch-fixtures.sql ]; then
-  cat node_modules/postgraphile/node_modules/graphile-build-pg/res/watch-fixtures.sql | psql -X "$DATABASE_URL" >/dev/null 2>&1
+pg_dump -s -O -f ../../data/schema.sql "$DATABASE_URL"
+if [ -f ../../node_modules/postgraphile/node_modules/graphile-build-pg/res/watch-fixtures.sql ]; then
+  cat ../../node_modules/postgraphile/node_modules/graphile-build-pg/res/watch-fixtures.sql | psql -X "$DATABASE_URL" >/dev/null 2>&1
 else
-  cat node_modules/graphile-build-pg/res/watch-fixtures.sql | psql -X "$DATABASE_URL" >/dev/null 2>&1
+  cat ../../node_modules/graphile-build-pg/res/watch-fixtures.sql | psql -X "$DATABASE_URL" >/dev/null 2>&1
 fi;
 echo " done"

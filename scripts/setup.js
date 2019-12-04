@@ -149,7 +149,7 @@ async function updateDotenv(answers) {
 
   add(
     'ROOT_DATABASE_URL',
-    null,
+    'postgres:///template1',
     `\
 # Superuser connection string (to a _different_ database), so databases can be dropped/created (may not be necessary in production)`
   );
@@ -288,7 +288,7 @@ async function main() {
       name: 'ROOT_DATABASE_URL',
       message: mergeAnswers(
         answers =>
-          `Please enter a superuser connection string to the database server (so we can drop/create the '${answers.DATABASE_NAME}' and '${answers.DATABASE_NAME}_shadow' databases) - IMPORTANT: it must not be a connection to the '${answers.DATABASE_NAME}' database itself, instead try 'template1'.`
+          `Please enter a superuser connection string to the database server (so we can drop/create the '${answers.DATABASE_NAME}' database) - IMPORTANT: it must not be a connection to the '${answers.DATABASE_NAME}' database itself, instead try 'template1'.`
       ),
       default: mergeAnswers(
         answers =>
@@ -333,7 +333,6 @@ async function main() {
         message: `We're going to drop (if necessary):
 
   - database ${DATABASE_NAME}
-  - database ${DATABASE_NAME}_shadow
   - database role ${DATABASE_VISITOR} (cascade)
   - database role ${DATABASE_AUTHENTICATOR} (cascade)
   - database role ${DATABASE_OWNER}`,
@@ -379,14 +378,10 @@ async function main() {
   try {
     // RESET database
     await client.query(`DROP DATABASE IF EXISTS ${DATABASE_NAME};`);
-    await client.query(`DROP DATABASE IF EXISTS ${DATABASE_NAME}_shadow;`);
     await client.query(`DROP DATABASE IF EXISTS ${DATABASE_NAME}_test;`);
     await client.query(`DROP ROLE IF EXISTS ${DATABASE_VISITOR};`);
     await client.query(`DROP ROLE IF EXISTS ${DATABASE_AUTHENTICATOR};`);
     await client.query(`DROP ROLE IF EXISTS ${DATABASE_OWNER};`);
-
-    // Now to set up the database cleanly:
-    // Ref: https://devcenter.heroku.com/articles/heroku-postgresql#connection-permissions
 
     // This is the root role for the database`);
     await client.query(
@@ -406,14 +401,79 @@ async function main() {
     await client.query(
       `GRANT ${DATABASE_VISITOR} TO ${DATABASE_AUTHENTICATOR};`
     );
+
+    // TODO think about moving some of this stuff
+    // Here's our main database
+    await client.query(
+      `CREATE DATABASE ${DATABASE_NAME} OWNER ${DATABASE_OWNER};`
+    );
+    await client.query(
+      `REVOKE ALL ON DATABASE ${DATABASE_NAME} FROM PUBLIC;`
+    );
+    await client.query(
+      `GRANT CONNECT ON DATABASE ${DATABASE_NAME} TO ${DATABASE_OWNER};`
+    );
+    await client.query(
+      `GRANT CONNECT ON DATABASE ${DATABASE_NAME} TO ${DATABASE_AUTHENTICATOR};`
+    );
+    await client.query(
+      `GRANT ALL ON DATABASE ${DATABASE_NAME} TO ${DATABASE_OWNER};`
+    );
+
+    // set up extensions
+    await client.query(
+      `CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;`
+    );
+    await client.query(
+      `CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA public;`
+    );
+    await client.query(
+      `CREATE EXTENSION IF NOT EXISTS citext;`
+    );
+    await client.query(
+      `CREATE EXTENSION IF NOT EXISTS pgcrypto;`
+    );
+
+    // Test db
+    await client.query(
+      `CREATE DATABASE ${DATABASE_NAME}_test OWNER ${DATABASE_OWNER};`
+    );
+    await client.query(
+      `REVOKE ALL ON DATABASE ${DATABASE_NAME}_test FROM PUBLIC;`
+    );
+    await client.query(
+      `GRANT CONNECT ON DATABASE ${DATABASE_NAME}_test TO ${DATABASE_OWNER};`
+    );
+    await client.query(
+      `GRANT CONNECT ON DATABASE ${DATABASE_NAME}_test TO ${DATABASE_AUTHENTICATOR};`
+    );
+    await client.query(
+      `GRANT ALL ON DATABASE ${DATABASE_NAME} TO ${DATABASE_OWNER};`
+    );
+
+    // set up extensions
+    await client.query(
+      `CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;`
+    );
+    await client.query(
+      `CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA public;`
+    );
+    await client.query(
+      `CREATE EXTENSION IF NOT EXISTS citext;`
+    );
+    await client.query(
+      `CREATE EXTENSION IF NOT EXISTS pgcrypto;`
+    );
   } finally {
     await client.release();
   }
   await pgPool.end();
 
-  console.log('✅ Setup success; now running \'yarn db:migrate:dev\' to run the migrations');
-  // await spawnSync(yarnCmd, ['db migrate:dev']);
-  // await execSync("yarn db migrate:dev");
+  console.log();
+  console.log();
+  console.log('DB creation successful, running migrations...');
+
+  await execSync('yarn db migrate:dev');
 
   console.log();
   console.log();

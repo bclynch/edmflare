@@ -1,9 +1,9 @@
 export function sanitizeEnv() {
   const requiredEnvvars = [
-    "AUTH_DATABASE_URL",
-    "DATABASE_URL",
-    "SECRET",
-    "NODE_ENV",
+    'AUTH_DATABASE_URL',
+    'DATABASE_URL',
+    'SECRET',
+    'NODE_ENV',
   ];
   requiredEnvvars.forEach(envvar => {
     if (!process.env[envvar]) {
