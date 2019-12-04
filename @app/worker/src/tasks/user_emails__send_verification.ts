@@ -17,10 +17,10 @@ const task: Task = async (inPayload, { addJob, withPgClient }) => {
     pgClient.query(
       `
         select user_emails.id, email, verification_token, username, name, extract(epoch from now()) - extract(epoch from verification_email_sent_at) as seconds_since_verification_sent
-        from app_public.user_emails
-        inner join app_private.user_email_secrets
+        from edm.user_emails
+        inner join edm_private.user_email_secrets
         on user_email_secrets.user_email_id = user_emails.id
-        inner join app_public.users
+        inner join edm.users
         on users.id = user_emails.user_id
         where user_emails.id = $1
         and user_emails.is_verified is false
@@ -67,7 +67,7 @@ const task: Task = async (inPayload, { addJob, withPgClient }) => {
   await addJob("send_email", sendEmailPayload);
   await withPgClient(pgClient =>
     pgClient.query(
-      "update app_private.user_email_secrets set verification_email_sent_at = now() where user_email_id = $1",
+      "update edm_private.user_email_secrets set verification_email_sent_at = now() where user_email_id = $1",
       [userEmailId]
     )
   );

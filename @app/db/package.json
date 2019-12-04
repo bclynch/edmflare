@@ -3,17 +3,16 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "gm": "node -r @app/config/env node_modules/.bin/graphile-migrate",
-    "migrate": "yarn gm migrate",
-    "watch": "yarn gm watch",
-    "commit": "yarn gm commit",
-    "uncommit": "yarn gm uncommit",
-    "reset": "yarn gm reset",
-    "dump": "yarn gm migrate && yarn gm reset --shadow && yarn gm migrate --shadow --force",
-    "wipe-if-demo": "./scripts/wipe-if-demo"
+    "migrate:create": "node scripts/create-migration.js",
+    "migrate:dev": ". ./scripts/source-env && yarn migrate:_cmd up && ./scripts/dump-schema",
+    "mrm:dev": ". ./scripts/source-env && yarn migrate:_cmd up && yarn migrate:_cmd down && yarn migrate:_cmd up && ./scripts/dump-schema",
+    "rollback:dev": ". ./scripts/source-env && yarn migrate:_cmd down && ./scripts/dump-schema",
+    "reset:dev": ". ./scripts/source-env && yarn migrate:_cmd reset && yarn migrate:_cmd up && ./scripts/dump-schema",
+    "migrate:_cmd": "db-migrate --migrations-dir migrations/.db-migrate"
   },
   "dependencies": {
-    "graphile-migrate": "^0.0.17"
+    "db-migrate": "^0.11.6",
+    "db-migrate-pg": "^1.0.0"
   },
   "devDependencies": {
     "lodash": "^4.17.15"

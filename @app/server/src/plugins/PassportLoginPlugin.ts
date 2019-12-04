@@ -56,16 +56,16 @@ const PassportLoginPlugin = makeExtendSchemaPlugin(build => ({
           } = await rootPgPool.query(
             `
             with new_user as (
-              select users.* from app_private.really_create_user(
+              select users.* from edm_private.really_create_user(
                 username => $1,
                 email => $2,
                 email_is_verified => false,
                 name => $3,
-                avatar_url => $4,
+                profile_photo => $4,
                 password => $5
               ) users where not (users is null)
             ), new_session as (
-              insert into app_private.sessions (user_id)
+              insert into edm_private.sessions (user_id)
               select id from new_user
               returning *
             )
@@ -94,7 +94,7 @@ const PassportLoginPlugin = makeExtendSchemaPlugin(build => ({
           // Fetch the data that was requested from GraphQL, and return it
           const sql = build.pgSql;
           const [row] = await selectGraphQLResultFromTable(
-            sql.fragment`app_public.users`,
+            sql.fragment`edm.users`,
             (tableAlias, sqlBuilder) => {
               sqlBuilder.where(
                 sql.fragment`${tableAlias}.id = ${sql.value(details.user_id)}`
@@ -134,7 +134,7 @@ const PassportLoginPlugin = makeExtendSchemaPlugin(build => ({
           const {
             rows: [session],
           } = await rootPgPool.query(
-            `select sessions.* from app_private.login($1, $2) sessions where not (sessions is null)`,
+            `select sessions.* from edm_private.login($1, $2) sessions where not (sessions is null)`,
             [username, password]
           );
 
@@ -158,10 +158,10 @@ const PassportLoginPlugin = makeExtendSchemaPlugin(build => ({
           // Fetch the data that was requested from GraphQL, and return it
           const sql = build.pgSql;
           const [row] = await selectGraphQLResultFromTable(
-            sql.fragment`app_public.users`,
+            sql.fragment`edm.users`,
             (tableAlias, sqlBuilder) => {
               sqlBuilder.where(
-                sql.fragment`${tableAlias}.id = app_public.current_user_id()`
+                sql.fragment`${tableAlias}.id = edm.current_user_id()`
               );
             }
           );
@@ -184,7 +184,7 @@ const PassportLoginPlugin = makeExtendSchemaPlugin(build => ({
 
       async logout(_mutation, _args, context, _resolveInfo) {
         const { pgClient, logout } = context;
-        await pgClient.query("select app_public.logout();");
+        await pgClient.query("select edm.logout();");
         await logout();
         return {
           success: true,

@@ -74,7 +74,7 @@ test("Register", async () => {
       // function - e.g. to check that your mutation made the changes you'd
       // expect.
       const { rows } = await asRoot(pgClient, () =>
-        pgClient.query(`SELECT * FROM app_public.users WHERE id = $1`, [id])
+        pgClient.query(`SELECT * FROM edm.users WHERE id = $1`, [id])
       );
       if (rows.length !== 1) {
         throw new Error("User not found!");

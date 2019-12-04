@@ -1,4 +1,4 @@
-import { Pool, PoolClient } from "pg";
+import { Pool, PoolClient } from "../db/__tests__/edm/functions/node_modules/pg";
 
 const pools = {};
 
@@ -38,14 +38,14 @@ export const deleteTestUsers = () => {
   const pool = poolFromUrl(TEST_DATABASE_URL);
   return pool.query(
     `
-      delete from app_public.users
+      delete from edm.users
       where username like 'testuser%'
       or username = 'testuser'
       or id in
         (
-          select user_id from app_public.user_emails where email like 'testuser%@example.com'
+          select user_id from edm.user_emails where email like 'testuser%@example.com'
         union
-          select user_id from app_public.user_authentications where service = 'facebook' and identifier = '123456%'
+          select user_id from edm.user_authentications where service = 'facebook' and identifier = '123456%'
         )
       `
   );
@@ -99,12 +99,12 @@ export const createUsers = async function createUsers(
     const password = userLetter.repeat(12);
     const email = `${userLetter}${i || ""}@b.c`;
     const user: User = (await client.query(
-      `SELECT * FROM app_private.really_create_user(
+      `SELECT * FROM edm_private.really_create_user(
         username := $1,
         email := $2,
         email_is_verified := $3,
         name := $4,
-        avatar_url := $5,
+        profile_photo := $5,
         password := $6
       )`,
       [
@@ -134,7 +134,7 @@ export const createSession = async (
     rows: [session],
   } = await client.query(
     `
-      insert into app_private.sessions (user_id)
+      insert into edm_private.sessions (user_id)
       values ($1::int)
       returning *
     `,

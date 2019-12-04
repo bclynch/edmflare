@@ -100,21 +100,21 @@ export default (
             ({
               rows: [session],
             } = await rootPgPool.query<DbSession>(
-              "select * from app_private.sessions where uuid = $1",
+              "select * from edm_private.sessions where uuid = $1",
               [req.user.session_id]
             ));
           }
           const {
             rows: [user],
           } = await rootPgPool.query(
-            `select * from app_private.link_or_register_user($1, $2, $3, $4, $5)`,
+            `select * from edm_private.link_or_register_user($1, $2, $3, $4, $5)`,
             [
               session ? session.user_id : null,
               service,
               userInformation.id,
               JSON.stringify({
                 username: userInformation.username,
-                avatar_url: userInformation.avatarUrl,
+                profile_photo: userInformation.avatarUrl,
                 email: userInformation.email,
                 name: userInformation.displayName,
                 ...userInformation.profile,
@@ -135,7 +135,7 @@ export default (
             ({
               rows: [session],
             } = await rootPgPool.query<DbSession>(
-              `insert into app_private.sessions (user_id) values ($1) returning *`,
+              `insert into edm_private.sessions (user_id) values ($1) returning *`,
               [user.id]
             ));
           }

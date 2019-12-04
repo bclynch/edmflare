@@ -42,7 +42,7 @@ export default (app: Express) => {
        */
       new PgStore({
         pool: rootPgPool,
-        schemaName: "app_private",
+        schemaName: "edm_private",
         tableName: "connect_pg_simple_sessions",
       });
 

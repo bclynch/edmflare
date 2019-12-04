@@ -39,7 +39,7 @@ const currentUserTopicFromContext = async (
     const {
       rows: [user],
     } = await context.pgClient.query(
-      "select app_public.current_user_id() as id"
+      "select edm.current_user_id() as id"
     );
     if (user) {
       return `graphql:user:${user.id}`;
@@ -59,7 +59,7 @@ const currentUserTopicFromContext = async (
  *
  * https://www.graphile.org/postgraphile/subscriptions/#custom-subscriptions
  *
- * And see the database trigger function `app_public.tg__graphql_subscription()`.
+ * And see the database trigger function `edm.tg__graphql_subscription()`.
  */
 const SubscriptionsPlugin = makeExtendSchemaPlugin(build => {
   const { pgSql: sql } = build;
@@ -79,7 +79,7 @@ const SubscriptionsPlugin = makeExtendSchemaPlugin(build => {
     `,
     resolvers: {
       UserSubscriptionPayload: {
-        user: recordByIdFromTable(build, sql.fragment`app_public.users`),
+        user: recordByIdFromTable(build, sql.fragment`edm.users`),
       },
     },
   };

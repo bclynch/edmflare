@@ -27,8 +27,8 @@ const task: Task = async (inPayload, { addJob, withPgClient }) => {
     pgClient.query(
       `
       select users.*
-      from app_public.users
-      inner join app_public.user_emails
+      from edm.users
+      inner join edm.user_emails
       on user_emails.user_id = users.id
       where user_emails.id = $1
     `,
