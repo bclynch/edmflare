@@ -31,11 +31,11 @@ export class GraphQLModule {
     const http = httpLink.create({ uri: ENV.apolloBaseURL, withCredentials: true, method: 'POST' });
     const middleware = setContext(() => ({
       headers: new HttpHeaders({
-        'Access-Control-Allow-Origin': 'http://localhost:4200',
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Credentials': 'true',
-        'Access-Control-Allow-Methods': 'OPTIONS, GET, POST',
-        'Access-Control-Allow-Headers': 'Origin, Content-Type, Accept, Access-Control-Allow-Origin, Access-Control-Allow-Methods, Access-Control-Allow-Credentials'
+        // 'Access-Control-Allow-Origin': 'http://localhost:4200',
+        // 'Content-Type': 'application/json',
+        // 'Access-Control-Allow-Credentials': 'true',
+        // 'Access-Control-Allow-Methods': 'OPTIONS, GET, POST',
+        // 'Access-Control-Allow-Headers': 'Origin, Content-Type, Accept, Access-Control-Allow-Origin, Access-Control-Allow-Methods, Access-Control-Allow-Credentials'
       })
     }));
     const moddedHttp = middleware.concat(http);

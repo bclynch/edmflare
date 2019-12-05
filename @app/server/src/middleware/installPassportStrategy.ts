@@ -168,8 +168,8 @@ export default (
   });
 
   const step2Middleware = passport.authenticate(service, {
-    failureRedirect: '/login',
-    successReturnToOrRedirect: '/',
+    failureRedirect: 'http://localhost:4200/login',
+    successReturnToOrRedirect: 'http://localhost:4200/',
   });
 
   app.get(`/auth/${service}/callback`, async (req, res, next) => {
