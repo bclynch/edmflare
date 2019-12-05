@@ -1,33 +1,33 @@
-import { GraphQLError } from "graphql";
-import { camelCase } from "lodash";
+import { GraphQLError } from 'graphql';
+import { camelCase } from 'lodash';
 
-const isDev = process.env.NODE_ENV === "development";
-const isTest = process.env.NODE_ENV === "test";
+const isDev = process.env.NODE_ENV === 'development';
+const isTest = process.env.NODE_ENV === 'test';
 
 const ERROR_PROPERTIES_TO_EXPOSE =
   isDev || isTest
     ? [
-        "code",
-        "severity",
-        "detail",
-        "hint",
-        "positon",
-        "internalPosition",
-        "internalQuery",
-        "where",
-        "schema",
-        "table",
-        "column",
-        "dataType",
-        "constraint",
+        'code',
+        'severity',
+        'detail',
+        'hint',
+        'positon',
+        'internalPosition',
+        'internalQuery',
+        'where',
+        'schema',
+        'table',
+        'column',
+        'dataType',
+        'constraint',
       ]
-    : ["code"];
+    : ['code'];
 
 // This would be better as a macro...
 const pluck = (err: any): { [key: string]: any } => {
   return ERROR_PROPERTIES_TO_EXPOSE.reduce((memo, key) => {
     const value =
-      key === "code"
+      key === 'code'
         ? // err.errcode is equivalent to err.code; replace it
           err.code || err.errcode
         : err[key];
@@ -48,15 +48,15 @@ const pluck = (err: any): { [key: string]: any } => {
  * list of error codes that PostgreSQL produces.
  */
 export const ERROR_MESSAGE_OVERRIDES: { [code: string]: typeof pluck } = {
-  "42501": err => ({
+  '42501': err => ({
     ...pluck(err),
-    message: "Permission denied (by RLS)",
+    message: 'Permission denied (by RLS)',
   }),
-  "23505": err => ({
+  '23505': err => ({
     ...pluck(err),
-    message: "Conflict occurred",
+    message: 'Conflict occurred',
     fields: conflictFieldsFromError(err),
-    code: "NUNIQ",
+    code: 'NUNIQ',
   }),
 };
 
@@ -78,11 +78,11 @@ function conflictFieldsFromError(err: any) {
 }
 
 export default function handleErrors(
-  errors: readonly GraphQLError[]
+  errors: any
 ): Array<any> {
-  return errors.map(error => {
+  return errors.map((error: GraphQLError) => {
     const { message: rawMessage, locations, path, originalError } = error;
-    const code = originalError ? originalError["code"] : null;
+    const code = originalError ? originalError['code'] : null;
     const localPluck = ERROR_MESSAGE_OVERRIDES[code] || pluck;
     const exception = localPluck(originalError || error);
     return {
