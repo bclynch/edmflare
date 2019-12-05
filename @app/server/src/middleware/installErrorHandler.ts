@@ -1,9 +1,9 @@
-import { Express, ErrorRequestHandler } from "express";
-import * as fs from "fs";
-import { template, TemplateExecutor } from "lodash";
-import { resolve } from "path";
+import { Express, ErrorRequestHandler } from 'express';
+import * as fs from 'fs';
+import { template, TemplateExecutor } from 'lodash';
+import { resolve } from 'path';
 
-const isDev = process.env.NODE_ENV === "development";
+const isDev = process.env.NODE_ENV === 'development';
 
 interface ParsedError {
   message: String;
@@ -18,7 +18,7 @@ function parseError(error: Error): ParsedError {
    */
   // TODO: process certain errors
 
-  const code = error["statusCode"] || error["status"] || error["code"];
+  const code = error['statusCode'] || error['status'] || error['code'];
   const codeAsFloat = parseInt(code, 10);
   const httpCode =
     isFinite(codeAsFloat) && codeAsFloat >= 400 && codeAsFloat < 600
@@ -26,7 +26,7 @@ function parseError(error: Error): ParsedError {
       : 500;
 
   return {
-    message: "An unknown error occurred",
+    message: 'An unknown error occurred',
     status: httpCode,
   };
 }
@@ -35,7 +35,7 @@ let errorPageTemplate: TemplateExecutor;
 function getErrorPage({ message }: ParsedError) {
   if (!errorPageTemplate || isDev) {
     errorPageTemplate = template(
-      fs.readFileSync(resolve(__dirname, "../../error.html"), "utf8")
+      fs.readFileSync(resolve(__dirname, '../../error.html'), 'utf8')
     );
   }
 
@@ -54,21 +54,21 @@ export default function(app: Express) {
       }
       res.status(parsedError.status);
       res.format({
-        "text/plain": function() {
+        'text/plain': function() {
           res.send(errorMessageString);
         },
 
-        "text/html": function() {
+        'text/html': function() {
           res.send(getErrorPage(parsedError));
         },
 
-        "application/json": function() {
+        'application/json': function() {
           res.send({ errors: [{ message: errorMessageString }] });
         },
 
         default: function() {
           // log the request and respond with 406
-          res.status(406).send("Not Acceptable");
+          res.status(406).send('Not Acceptable');
         },
       });
     } catch (e) {

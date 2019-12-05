@@ -1,12 +1,12 @@
-import { Express, RequestHandler, Request, Response } from "express";
-import { urlencoded } from "body-parser";
-import { Pool } from "pg";
-import { getRootPgPool } from "./installDatabasePools";
+import { Express, RequestHandler, Request, Response } from 'express';
+import { urlencoded } from 'body-parser';
+import { Pool } from 'pg';
+import { getRootPgPool } from './installDatabasePools';
 
 export default (app: Express) => {
   // Only enable this in test/development mode
-  if (!["test", "development"].includes(process.env.NODE_ENV || "")) {
-    throw new Error("This code must not run in production");
+  if (!['test', 'development'].includes(process.env.NODE_ENV || '')) {
+    throw new Error('This code must not run in production');
   }
 
   /*
@@ -14,7 +14,7 @@ export default (app: Express) => {
    * to be set; this gives us extra protection against accidental XSS/CSRF
    * attacks.
    */
-  const safeToRun = process.env.ENABLE_CYPRESS_COMMANDS === "1";
+  const safeToRun = process.env.ENABLE_CYPRESS_COMMANDS === '1';
 
   const rootPgPool = getRootPgPool(app);
 
@@ -30,7 +30,7 @@ export default (app: Express) => {
      */
     if (!safeToRun) {
       console.error(
-        "/cypressServerCommand denied because ENABLE_CYPRESS_COMMANDS is not set."
+        '/cypressServerCommand denied because ENABLE_CYPRESS_COMMANDS is not set.'
       );
       // Pretend like nothing happened
       next();
@@ -41,12 +41,12 @@ export default (app: Express) => {
       // Try to read and parse the commands from the request.
       const { query } = req;
       if (!query) {
-        throw new Error("Query not specified");
+        throw new Error('Query not specified');
       }
 
       const { command: rawCommand, payload: rawPayload } = query;
       if (!rawCommand) {
-        throw new Error("Command not specified");
+        throw new Error('Command not specified');
       }
 
       const command = String(rawCommand);
@@ -81,7 +81,7 @@ export default (app: Express) => {
     }
   };
   app.get(
-    "/cypressServerCommand",
+    '/cypressServerCommand',
     urlencoded({ extended: false }),
     handleCypressServerCommand
   );
@@ -94,25 +94,25 @@ async function runCommand(
   command: string,
   payload: { [key: string]: any }
 ): Promise<object | null> {
-  if (command === "clearTestUsers") {
+  if (command === 'clearTestUsers') {
     await rootPgPool.query(
-      "delete from edm.users where username like 'testuser%'"
+      'delete from edm.users where username like \'testuser%\''
     );
     return { success: true };
-  } else if (command === "createUser") {
+  } else if (command === 'createUser') {
     if (!payload) {
-      throw new Error("Payload required");
+      throw new Error('Payload required');
     }
     const {
-      username = "testuser",
+      username = 'testuser',
       email = `${username}@example.com`,
       verified = false,
       name = username,
       avatarUrl = null,
-      password = "TestUserPassword",
+      password = 'TestUserPassword',
     } = payload;
-    if (!username.startsWith("testuser")) {
-      throw new Error("Test user usernames may only start with 'testuser'");
+    if (!username.startsWith('testuser')) {
+      throw new Error('Test user usernames may only start with \'testuser\'');
     }
     const user = await reallyCreateUser(rootPgPool, {
       username,
@@ -131,15 +131,15 @@ async function runCommand(
     }
 
     return { user, userEmailId, verificationToken };
-  } else if (command === "login") {
+  } else if (command === 'login') {
     const {
-      username = "testuser",
+      username = 'testuser',
       email = `${username}@example.com`,
       verified = false,
       name = username,
       avatarUrl = null,
-      password = "TestUserPassword",
-      next = "/",
+      password = 'TestUserPassword',
+      next = '/',
     } = payload;
     const user = await reallyCreateUser(rootPgPool, {
       username,
@@ -151,11 +151,11 @@ async function runCommand(
     });
     const session = await createSession(rootPgPool, user.id);
     req.login({ session_id: session.uuid }, () => {
-      res.redirect(next || "/");
+      res.redirect(next || '/');
     });
     return null;
-  } else if (command === "getEmailSecrets") {
-    const { email = "testuser@example.com" } = payload;
+  } else if (command === 'getEmailSecrets') {
+    const { email = 'testuser@example.com' } = payload;
     const userEmailSecrets = await getUserEmailSecrets(rootPgPool, email);
     return userEmailSecrets;
   } else {

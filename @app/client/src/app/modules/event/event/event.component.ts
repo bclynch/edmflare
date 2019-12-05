@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { EventByIdGQL } from 'src/app/generated/graphql';
-import { UtilService } from 'src/app/services/util.service';
+import { EventByIdGQL } from '../../../generated/graphql';
+import { UtilService } from '../../../services/util.service';
 import { ENV } from '../../../../environments/environment';
-import { EventService } from 'src/app/services/event.service';
-import { UserService } from 'src/app/services/user.service';
+import { EventService } from '../../../services/event.service';
+import { UserService } from '../../../services/user.service';
 import { SubscriptionLike } from 'rxjs';
-import { AppService } from 'src/app/services/app.service';
+import { AppService } from '../../../services/app.service';
 import * as moment from 'moment';
 
 @Component({

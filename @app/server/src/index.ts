@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 /* eslint-disable no-console */
-import chalk from "chalk";
-import { createServer } from "http";
-import { makeApp, getShutdownActions } from "./app";
+import chalk from 'chalk';
+import { createServer } from 'http';
+import { makeApp, getShutdownActions } from './app';
 
 // @ts-ignore
-const packageJson = require("../../../package.json");
+const packageJson = require('../../../package.json');
 
 async function main() {
   // Create our HTTP server
@@ -15,14 +15,14 @@ async function main() {
   const app = await makeApp({ httpServer });
 
   // Add our application to our HTTP server
-  httpServer.addListener("request", app);
+  httpServer.addListener('request', app);
 
   // And finally, we open the listen port
-  const PORT = parseInt(process.env.PORT || "", 10) || 3000;
+  const PORT = parseInt(process.env.PORT || '', 10) || 3000;
   httpServer.listen(PORT, () => {
     const address = httpServer.address();
     const actualPort: string =
-      typeof address === "string"
+      typeof address === 'string'
         ? address
         : address && address.port
         ? String(address.port)
@@ -55,7 +55,7 @@ async function main() {
 }
 
 main().catch(e => {
-  console.error("Fatal error occurred starting server!");
+  console.error('Fatal error occurred starting server!');
   console.error(e);
   process.exit(101);
 });

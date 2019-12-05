@@ -1,9 +1,9 @@
-import passport from "passport";
-import { Strategy as GitHubStrategy } from "passport-github";
-import { get } from "lodash";
-import installPassportStrategy from "./installPassportStrategy";
-import { Express } from "express";
-import { getWebsocketMiddlewares } from "../app";
+import passport from 'passport';
+import { Strategy as GitHubStrategy } from 'passport-github';
+import { get } from 'lodash';
+import installPassportStrategy from './installPassportStrategy';
+import { Express } from 'express';
+import { getWebsocketMiddlewares } from '../app';
 
 interface DbSession {
   session_id: string;
@@ -34,30 +34,30 @@ export default async (app: Express) => {
   app.use(passportSessionMiddleware);
   getWebsocketMiddlewares(app).push(passportSessionMiddleware);
 
-  app.get("/logout", (req, res) => {
+  app.get('/logout', (req, res) => {
     req.logout();
-    res.redirect("/");
+    res.redirect('/');
   });
 
   if (process.env.GITHUB_KEY) {
     await installPassportStrategy(
       app,
-      "github",
+      'github',
       GitHubStrategy,
       {
         clientID: process.env.GITHUB_KEY,
         clientSecret: process.env.GITHUB_SECRET,
-        scope: ["user:email"],
+        scope: ['user:email'],
       },
       {},
       async (profile, _accessToken, _refreshToken, _extra, _req) => ({
         id: profile.id,
-        displayName: profile.displayName || "",
+        displayName: profile.displayName || '',
         username: profile.username,
-        avatarUrl: get(profile, "photos.0.value"),
-        email: profile.email || get(profile, "emails.0.value"),
+        avatarUrl: get(profile, 'photos.0.value'),
+        email: profile.email || get(profile, 'emails.0.value'),
       }),
-      ["token", "tokenSecret"]
+      ['token', 'tokenSecret']
     );
   }
 };

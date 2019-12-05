@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { RouterService } from 'src/app/services/router.service';
+import { RouterService } from '../../../services/router.service';
 import { CookieService } from 'ngx-cookie-service';
-import { SearchEventsByCityGQL, SearchEventsByRegionGQL } from 'src/app/generated/graphql';
-import { AppService } from 'src/app/services/app.service';
-import { UserService } from 'src/app/services/user.service';
-import { UtilService } from 'src/app/services/util.service';
+import { SearchEventsByCityGQL, SearchEventsByRegionGQL } from '../../../generated/graphql';
+import { AppService } from '../../../services/app.service';
+import { UserService } from '../../../services/user.service';
+import { UtilService } from '../../../services/util.service';
 import { SubscriptionLike } from 'rxjs';
 import { faUsers, faBell, faCompactDisc } from '@fortawesome/free-solid-svg-icons';
 

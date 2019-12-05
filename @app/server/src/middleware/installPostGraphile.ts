@@ -13,6 +13,8 @@ import PgPubsub from '@graphile/pg-pubsub';
 import PgSimplifyInflectorPlugin from '@graphile-contrib/pg-simplify-inflector';
 import PassportLoginPlugin from '../plugins/PassportLoginPlugin';
 import PrimaryKeyMutationsOnlyPlugin from '../plugins/PrimaryKeyMutationsOnlyPlugin';
+// @ts-ignore
+import PostGraphileConnectionFilterPlugin from 'postgraphile-plugin-connection-filter';
 import SubscriptionsPlugin from '../plugins/SubscriptionsPlugin';
 import handleErrors from '../utils/handleErrors';
 import { getWebsocketMiddlewares, getHttpServer } from '../app';
@@ -161,6 +163,9 @@ export function getPostGraphileOptions({
 
       // Adds realtime features to our GraphQL schema
       SubscriptionsPlugin,
+
+      // add filtering
+      PostGraphileConnectionFilterPlugin
     ],
 
     /*

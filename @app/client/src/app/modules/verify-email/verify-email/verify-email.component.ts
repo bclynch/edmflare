@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { VerifyUserEmailGQL } from 'src/app/generated/graphql';
 import { SubscriptionLike } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 
@@ -15,7 +14,7 @@ export class VerifyEmailComponent implements OnInit {
   isVerified = false;
 
   constructor(
-    private verifyUserEmailGQL: VerifyUserEmailGQL,
+    // private verifyUserEmailGQL: VerifyUserEmailGQL,
     private route: ActivatedRoute,
   ) {
     // grabbing token off url
@@ -23,15 +22,15 @@ export class VerifyEmailComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.verifyUserEmailGQL.mutate({ token: this.token }).subscribe(
-      ({ data }) => {
-        if (data.verifyUserEmail.userEmail.isVerified) {
-          this.isVerified = true;
-        }
-      }, err => {
-        console.log('err', err);
-      }
-    );
+    // this.verifyUserEmailGQL.mutate({ token: this.token }).subscribe(
+    //   ({ data }) => {
+    //     if (data.verifyUserEmail.userEmail.isVerified) {
+    //       this.isVerified = true;
+    //     }
+    //   }, err => {
+    //     console.log('err', err);
+    //   }
+    // );
   }
 
 }

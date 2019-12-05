@@ -12,9 +12,9 @@
 
 ## Todos
 
-- Do db migration stuff with existing model
-  - Trying to run setup script is not creating db in postgres. Template db
-    exists, but is not in pgadmin
+- ~~Do db migration stuff with existing model~~
+  - ~~Trying to run setup script is not creating db in postgres. Template db
+    exists, but is not in pgadmin~~
 - Wire up client to play nice here
   - [Proxy info with angular to play nice CORS](https://levelup.gitconnected.com/simple-application-with-angular-6-node-js-express-2873304fff0f)
   - Fix createdAt filter for search queries
