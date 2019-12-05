@@ -2353,6 +2353,13 @@
   dependencies:
     graphql "*"
 
+"@types/hashids@^1.0.30":
+  version "1.0.30"
+  resolved "https://artifacts.mlbinfra.net:443/artifactory/api/npm/web-npm/@types/hashids/-/hashids-1.0.30.tgz#c0a056b25c5b13c80bf330fb8d379ac4d4049999"
+  integrity sha1-wKBWslxbE8gL8zD7jTeaxNQEmZk=
+  dependencies:
+    "@types/node" "*"
+
 "@types/helmet@^0.0.44":
   version "0.0.44"
   resolved "https://registry.yarnpkg.com/@types/helmet/-/helmet-0.0.44.tgz#cbded9530a7c4d8a9163fc7e017f0892acd1bb81"
@@ -2553,6 +2560,13 @@
   version "1.15.2"
   resolved "https://registry.yarnpkg.com/@types/prettier/-/prettier-1.15.2.tgz#91594ea7cb6f3b1f7ea69f32621246654c7cc231"
   integrity sha512-XIB0ZCaFZmWUHAa9dBqP5UKXXHwuukmVlP+XcyU94dui2k+l2lG+CHAbt2ffenHPUqoIs5Beh8Pdf2YEq/CZ7A==
+
+"@types/puppeteer@^2.0.0":
+  version "2.0.0"
+  resolved "https://artifacts.mlbinfra.net:443/artifactory/api/npm/web-npm/@types/puppeteer/-/puppeteer-2.0.0.tgz#82c04f93367e2d3396e371a71be1167332148838"
+  integrity sha1-gsBPkzZ+LTOW43GnG+EWczIUiDg=
+  dependencies:
+    "@types/node" "*"
 
 "@types/q@^0.0.32":
   version "0.0.32"
@@ -3490,6 +3504,21 @@ aws-sdk@^2.556.0:
   version "2.583.0"
   resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.583.0.tgz#078eb9975b94214fcdba1fd81bd66d2d8d01111a"
   integrity sha512-xU6HU8/a7nST2GcwxOvSoHLRVAb5q888JLzLzYUiPiWrThwPD4Usk1jVjFaH0iVaXBkPWFInnQkcyolf7j5Rvw==
+  dependencies:
+    buffer "4.9.1"
+    events "1.1.1"
+    ieee754 "1.1.13"
+    jmespath "0.15.0"
+    querystring "0.2.0"
+    sax "1.2.1"
+    url "0.10.3"
+    uuid "3.3.2"
+    xml2js "0.4.19"
+
+aws-sdk@^2.585.0:
+  version "2.585.0"
+  resolved "https://artifacts.mlbinfra.net:443/artifactory/api/npm/web-npm/aws-sdk/-/aws-sdk-2.585.0.tgz#37769eca99690edd0a66f49766232fda274937c0"
+  integrity sha1-N3aeyplpDt0KZvSXZiMv2idJN8A=
   dependencies:
     buffer "4.9.1"
     events "1.1.1"
@@ -7952,7 +7981,7 @@ https-proxy-agent@^2.2.1, https-proxy-agent@^2.2.3:
     agent-base "^4.3.0"
     debug "^3.1.0"
 
-https-proxy-agent@^3.0.0, https-proxy-agent@^3.0.1:
+https-proxy-agent@^3.0.0:
   version "3.0.1"
   resolved "https://artifacts.mlbinfra.net:443/artifactory/api/npm/web-npm/https-proxy-agent/-/https-proxy-agent-3.0.1.tgz#b8c286433e87602311b01c8ea34413d856a4af81"
   integrity sha1-uMKGQz6HYCMRsByOo0QT2Fakr4E=
