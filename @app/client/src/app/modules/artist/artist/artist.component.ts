@@ -1,12 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ArtistByNameGQL } from 'src/app/generated/graphql';
+import { ArtistByNameGQL } from '../../../generated/graphql';
 import { faTwitter, faFacebook, faInstagram, faSoundcloud, faYoutube, faSpotify, IconDefinition } from '@fortawesome/free-brands-svg-icons';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { UserService } from 'src/app/services/user.service';
+import { UserService } from '../../../services/user.service';
 import { SubscriptionLike } from 'rxjs';
-import { AppService } from 'src/app/services/app.service';
+import { AppService } from '../../../services/app.service';
 import * as moment from 'moment';
 
 @Component({

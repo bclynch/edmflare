@@ -3784,6 +3784,27 @@ GRANT UPDATE(profile_photo) ON TABLE edm.users TO edm_xyz_visitor;
 
 
 --
+-- Name: COLUMN users.notification_frequency; Type: ACL; Schema: edm; Owner: -
+--
+
+GRANT UPDATE(notification_frequency) ON TABLE edm.users TO edm_xyz_visitor;
+
+
+--
+-- Name: COLUMN users.push_notification; Type: ACL; Schema: edm; Owner: -
+--
+
+GRANT UPDATE(push_notification) ON TABLE edm.users TO edm_xyz_visitor;
+
+
+--
+-- Name: COLUMN users.email_notification; Type: ACL; Schema: edm; Owner: -
+--
+
+GRANT UPDATE(email_notification) ON TABLE edm.users TO edm_xyz_visitor;
+
+
+--
 -- Name: TABLE user_emails; Type: ACL; Schema: edm; Owner: -
 --
 

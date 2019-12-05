@@ -1,6 +1,6 @@
-import passport from "passport";
-import { RequestHandler, Express, Request } from "express";
-import { getRootPgPool } from "./installDatabasePools";
+import passport from 'passport';
+import { RequestHandler, Express, Request } from 'express';
+import { getRootPgPool } from './installDatabasePools';
 
 interface DbSession {
   uuid: string;
@@ -42,7 +42,7 @@ const setReturnTo: RequestHandler = (req, _res, next) => {
     req.session.returnTo;
   if (
     returnTo &&
-    returnTo[0] === "/" &&
+    returnTo[0] === '/' &&
     !returnTo.match(BLOCKED_REDIRECT_PATHS)
   ) {
     req.session.returnTo = returnTo;
@@ -59,7 +59,7 @@ export default (
   strategyConfig: any,
   authenticateConfig: any,
   getUserInformation: GetUserInformationFunction,
-  tokenNames = ["accessToken", "refreshToken"],
+  tokenNames = ['accessToken', 'refreshToken'],
   {
     preRequest = (_req: Request) => {},
     postRequest = (_req: Request) => {},
@@ -100,7 +100,7 @@ export default (
             ({
               rows: [session],
             } = await rootPgPool.query<DbSession>(
-              "select * from edm_private.sessions where uuid = $1",
+              'select * from edm_private.sessions where uuid = $1',
               [req.user.session_id]
             ));
           }
@@ -127,8 +127,8 @@ export default (
             ]
           );
           if (!user || !user.id) {
-            const e = new Error("Registration failed");
-            e["code"] = "FFFFF";
+            const e = new Error('Registration failed');
+            e['code'] = 'FFFFF';
             throw e;
           }
           if (!session) {
@@ -140,8 +140,8 @@ export default (
             ));
           }
           if (!session) {
-            const e = new Error("Failed to create session");
-            e["code"] = "FFFFF";
+            const e = new Error('Failed to create session');
+            e['code'] = 'FFFFF';
             throw e;
           }
           done(null, { session_id: session.uuid });
@@ -160,7 +160,7 @@ export default (
       return;
     }
     const realAuthDetails =
-      typeof authenticateConfig === "function"
+      typeof authenticateConfig === 'function'
         ? authenticateConfig(req)
         : authenticateConfig;
     const step1Middleware = passport.authenticate(service, realAuthDetails);
@@ -168,8 +168,8 @@ export default (
   });
 
   const step2Middleware = passport.authenticate(service, {
-    failureRedirect: "/login",
-    successReturnToOrRedirect: "/",
+    failureRedirect: '/login',
+    successReturnToOrRedirect: '/',
   });
 
   app.get(`/auth/${service}/callback`, async (req, res, next) => {

@@ -1,3812 +1,5982 @@
-// ====================================================
-// START: Apollo Angular template
-// ====================================================
-
-import { Injectable } from "@angular/core";
-import * as Apollo from "apollo-angular";
-
-import gql from "graphql-tag";
-
-// ====================================================
-// Apollo Services
-// ====================================================
-
-@Injectable({
-  providedIn: "root"
-})
-export class AllLocationsGQL extends Apollo.Query<
-  AllLocations.Query,
-  AllLocations.Variables
-> {
-  document: any = gql`
-    query allLocations($currentDate: BigInt!) {
-      regions {
-        nodes {
-          name
-          lat
-          lon
-          citiesByRegion(orderBy: REGION_ASC) {
-            nodes {
-              id
-              name
-              venuesByCity {
-                nodes {
-                  eventsByVenue(
-                    filter: {
-                      startDate: { greaterThanOrEqualTo: $currentDate }
-                    }
-                  ) {
-                    totalCount
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  `;
-}
-@Injectable({
-  providedIn: "root"
-})
-export class ArtistByNameGQL extends Apollo.Query<
-  ArtistByName.Query,
-  ArtistByName.Variables
-> {
-  document: any = gql`
-    query artistByName($name: String!, $userId: Int!) {
-      artist(name: $name) {
-        name
-        description
-        photo
-        twitterUsername
-        twitterUrl
-        facebookUsername
-        facebookUrl
-        instagramUsername
-        instagramUrl
-        soundcloudUsername
-        soundcloudUrl
-        youtubeUsername
-        youtubeUrl
-        spotifyUrl
-        homepage
-        genreToArtists {
-          nodes {
-            genreId
-          }
-        }
-        followLists(filter: { userId: { equalTo: $userId } }) {
-          nodes {
-            id
-          }
-        }
-        artistToEvents {
-          nodes {
-            event {
-              name
-              venue
-              startDate
-              id
-              ticketproviderurl
-              ticketproviderid
-              watchLists(filter: { userId: { equalTo: $userId } }) {
-                nodes {
-                  id
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  `;
-}
-@Injectable({
-  providedIn: "root"
-})
-export class CreateFollowListGQL extends Apollo.Mutation<
-  CreateFollowList.Mutation,
-  CreateFollowList.Variables
-> {
-  document: any = gql`
-    mutation createFollowList(
-      $userId: Int!
-      $artistId: String
-      $venueId: String
-    ) {
-      createFollowList(
-        input: {
-          followList: {
-            userId: $userId
-            artistId: $artistId
-            venueId: $venueId
-          }
-        }
-      ) {
-        followList {
-          id
-        }
-      }
-    }
-  `;
-}
-@Injectable({
-  providedIn: "root"
-})
-export class CreatePushSubscriptionGQL extends Apollo.Mutation<
-  CreatePushSubscription.Mutation,
-  CreatePushSubscription.Variables
-> {
-  document: any = gql`
-    mutation createPushSubscription(
-      $userId: Int!
-      $endpoint: String!
-      $p256Dh: String!
-      $auth: String!
-    ) {
-      createPushSubscription(
-        input: {
-          pushSubscription: {
-            userId: $userId
-            endpoint: $endpoint
-            expirationTime: null
-            p256Dh: $p256Dh
-            auth: $auth
-          }
-        }
-      ) {
-        clientMutationId
-      }
-    }
-  `;
-}
-@Injectable({
-  providedIn: "root"
-})
-export class CreateWatchListGQL extends Apollo.Mutation<
-  CreateWatchList.Mutation,
-  CreateWatchList.Variables
-> {
-  document: any = gql`
-    mutation createWatchList($userId: Int!, $eventId: String!) {
-      createWatchList(
-        input: { watchList: { userId: $userId, eventId: $eventId } }
-      ) {
-        watchList {
-          id
-        }
-      }
-    }
-  `;
-}
-@Injectable({
-  providedIn: "root"
-})
-export class CreateWatchedToAccountGQL extends Apollo.Mutation<
-  CreateWatchedToAccount.Mutation,
-  CreateWatchedToAccount.Variables
-> {
-  document: any = gql`
-    mutation createWatchedToAccount(
-      $userId: Int!
-      $region: String
-      $cityId: Int
-    ) {
-      createWatchedToAccount(
-        input: {
-          watchedToAccount: {
-            userId: $userId
-            region: $region
-            cityId: $cityId
-          }
-        }
-      ) {
-        watchedToAccount {
-          id
-          region
-          city {
-            id
-            name
-          }
-        }
-      }
-    }
-  `;
-}
-@Injectable({
-  providedIn: "root"
-})
-export class CurrentUserGQL extends Apollo.Query<
-  CurrentUser.Query,
-  CurrentUser.Variables
-> {
-  document: any = gql`
-    query currentUser {
-      currentUser {
-        username
-        notificationFrequency
-        pushNotification
-        emailNotification
-        profilePhoto
-        id
-        watchLists {
-          totalCount
-        }
-        pushSubscriptions {
-          nodes {
-            id
-          }
-        }
-      }
-    }
-  `;
-}
-@Injectable({
-  providedIn: "root"
-})
-export class DeletePushSubscriptionByIdGQL extends Apollo.Mutation<
-  DeletePushSubscriptionById.Mutation,
-  DeletePushSubscriptionById.Variables
-> {
-  document: any = gql`
-    mutation deletePushSubscriptionById($id: Int!) {
-      deletePushSubscription(input: { id: $id }) {
-        clientMutationId
-      }
-    }
-  `;
-}
-@Injectable({
-  providedIn: "root"
-})
-export class DeleteWatchedByIdGQL extends Apollo.Mutation<
-  DeleteWatchedById.Mutation,
-  DeleteWatchedById.Variables
-> {
-  document: any = gql`
-    mutation deleteWatchedById($id: Int!) {
-      deleteWatchedToAccount(input: { id: $id }) {
-        clientMutationId
-      }
-    }
-  `;
-}
-@Injectable({
-  providedIn: "root"
-})
-export class EventByIdGQL extends Apollo.Query<
-  EventById.Query,
-  EventById.Variables
-> {
-  document: any = gql`
-    query eventById($eventId: String!, $userId: Int!) {
-      event(id: $eventId) {
-        id
-        name
-        startDate
-        endDate
-        ticketproviderurl
-        ticketproviderid
-        description
-        banner
-        venueByVenue {
-          name
-          lat
-          lon
-          city
-          address
-        }
-        watchLists(filter: { userId: { equalTo: $userId } }) {
-          nodes {
-            id
-          }
-        }
-        artistToEvents {
-          nodes {
-            artist {
-              name
-            }
-          }
-        }
-      }
-    }
-  `;
-}
-@Injectable({
-  providedIn: "root"
-})
-export class ForgotPasswordGQL extends Apollo.Mutation<
-  ForgotPassword.Mutation,
-  ForgotPassword.Variables
-> {
-  document: any = gql`
-    mutation forgotPassword($email: String!) {
-      forgotPassword(input: { email: $email }) {
-        success
-      }
-    }
-  `;
-}
-@Injectable({
-  providedIn: "root"
-})
-export class LoginUserGQL extends Apollo.Mutation<
-  LoginUser.Mutation,
-  LoginUser.Variables
-> {
-  document: any = gql`
-    mutation loginUser($username: String!, $password: String!) {
-      login(input: { username: $username, password: $password }) {
-        user {
-          username
-        }
-      }
-    }
-  `;
-}
-@Injectable({
-  providedIn: "root"
-})
-export class RegisterUserGQL extends Apollo.Mutation<
-  RegisterUser.Mutation,
-  RegisterUser.Variables
-> {
-  document: any = gql`
-    mutation registerUser(
-      $username: String!
-      $email: String!
-      $password: String!
-    ) {
-      register(
-        input: { username: $username, email: $email, password: $password }
-      ) {
-        user {
-          username
-        }
-      }
-    }
-  `;
-}
-@Injectable({
-  providedIn: "root"
-})
-export class RemoveFollowlistGQL extends Apollo.Mutation<
-  RemoveFollowlist.Mutation,
-  RemoveFollowlist.Variables
-> {
-  document: any = gql`
-    mutation removeFollowlist($followListId: Int!) {
-      deleteFollowList(input: { id: $followListId }) {
-        clientMutationId
-      }
-    }
-  `;
-}
-@Injectable({
-  providedIn: "root"
-})
-export class RemoveWatchlistGQL extends Apollo.Mutation<
-  RemoveWatchlist.Mutation,
-  RemoveWatchlist.Variables
-> {
-  document: any = gql`
-    mutation removeWatchlist($watchListId: Int!) {
-      deleteWatchList(input: { id: $watchListId }) {
-        clientMutationId
-      }
-    }
-  `;
-}
-@Injectable({
-  providedIn: "root"
-})
-export class ResetPasswordGQL extends Apollo.Mutation<
-  ResetPassword.Mutation,
-  ResetPassword.Variables
-> {
-  document: any = gql`
-    mutation resetPassword(
-      $userId: Int!
-      $token: String!
-      $newPassword: String!
-    ) {
-      resetPassword(
-        input: { userId: $userId, token: $token, newPassword: $newPassword }
-      ) {
-        user {
-          username
-        }
-      }
-    }
-  `;
-}
-@Injectable({
-  providedIn: "root"
-})
-export class SearchEventsByCityGQL extends Apollo.Query<
-  SearchEventsByCity.Query,
-  SearchEventsByCity.Variables
-> {
-  document: any = gql`
-    query searchEventsByCity(
-      $query: String!
-      $cityId: Int!
-      $userId: Int!
-      $greaterThan: BigInt!
-      $lessThan: BigInt!
-      $batchSize: Int
-      $offset: Int
-    ) {
-      searchEventsByCity(
-        query: $query
-        cityid: $cityId
-        filter: {
-          startDate: {
-            greaterThanOrEqualTo: $greaterThan
-            lessThanOrEqualTo: $lessThan
-          }
-        }
-        first: $batchSize
-        offset: $offset
-      ) {
-        totalCount
-        nodes {
-          id
-          name
-          startDate
-          ticketproviderurl
-          ticketproviderid
-          venue
-          createdAt
-          venueByVenue {
-            lat
-            lon
-          }
-          artistToEvents(first: 1) {
-            nodes {
-              artist {
-                photo
-              }
-            }
-          }
-          watchLists(filter: { userId: { equalTo: $userId } }) {
-            nodes {
-              id
-            }
-          }
-        }
-      }
-    }
-  `;
-}
-@Injectable({
-  providedIn: "root"
-})
-export class SearchEventsByRegionGQL extends Apollo.Query<
-  SearchEventsByRegion.Query,
-  SearchEventsByRegion.Variables
-> {
-  document: any = gql`
-    query searchEventsByRegion(
-      $query: String!
-      $regionName: String!
-      $userId: Int!
-      $greaterThan: BigInt!
-      $lessThan: BigInt!
-      $batchSize: Int
-      $offset: Int
-    ) {
-      searchEventsByRegion(
-        query: $query
-        regionName: $regionName
-        filter: {
-          startDate: {
-            greaterThanOrEqualTo: $greaterThan
-            lessThanOrEqualTo: $lessThan
-          }
-        }
-        first: $batchSize
-        offset: $offset
-      ) {
-        totalCount
-        nodes {
-          id
-          name
-          startDate
-          ticketproviderurl
-          ticketproviderid
-          venue
-          createdAt
-          venueByVenue {
-            lat
-            lon
-          }
-          artistToEvents(first: 1) {
-            nodes {
-              artist {
-                photo
-              }
-            }
-          }
-          watchLists(filter: { userId: { equalTo: $userId } }) {
-            nodes {
-              id
-            }
-          }
-        }
-      }
-    }
-  `;
-}
-@Injectable({
-  providedIn: "root"
-})
-export class UpdateAccountGQL extends Apollo.Mutation<
-  UpdateAccount.Mutation,
-  UpdateAccount.Variables
-> {
-  document: any = gql`
-    mutation updateAccount(
-      $userId: Int!
-      $profilePhoto: String
-      $notificationFrequency: Frequency
-      $pushNotification: Boolean
-      $emailNotification: Boolean
-    ) {
-      updateUser(
-        input: {
-          id: $userId
-          patch: {
-            notificationFrequency: $notificationFrequency
-            profilePhoto: $profilePhoto
-            pushNotification: $pushNotification
-            emailNotification: $emailNotification
-          }
-        }
-      ) {
-        user {
-          username
-          notificationFrequency
-          profilePhoto
-          pushNotification
-          emailNotification
-          id
-          watchLists {
-            totalCount
-          }
-        }
-      }
-    }
-  `;
-}
-@Injectable({
-  providedIn: "root"
-})
-export class UserByUsernameGQL extends Apollo.Query<
-  UserByUsername.Query,
-  UserByUsername.Variables
-> {
-  document: any = gql`
-    query userByUsername($username: String!, $userId: Int!) {
-      userByUsername(username: $username) {
-        username
-        profilePhoto
-        watchLists {
-          totalCount
-          nodes {
-            event {
-              id
-              name
-              startDate
-              ticketproviderurl
-              ticketproviderid
-              venue
-              createdAt
-              artistToEvents(first: 1) {
-                nodes {
-                  artist {
-                    photo
-                  }
-                }
-              }
-              watchLists(filter: { userId: { equalTo: $userId } }) {
-                nodes {
-                  id
-                }
-              }
-            }
-          }
-        }
-        followLists {
-          totalCount
-          nodes {
-            id
-            artist {
-              name
-              photo
-            }
-            venue {
-              name
-              photo
-            }
-          }
-        }
-      }
-    }
-  `;
-}
-@Injectable({
-  providedIn: "root"
-})
-export class VenueByNameGQL extends Apollo.Query<
-  VenueByName.Query,
-  VenueByName.Variables
-> {
-  document: any = gql`
-    query venueByName($name: String!, $userId: Int!, $currentDate: BigInt!) {
-      venue(name: $name) {
-        name
-        description
-        lat
-        lon
-        city
-        address
-        photo
-        logo
-        followLists(filter: { userId: { equalTo: $userId } }) {
-          nodes {
-            id
-          }
-        }
-        eventsByVenue(
-          orderBy: START_DATE_ASC
-          filter: { startDate: { greaterThanOrEqualTo: $currentDate } }
-        ) {
-          nodes {
-            name
-            startDate
-            ticketproviderurl
-            ticketproviderid
-            id
-            artistToEvents(first: 1) {
-              nodes {
-                artist {
-                  photo
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  `;
-}
-@Injectable({
-  providedIn: "root"
-})
-export class VerifyUserEmailGQL extends Apollo.Mutation<
-  VerifyUserEmail.Mutation,
-  VerifyUserEmail.Variables
-> {
-  document: any = gql`
-    mutation verifyUserEmail($token: String!) {
-      verifyUserEmail(input: { token: $token }) {
-        userEmail {
-          isVerified
-        }
-      }
-    }
-  `;
-}
-@Injectable({
-  providedIn: "root"
-})
-export class WatchedLocationByAccountGQL extends Apollo.Query<
-  WatchedLocationByAccount.Query,
-  WatchedLocationByAccount.Variables
-> {
-  document: any = gql`
-    query watchedLocationByAccount($userId: Int!) {
-      watchedToAccounts(filter: { userId: { equalTo: $userId } }) {
-        nodes {
-          id
-          region
-          city {
-            id
-            name
-          }
-        }
-      }
-    }
-  `;
-}
-
-// ====================================================
-// END: Apollo Angular template
-// ====================================================
-
+/* DO NOT EDIT! This file is auto-generated by graphql-code-generator - see `codegen.yml` */
+import gql from 'graphql-tag';
+import { Injectable } from '@angular/core';
+import * as Apollo from 'apollo-angular';
 export type Maybe<T> = T | null;
 
+/** All built-in and custom scalars, mapped to their actual values */
+export type Scalars = {
+  ID: string,
+  String: string,
+  Boolean: boolean,
+  Int: number,
+  Float: number,
+  /** A location in a connection that can be used for resuming pagination. */
+  Cursor: any,
+  /** 
+ * A point in time as described by the [ISO
+   * 8601](https://en.wikipedia.org/wiki/ISO_8601) standard. May or may not include a timezone.
+ */
+  Datetime: any,
+  /** 
+ * A signed eight-byte integer. The upper big integer values are greater than the
+   * max value for a JavaScript number. Therefore all big integers will be output as
+   * strings and not numbers.
+ */
+  BigInt: any,
+  /** A floating point number that requires more precision than IEEE 754 binary 64 */
+  BigFloat: any,
+};
+
+
+
+/** An artist in the application. */
+export type Artist = {
+   __typename?: 'Artist',
+  /** Reads and enables pagination through a set of `ArtistToEvent`. */
+  artistToEvents: ArtistToEventsConnection,
+  createdAt: Scalars['Datetime'],
+  /** Description of the artist. */
+  description?: Maybe<Scalars['String']>,
+  /** Facebook url of the artist. */
+  facebookUrl?: Maybe<Scalars['String']>,
+  /** Facebook username of the artist. */
+  facebookUsername?: Maybe<Scalars['String']>,
+  /** Reads and enables pagination through a set of `FollowList`. */
+  followLists: FollowListsConnection,
+  /** Reads and enables pagination through a set of `GenreToArtist`. */
+  genreToArtists: GenreToArtistsConnection,
+  /** Homepage url of the artist. */
+  homepage?: Maybe<Scalars['String']>,
+  /** Instagram url of the artist. */
+  instagramUrl?: Maybe<Scalars['String']>,
+  /** Instagram username of the artist. */
+  instagramUsername?: Maybe<Scalars['String']>,
+  /** Primary key and name of artist. */
+  name: Scalars['String'],
+  /** Photo of the artist. */
+  photo?: Maybe<Scalars['String']>,
+  /** Soundcloud url of the artist. */
+  soundcloudUrl?: Maybe<Scalars['String']>,
+  /** Soundcloud username of the artist. */
+  soundcloudUsername?: Maybe<Scalars['String']>,
+  /** Spotify url of the artist. */
+  spotifyUrl?: Maybe<Scalars['String']>,
+  /** Twitter url of the artist. */
+  twitterUrl?: Maybe<Scalars['String']>,
+  /** Twitter username of the artist. */
+  twitterUsername?: Maybe<Scalars['String']>,
+  updatedAt: Scalars['Datetime'],
+  /** Youtube url of the artist. */
+  youtubeUrl?: Maybe<Scalars['String']>,
+  /** Youtube username of the artist. */
+  youtubeUsername?: Maybe<Scalars['String']>,
+};
+
+
+/** An artist in the application. */
+export type ArtistArtistToEventsArgs = {
+  after?: Maybe<Scalars['Cursor']>,
+  before?: Maybe<Scalars['Cursor']>,
+  condition?: Maybe<ArtistToEventCondition>,
+  filter?: Maybe<ArtistToEventFilter>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  orderBy?: Maybe<Array<ArtistToEventsOrderBy>>
+};
+
+
+/** An artist in the application. */
+export type ArtistFollowListsArgs = {
+  after?: Maybe<Scalars['Cursor']>,
+  before?: Maybe<Scalars['Cursor']>,
+  condition?: Maybe<FollowListCondition>,
+  filter?: Maybe<FollowListFilter>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  orderBy?: Maybe<Array<FollowListsOrderBy>>
+};
+
+
+/** An artist in the application. */
+export type ArtistGenreToArtistsArgs = {
+  after?: Maybe<Scalars['Cursor']>,
+  before?: Maybe<Scalars['Cursor']>,
+  condition?: Maybe<GenreToArtistCondition>,
+  filter?: Maybe<GenreToArtistFilter>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  orderBy?: Maybe<Array<GenreToArtistsOrderBy>>
+};
+
 /** A condition to be used against `Artist` object types. All fields are tested for equality and combined with a logical ‘and.’ */
-export interface ArtistCondition {
+export type ArtistCondition = {
   /** Checks for equality with the object’s `name` field. */
-  name?: Maybe<string>;
-}
+  name?: Maybe<Scalars['String']>,
+};
+
 /** A filter to be used against `Artist` object types. All fields are combined with a logical ‘and.’ */
-export interface ArtistFilter {
+export type ArtistFilter = {
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<ArtistFilter>>,
   /** Filter by the object’s `name` field. */
-  name?: Maybe<StringFilter>;
-  /** Checks for all expressions in this list. */
-  and?: Maybe<ArtistFilter[]>;
-  /** Checks for any expressions in this list. */
-  or?: Maybe<ArtistFilter[]>;
+  name?: Maybe<StringFilter>,
   /** Negates the expression. */
-  not?: Maybe<ArtistFilter>;
-}
-/** A filter to be used against String fields. All fields are combined with a logical ‘and.’ */
-export interface StringFilter {
-  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: Maybe<boolean>;
-  /** Equal to the specified value. */
-  equalTo?: Maybe<string>;
-  /** Not equal to the specified value. */
-  notEqualTo?: Maybe<string>;
-  /** Not equal to the specified value, treating null like an ordinary value. */
-  distinctFrom?: Maybe<string>;
-  /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: Maybe<string>;
-  /** Included in the specified list. */
-  in?: Maybe<string[]>;
-  /** Not included in the specified list. */
-  notIn?: Maybe<string[]>;
-  /** Less than the specified value. */
-  lessThan?: Maybe<string>;
-  /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: Maybe<string>;
-  /** Greater than the specified value. */
-  greaterThan?: Maybe<string>;
-  /** Greater than or equal to the specified value. */
-  greaterThanOrEqualTo?: Maybe<string>;
-  /** Contains the specified string (case-sensitive). */
-  includes?: Maybe<string>;
-  /** Does not contain the specified string (case-sensitive). */
-  notIncludes?: Maybe<string>;
-  /** Contains the specified string (case-insensitive). */
-  includesInsensitive?: Maybe<string>;
-  /** Does not contain the specified string (case-insensitive). */
-  notIncludesInsensitive?: Maybe<string>;
-  /** Starts with the specified string (case-sensitive). */
-  startsWith?: Maybe<string>;
-  /** Does not start with the specified string (case-sensitive). */
-  notStartsWith?: Maybe<string>;
-  /** Starts with the specified string (case-insensitive). */
-  startsWithInsensitive?: Maybe<string>;
-  /** Does not start with the specified string (case-insensitive). */
-  notStartsWithInsensitive?: Maybe<string>;
-  /** Ends with the specified string (case-sensitive). */
-  endsWith?: Maybe<string>;
-  /** Does not end with the specified string (case-sensitive). */
-  notEndsWith?: Maybe<string>;
-  /** Ends with the specified string (case-insensitive). */
-  endsWithInsensitive?: Maybe<string>;
-  /** Does not end with the specified string (case-insensitive). */
-  notEndsWithInsensitive?: Maybe<string>;
-  /** Matches the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
-  like?: Maybe<string>;
-  /** Does not match the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
-  notLike?: Maybe<string>;
-  /** Matches the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
-  likeInsensitive?: Maybe<string>;
-  /** Does not match the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
-  notLikeInsensitive?: Maybe<string>;
-  /** Matches the specified pattern using the SQL standard's definition of a regular expression. */
-  similarTo?: Maybe<string>;
-  /** Does not match the specified pattern using the SQL standard's definition of a regular expression. */
-  notSimilarTo?: Maybe<string>;
-}
-/** A condition to be used against `GenreToArtist` object types. All fields are tested for equality and combined with a logical ‘and.’ */
-export interface GenreToArtistCondition {
-  /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<number>;
-  /** Checks for equality with the object’s `genreId` field. */
-  genreId?: Maybe<string>;
-  /** Checks for equality with the object’s `artistId` field. */
-  artistId?: Maybe<string>;
-}
-/** A filter to be used against `GenreToArtist` object types. All fields are combined with a logical ‘and.’ */
-export interface GenreToArtistFilter {
-  /** Filter by the object’s `id` field. */
-  id?: Maybe<IntFilter>;
-  /** Filter by the object’s `genreId` field. */
-  genreId?: Maybe<StringFilter>;
-  /** Filter by the object’s `artistId` field. */
-  artistId?: Maybe<StringFilter>;
-  /** Checks for all expressions in this list. */
-  and?: Maybe<GenreToArtistFilter[]>;
+  not?: Maybe<ArtistFilter>,
   /** Checks for any expressions in this list. */
-  or?: Maybe<GenreToArtistFilter[]>;
-  /** Negates the expression. */
-  not?: Maybe<GenreToArtistFilter>;
-}
-/** A filter to be used against Int fields. All fields are combined with a logical ‘and.’ */
-export interface IntFilter {
-  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: Maybe<boolean>;
-  /** Equal to the specified value. */
-  equalTo?: Maybe<number>;
-  /** Not equal to the specified value. */
-  notEqualTo?: Maybe<number>;
-  /** Not equal to the specified value, treating null like an ordinary value. */
-  distinctFrom?: Maybe<number>;
-  /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: Maybe<number>;
-  /** Included in the specified list. */
-  in?: Maybe<number[]>;
-  /** Not included in the specified list. */
-  notIn?: Maybe<number[]>;
-  /** Less than the specified value. */
-  lessThan?: Maybe<number>;
-  /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: Maybe<number>;
-  /** Greater than the specified value. */
-  greaterThan?: Maybe<number>;
-  /** Greater than or equal to the specified value. */
-  greaterThanOrEqualTo?: Maybe<number>;
-}
-/** A condition to be used against `ArtistToEvent` object types. All fields are tested for equality and combined with a logical ‘and.’ */
-export interface ArtistToEventCondition {
-  /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<number>;
-  /** Checks for equality with the object’s `artistId` field. */
-  artistId?: Maybe<string>;
-  /** Checks for equality with the object’s `eventId` field. */
-  eventId?: Maybe<string>;
-}
-/** A filter to be used against `ArtistToEvent` object types. All fields are combined with a logical ‘and.’ */
-export interface ArtistToEventFilter {
-  /** Filter by the object’s `id` field. */
-  id?: Maybe<IntFilter>;
-  /** Filter by the object’s `artistId` field. */
-  artistId?: Maybe<StringFilter>;
-  /** Filter by the object’s `eventId` field. */
-  eventId?: Maybe<StringFilter>;
-  /** Checks for all expressions in this list. */
-  and?: Maybe<ArtistToEventFilter[]>;
-  /** Checks for any expressions in this list. */
-  or?: Maybe<ArtistToEventFilter[]>;
-  /** Negates the expression. */
-  not?: Maybe<ArtistToEventFilter>;
-}
-/** A condition to be used against `Region` object types. All fields are tested for equality and combined with a logical ‘and.’ */
-export interface RegionCondition {
-  /** Checks for equality with the object’s `name` field. */
-  name?: Maybe<string>;
-  /** Checks for equality with the object’s `country` field. */
-  country?: Maybe<string>;
-}
-/** A filter to be used against `Region` object types. All fields are combined with a logical ‘and.’ */
-export interface RegionFilter {
-  /** Filter by the object’s `name` field. */
-  name?: Maybe<StringFilter>;
-  /** Filter by the object’s `country` field. */
-  country?: Maybe<StringFilter>;
-  /** Checks for all expressions in this list. */
-  and?: Maybe<RegionFilter[]>;
-  /** Checks for any expressions in this list. */
-  or?: Maybe<RegionFilter[]>;
-  /** Negates the expression. */
-  not?: Maybe<RegionFilter>;
-}
-/** A condition to be used against `City` object types. All fields are tested for equality and combined with a logical ‘and.’ */
-export interface CityCondition {
-  /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<number>;
-  /** Checks for equality with the object’s `region` field. */
-  region?: Maybe<string>;
-  /** Checks for equality with the object’s `country` field. */
-  country?: Maybe<string>;
-}
-/** A filter to be used against `City` object types. All fields are combined with a logical ‘and.’ */
-export interface CityFilter {
-  /** Filter by the object’s `id` field. */
-  id?: Maybe<IntFilter>;
-  /** Filter by the object’s `region` field. */
-  region?: Maybe<StringFilter>;
-  /** Filter by the object’s `country` field. */
-  country?: Maybe<StringFilter>;
-  /** Checks for all expressions in this list. */
-  and?: Maybe<CityFilter[]>;
-  /** Checks for any expressions in this list. */
-  or?: Maybe<CityFilter[]>;
-  /** Negates the expression. */
-  not?: Maybe<CityFilter>;
-}
-/** A condition to be used against `Event` object types. All fields are tested for equality and combined with a logical ‘and.’ */
-export interface EventCondition {
-  /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<string>;
-  /** Checks for equality with the object’s `venue` field. */
-  venue?: Maybe<string>;
-  /** Checks for equality with the object’s `city` field. */
-  city?: Maybe<number>;
-  /** Checks for equality with the object’s `region` field. */
-  region?: Maybe<string>;
-  /** Checks for equality with the object’s `country` field. */
-  country?: Maybe<string>;
-  /** Checks for equality with the object’s `name` field. */
-  name?: Maybe<string>;
-  /** Checks for equality with the object’s `startDate` field. */
-  startDate?: Maybe<BigInt>;
-  /** Checks for equality with the object’s `contributor` field. */
-  contributor?: Maybe<number>;
-  /** Checks for equality with the object’s `createdAt` field. */
-  createdAt?: Maybe<Datetime>;
-}
-/** A filter to be used against `Event` object types. All fields are combined with a logical ‘and.’ */
-export interface EventFilter {
-  /** Filter by the object’s `id` field. */
-  id?: Maybe<StringFilter>;
-  /** Filter by the object’s `venue` field. */
-  venue?: Maybe<StringFilter>;
-  /** Filter by the object’s `city` field. */
-  city?: Maybe<IntFilter>;
-  /** Filter by the object’s `region` field. */
-  region?: Maybe<StringFilter>;
-  /** Filter by the object’s `country` field. */
-  country?: Maybe<StringFilter>;
-  /** Filter by the object’s `name` field. */
-  name?: Maybe<StringFilter>;
-  /** Filter by the object’s `startDate` field. */
-  startDate?: Maybe<BigIntFilter>;
-  /** Filter by the object’s `contributor` field. */
-  contributor?: Maybe<IntFilter>;
-  /** Filter by the object’s `createdAt` field. */
-  createdAt?: Maybe<DatetimeFilter>;
-  /** Checks for all expressions in this list. */
-  and?: Maybe<EventFilter[]>;
-  /** Checks for any expressions in this list. */
-  or?: Maybe<EventFilter[]>;
-  /** Negates the expression. */
-  not?: Maybe<EventFilter>;
-}
-/** A filter to be used against BigInt fields. All fields are combined with a logical ‘and.’ */
-export interface BigIntFilter {
-  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: Maybe<boolean>;
-  /** Equal to the specified value. */
-  equalTo?: Maybe<BigInt>;
-  /** Not equal to the specified value. */
-  notEqualTo?: Maybe<BigInt>;
-  /** Not equal to the specified value, treating null like an ordinary value. */
-  distinctFrom?: Maybe<BigInt>;
-  /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: Maybe<BigInt>;
-  /** Included in the specified list. */
-  in?: Maybe<BigInt[]>;
-  /** Not included in the specified list. */
-  notIn?: Maybe<BigInt[]>;
-  /** Less than the specified value. */
-  lessThan?: Maybe<BigInt>;
-  /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: Maybe<BigInt>;
-  /** Greater than the specified value. */
-  greaterThan?: Maybe<BigInt>;
-  /** Greater than or equal to the specified value. */
-  greaterThanOrEqualTo?: Maybe<BigInt>;
-}
-/** A filter to be used against Datetime fields. All fields are combined with a logical ‘and.’ */
-export interface DatetimeFilter {
-  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: Maybe<boolean>;
-  /** Equal to the specified value. */
-  equalTo?: Maybe<Datetime>;
-  /** Not equal to the specified value. */
-  notEqualTo?: Maybe<Datetime>;
-  /** Not equal to the specified value, treating null like an ordinary value. */
-  distinctFrom?: Maybe<Datetime>;
-  /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: Maybe<Datetime>;
-  /** Included in the specified list. */
-  in?: Maybe<Datetime[]>;
-  /** Not included in the specified list. */
-  notIn?: Maybe<Datetime[]>;
-  /** Less than the specified value. */
-  lessThan?: Maybe<Datetime>;
-  /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: Maybe<Datetime>;
-  /** Greater than the specified value. */
-  greaterThan?: Maybe<Datetime>;
-  /** Greater than or equal to the specified value. */
-  greaterThanOrEqualTo?: Maybe<Datetime>;
-}
-/** A condition to be used against `WatchedToAccount` object types. All fields are tested for equality and combined with a logical ‘and.’ */
-export interface WatchedToAccountCondition {
-  /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<number>;
-  /** Checks for equality with the object’s `userId` field. */
-  userId?: Maybe<number>;
-  /** Checks for equality with the object’s `region` field. */
-  region?: Maybe<string>;
-  /** Checks for equality with the object’s `cityId` field. */
-  cityId?: Maybe<number>;
-}
-/** A filter to be used against `WatchedToAccount` object types. All fields are combined with a logical ‘and.’ */
-export interface WatchedToAccountFilter {
-  /** Filter by the object’s `id` field. */
-  id?: Maybe<IntFilter>;
-  /** Filter by the object’s `userId` field. */
-  userId?: Maybe<IntFilter>;
-  /** Filter by the object’s `region` field. */
-  region?: Maybe<StringFilter>;
-  /** Filter by the object’s `cityId` field. */
-  cityId?: Maybe<IntFilter>;
-  /** Checks for all expressions in this list. */
-  and?: Maybe<WatchedToAccountFilter[]>;
-  /** Checks for any expressions in this list. */
-  or?: Maybe<WatchedToAccountFilter[]>;
-  /** Negates the expression. */
-  not?: Maybe<WatchedToAccountFilter>;
-}
-/** A condition to be used against `UserEmail` object types. All fields are tested for equality and combined with a logical ‘and.’ */
-export interface UserEmailCondition {
-  /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<number>;
-  /** Checks for equality with the object’s `userId` field. */
-  userId?: Maybe<number>;
-}
-/** A filter to be used against `UserEmail` object types. All fields are combined with a logical ‘and.’ */
-export interface UserEmailFilter {
-  /** Filter by the object’s `id` field. */
-  id?: Maybe<IntFilter>;
-  /** Filter by the object’s `userId` field. */
-  userId?: Maybe<IntFilter>;
-  /** Checks for all expressions in this list. */
-  and?: Maybe<UserEmailFilter[]>;
-  /** Checks for any expressions in this list. */
-  or?: Maybe<UserEmailFilter[]>;
-  /** Negates the expression. */
-  not?: Maybe<UserEmailFilter>;
-}
-/** A condition to be used against `PushSubscription` object types. All fields are tested for equality and combined with a logical ‘and.’ */
-export interface PushSubscriptionCondition {
-  /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<number>;
-  /** Checks for equality with the object’s `userId` field. */
-  userId?: Maybe<number>;
-}
-/** A filter to be used against `PushSubscription` object types. All fields are combined with a logical ‘and.’ */
-export interface PushSubscriptionFilter {
-  /** Filter by the object’s `id` field. */
-  id?: Maybe<IntFilter>;
-  /** Filter by the object’s `userId` field. */
-  userId?: Maybe<IntFilter>;
-  /** Checks for all expressions in this list. */
-  and?: Maybe<PushSubscriptionFilter[]>;
-  /** Checks for any expressions in this list. */
-  or?: Maybe<PushSubscriptionFilter[]>;
-  /** Negates the expression. */
-  not?: Maybe<PushSubscriptionFilter>;
-}
-/** A condition to be used against `WatchList` object types. All fields are tested for equality and combined with a logical ‘and.’ */
-export interface WatchListCondition {
-  /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<number>;
-  /** Checks for equality with the object’s `userId` field. */
-  userId?: Maybe<number>;
-  /** Checks for equality with the object’s `eventId` field. */
-  eventId?: Maybe<string>;
-}
-/** A filter to be used against `WatchList` object types. All fields are combined with a logical ‘and.’ */
-export interface WatchListFilter {
-  /** Filter by the object’s `id` field. */
-  id?: Maybe<IntFilter>;
-  /** Filter by the object’s `userId` field. */
-  userId?: Maybe<IntFilter>;
-  /** Filter by the object’s `eventId` field. */
-  eventId?: Maybe<StringFilter>;
-  /** Checks for all expressions in this list. */
-  and?: Maybe<WatchListFilter[]>;
-  /** Checks for any expressions in this list. */
-  or?: Maybe<WatchListFilter[]>;
-  /** Negates the expression. */
-  not?: Maybe<WatchListFilter>;
-}
-/** A condition to be used against `FollowList` object types. All fields are tested for equality and combined with a logical ‘and.’ */
-export interface FollowListCondition {
-  /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<number>;
-  /** Checks for equality with the object’s `userId` field. */
-  userId?: Maybe<number>;
-  /** Checks for equality with the object’s `artistId` field. */
-  artistId?: Maybe<string>;
-  /** Checks for equality with the object’s `venueId` field. */
-  venueId?: Maybe<string>;
-}
-/** A filter to be used against `FollowList` object types. All fields are combined with a logical ‘and.’ */
-export interface FollowListFilter {
-  /** Filter by the object’s `id` field. */
-  id?: Maybe<IntFilter>;
-  /** Filter by the object’s `userId` field. */
-  userId?: Maybe<IntFilter>;
-  /** Filter by the object’s `artistId` field. */
-  artistId?: Maybe<StringFilter>;
-  /** Filter by the object’s `venueId` field. */
-  venueId?: Maybe<StringFilter>;
-  /** Checks for all expressions in this list. */
-  and?: Maybe<FollowListFilter[]>;
-  /** Checks for any expressions in this list. */
-  or?: Maybe<FollowListFilter[]>;
-  /** Negates the expression. */
-  not?: Maybe<FollowListFilter>;
-}
-/** A condition to be used against `Venue` object types. All fields are tested for equality and combined with a logical ‘and.’ */
-export interface VenueCondition {
-  /** Checks for equality with the object’s `name` field. */
-  name?: Maybe<string>;
-  /** Checks for equality with the object’s `city` field. */
-  city?: Maybe<number>;
-}
-/** A filter to be used against `Venue` object types. All fields are combined with a logical ‘and.’ */
-export interface VenueFilter {
-  /** Filter by the object’s `name` field. */
-  name?: Maybe<StringFilter>;
-  /** Filter by the object’s `city` field. */
-  city?: Maybe<IntFilter>;
-  /** Checks for all expressions in this list. */
-  and?: Maybe<VenueFilter[]>;
-  /** Checks for any expressions in this list. */
-  or?: Maybe<VenueFilter[]>;
-  /** Negates the expression. */
-  not?: Maybe<VenueFilter>;
-}
-/** A condition to be used against `Country` object types. All fields are tested for equality and combined with a logical ‘and.’ */
-export interface CountryCondition {
-  /** Checks for equality with the object’s `code` field. */
-  code?: Maybe<string>;
-}
-/** A filter to be used against `Country` object types. All fields are combined with a logical ‘and.’ */
-export interface CountryFilter {
-  /** Filter by the object’s `code` field. */
-  code?: Maybe<StringFilter>;
-  /** Checks for all expressions in this list. */
-  and?: Maybe<CountryFilter[]>;
-  /** Checks for any expressions in this list. */
-  or?: Maybe<CountryFilter[]>;
-  /** Negates the expression. */
-  not?: Maybe<CountryFilter>;
-}
-/** A condition to be used against `Genre` object types. All fields are tested for equality and combined with a logical ‘and.’ */
-export interface GenreCondition {
-  /** Checks for equality with the object’s `name` field. */
-  name?: Maybe<string>;
-}
-/** A filter to be used against `Genre` object types. All fields are combined with a logical ‘and.’ */
-export interface GenreFilter {
-  /** Filter by the object’s `name` field. */
-  name?: Maybe<StringFilter>;
-  /** Checks for all expressions in this list. */
-  and?: Maybe<GenreFilter[]>;
-  /** Checks for any expressions in this list. */
-  or?: Maybe<GenreFilter[]>;
-  /** Negates the expression. */
-  not?: Maybe<GenreFilter>;
-}
-/** A condition to be used against `UserAuthentication` object types. All fields are tested for equality and combined with a logical ‘and.’ */
-export interface UserAuthenticationCondition {
-  /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<number>;
-  /** Checks for equality with the object’s `service` field. */
-  service?: Maybe<string>;
-}
-/** A filter to be used against `UserAuthentication` object types. All fields are combined with a logical ‘and.’ */
-export interface UserAuthenticationFilter {
-  /** Filter by the object’s `id` field. */
-  id?: Maybe<IntFilter>;
-  /** Filter by the object’s `service` field. */
-  service?: Maybe<StringFilter>;
-  /** Checks for all expressions in this list. */
-  and?: Maybe<UserAuthenticationFilter[]>;
-  /** Checks for any expressions in this list. */
-  or?: Maybe<UserAuthenticationFilter[]>;
-  /** Negates the expression. */
-  not?: Maybe<UserAuthenticationFilter>;
-}
-/** A condition to be used against `User` object types. All fields are tested for equality and combined with a logical ‘and.’ */
-export interface UserCondition {
-  /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<number>;
-  /** Checks for equality with the object’s `username` field. */
-  username?: Maybe<string>;
-}
-/** A filter to be used against `User` object types. All fields are combined with a logical ‘and.’ */
-export interface UserFilter {
-  /** Filter by the object’s `id` field. */
-  id?: Maybe<IntFilter>;
-  /** Filter by the object’s `username` field. */
-  username?: Maybe<StringFilter>;
-  /** Checks for all expressions in this list. */
-  and?: Maybe<UserFilter[]>;
-  /** Checks for any expressions in this list. */
-  or?: Maybe<UserFilter[]>;
-  /** Negates the expression. */
-  not?: Maybe<UserFilter>;
-}
-/** All input for the create `Artist` mutation. */
-export interface CreateArtistInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The `Artist` to be created by this mutation. */
-  artist: ArtistInput;
-}
+  or?: Maybe<Array<ArtistFilter>>,
+};
+
 /** An input for mutations affecting `Artist` */
-export interface ArtistInput {
-  /** Primary key and name of artist. */
-  name: string;
+export type ArtistInput = {
+  createdAt?: Maybe<Scalars['Datetime']>,
   /** Description of the artist. */
-  description?: Maybe<string>;
-  /** Photo of the artist. */
-  photo?: Maybe<string>;
-  /** Twitter username of the artist. */
-  twitterUsername?: Maybe<string>;
-  /** Twitter url of the artist. */
-  twitterUrl?: Maybe<string>;
-  /** Facebook username of the artist. */
-  facebookUsername?: Maybe<string>;
+  description?: Maybe<Scalars['String']>,
   /** Facebook url of the artist. */
-  facebookUrl?: Maybe<string>;
-  /** Instagram username of the artist. */
-  instagramUsername?: Maybe<string>;
-  /** Instagram url of the artist. */
-  instagramUrl?: Maybe<string>;
-  /** Soundcloud username of the artist. */
-  soundcloudUsername?: Maybe<string>;
-  /** Soundcloud url of the artist. */
-  soundcloudUrl?: Maybe<string>;
-  /** Youtube username of the artist. */
-  youtubeUsername?: Maybe<string>;
-  /** Youtube url of the artist. */
-  youtubeUrl?: Maybe<string>;
-  /** Spotify url of the artist. */
-  spotifyUrl?: Maybe<string>;
+  facebookUrl?: Maybe<Scalars['String']>,
+  /** Facebook username of the artist. */
+  facebookUsername?: Maybe<Scalars['String']>,
   /** Homepage url of the artist. */
-  homepage?: Maybe<string>;
+  homepage?: Maybe<Scalars['String']>,
+  /** Instagram url of the artist. */
+  instagramUrl?: Maybe<Scalars['String']>,
+  /** Instagram username of the artist. */
+  instagramUsername?: Maybe<Scalars['String']>,
+  /** Primary key and name of artist. */
+  name: Scalars['String'],
+  /** Photo of the artist. */
+  photo?: Maybe<Scalars['String']>,
+  /** Soundcloud url of the artist. */
+  soundcloudUrl?: Maybe<Scalars['String']>,
+  /** Soundcloud username of the artist. */
+  soundcloudUsername?: Maybe<Scalars['String']>,
+  /** Spotify url of the artist. */
+  spotifyUrl?: Maybe<Scalars['String']>,
+  /** Twitter url of the artist. */
+  twitterUrl?: Maybe<Scalars['String']>,
+  /** Twitter username of the artist. */
+  twitterUsername?: Maybe<Scalars['String']>,
+  updatedAt?: Maybe<Scalars['Datetime']>,
+  /** Youtube url of the artist. */
+  youtubeUrl?: Maybe<Scalars['String']>,
+  /** Youtube username of the artist. */
+  youtubeUsername?: Maybe<Scalars['String']>,
+};
 
-  createdAt?: Maybe<Datetime>;
-
-  updatedAt?: Maybe<Datetime>;
-}
-/** All input for the create `ArtistToEvent` mutation. */
-export interface CreateArtistToEventInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The `ArtistToEvent` to be created by this mutation. */
-  artistToEvent: ArtistToEventInput;
-}
-/** An input for mutations affecting `ArtistToEvent` */
-export interface ArtistToEventInput {
-  /** Primary key and id of row. */
-  id?: Maybe<number>;
-  /** Ref to artist. */
-  artistId: string;
-  /** Ref to event. */
-  eventId: string;
-}
-/** All input for the create `City` mutation. */
-export interface CreateCityInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The `City` to be created by this mutation. */
-  city: CityInput;
-}
-/** An input for mutations affecting `City` */
-export interface CityInput {
-  /** Primary key and id for city. */
-  id?: Maybe<number>;
-  /** Name for city. */
-  name?: Maybe<string>;
-  /** Description of the genre. */
-  description?: Maybe<string>;
-  /** Photo for city. */
-  photo?: Maybe<string>;
-  /** Region ref for city. */
-  region?: Maybe<string>;
-  /** Region ref for country. */
-  country?: Maybe<string>;
-
-  createdAt?: Maybe<Datetime>;
-
-  updatedAt?: Maybe<Datetime>;
-}
-/** All input for the create `Country` mutation. */
-export interface CreateCountryInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The `Country` to be created by this mutation. */
-  country: CountryInput;
-}
-/** An input for mutations affecting `Country` */
-export interface CountryInput {
-  /** Primary key and code for country. */
-  code: string;
-  /** Name for country. */
-  name?: Maybe<string>;
-
-  createdAt?: Maybe<Datetime>;
-
-  updatedAt?: Maybe<Datetime>;
-}
-/** All input for the create `Event` mutation. */
-export interface CreateEventInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The `Event` to be created by this mutation. */
-  event: EventInput;
-}
-/** An input for mutations affecting `Event` */
-export interface EventInput {
-  /** Primary key and id of event. */
-  id: string;
-  /** Ref to venue where event takes place. */
-  venue: string;
-  /** Ref to city where event takes place. */
-  city: number;
-  /** Ref to region where event takes place. */
-  region?: Maybe<string>;
-  /** Ref to country where event takes place. */
-  country?: Maybe<string>;
-  /** Name of event. */
-  name?: Maybe<string>;
-  /** Description of event. */
-  description?: Maybe<string>;
-  /** Type of event. */
-  type?: Maybe<EventType>;
-  /** Start date of event. */
-  startDate: BigInt;
-  /** End date of event. */
-  endDate?: Maybe<BigInt>;
-  /** Id by the ticket provider useful for affiliate links. */
-  ticketproviderid?: Maybe<string>;
-  /** URL by the ticket provider useful for affiliate links. */
-  ticketproviderurl?: Maybe<string>;
-  /** Banner of event page. */
-  banner?: Maybe<string>;
-  /** Whether to display event if it has been approved. */
-  approved?: Maybe<boolean>;
-  /** Who submitted the event. */
-  contributor?: Maybe<number>;
-
-  createdAt?: Maybe<Datetime>;
-
-  updatedAt?: Maybe<Datetime>;
-}
-/** All input for the create `FollowList` mutation. */
-export interface CreateFollowListInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The `FollowList` to be created by this mutation. */
-  followList: FollowListInput;
-}
-/** An input for mutations affecting `FollowList` */
-export interface FollowListInput {
-  /** Primary key and id of row. */
-  id?: Maybe<number>;
-  /** Ref to user. */
-  userId: number;
-  /** Ref to artist. */
-  artistId?: Maybe<string>;
-  /** Ref to venue. */
-  venueId?: Maybe<string>;
-}
-/** All input for the create `Genre` mutation. */
-export interface CreateGenreInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The `Genre` to be created by this mutation. */
-  genre: GenreInput;
-}
-/** An input for mutations affecting `Genre` */
-export interface GenreInput {
-  /** Primary key and name of genre. */
-  name: string;
-
-  description?: Maybe<string>;
-
-  createdAt?: Maybe<Datetime>;
-
-  updatedAt?: Maybe<Datetime>;
-}
-/** All input for the create `GenreToArtist` mutation. */
-export interface CreateGenreToArtistInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The `GenreToArtist` to be created by this mutation. */
-  genreToArtist: GenreToArtistInput;
-}
-/** An input for mutations affecting `GenreToArtist` */
-export interface GenreToArtistInput {
-  /** Id of the row. */
-  id?: Maybe<number>;
-  /** Ref to the genre. */
-  genreId: string;
-  /** Ref to the artist. */
-  artistId: string;
-}
-/** All input for the create `PushSubscription` mutation. */
-export interface CreatePushSubscriptionInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The `PushSubscription` to be created by this mutation. */
-  pushSubscription: PushSubscriptionInput;
-}
-/** An input for mutations affecting `PushSubscription` */
-export interface PushSubscriptionInput {
-  /** Unique identifier for the push subscription. */
-  id?: Maybe<number>;
-  /** Reference to the account this belongs to. */
-  userId: number;
-  /** This contains a unique URL to a Firebase Cloud Messaging endpoint. This url is a public but unguessable endpoint to the Browser Push Service used by the application server to send push notifications to this subscription. */
-  endpoint: string;
-  /** This is useful in certain cases, for example, if a message might contain an authentication code that expires after 1 minute. */
-  expirationTime?: Maybe<Datetime>;
-  /** An encryption key that our server will use to encrypt the message. */
-  p256Dh: string;
-  /** An authentication secret, which is one of the inputs of the message content encryption process. */
-  auth: string;
-
-  createdAt?: Maybe<Datetime>;
-
-  updatedAt?: Maybe<Datetime>;
-}
-/** All input for the create `Region` mutation. */
-export interface CreateRegionInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The `Region` to be created by this mutation. */
-  region: RegionInput;
-}
-/** An input for mutations affecting `Region` */
-export interface RegionInput {
-  /** Name and primary key of region. */
-  name: string;
-  /** Description of the region. */
-  description?: Maybe<string>;
-  /** Photo of the region. */
-  photo?: Maybe<string>;
-  /** Country ref region belongs to. */
-  country?: Maybe<string>;
-  /** Latitude location of the region. */
-  lat?: Maybe<BigFloat>;
-  /** Longitude location of the region. */
-  lon?: Maybe<BigFloat>;
-
-  createdAt?: Maybe<Datetime>;
-
-  updatedAt?: Maybe<Datetime>;
-}
-/** All input for the create `UserAuthentication` mutation. */
-export interface CreateUserAuthenticationInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The `UserAuthentication` to be created by this mutation. */
-  userAuthentication: UserAuthenticationInput;
-}
-/** An input for mutations affecting `UserAuthentication` */
-export interface UserAuthenticationInput {
-  id?: Maybe<number>;
-  /** The login service used, e.g. `twitter` or `github`. */
-  service: string;
-  /** A unique identifier for the user within the login service. */
-  identifier: string;
-
-  createdAt?: Maybe<Datetime>;
-
-  updatedAt?: Maybe<Datetime>;
-}
-/** All input for the create `UserEmail` mutation. */
-export interface CreateUserEmailInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The `UserEmail` to be created by this mutation. */
-  userEmail: UserEmailInput;
-}
-/** An input for mutations affecting `UserEmail` */
-export interface UserEmailInput {
-  id?: Maybe<number>;
-
-  userId?: Maybe<number>;
-  /** The users email address, in `a@b.c` format. */
-  email: string;
-  /** True if the user has is_verified their email address (by clicking the link in the email we sent them, or logging in with a social login provider), false otherwise. */
-  isVerified?: Maybe<boolean>;
-
-  createdAt?: Maybe<Datetime>;
-
-  updatedAt?: Maybe<Datetime>;
-}
-/** All input for the create `User` mutation. */
-export interface CreateUserInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The `User` to be created by this mutation. */
-  user: UserInput;
-}
-/** An input for mutations affecting `User` */
-export interface UserInput {
-  /** Unique identifier for the user. */
-  id?: Maybe<number>;
-  /** Public-facing username (or 'handle') of the user. */
-  username: string;
-  /** Public-facing name (or pseudonym) of the user. */
-  name?: Maybe<string>;
-  /** Optional profile photo. */
-  profilePhoto?: Maybe<string>;
-  /** If true, the user has elevated privileges. */
-  isAdmin?: Maybe<boolean>;
-  /** Designates notification frequency */
-  notificationFrequency?: Maybe<Frequency>;
-  /** Boolean yes or no for push notifications */
-  pushNotification?: Maybe<boolean>;
-  /** Boolean yes or no for email notifications */
-  emailNotification?: Maybe<boolean>;
-
-  createdAt?: Maybe<Datetime>;
-
-  updatedAt?: Maybe<Datetime>;
-}
-/** All input for the create `Venue` mutation. */
-export interface CreateVenueInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The `Venue` to be created by this mutation. */
-  venue: VenueInput;
-}
-/** An input for mutations affecting `Venue` */
-export interface VenueInput {
-  /** Primary key and name of venue. */
-  name: string;
-  /** Description of venue. */
-  description?: Maybe<string>;
-  /** Latitude of venue. */
-  lat?: Maybe<BigFloat>;
-  /** Longitude of venue. */
-  lon?: Maybe<BigFloat>;
-  /** Ref to city of venue. */
-  city: number;
-  /** Address of venue. */
-  address?: Maybe<string>;
-  /** Photo of venue. */
-  photo?: Maybe<string>;
-  /** Logo of venue. */
-  logo?: Maybe<string>;
-
-  createdAt?: Maybe<Datetime>;
-
-  updatedAt?: Maybe<Datetime>;
-}
-/** All input for the create `WatchList` mutation. */
-export interface CreateWatchListInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The `WatchList` to be created by this mutation. */
-  watchList: WatchListInput;
-}
-/** An input for mutations affecting `WatchList` */
-export interface WatchListInput {
-  /** Primary key and id of row. */
-  id?: Maybe<number>;
-  /** Ref to user. */
-  userId: number;
-  /** Ref to event. */
-  eventId: string;
-}
-/** All input for the create `WatchedToAccount` mutation. */
-export interface CreateWatchedToAccountInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The `WatchedToAccount` to be created by this mutation. */
-  watchedToAccount: WatchedToAccountInput;
-}
-/** An input for mutations affecting `WatchedToAccount` */
-export interface WatchedToAccountInput {
-  /** Id of the row. */
-  id?: Maybe<number>;
-  /** Ref to user account. */
-  userId: number;
-  /** Ref to region. */
-  region?: Maybe<string>;
-  /** Ref to city. */
-  cityId?: Maybe<number>;
-}
-/** All input for the `updateArtistByNodeId` mutation. */
-export interface UpdateArtistByNodeIdInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The globally unique `ID` which will identify a single `Artist` to be updated. */
-  nodeId: string;
-  /** An object where the defined keys will be set on the `Artist` being updated. */
-  patch: ArtistPatch;
-}
 /** Represents an update to a `Artist`. Fields that are set will be updated. */
-export interface ArtistPatch {
-  /** Primary key and name of artist. */
-  name?: Maybe<string>;
+export type ArtistPatch = {
+  createdAt?: Maybe<Scalars['Datetime']>,
   /** Description of the artist. */
-  description?: Maybe<string>;
-  /** Photo of the artist. */
-  photo?: Maybe<string>;
-  /** Twitter username of the artist. */
-  twitterUsername?: Maybe<string>;
-  /** Twitter url of the artist. */
-  twitterUrl?: Maybe<string>;
-  /** Facebook username of the artist. */
-  facebookUsername?: Maybe<string>;
+  description?: Maybe<Scalars['String']>,
   /** Facebook url of the artist. */
-  facebookUrl?: Maybe<string>;
-  /** Instagram username of the artist. */
-  instagramUsername?: Maybe<string>;
-  /** Instagram url of the artist. */
-  instagramUrl?: Maybe<string>;
-  /** Soundcloud username of the artist. */
-  soundcloudUsername?: Maybe<string>;
-  /** Soundcloud url of the artist. */
-  soundcloudUrl?: Maybe<string>;
-  /** Youtube username of the artist. */
-  youtubeUsername?: Maybe<string>;
-  /** Youtube url of the artist. */
-  youtubeUrl?: Maybe<string>;
-  /** Spotify url of the artist. */
-  spotifyUrl?: Maybe<string>;
+  facebookUrl?: Maybe<Scalars['String']>,
+  /** Facebook username of the artist. */
+  facebookUsername?: Maybe<Scalars['String']>,
   /** Homepage url of the artist. */
-  homepage?: Maybe<string>;
-
-  createdAt?: Maybe<Datetime>;
-
-  updatedAt?: Maybe<Datetime>;
-}
-/** All input for the `updateArtist` mutation. */
-export interface UpdateArtistInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** An object where the defined keys will be set on the `Artist` being updated. */
-  patch: ArtistPatch;
+  homepage?: Maybe<Scalars['String']>,
+  /** Instagram url of the artist. */
+  instagramUrl?: Maybe<Scalars['String']>,
+  /** Instagram username of the artist. */
+  instagramUsername?: Maybe<Scalars['String']>,
   /** Primary key and name of artist. */
-  name: string;
-}
-/** All input for the `updateArtistToEventByNodeId` mutation. */
-export interface UpdateArtistToEventByNodeIdInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The globally unique `ID` which will identify a single `ArtistToEvent` to be updated. */
-  nodeId: string;
-  /** An object where the defined keys will be set on the `ArtistToEvent` being updated. */
-  patch: ArtistToEventPatch;
-}
-/** Represents an update to a `ArtistToEvent`. Fields that are set will be updated. */
-export interface ArtistToEventPatch {
-  /** Primary key and id of row. */
-  id?: Maybe<number>;
-  /** Ref to artist. */
-  artistId?: Maybe<string>;
-  /** Ref to event. */
-  eventId?: Maybe<string>;
-}
-/** All input for the `updateArtistToEvent` mutation. */
-export interface UpdateArtistToEventInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** An object where the defined keys will be set on the `ArtistToEvent` being updated. */
-  patch: ArtistToEventPatch;
-  /** Primary key and id of row. */
-  id: number;
-}
-/** All input for the `updateCityByNodeId` mutation. */
-export interface UpdateCityByNodeIdInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The globally unique `ID` which will identify a single `City` to be updated. */
-  nodeId: string;
-  /** An object where the defined keys will be set on the `City` being updated. */
-  patch: CityPatch;
-}
-/** Represents an update to a `City`. Fields that are set will be updated. */
-export interface CityPatch {
-  /** Primary key and id for city. */
-  id?: Maybe<number>;
-  /** Name for city. */
-  name?: Maybe<string>;
-  /** Description of the genre. */
-  description?: Maybe<string>;
-  /** Photo for city. */
-  photo?: Maybe<string>;
-  /** Region ref for city. */
-  region?: Maybe<string>;
-  /** Region ref for country. */
-  country?: Maybe<string>;
+  name?: Maybe<Scalars['String']>,
+  /** Photo of the artist. */
+  photo?: Maybe<Scalars['String']>,
+  /** Soundcloud url of the artist. */
+  soundcloudUrl?: Maybe<Scalars['String']>,
+  /** Soundcloud username of the artist. */
+  soundcloudUsername?: Maybe<Scalars['String']>,
+  /** Spotify url of the artist. */
+  spotifyUrl?: Maybe<Scalars['String']>,
+  /** Twitter url of the artist. */
+  twitterUrl?: Maybe<Scalars['String']>,
+  /** Twitter username of the artist. */
+  twitterUsername?: Maybe<Scalars['String']>,
+  updatedAt?: Maybe<Scalars['Datetime']>,
+  /** Youtube url of the artist. */
+  youtubeUrl?: Maybe<Scalars['String']>,
+  /** Youtube username of the artist. */
+  youtubeUsername?: Maybe<Scalars['String']>,
+};
 
-  createdAt?: Maybe<Datetime>;
+/** A connection to a list of `Artist` values. */
+export type ArtistsConnection = {
+   __typename?: 'ArtistsConnection',
+  /** A list of edges which contains the `Artist` and cursor to aid in pagination. */
+  edges: Array<ArtistsEdge>,
+  /** A list of `Artist` objects. */
+  nodes: Array<Artist>,
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo,
+  /** The count of *all* `Artist` you could get from the connection. */
+  totalCount: Scalars['Int'],
+};
 
-  updatedAt?: Maybe<Datetime>;
-}
-/** All input for the `updateCity` mutation. */
-export interface UpdateCityInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** An object where the defined keys will be set on the `City` being updated. */
-  patch: CityPatch;
-  /** Primary key and id for city. */
-  id: number;
-}
-/** All input for the `updateCountryByNodeId` mutation. */
-export interface UpdateCountryByNodeIdInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The globally unique `ID` which will identify a single `Country` to be updated. */
-  nodeId: string;
-  /** An object where the defined keys will be set on the `Country` being updated. */
-  patch: CountryPatch;
-}
-/** Represents an update to a `Country`. Fields that are set will be updated. */
-export interface CountryPatch {
-  /** Primary key and code for country. */
-  code?: Maybe<string>;
-  /** Name for country. */
-  name?: Maybe<string>;
+/** A `Artist` edge in the connection. */
+export type ArtistsEdge = {
+   __typename?: 'ArtistsEdge',
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>,
+  /** The `Artist` at the end of the edge. */
+  node: Artist,
+};
 
-  createdAt?: Maybe<Datetime>;
-
-  updatedAt?: Maybe<Datetime>;
-}
-/** All input for the `updateCountry` mutation. */
-export interface UpdateCountryInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** An object where the defined keys will be set on the `Country` being updated. */
-  patch: CountryPatch;
-  /** Primary key and code for country. */
-  code: string;
-}
-/** All input for the `updateEventByNodeId` mutation. */
-export interface UpdateEventByNodeIdInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The globally unique `ID` which will identify a single `Event` to be updated. */
-  nodeId: string;
-  /** An object where the defined keys will be set on the `Event` being updated. */
-  patch: EventPatch;
-}
-/** Represents an update to a `Event`. Fields that are set will be updated. */
-export interface EventPatch {
-  /** Primary key and id of event. */
-  id?: Maybe<string>;
-  /** Ref to venue where event takes place. */
-  venue?: Maybe<string>;
-  /** Ref to city where event takes place. */
-  city?: Maybe<number>;
-  /** Ref to region where event takes place. */
-  region?: Maybe<string>;
-  /** Ref to country where event takes place. */
-  country?: Maybe<string>;
-  /** Name of event. */
-  name?: Maybe<string>;
-  /** Description of event. */
-  description?: Maybe<string>;
-  /** Type of event. */
-  type?: Maybe<EventType>;
-  /** Start date of event. */
-  startDate?: Maybe<BigInt>;
-  /** End date of event. */
-  endDate?: Maybe<BigInt>;
-  /** Id by the ticket provider useful for affiliate links. */
-  ticketproviderid?: Maybe<string>;
-  /** URL by the ticket provider useful for affiliate links. */
-  ticketproviderurl?: Maybe<string>;
-  /** Banner of event page. */
-  banner?: Maybe<string>;
-  /** Whether to display event if it has been approved. */
-  approved?: Maybe<boolean>;
-  /** Who submitted the event. */
-  contributor?: Maybe<number>;
-
-  createdAt?: Maybe<Datetime>;
-
-  updatedAt?: Maybe<Datetime>;
-}
-/** All input for the `updateEvent` mutation. */
-export interface UpdateEventInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** An object where the defined keys will be set on the `Event` being updated. */
-  patch: EventPatch;
-  /** Primary key and id of event. */
-  id: string;
-}
-/** All input for the `updateFollowListByNodeId` mutation. */
-export interface UpdateFollowListByNodeIdInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The globally unique `ID` which will identify a single `FollowList` to be updated. */
-  nodeId: string;
-  /** An object where the defined keys will be set on the `FollowList` being updated. */
-  patch: FollowListPatch;
-}
-/** Represents an update to a `FollowList`. Fields that are set will be updated. */
-export interface FollowListPatch {
-  /** Primary key and id of row. */
-  id?: Maybe<number>;
-  /** Ref to user. */
-  userId?: Maybe<number>;
-  /** Ref to artist. */
-  artistId?: Maybe<string>;
-  /** Ref to venue. */
-  venueId?: Maybe<string>;
-}
-/** All input for the `updateFollowList` mutation. */
-export interface UpdateFollowListInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** An object where the defined keys will be set on the `FollowList` being updated. */
-  patch: FollowListPatch;
-  /** Primary key and id of row. */
-  id: number;
-}
-/** All input for the `updateGenreByNodeId` mutation. */
-export interface UpdateGenreByNodeIdInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The globally unique `ID` which will identify a single `Genre` to be updated. */
-  nodeId: string;
-  /** An object where the defined keys will be set on the `Genre` being updated. */
-  patch: GenrePatch;
-}
-/** Represents an update to a `Genre`. Fields that are set will be updated. */
-export interface GenrePatch {
-  /** Primary key and name of genre. */
-  name?: Maybe<string>;
-
-  description?: Maybe<string>;
-
-  createdAt?: Maybe<Datetime>;
-
-  updatedAt?: Maybe<Datetime>;
-}
-/** All input for the `updateGenre` mutation. */
-export interface UpdateGenreInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** An object where the defined keys will be set on the `Genre` being updated. */
-  patch: GenrePatch;
-  /** Primary key and name of genre. */
-  name: string;
-}
-/** All input for the `updateGenreToArtistByNodeId` mutation. */
-export interface UpdateGenreToArtistByNodeIdInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The globally unique `ID` which will identify a single `GenreToArtist` to be updated. */
-  nodeId: string;
-  /** An object where the defined keys will be set on the `GenreToArtist` being updated. */
-  patch: GenreToArtistPatch;
-}
-/** Represents an update to a `GenreToArtist`. Fields that are set will be updated. */
-export interface GenreToArtistPatch {
-  /** Id of the row. */
-  id?: Maybe<number>;
-  /** Ref to the genre. */
-  genreId?: Maybe<string>;
-  /** Ref to the artist. */
-  artistId?: Maybe<string>;
-}
-/** All input for the `updateGenreToArtist` mutation. */
-export interface UpdateGenreToArtistInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** An object where the defined keys will be set on the `GenreToArtist` being updated. */
-  patch: GenreToArtistPatch;
-  /** Id of the row. */
-  id: number;
-}
-/** All input for the `updatePushSubscriptionByNodeId` mutation. */
-export interface UpdatePushSubscriptionByNodeIdInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The globally unique `ID` which will identify a single `PushSubscription` to be updated. */
-  nodeId: string;
-  /** An object where the defined keys will be set on the `PushSubscription` being updated. */
-  patch: PushSubscriptionPatch;
-}
-/** Represents an update to a `PushSubscription`. Fields that are set will be updated. */
-export interface PushSubscriptionPatch {
-  /** Unique identifier for the push subscription. */
-  id?: Maybe<number>;
-  /** Reference to the account this belongs to. */
-  userId?: Maybe<number>;
-  /** This contains a unique URL to a Firebase Cloud Messaging endpoint. This url is a public but unguessable endpoint to the Browser Push Service used by the application server to send push notifications to this subscription. */
-  endpoint?: Maybe<string>;
-  /** This is useful in certain cases, for example, if a message might contain an authentication code that expires after 1 minute. */
-  expirationTime?: Maybe<Datetime>;
-  /** An encryption key that our server will use to encrypt the message. */
-  p256Dh?: Maybe<string>;
-  /** An authentication secret, which is one of the inputs of the message content encryption process. */
-  auth?: Maybe<string>;
-
-  createdAt?: Maybe<Datetime>;
-
-  updatedAt?: Maybe<Datetime>;
-}
-/** All input for the `updatePushSubscription` mutation. */
-export interface UpdatePushSubscriptionInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** An object where the defined keys will be set on the `PushSubscription` being updated. */
-  patch: PushSubscriptionPatch;
-  /** Unique identifier for the push subscription. */
-  id: number;
-}
-/** All input for the `updateRegionByNodeId` mutation. */
-export interface UpdateRegionByNodeIdInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The globally unique `ID` which will identify a single `Region` to be updated. */
-  nodeId: string;
-  /** An object where the defined keys will be set on the `Region` being updated. */
-  patch: RegionPatch;
-}
-/** Represents an update to a `Region`. Fields that are set will be updated. */
-export interface RegionPatch {
-  /** Name and primary key of region. */
-  name?: Maybe<string>;
-  /** Description of the region. */
-  description?: Maybe<string>;
-  /** Photo of the region. */
-  photo?: Maybe<string>;
-  /** Country ref region belongs to. */
-  country?: Maybe<string>;
-  /** Latitude location of the region. */
-  lat?: Maybe<BigFloat>;
-  /** Longitude location of the region. */
-  lon?: Maybe<BigFloat>;
-
-  createdAt?: Maybe<Datetime>;
-
-  updatedAt?: Maybe<Datetime>;
-}
-/** All input for the `updateRegion` mutation. */
-export interface UpdateRegionInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** An object where the defined keys will be set on the `Region` being updated. */
-  patch: RegionPatch;
-  /** Name and primary key of region. */
-  name: string;
-}
-/** All input for the `updateUserAuthenticationByNodeId` mutation. */
-export interface UpdateUserAuthenticationByNodeIdInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The globally unique `ID` which will identify a single `UserAuthentication` to be updated. */
-  nodeId: string;
-  /** An object where the defined keys will be set on the `UserAuthentication` being updated. */
-  patch: UserAuthenticationPatch;
-}
-/** Represents an update to a `UserAuthentication`. Fields that are set will be updated. */
-export interface UserAuthenticationPatch {
-  id?: Maybe<number>;
-  /** The login service used, e.g. `twitter` or `github`. */
-  service?: Maybe<string>;
-  /** A unique identifier for the user within the login service. */
-  identifier?: Maybe<string>;
-
-  createdAt?: Maybe<Datetime>;
-
-  updatedAt?: Maybe<Datetime>;
-}
-/** All input for the `updateUserAuthentication` mutation. */
-export interface UpdateUserAuthenticationInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** An object where the defined keys will be set on the `UserAuthentication` being updated. */
-  patch: UserAuthenticationPatch;
-
-  id: number;
-}
-/** All input for the `updateUserAuthenticationByServiceAndIdentifier` mutation. */
-export interface UpdateUserAuthenticationByServiceAndIdentifierInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** An object where the defined keys will be set on the `UserAuthentication` being updated. */
-  patch: UserAuthenticationPatch;
-  /** The login service used, e.g. `twitter` or `github`. */
-  service: string;
-  /** A unique identifier for the user within the login service. */
-  identifier: string;
-}
-/** All input for the `updateUserEmailByNodeId` mutation. */
-export interface UpdateUserEmailByNodeIdInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The globally unique `ID` which will identify a single `UserEmail` to be updated. */
-  nodeId: string;
-  /** An object where the defined keys will be set on the `UserEmail` being updated. */
-  patch: UserEmailPatch;
-}
-/** Represents an update to a `UserEmail`. Fields that are set will be updated. */
-export interface UserEmailPatch {
-  id?: Maybe<number>;
-
-  userId?: Maybe<number>;
-  /** The users email address, in `a@b.c` format. */
-  email?: Maybe<string>;
-  /** True if the user has is_verified their email address (by clicking the link in the email we sent them, or logging in with a social login provider), false otherwise. */
-  isVerified?: Maybe<boolean>;
-
-  createdAt?: Maybe<Datetime>;
-
-  updatedAt?: Maybe<Datetime>;
-}
-/** All input for the `updateUserEmail` mutation. */
-export interface UpdateUserEmailInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** An object where the defined keys will be set on the `UserEmail` being updated. */
-  patch: UserEmailPatch;
-
-  id: number;
-}
-/** All input for the `updateUserEmailByUserIdAndEmail` mutation. */
-export interface UpdateUserEmailByUserIdAndEmailInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** An object where the defined keys will be set on the `UserEmail` being updated. */
-  patch: UserEmailPatch;
-
-  userId: number;
-  /** The users email address, in `a@b.c` format. */
-  email: string;
-}
-/** All input for the `updateUserByNodeId` mutation. */
-export interface UpdateUserByNodeIdInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The globally unique `ID` which will identify a single `User` to be updated. */
-  nodeId: string;
-  /** An object where the defined keys will be set on the `User` being updated. */
-  patch: UserPatch;
-}
-/** Represents an update to a `User`. Fields that are set will be updated. */
-export interface UserPatch {
-  /** Unique identifier for the user. */
-  id?: Maybe<number>;
-  /** Public-facing username (or 'handle') of the user. */
-  username?: Maybe<string>;
-  /** Public-facing name (or pseudonym) of the user. */
-  name?: Maybe<string>;
-  /** Optional profile photo. */
-  profilePhoto?: Maybe<string>;
-  /** If true, the user has elevated privileges. */
-  isAdmin?: Maybe<boolean>;
-  /** Designates notification frequency */
-  notificationFrequency?: Maybe<Frequency>;
-  /** Boolean yes or no for push notifications */
-  pushNotification?: Maybe<boolean>;
-  /** Boolean yes or no for email notifications */
-  emailNotification?: Maybe<boolean>;
-
-  createdAt?: Maybe<Datetime>;
-
-  updatedAt?: Maybe<Datetime>;
-}
-/** All input for the `updateUser` mutation. */
-export interface UpdateUserInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** An object where the defined keys will be set on the `User` being updated. */
-  patch: UserPatch;
-  /** Unique identifier for the user. */
-  id: number;
-}
-/** All input for the `updateUserByUsername` mutation. */
-export interface UpdateUserByUsernameInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** An object where the defined keys will be set on the `User` being updated. */
-  patch: UserPatch;
-  /** Public-facing username (or 'handle') of the user. */
-  username: string;
-}
-/** All input for the `updateVenueByNodeId` mutation. */
-export interface UpdateVenueByNodeIdInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The globally unique `ID` which will identify a single `Venue` to be updated. */
-  nodeId: string;
-  /** An object where the defined keys will be set on the `Venue` being updated. */
-  patch: VenuePatch;
-}
-/** Represents an update to a `Venue`. Fields that are set will be updated. */
-export interface VenuePatch {
-  /** Primary key and name of venue. */
-  name?: Maybe<string>;
-  /** Description of venue. */
-  description?: Maybe<string>;
-  /** Latitude of venue. */
-  lat?: Maybe<BigFloat>;
-  /** Longitude of venue. */
-  lon?: Maybe<BigFloat>;
-  /** Ref to city of venue. */
-  city?: Maybe<number>;
-  /** Address of venue. */
-  address?: Maybe<string>;
-  /** Photo of venue. */
-  photo?: Maybe<string>;
-  /** Logo of venue. */
-  logo?: Maybe<string>;
-
-  createdAt?: Maybe<Datetime>;
-
-  updatedAt?: Maybe<Datetime>;
-}
-/** All input for the `updateVenue` mutation. */
-export interface UpdateVenueInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** An object where the defined keys will be set on the `Venue` being updated. */
-  patch: VenuePatch;
-  /** Primary key and name of venue. */
-  name: string;
-}
-/** All input for the `updateWatchListByNodeId` mutation. */
-export interface UpdateWatchListByNodeIdInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The globally unique `ID` which will identify a single `WatchList` to be updated. */
-  nodeId: string;
-  /** An object where the defined keys will be set on the `WatchList` being updated. */
-  patch: WatchListPatch;
-}
-/** Represents an update to a `WatchList`. Fields that are set will be updated. */
-export interface WatchListPatch {
-  /** Primary key and id of row. */
-  id?: Maybe<number>;
-  /** Ref to user. */
-  userId?: Maybe<number>;
-  /** Ref to event. */
-  eventId?: Maybe<string>;
-}
-/** All input for the `updateWatchList` mutation. */
-export interface UpdateWatchListInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** An object where the defined keys will be set on the `WatchList` being updated. */
-  patch: WatchListPatch;
-  /** Primary key and id of row. */
-  id: number;
-}
-/** All input for the `updateWatchedToAccountByNodeId` mutation. */
-export interface UpdateWatchedToAccountByNodeIdInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The globally unique `ID` which will identify a single `WatchedToAccount` to be updated. */
-  nodeId: string;
-  /** An object where the defined keys will be set on the `WatchedToAccount` being updated. */
-  patch: WatchedToAccountPatch;
-}
-/** Represents an update to a `WatchedToAccount`. Fields that are set will be updated. */
-export interface WatchedToAccountPatch {
-  /** Id of the row. */
-  id?: Maybe<number>;
-  /** Ref to user account. */
-  userId?: Maybe<number>;
-  /** Ref to region. */
-  region?: Maybe<string>;
-  /** Ref to city. */
-  cityId?: Maybe<number>;
-}
-/** All input for the `updateWatchedToAccount` mutation. */
-export interface UpdateWatchedToAccountInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** An object where the defined keys will be set on the `WatchedToAccount` being updated. */
-  patch: WatchedToAccountPatch;
-  /** Id of the row. */
-  id: number;
-}
-/** All input for the `deleteArtistByNodeId` mutation. */
-export interface DeleteArtistByNodeIdInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The globally unique `ID` which will identify a single `Artist` to be deleted. */
-  nodeId: string;
-}
-/** All input for the `deleteArtist` mutation. */
-export interface DeleteArtistInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** Primary key and name of artist. */
-  name: string;
-}
-/** All input for the `deleteArtistToEventByNodeId` mutation. */
-export interface DeleteArtistToEventByNodeIdInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The globally unique `ID` which will identify a single `ArtistToEvent` to be deleted. */
-  nodeId: string;
-}
-/** All input for the `deleteArtistToEvent` mutation. */
-export interface DeleteArtistToEventInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** Primary key and id of row. */
-  id: number;
-}
-/** All input for the `deleteCityByNodeId` mutation. */
-export interface DeleteCityByNodeIdInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The globally unique `ID` which will identify a single `City` to be deleted. */
-  nodeId: string;
-}
-/** All input for the `deleteCity` mutation. */
-export interface DeleteCityInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** Primary key and id for city. */
-  id: number;
-}
-/** All input for the `deleteCountryByNodeId` mutation. */
-export interface DeleteCountryByNodeIdInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The globally unique `ID` which will identify a single `Country` to be deleted. */
-  nodeId: string;
-}
-/** All input for the `deleteCountry` mutation. */
-export interface DeleteCountryInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** Primary key and code for country. */
-  code: string;
-}
-/** All input for the `deleteEventByNodeId` mutation. */
-export interface DeleteEventByNodeIdInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The globally unique `ID` which will identify a single `Event` to be deleted. */
-  nodeId: string;
-}
-/** All input for the `deleteEvent` mutation. */
-export interface DeleteEventInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** Primary key and id of event. */
-  id: string;
-}
-/** All input for the `deleteFollowListByNodeId` mutation. */
-export interface DeleteFollowListByNodeIdInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The globally unique `ID` which will identify a single `FollowList` to be deleted. */
-  nodeId: string;
-}
-/** All input for the `deleteFollowList` mutation. */
-export interface DeleteFollowListInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** Primary key and id of row. */
-  id: number;
-}
-/** All input for the `deleteGenreByNodeId` mutation. */
-export interface DeleteGenreByNodeIdInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The globally unique `ID` which will identify a single `Genre` to be deleted. */
-  nodeId: string;
-}
-/** All input for the `deleteGenre` mutation. */
-export interface DeleteGenreInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** Primary key and name of genre. */
-  name: string;
-}
-/** All input for the `deleteGenreToArtistByNodeId` mutation. */
-export interface DeleteGenreToArtistByNodeIdInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The globally unique `ID` which will identify a single `GenreToArtist` to be deleted. */
-  nodeId: string;
-}
-/** All input for the `deleteGenreToArtist` mutation. */
-export interface DeleteGenreToArtistInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** Id of the row. */
-  id: number;
-}
-/** All input for the `deletePushSubscriptionByNodeId` mutation. */
-export interface DeletePushSubscriptionByNodeIdInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The globally unique `ID` which will identify a single `PushSubscription` to be deleted. */
-  nodeId: string;
-}
-/** All input for the `deletePushSubscription` mutation. */
-export interface DeletePushSubscriptionInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** Unique identifier for the push subscription. */
-  id: number;
-}
-/** All input for the `deleteRegionByNodeId` mutation. */
-export interface DeleteRegionByNodeIdInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The globally unique `ID` which will identify a single `Region` to be deleted. */
-  nodeId: string;
-}
-/** All input for the `deleteRegion` mutation. */
-export interface DeleteRegionInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** Name and primary key of region. */
-  name: string;
-}
-/** All input for the `deleteUserAuthenticationByNodeId` mutation. */
-export interface DeleteUserAuthenticationByNodeIdInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The globally unique `ID` which will identify a single `UserAuthentication` to be deleted. */
-  nodeId: string;
-}
-/** All input for the `deleteUserAuthentication` mutation. */
-export interface DeleteUserAuthenticationInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-
-  id: number;
-}
-/** All input for the `deleteUserAuthenticationByServiceAndIdentifier` mutation. */
-export interface DeleteUserAuthenticationByServiceAndIdentifierInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The login service used, e.g. `twitter` or `github`. */
-  service: string;
-  /** A unique identifier for the user within the login service. */
-  identifier: string;
-}
-/** All input for the `deleteUserEmailByNodeId` mutation. */
-export interface DeleteUserEmailByNodeIdInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The globally unique `ID` which will identify a single `UserEmail` to be deleted. */
-  nodeId: string;
-}
-/** All input for the `deleteUserEmail` mutation. */
-export interface DeleteUserEmailInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-
-  id: number;
-}
-/** All input for the `deleteUserEmailByUserIdAndEmail` mutation. */
-export interface DeleteUserEmailByUserIdAndEmailInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-
-  userId: number;
-  /** The users email address, in `a@b.c` format. */
-  email: string;
-}
-/** All input for the `deleteUserByNodeId` mutation. */
-export interface DeleteUserByNodeIdInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The globally unique `ID` which will identify a single `User` to be deleted. */
-  nodeId: string;
-}
-/** All input for the `deleteUser` mutation. */
-export interface DeleteUserInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** Unique identifier for the user. */
-  id: number;
-}
-/** All input for the `deleteUserByUsername` mutation. */
-export interface DeleteUserByUsernameInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** Public-facing username (or 'handle') of the user. */
-  username: string;
-}
-/** All input for the `deleteVenueByNodeId` mutation. */
-export interface DeleteVenueByNodeIdInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The globally unique `ID` which will identify a single `Venue` to be deleted. */
-  nodeId: string;
-}
-/** All input for the `deleteVenue` mutation. */
-export interface DeleteVenueInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** Primary key and name of venue. */
-  name: string;
-}
-/** All input for the `deleteWatchListByNodeId` mutation. */
-export interface DeleteWatchListByNodeIdInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The globally unique `ID` which will identify a single `WatchList` to be deleted. */
-  nodeId: string;
-}
-/** All input for the `deleteWatchList` mutation. */
-export interface DeleteWatchListInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** Primary key and id of row. */
-  id: number;
-}
-/** All input for the `deleteWatchedToAccountByNodeId` mutation. */
-export interface DeleteWatchedToAccountByNodeIdInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** The globally unique `ID` which will identify a single `WatchedToAccount` to be deleted. */
-  nodeId: string;
-}
-/** All input for the `deleteWatchedToAccount` mutation. */
-export interface DeleteWatchedToAccountInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-  /** Id of the row. */
-  id: number;
-}
-/** All input for the `forgotPassword` mutation. */
-export interface ForgotPasswordInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-
-  email: string;
-}
-/** All input for the `resetPassword` mutation. */
-export interface ResetPasswordInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-
-  userId: number;
-
-  token: string;
-
-  newPassword: string;
-}
-/** All input for the `verifyUserEmail` mutation. */
-export interface VerifyUserEmailInput {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<string>;
-
-  token: string;
-}
-
-export interface RegisterInput {
-  username: string;
-
-  email: string;
-
-  password: string;
-
-  name?: Maybe<string>;
-
-  profile_photo?: Maybe<string>;
-}
-
-export interface LoginInput {
-  username: string;
-
-  password: string;
-}
 /** Methods to use when ordering `Artist`. */
 export enum ArtistsOrderBy {
-  Natural = "NATURAL",
-  NameAsc = "NAME_ASC",
-  NameDesc = "NAME_DESC",
-  PrimaryKeyAsc = "PRIMARY_KEY_ASC",
-  PrimaryKeyDesc = "PRIMARY_KEY_DESC"
+  NameAsc = 'NAME_ASC',
+  NameDesc = 'NAME_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC'
 }
-/** Methods to use when ordering `GenreToArtist`. */
-export enum GenreToArtistsOrderBy {
-  Natural = "NATURAL",
-  IdAsc = "ID_ASC",
-  IdDesc = "ID_DESC",
-  GenreIdAsc = "GENRE_ID_ASC",
-  GenreIdDesc = "GENRE_ID_DESC",
-  ArtistIdAsc = "ARTIST_ID_ASC",
-  ArtistIdDesc = "ARTIST_ID_DESC",
-  PrimaryKeyAsc = "PRIMARY_KEY_ASC",
-  PrimaryKeyDesc = "PRIMARY_KEY_DESC"
-}
+
+/** A join table for artists at an event. */
+export type ArtistToEvent = {
+   __typename?: 'ArtistToEvent',
+  /** Reads a single `Artist` that is related to this `ArtistToEvent`. */
+  artist?: Maybe<Artist>,
+  /** Ref to artist. */
+  artistId: Scalars['String'],
+  /** Reads a single `Event` that is related to this `ArtistToEvent`. */
+  event?: Maybe<Event>,
+  /** Ref to event. */
+  eventId: Scalars['String'],
+  /** Primary key and id of row. */
+  id: Scalars['Int'],
+};
+
+/** 
+ * A condition to be used against `ArtistToEvent` object types. All fields are
+ * tested for equality and combined with a logical ‘and.’
+ */
+export type ArtistToEventCondition = {
+  /** Checks for equality with the object’s `artistId` field. */
+  artistId?: Maybe<Scalars['String']>,
+  /** Checks for equality with the object’s `eventId` field. */
+  eventId?: Maybe<Scalars['String']>,
+  /** Checks for equality with the object’s `id` field. */
+  id?: Maybe<Scalars['Int']>,
+};
+
+/** A filter to be used against `ArtistToEvent` object types. All fields are combined with a logical ‘and.’ */
+export type ArtistToEventFilter = {
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<ArtistToEventFilter>>,
+  /** Filter by the object’s `artistId` field. */
+  artistId?: Maybe<StringFilter>,
+  /** Filter by the object’s `eventId` field. */
+  eventId?: Maybe<StringFilter>,
+  /** Filter by the object’s `id` field. */
+  id?: Maybe<IntFilter>,
+  /** Negates the expression. */
+  not?: Maybe<ArtistToEventFilter>,
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<ArtistToEventFilter>>,
+};
+
+/** An input for mutations affecting `ArtistToEvent` */
+export type ArtistToEventInput = {
+  /** Ref to artist. */
+  artistId: Scalars['String'],
+  /** Ref to event. */
+  eventId: Scalars['String'],
+  /** Primary key and id of row. */
+  id?: Maybe<Scalars['Int']>,
+};
+
+/** Represents an update to a `ArtistToEvent`. Fields that are set will be updated. */
+export type ArtistToEventPatch = {
+  /** Ref to artist. */
+  artistId?: Maybe<Scalars['String']>,
+  /** Ref to event. */
+  eventId?: Maybe<Scalars['String']>,
+  /** Primary key and id of row. */
+  id?: Maybe<Scalars['Int']>,
+};
+
+/** A connection to a list of `ArtistToEvent` values. */
+export type ArtistToEventsConnection = {
+   __typename?: 'ArtistToEventsConnection',
+  /** A list of edges which contains the `ArtistToEvent` and cursor to aid in pagination. */
+  edges: Array<ArtistToEventsEdge>,
+  /** A list of `ArtistToEvent` objects. */
+  nodes: Array<ArtistToEvent>,
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo,
+  /** The count of *all* `ArtistToEvent` you could get from the connection. */
+  totalCount: Scalars['Int'],
+};
+
+/** A `ArtistToEvent` edge in the connection. */
+export type ArtistToEventsEdge = {
+   __typename?: 'ArtistToEventsEdge',
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>,
+  /** The `ArtistToEvent` at the end of the edge. */
+  node: ArtistToEvent,
+};
+
 /** Methods to use when ordering `ArtistToEvent`. */
 export enum ArtistToEventsOrderBy {
-  Natural = "NATURAL",
-  IdAsc = "ID_ASC",
-  IdDesc = "ID_DESC",
-  ArtistIdAsc = "ARTIST_ID_ASC",
-  ArtistIdDesc = "ARTIST_ID_DESC",
-  EventIdAsc = "EVENT_ID_ASC",
-  EventIdDesc = "EVENT_ID_DESC",
-  PrimaryKeyAsc = "PRIMARY_KEY_ASC",
-  PrimaryKeyDesc = "PRIMARY_KEY_DESC"
+  ArtistIdAsc = 'ARTIST_ID_ASC',
+  ArtistIdDesc = 'ARTIST_ID_DESC',
+  EventIdAsc = 'EVENT_ID_ASC',
+  EventIdDesc = 'EVENT_ID_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC'
+}
+
+
+
+/** A filter to be used against BigInt fields. All fields are combined with a logical ‘and.’ */
+export type BigIntFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: Maybe<Scalars['BigInt']>,
+  /** Equal to the specified value. */
+  equalTo?: Maybe<Scalars['BigInt']>,
+  /** Greater than the specified value. */
+  greaterThan?: Maybe<Scalars['BigInt']>,
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: Maybe<Scalars['BigInt']>,
+  /** Included in the specified list. */
+  in?: Maybe<Array<Scalars['BigInt']>>,
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: Maybe<Scalars['Boolean']>,
+  /** Less than the specified value. */
+  lessThan?: Maybe<Scalars['BigInt']>,
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: Maybe<Scalars['BigInt']>,
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: Maybe<Scalars['BigInt']>,
+  /** Not equal to the specified value. */
+  notEqualTo?: Maybe<Scalars['BigInt']>,
+  /** Not included in the specified list. */
+  notIn?: Maybe<Array<Scalars['BigInt']>>,
+};
+
+/** A filter to be used against Boolean fields. All fields are combined with a logical ‘and.’ */
+export type BooleanFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: Maybe<Scalars['Boolean']>,
+  /** Equal to the specified value. */
+  equalTo?: Maybe<Scalars['Boolean']>,
+  /** Greater than the specified value. */
+  greaterThan?: Maybe<Scalars['Boolean']>,
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: Maybe<Scalars['Boolean']>,
+  /** Included in the specified list. */
+  in?: Maybe<Array<Scalars['Boolean']>>,
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: Maybe<Scalars['Boolean']>,
+  /** Less than the specified value. */
+  lessThan?: Maybe<Scalars['Boolean']>,
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: Maybe<Scalars['Boolean']>,
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: Maybe<Scalars['Boolean']>,
+  /** Not equal to the specified value. */
+  notEqualTo?: Maybe<Scalars['Boolean']>,
+  /** Not included in the specified list. */
+  notIn?: Maybe<Array<Scalars['Boolean']>>,
+};
+
+/** All input for the `changePassword` mutation. */
+export type ChangePasswordInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  newPassword: Scalars['String'],
+  oldPassword: Scalars['String'],
+};
+
+/** The output of our `changePassword` mutation. */
+export type ChangePasswordPayload = {
+   __typename?: 'ChangePasswordPayload',
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+  success?: Maybe<Scalars['Boolean']>,
+};
+
+/** A connection to a list of `City` values. */
+export type CitiesConnection = {
+   __typename?: 'CitiesConnection',
+  /** A list of edges which contains the `City` and cursor to aid in pagination. */
+  edges: Array<CitiesEdge>,
+  /** A list of `City` objects. */
+  nodes: Array<City>,
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo,
+  /** The count of *all* `City` you could get from the connection. */
+  totalCount: Scalars['Int'],
+};
+
+/** A `City` edge in the connection. */
+export type CitiesEdge = {
+   __typename?: 'CitiesEdge',
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>,
+  /** The `City` at the end of the edge. */
+  node: City,
+};
+
+/** Methods to use when ordering `City`. */
+export enum CitiesOrderBy {
+  CountryAsc = 'COUNTRY_ASC',
+  CountryDesc = 'COUNTRY_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  RegionAsc = 'REGION_ASC',
+  RegionDesc = 'REGION_DESC'
+}
+
+/** A city in the application. */
+export type City = {
+   __typename?: 'City',
+  /** Region ref for country. */
+  country?: Maybe<Scalars['String']>,
+  /** Reads a single `Country` that is related to this `City`. */
+  countryByCountry?: Maybe<Country>,
+  createdAt: Scalars['Datetime'],
+  /** Description of the genre. */
+  description?: Maybe<Scalars['String']>,
+  /** Reads and enables pagination through a set of `Event`. */
+  eventsByCity: EventsConnection,
+  /** Primary key and id for city. */
+  id: Scalars['Int'],
+  /** Name for city. */
+  name?: Maybe<Scalars['String']>,
+  /** Photo for city. */
+  photo?: Maybe<Scalars['String']>,
+  /** Region ref for city. */
+  region?: Maybe<Scalars['String']>,
+  /** Reads a single `Region` that is related to this `City`. */
+  regionByRegion?: Maybe<Region>,
+  updatedAt: Scalars['Datetime'],
+  /** Reads and enables pagination through a set of `Venue`. */
+  venuesByCity: VenuesConnection,
+  /** Reads and enables pagination through a set of `WatchedToAccount`. */
+  watchedToAccounts: WatchedToAccountsConnection,
+};
+
+
+/** A city in the application. */
+export type CityEventsByCityArgs = {
+  after?: Maybe<Scalars['Cursor']>,
+  before?: Maybe<Scalars['Cursor']>,
+  condition?: Maybe<EventCondition>,
+  filter?: Maybe<EventFilter>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  orderBy?: Maybe<Array<EventsOrderBy>>
+};
+
+
+/** A city in the application. */
+export type CityVenuesByCityArgs = {
+  after?: Maybe<Scalars['Cursor']>,
+  before?: Maybe<Scalars['Cursor']>,
+  condition?: Maybe<VenueCondition>,
+  filter?: Maybe<VenueFilter>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  orderBy?: Maybe<Array<VenuesOrderBy>>
+};
+
+
+/** A city in the application. */
+export type CityWatchedToAccountsArgs = {
+  after?: Maybe<Scalars['Cursor']>,
+  before?: Maybe<Scalars['Cursor']>,
+  condition?: Maybe<WatchedToAccountCondition>,
+  filter?: Maybe<WatchedToAccountFilter>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  orderBy?: Maybe<Array<WatchedToAccountsOrderBy>>
+};
+
+/** A condition to be used against `City` object types. All fields are tested for equality and combined with a logical ‘and.’ */
+export type CityCondition = {
+  /** Checks for equality with the object’s `country` field. */
+  country?: Maybe<Scalars['String']>,
+  /** Checks for equality with the object’s `id` field. */
+  id?: Maybe<Scalars['Int']>,
+  /** Checks for equality with the object’s `region` field. */
+  region?: Maybe<Scalars['String']>,
+};
+
+/** A filter to be used against `City` object types. All fields are combined with a logical ‘and.’ */
+export type CityFilter = {
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<CityFilter>>,
+  /** Filter by the object’s `country` field. */
+  country?: Maybe<StringFilter>,
+  /** Filter by the object’s `id` field. */
+  id?: Maybe<IntFilter>,
+  /** Negates the expression. */
+  not?: Maybe<CityFilter>,
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<CityFilter>>,
+  /** Filter by the object’s `region` field. */
+  region?: Maybe<StringFilter>,
+};
+
+/** An input for mutations affecting `City` */
+export type CityInput = {
+  /** Region ref for country. */
+  country?: Maybe<Scalars['String']>,
+  createdAt?: Maybe<Scalars['Datetime']>,
+  /** Description of the genre. */
+  description?: Maybe<Scalars['String']>,
+  /** Primary key and id for city. */
+  id?: Maybe<Scalars['Int']>,
+  /** Name for city. */
+  name?: Maybe<Scalars['String']>,
+  /** Photo for city. */
+  photo?: Maybe<Scalars['String']>,
+  /** Region ref for city. */
+  region?: Maybe<Scalars['String']>,
+  updatedAt?: Maybe<Scalars['Datetime']>,
+};
+
+/** Represents an update to a `City`. Fields that are set will be updated. */
+export type CityPatch = {
+  /** Region ref for country. */
+  country?: Maybe<Scalars['String']>,
+  createdAt?: Maybe<Scalars['Datetime']>,
+  /** Description of the genre. */
+  description?: Maybe<Scalars['String']>,
+  /** Primary key and id for city. */
+  id?: Maybe<Scalars['Int']>,
+  /** Name for city. */
+  name?: Maybe<Scalars['String']>,
+  /** Photo for city. */
+  photo?: Maybe<Scalars['String']>,
+  /** Region ref for city. */
+  region?: Maybe<Scalars['String']>,
+  updatedAt?: Maybe<Scalars['Datetime']>,
+};
+
+/** All input for the `confirmAccountDeletion` mutation. */
+export type ConfirmAccountDeletionInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  token: Scalars['String'],
+};
+
+/** The output of our `confirmAccountDeletion` mutation. */
+export type ConfirmAccountDeletionPayload = {
+   __typename?: 'ConfirmAccountDeletionPayload',
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+  success?: Maybe<Scalars['Boolean']>,
+};
+
+/** A connection to a list of `Country` values. */
+export type CountriesConnection = {
+   __typename?: 'CountriesConnection',
+  /** A list of edges which contains the `Country` and cursor to aid in pagination. */
+  edges: Array<CountriesEdge>,
+  /** A list of `Country` objects. */
+  nodes: Array<Country>,
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo,
+  /** The count of *all* `Country` you could get from the connection. */
+  totalCount: Scalars['Int'],
+};
+
+/** A `Country` edge in the connection. */
+export type CountriesEdge = {
+   __typename?: 'CountriesEdge',
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>,
+  /** The `Country` at the end of the edge. */
+  node: Country,
+};
+
+/** Methods to use when ordering `Country`. */
+export enum CountriesOrderBy {
+  CodeAsc = 'CODE_ASC',
+  CodeDesc = 'CODE_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC'
+}
+
+/** A country in the application. */
+export type Country = {
+   __typename?: 'Country',
+  /** Reads and enables pagination through a set of `City`. */
+  citiesByCountry: CitiesConnection,
+  /** Primary key and code for country. */
+  code: Scalars['String'],
+  createdAt: Scalars['Datetime'],
+  /** Reads and enables pagination through a set of `Event`. */
+  eventsByCountry: EventsConnection,
+  /** Name for country. */
+  name?: Maybe<Scalars['String']>,
+  /** Reads and enables pagination through a set of `Region`. */
+  regionsByCountry: RegionsConnection,
+  updatedAt: Scalars['Datetime'],
+};
+
+
+/** A country in the application. */
+export type CountryCitiesByCountryArgs = {
+  after?: Maybe<Scalars['Cursor']>,
+  before?: Maybe<Scalars['Cursor']>,
+  condition?: Maybe<CityCondition>,
+  filter?: Maybe<CityFilter>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  orderBy?: Maybe<Array<CitiesOrderBy>>
+};
+
+
+/** A country in the application. */
+export type CountryEventsByCountryArgs = {
+  after?: Maybe<Scalars['Cursor']>,
+  before?: Maybe<Scalars['Cursor']>,
+  condition?: Maybe<EventCondition>,
+  filter?: Maybe<EventFilter>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  orderBy?: Maybe<Array<EventsOrderBy>>
+};
+
+
+/** A country in the application. */
+export type CountryRegionsByCountryArgs = {
+  after?: Maybe<Scalars['Cursor']>,
+  before?: Maybe<Scalars['Cursor']>,
+  condition?: Maybe<RegionCondition>,
+  filter?: Maybe<RegionFilter>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  orderBy?: Maybe<Array<RegionsOrderBy>>
+};
+
+/** A condition to be used against `Country` object types. All fields are tested for equality and combined with a logical ‘and.’ */
+export type CountryCondition = {
+  /** Checks for equality with the object’s `code` field. */
+  code?: Maybe<Scalars['String']>,
+};
+
+/** A filter to be used against `Country` object types. All fields are combined with a logical ‘and.’ */
+export type CountryFilter = {
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<CountryFilter>>,
+  /** Filter by the object’s `code` field. */
+  code?: Maybe<StringFilter>,
+  /** Negates the expression. */
+  not?: Maybe<CountryFilter>,
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<CountryFilter>>,
+};
+
+/** An input for mutations affecting `Country` */
+export type CountryInput = {
+  /** Primary key and code for country. */
+  code: Scalars['String'],
+  createdAt?: Maybe<Scalars['Datetime']>,
+  /** Name for country. */
+  name?: Maybe<Scalars['String']>,
+  updatedAt?: Maybe<Scalars['Datetime']>,
+};
+
+/** Represents an update to a `Country`. Fields that are set will be updated. */
+export type CountryPatch = {
+  /** Primary key and code for country. */
+  code?: Maybe<Scalars['String']>,
+  createdAt?: Maybe<Scalars['Datetime']>,
+  /** Name for country. */
+  name?: Maybe<Scalars['String']>,
+  updatedAt?: Maybe<Scalars['Datetime']>,
+};
+
+/** All input for the create `Artist` mutation. */
+export type CreateArtistInput = {
+  /** The `Artist` to be created by this mutation. */
+  artist: ArtistInput,
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+};
+
+/** The output of our create `Artist` mutation. */
+export type CreateArtistPayload = {
+   __typename?: 'CreateArtistPayload',
+  /** The `Artist` that was created by this mutation. */
+  artist?: Maybe<Artist>,
+  /** An edge for our `Artist`. May be used by Relay 1. */
+  artistEdge?: Maybe<ArtistsEdge>,
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+};
+
+
+/** The output of our create `Artist` mutation. */
+export type CreateArtistPayloadArtistEdgeArgs = {
+  orderBy?: Maybe<Array<ArtistsOrderBy>>
+};
+
+/** All input for the create `ArtistToEvent` mutation. */
+export type CreateArtistToEventInput = {
+  /** The `ArtistToEvent` to be created by this mutation. */
+  artistToEvent: ArtistToEventInput,
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+};
+
+/** The output of our create `ArtistToEvent` mutation. */
+export type CreateArtistToEventPayload = {
+   __typename?: 'CreateArtistToEventPayload',
+  /** Reads a single `Artist` that is related to this `ArtistToEvent`. */
+  artist?: Maybe<Artist>,
+  /** The `ArtistToEvent` that was created by this mutation. */
+  artistToEvent?: Maybe<ArtistToEvent>,
+  /** An edge for our `ArtistToEvent`. May be used by Relay 1. */
+  artistToEventEdge?: Maybe<ArtistToEventsEdge>,
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Reads a single `Event` that is related to this `ArtistToEvent`. */
+  event?: Maybe<Event>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+};
+
+
+/** The output of our create `ArtistToEvent` mutation. */
+export type CreateArtistToEventPayloadArtistToEventEdgeArgs = {
+  orderBy?: Maybe<Array<ArtistToEventsOrderBy>>
+};
+
+/** All input for the create `City` mutation. */
+export type CreateCityInput = {
+  /** The `City` to be created by this mutation. */
+  city: CityInput,
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+};
+
+/** The output of our create `City` mutation. */
+export type CreateCityPayload = {
+   __typename?: 'CreateCityPayload',
+  /** The `City` that was created by this mutation. */
+  city?: Maybe<City>,
+  /** An edge for our `City`. May be used by Relay 1. */
+  cityEdge?: Maybe<CitiesEdge>,
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Reads a single `Country` that is related to this `City`. */
+  countryByCountry?: Maybe<Country>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+  /** Reads a single `Region` that is related to this `City`. */
+  regionByRegion?: Maybe<Region>,
+};
+
+
+/** The output of our create `City` mutation. */
+export type CreateCityPayloadCityEdgeArgs = {
+  orderBy?: Maybe<Array<CitiesOrderBy>>
+};
+
+/** All input for the create `Country` mutation. */
+export type CreateCountryInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** The `Country` to be created by this mutation. */
+  country: CountryInput,
+};
+
+/** The output of our create `Country` mutation. */
+export type CreateCountryPayload = {
+   __typename?: 'CreateCountryPayload',
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** The `Country` that was created by this mutation. */
+  country?: Maybe<Country>,
+  /** An edge for our `Country`. May be used by Relay 1. */
+  countryEdge?: Maybe<CountriesEdge>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+};
+
+
+/** The output of our create `Country` mutation. */
+export type CreateCountryPayloadCountryEdgeArgs = {
+  orderBy?: Maybe<Array<CountriesOrderBy>>
+};
+
+/** All input for the create `Event` mutation. */
+export type CreateEventInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** The `Event` to be created by this mutation. */
+  event: EventInput,
+};
+
+/** The output of our create `Event` mutation. */
+export type CreateEventPayload = {
+   __typename?: 'CreateEventPayload',
+  /** Reads a single `City` that is related to this `Event`. */
+  cityByCity?: Maybe<City>,
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Reads a single `Country` that is related to this `Event`. */
+  countryByCountry?: Maybe<Country>,
+  /** The `Event` that was created by this mutation. */
+  event?: Maybe<Event>,
+  /** An edge for our `Event`. May be used by Relay 1. */
+  eventEdge?: Maybe<EventsEdge>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+  /** Reads a single `Region` that is related to this `Event`. */
+  regionByRegion?: Maybe<Region>,
+  /** Reads a single `User` that is related to this `Event`. */
+  userByContributor?: Maybe<User>,
+  /** Reads a single `Venue` that is related to this `Event`. */
+  venueByVenue?: Maybe<Venue>,
+};
+
+
+/** The output of our create `Event` mutation. */
+export type CreateEventPayloadEventEdgeArgs = {
+  orderBy?: Maybe<Array<EventsOrderBy>>
+};
+
+/** All input for the create `FollowList` mutation. */
+export type CreateFollowListInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** The `FollowList` to be created by this mutation. */
+  followList: FollowListInput,
+};
+
+/** The output of our create `FollowList` mutation. */
+export type CreateFollowListPayload = {
+   __typename?: 'CreateFollowListPayload',
+  /** Reads a single `Artist` that is related to this `FollowList`. */
+  artist?: Maybe<Artist>,
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** The `FollowList` that was created by this mutation. */
+  followList?: Maybe<FollowList>,
+  /** An edge for our `FollowList`. May be used by Relay 1. */
+  followListEdge?: Maybe<FollowListsEdge>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+  /** Reads a single `User` that is related to this `FollowList`. */
+  user?: Maybe<User>,
+  /** Reads a single `Venue` that is related to this `FollowList`. */
+  venue?: Maybe<Venue>,
+};
+
+
+/** The output of our create `FollowList` mutation. */
+export type CreateFollowListPayloadFollowListEdgeArgs = {
+  orderBy?: Maybe<Array<FollowListsOrderBy>>
+};
+
+/** All input for the create `Genre` mutation. */
+export type CreateGenreInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** The `Genre` to be created by this mutation. */
+  genre: GenreInput,
+};
+
+/** The output of our create `Genre` mutation. */
+export type CreateGenrePayload = {
+   __typename?: 'CreateGenrePayload',
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** The `Genre` that was created by this mutation. */
+  genre?: Maybe<Genre>,
+  /** An edge for our `Genre`. May be used by Relay 1. */
+  genreEdge?: Maybe<GenresEdge>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+};
+
+
+/** The output of our create `Genre` mutation. */
+export type CreateGenrePayloadGenreEdgeArgs = {
+  orderBy?: Maybe<Array<GenresOrderBy>>
+};
+
+/** All input for the create `GenreToArtist` mutation. */
+export type CreateGenreToArtistInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** The `GenreToArtist` to be created by this mutation. */
+  genreToArtist: GenreToArtistInput,
+};
+
+/** The output of our create `GenreToArtist` mutation. */
+export type CreateGenreToArtistPayload = {
+   __typename?: 'CreateGenreToArtistPayload',
+  /** Reads a single `Artist` that is related to this `GenreToArtist`. */
+  artist?: Maybe<Artist>,
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Reads a single `Genre` that is related to this `GenreToArtist`. */
+  genre?: Maybe<Genre>,
+  /** The `GenreToArtist` that was created by this mutation. */
+  genreToArtist?: Maybe<GenreToArtist>,
+  /** An edge for our `GenreToArtist`. May be used by Relay 1. */
+  genreToArtistEdge?: Maybe<GenreToArtistsEdge>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+};
+
+
+/** The output of our create `GenreToArtist` mutation. */
+export type CreateGenreToArtistPayloadGenreToArtistEdgeArgs = {
+  orderBy?: Maybe<Array<GenreToArtistsOrderBy>>
+};
+
+/** All input for the create `PushSubscription` mutation. */
+export type CreatePushSubscriptionInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** The `PushSubscription` to be created by this mutation. */
+  pushSubscription: PushSubscriptionInput,
+};
+
+/** The output of our create `PushSubscription` mutation. */
+export type CreatePushSubscriptionPayload = {
+   __typename?: 'CreatePushSubscriptionPayload',
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** The `PushSubscription` that was created by this mutation. */
+  pushSubscription?: Maybe<PushSubscription>,
+  /** An edge for our `PushSubscription`. May be used by Relay 1. */
+  pushSubscriptionEdge?: Maybe<PushSubscriptionsEdge>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+  /** Reads a single `User` that is related to this `PushSubscription`. */
+  user?: Maybe<User>,
+};
+
+
+/** The output of our create `PushSubscription` mutation. */
+export type CreatePushSubscriptionPayloadPushSubscriptionEdgeArgs = {
+  orderBy?: Maybe<Array<PushSubscriptionsOrderBy>>
+};
+
+/** All input for the create `Region` mutation. */
+export type CreateRegionInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** The `Region` to be created by this mutation. */
+  region: RegionInput,
+};
+
+/** The output of our create `Region` mutation. */
+export type CreateRegionPayload = {
+   __typename?: 'CreateRegionPayload',
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Reads a single `Country` that is related to this `Region`. */
+  countryByCountry?: Maybe<Country>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+  /** The `Region` that was created by this mutation. */
+  region?: Maybe<Region>,
+  /** An edge for our `Region`. May be used by Relay 1. */
+  regionEdge?: Maybe<RegionsEdge>,
+};
+
+
+/** The output of our create `Region` mutation. */
+export type CreateRegionPayloadRegionEdgeArgs = {
+  orderBy?: Maybe<Array<RegionsOrderBy>>
+};
+
+/** All input for the create `UserEmail` mutation. */
+export type CreateUserEmailInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** The `UserEmail` to be created by this mutation. */
+  userEmail: UserEmailInput,
+};
+
+/** The output of our create `UserEmail` mutation. */
+export type CreateUserEmailPayload = {
+   __typename?: 'CreateUserEmailPayload',
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+  /** Reads a single `User` that is related to this `UserEmail`. */
+  user?: Maybe<User>,
+  /** The `UserEmail` that was created by this mutation. */
+  userEmail?: Maybe<UserEmail>,
+  /** An edge for our `UserEmail`. May be used by Relay 1. */
+  userEmailEdge?: Maybe<UserEmailsEdge>,
+};
+
+
+/** The output of our create `UserEmail` mutation. */
+export type CreateUserEmailPayloadUserEmailEdgeArgs = {
+  orderBy?: Maybe<Array<UserEmailsOrderBy>>
+};
+
+/** All input for the create `Venue` mutation. */
+export type CreateVenueInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** The `Venue` to be created by this mutation. */
+  venue: VenueInput,
+};
+
+/** The output of our create `Venue` mutation. */
+export type CreateVenuePayload = {
+   __typename?: 'CreateVenuePayload',
+  /** Reads a single `City` that is related to this `Venue`. */
+  cityByCity?: Maybe<City>,
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+  /** The `Venue` that was created by this mutation. */
+  venue?: Maybe<Venue>,
+  /** An edge for our `Venue`. May be used by Relay 1. */
+  venueEdge?: Maybe<VenuesEdge>,
+};
+
+
+/** The output of our create `Venue` mutation. */
+export type CreateVenuePayloadVenueEdgeArgs = {
+  orderBy?: Maybe<Array<VenuesOrderBy>>
+};
+
+/** All input for the create `WatchedToAccount` mutation. */
+export type CreateWatchedToAccountInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** The `WatchedToAccount` to be created by this mutation. */
+  watchedToAccount: WatchedToAccountInput,
+};
+
+/** The output of our create `WatchedToAccount` mutation. */
+export type CreateWatchedToAccountPayload = {
+   __typename?: 'CreateWatchedToAccountPayload',
+  /** Reads a single `City` that is related to this `WatchedToAccount`. */
+  city?: Maybe<City>,
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+  /** Reads a single `Region` that is related to this `WatchedToAccount`. */
+  regionByRegion?: Maybe<Region>,
+  /** Reads a single `User` that is related to this `WatchedToAccount`. */
+  user?: Maybe<User>,
+  /** The `WatchedToAccount` that was created by this mutation. */
+  watchedToAccount?: Maybe<WatchedToAccount>,
+  /** An edge for our `WatchedToAccount`. May be used by Relay 1. */
+  watchedToAccountEdge?: Maybe<WatchedToAccountsEdge>,
+};
+
+
+/** The output of our create `WatchedToAccount` mutation. */
+export type CreateWatchedToAccountPayloadWatchedToAccountEdgeArgs = {
+  orderBy?: Maybe<Array<WatchedToAccountsOrderBy>>
+};
+
+/** All input for the create `WatchList` mutation. */
+export type CreateWatchListInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** The `WatchList` to be created by this mutation. */
+  watchList: WatchListInput,
+};
+
+/** The output of our create `WatchList` mutation. */
+export type CreateWatchListPayload = {
+   __typename?: 'CreateWatchListPayload',
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Reads a single `Event` that is related to this `WatchList`. */
+  event?: Maybe<Event>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+  /** Reads a single `User` that is related to this `WatchList`. */
+  user?: Maybe<User>,
+  /** The `WatchList` that was created by this mutation. */
+  watchList?: Maybe<WatchList>,
+  /** An edge for our `WatchList`. May be used by Relay 1. */
+  watchListEdge?: Maybe<WatchListsEdge>,
+};
+
+
+/** The output of our create `WatchList` mutation. */
+export type CreateWatchListPayloadWatchListEdgeArgs = {
+  orderBy?: Maybe<Array<WatchListsOrderBy>>
+};
+
+
+
+/** A filter to be used against Datetime fields. All fields are combined with a logical ‘and.’ */
+export type DatetimeFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: Maybe<Scalars['Datetime']>,
+  /** Equal to the specified value. */
+  equalTo?: Maybe<Scalars['Datetime']>,
+  /** Greater than the specified value. */
+  greaterThan?: Maybe<Scalars['Datetime']>,
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: Maybe<Scalars['Datetime']>,
+  /** Included in the specified list. */
+  in?: Maybe<Array<Scalars['Datetime']>>,
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: Maybe<Scalars['Boolean']>,
+  /** Less than the specified value. */
+  lessThan?: Maybe<Scalars['Datetime']>,
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: Maybe<Scalars['Datetime']>,
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: Maybe<Scalars['Datetime']>,
+  /** Not equal to the specified value. */
+  notEqualTo?: Maybe<Scalars['Datetime']>,
+  /** Not included in the specified list. */
+  notIn?: Maybe<Array<Scalars['Datetime']>>,
+};
+
+/** All input for the `deleteArtist` mutation. */
+export type DeleteArtistInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Primary key and name of artist. */
+  name: Scalars['String'],
+};
+
+/** The output of our delete `Artist` mutation. */
+export type DeleteArtistPayload = {
+   __typename?: 'DeleteArtistPayload',
+  /** The `Artist` that was deleted by this mutation. */
+  artist?: Maybe<Artist>,
+  /** An edge for our `Artist`. May be used by Relay 1. */
+  artistEdge?: Maybe<ArtistsEdge>,
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  deletedArtistNodeId?: Maybe<Scalars['ID']>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+};
+
+
+/** The output of our delete `Artist` mutation. */
+export type DeleteArtistPayloadArtistEdgeArgs = {
+  orderBy?: Maybe<Array<ArtistsOrderBy>>
+};
+
+/** All input for the `deleteArtistToEvent` mutation. */
+export type DeleteArtistToEventInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Primary key and id of row. */
+  id: Scalars['Int'],
+};
+
+/** The output of our delete `ArtistToEvent` mutation. */
+export type DeleteArtistToEventPayload = {
+   __typename?: 'DeleteArtistToEventPayload',
+  /** Reads a single `Artist` that is related to this `ArtistToEvent`. */
+  artist?: Maybe<Artist>,
+  /** The `ArtistToEvent` that was deleted by this mutation. */
+  artistToEvent?: Maybe<ArtistToEvent>,
+  /** An edge for our `ArtistToEvent`. May be used by Relay 1. */
+  artistToEventEdge?: Maybe<ArtistToEventsEdge>,
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  deletedArtistToEventNodeId?: Maybe<Scalars['ID']>,
+  /** Reads a single `Event` that is related to this `ArtistToEvent`. */
+  event?: Maybe<Event>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+};
+
+
+/** The output of our delete `ArtistToEvent` mutation. */
+export type DeleteArtistToEventPayloadArtistToEventEdgeArgs = {
+  orderBy?: Maybe<Array<ArtistToEventsOrderBy>>
+};
+
+/** All input for the `deleteCity` mutation. */
+export type DeleteCityInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Primary key and id for city. */
+  id: Scalars['Int'],
+};
+
+/** The output of our delete `City` mutation. */
+export type DeleteCityPayload = {
+   __typename?: 'DeleteCityPayload',
+  /** The `City` that was deleted by this mutation. */
+  city?: Maybe<City>,
+  /** An edge for our `City`. May be used by Relay 1. */
+  cityEdge?: Maybe<CitiesEdge>,
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Reads a single `Country` that is related to this `City`. */
+  countryByCountry?: Maybe<Country>,
+  deletedCityNodeId?: Maybe<Scalars['ID']>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+  /** Reads a single `Region` that is related to this `City`. */
+  regionByRegion?: Maybe<Region>,
+};
+
+
+/** The output of our delete `City` mutation. */
+export type DeleteCityPayloadCityEdgeArgs = {
+  orderBy?: Maybe<Array<CitiesOrderBy>>
+};
+
+/** All input for the `deleteCountry` mutation. */
+export type DeleteCountryInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Primary key and code for country. */
+  code: Scalars['String'],
+};
+
+/** The output of our delete `Country` mutation. */
+export type DeleteCountryPayload = {
+   __typename?: 'DeleteCountryPayload',
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** The `Country` that was deleted by this mutation. */
+  country?: Maybe<Country>,
+  /** An edge for our `Country`. May be used by Relay 1. */
+  countryEdge?: Maybe<CountriesEdge>,
+  deletedCountryNodeId?: Maybe<Scalars['ID']>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+};
+
+
+/** The output of our delete `Country` mutation. */
+export type DeleteCountryPayloadCountryEdgeArgs = {
+  orderBy?: Maybe<Array<CountriesOrderBy>>
+};
+
+/** All input for the `deleteEvent` mutation. */
+export type DeleteEventInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Primary key and id of event. */
+  id: Scalars['String'],
+};
+
+/** The output of our delete `Event` mutation. */
+export type DeleteEventPayload = {
+   __typename?: 'DeleteEventPayload',
+  /** Reads a single `City` that is related to this `Event`. */
+  cityByCity?: Maybe<City>,
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Reads a single `Country` that is related to this `Event`. */
+  countryByCountry?: Maybe<Country>,
+  deletedEventNodeId?: Maybe<Scalars['ID']>,
+  /** The `Event` that was deleted by this mutation. */
+  event?: Maybe<Event>,
+  /** An edge for our `Event`. May be used by Relay 1. */
+  eventEdge?: Maybe<EventsEdge>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+  /** Reads a single `Region` that is related to this `Event`. */
+  regionByRegion?: Maybe<Region>,
+  /** Reads a single `User` that is related to this `Event`. */
+  userByContributor?: Maybe<User>,
+  /** Reads a single `Venue` that is related to this `Event`. */
+  venueByVenue?: Maybe<Venue>,
+};
+
+
+/** The output of our delete `Event` mutation. */
+export type DeleteEventPayloadEventEdgeArgs = {
+  orderBy?: Maybe<Array<EventsOrderBy>>
+};
+
+/** All input for the `deleteFollowList` mutation. */
+export type DeleteFollowListInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Primary key and id of row. */
+  id: Scalars['Int'],
+};
+
+/** The output of our delete `FollowList` mutation. */
+export type DeleteFollowListPayload = {
+   __typename?: 'DeleteFollowListPayload',
+  /** Reads a single `Artist` that is related to this `FollowList`. */
+  artist?: Maybe<Artist>,
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  deletedFollowListNodeId?: Maybe<Scalars['ID']>,
+  /** The `FollowList` that was deleted by this mutation. */
+  followList?: Maybe<FollowList>,
+  /** An edge for our `FollowList`. May be used by Relay 1. */
+  followListEdge?: Maybe<FollowListsEdge>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+  /** Reads a single `User` that is related to this `FollowList`. */
+  user?: Maybe<User>,
+  /** Reads a single `Venue` that is related to this `FollowList`. */
+  venue?: Maybe<Venue>,
+};
+
+
+/** The output of our delete `FollowList` mutation. */
+export type DeleteFollowListPayloadFollowListEdgeArgs = {
+  orderBy?: Maybe<Array<FollowListsOrderBy>>
+};
+
+/** All input for the `deleteGenre` mutation. */
+export type DeleteGenreInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Primary key and name of genre. */
+  name: Scalars['String'],
+};
+
+/** The output of our delete `Genre` mutation. */
+export type DeleteGenrePayload = {
+   __typename?: 'DeleteGenrePayload',
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  deletedGenreNodeId?: Maybe<Scalars['ID']>,
+  /** The `Genre` that was deleted by this mutation. */
+  genre?: Maybe<Genre>,
+  /** An edge for our `Genre`. May be used by Relay 1. */
+  genreEdge?: Maybe<GenresEdge>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+};
+
+
+/** The output of our delete `Genre` mutation. */
+export type DeleteGenrePayloadGenreEdgeArgs = {
+  orderBy?: Maybe<Array<GenresOrderBy>>
+};
+
+/** All input for the `deleteGenreToArtist` mutation. */
+export type DeleteGenreToArtistInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Id of the row. */
+  id: Scalars['Int'],
+};
+
+/** The output of our delete `GenreToArtist` mutation. */
+export type DeleteGenreToArtistPayload = {
+   __typename?: 'DeleteGenreToArtistPayload',
+  /** Reads a single `Artist` that is related to this `GenreToArtist`. */
+  artist?: Maybe<Artist>,
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  deletedGenreToArtistNodeId?: Maybe<Scalars['ID']>,
+  /** Reads a single `Genre` that is related to this `GenreToArtist`. */
+  genre?: Maybe<Genre>,
+  /** The `GenreToArtist` that was deleted by this mutation. */
+  genreToArtist?: Maybe<GenreToArtist>,
+  /** An edge for our `GenreToArtist`. May be used by Relay 1. */
+  genreToArtistEdge?: Maybe<GenreToArtistsEdge>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+};
+
+
+/** The output of our delete `GenreToArtist` mutation. */
+export type DeleteGenreToArtistPayloadGenreToArtistEdgeArgs = {
+  orderBy?: Maybe<Array<GenreToArtistsOrderBy>>
+};
+
+/** All input for the `deletePushSubscription` mutation. */
+export type DeletePushSubscriptionInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Unique identifier for the push subscription. */
+  id: Scalars['Int'],
+};
+
+/** The output of our delete `PushSubscription` mutation. */
+export type DeletePushSubscriptionPayload = {
+   __typename?: 'DeletePushSubscriptionPayload',
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  deletedPushSubscriptionNodeId?: Maybe<Scalars['ID']>,
+  /** The `PushSubscription` that was deleted by this mutation. */
+  pushSubscription?: Maybe<PushSubscription>,
+  /** An edge for our `PushSubscription`. May be used by Relay 1. */
+  pushSubscriptionEdge?: Maybe<PushSubscriptionsEdge>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+  /** Reads a single `User` that is related to this `PushSubscription`. */
+  user?: Maybe<User>,
+};
+
+
+/** The output of our delete `PushSubscription` mutation. */
+export type DeletePushSubscriptionPayloadPushSubscriptionEdgeArgs = {
+  orderBy?: Maybe<Array<PushSubscriptionsOrderBy>>
+};
+
+/** All input for the `deleteRegion` mutation. */
+export type DeleteRegionInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Name and primary key of region. */
+  name: Scalars['String'],
+};
+
+/** The output of our delete `Region` mutation. */
+export type DeleteRegionPayload = {
+   __typename?: 'DeleteRegionPayload',
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Reads a single `Country` that is related to this `Region`. */
+  countryByCountry?: Maybe<Country>,
+  deletedRegionNodeId?: Maybe<Scalars['ID']>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+  /** The `Region` that was deleted by this mutation. */
+  region?: Maybe<Region>,
+  /** An edge for our `Region`. May be used by Relay 1. */
+  regionEdge?: Maybe<RegionsEdge>,
+};
+
+
+/** The output of our delete `Region` mutation. */
+export type DeleteRegionPayloadRegionEdgeArgs = {
+  orderBy?: Maybe<Array<RegionsOrderBy>>
+};
+
+/** All input for the `deleteUserAuthentication` mutation. */
+export type DeleteUserAuthenticationInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  id: Scalars['Int'],
+};
+
+/** The output of our delete `UserAuthentication` mutation. */
+export type DeleteUserAuthenticationPayload = {
+   __typename?: 'DeleteUserAuthenticationPayload',
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  deletedUserAuthenticationNodeId?: Maybe<Scalars['ID']>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+  /** Reads a single `User` that is related to this `UserAuthentication`. */
+  user?: Maybe<User>,
+  /** The `UserAuthentication` that was deleted by this mutation. */
+  userAuthentication?: Maybe<UserAuthentication>,
+};
+
+/** All input for the `deleteUserEmail` mutation. */
+export type DeleteUserEmailInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  id: Scalars['Int'],
+};
+
+/** The output of our delete `UserEmail` mutation. */
+export type DeleteUserEmailPayload = {
+   __typename?: 'DeleteUserEmailPayload',
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  deletedUserEmailNodeId?: Maybe<Scalars['ID']>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+  /** Reads a single `User` that is related to this `UserEmail`. */
+  user?: Maybe<User>,
+  /** The `UserEmail` that was deleted by this mutation. */
+  userEmail?: Maybe<UserEmail>,
+  /** An edge for our `UserEmail`. May be used by Relay 1. */
+  userEmailEdge?: Maybe<UserEmailsEdge>,
+};
+
+
+/** The output of our delete `UserEmail` mutation. */
+export type DeleteUserEmailPayloadUserEmailEdgeArgs = {
+  orderBy?: Maybe<Array<UserEmailsOrderBy>>
+};
+
+/** All input for the `deleteVenue` mutation. */
+export type DeleteVenueInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Primary key and name of venue. */
+  name: Scalars['String'],
+};
+
+/** The output of our delete `Venue` mutation. */
+export type DeleteVenuePayload = {
+   __typename?: 'DeleteVenuePayload',
+  /** Reads a single `City` that is related to this `Venue`. */
+  cityByCity?: Maybe<City>,
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  deletedVenueNodeId?: Maybe<Scalars['ID']>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+  /** The `Venue` that was deleted by this mutation. */
+  venue?: Maybe<Venue>,
+  /** An edge for our `Venue`. May be used by Relay 1. */
+  venueEdge?: Maybe<VenuesEdge>,
+};
+
+
+/** The output of our delete `Venue` mutation. */
+export type DeleteVenuePayloadVenueEdgeArgs = {
+  orderBy?: Maybe<Array<VenuesOrderBy>>
+};
+
+/** All input for the `deleteWatchedToAccount` mutation. */
+export type DeleteWatchedToAccountInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Id of the row. */
+  id: Scalars['Int'],
+};
+
+/** The output of our delete `WatchedToAccount` mutation. */
+export type DeleteWatchedToAccountPayload = {
+   __typename?: 'DeleteWatchedToAccountPayload',
+  /** Reads a single `City` that is related to this `WatchedToAccount`. */
+  city?: Maybe<City>,
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  deletedWatchedToAccountNodeId?: Maybe<Scalars['ID']>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+  /** Reads a single `Region` that is related to this `WatchedToAccount`. */
+  regionByRegion?: Maybe<Region>,
+  /** Reads a single `User` that is related to this `WatchedToAccount`. */
+  user?: Maybe<User>,
+  /** The `WatchedToAccount` that was deleted by this mutation. */
+  watchedToAccount?: Maybe<WatchedToAccount>,
+  /** An edge for our `WatchedToAccount`. May be used by Relay 1. */
+  watchedToAccountEdge?: Maybe<WatchedToAccountsEdge>,
+};
+
+
+/** The output of our delete `WatchedToAccount` mutation. */
+export type DeleteWatchedToAccountPayloadWatchedToAccountEdgeArgs = {
+  orderBy?: Maybe<Array<WatchedToAccountsOrderBy>>
+};
+
+/** All input for the `deleteWatchList` mutation. */
+export type DeleteWatchListInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Primary key and id of row. */
+  id: Scalars['Int'],
+};
+
+/** The output of our delete `WatchList` mutation. */
+export type DeleteWatchListPayload = {
+   __typename?: 'DeleteWatchListPayload',
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  deletedWatchListNodeId?: Maybe<Scalars['ID']>,
+  /** Reads a single `Event` that is related to this `WatchList`. */
+  event?: Maybe<Event>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+  /** Reads a single `User` that is related to this `WatchList`. */
+  user?: Maybe<User>,
+  /** The `WatchList` that was deleted by this mutation. */
+  watchList?: Maybe<WatchList>,
+  /** An edge for our `WatchList`. May be used by Relay 1. */
+  watchListEdge?: Maybe<WatchListsEdge>,
+};
+
+
+/** The output of our delete `WatchList` mutation. */
+export type DeleteWatchListPayloadWatchListEdgeArgs = {
+  orderBy?: Maybe<Array<WatchListsOrderBy>>
+};
+
+/** A genre in the application. */
+export type Event = {
+   __typename?: 'Event',
+  /** Whether to display event if it has been approved. */
+  approved?: Maybe<Scalars['Boolean']>,
+  /** Reads and enables pagination through a set of `ArtistToEvent`. */
+  artistToEvents: ArtistToEventsConnection,
+  /** Banner of event page. */
+  banner?: Maybe<Scalars['String']>,
+  /** Ref to city where event takes place. */
+  city: Scalars['Int'],
+  /** Reads a single `City` that is related to this `Event`. */
+  cityByCity?: Maybe<City>,
+  /** Who submitted the event. */
+  contributor?: Maybe<Scalars['Int']>,
+  /** Ref to country where event takes place. */
+  country?: Maybe<Scalars['String']>,
+  /** Reads a single `Country` that is related to this `Event`. */
+  countryByCountry?: Maybe<Country>,
+  createdAt: Scalars['Datetime'],
+  /** Description of event. */
+  description?: Maybe<Scalars['String']>,
+  /** End date of event. */
+  endDate?: Maybe<Scalars['BigInt']>,
+  /** Primary key and id of event. */
+  id: Scalars['String'],
+  /** Name of event. */
+  name?: Maybe<Scalars['String']>,
+  /** Ref to region where event takes place. */
+  region?: Maybe<Scalars['String']>,
+  /** Reads a single `Region` that is related to this `Event`. */
+  regionByRegion?: Maybe<Region>,
+  /** Start date of event. */
+  startDate: Scalars['BigInt'],
+  /** Id by the ticket provider useful for affiliate links. */
+  ticketproviderid?: Maybe<Scalars['String']>,
+  /** URL by the ticket provider useful for affiliate links. */
+  ticketproviderurl?: Maybe<Scalars['String']>,
+  /** Type of event. */
+  type?: Maybe<EventType>,
+  updatedAt: Scalars['Datetime'],
+  /** Reads a single `User` that is related to this `Event`. */
+  userByContributor?: Maybe<User>,
+  /** Ref to venue where event takes place. */
+  venue: Scalars['String'],
+  /** Reads a single `Venue` that is related to this `Event`. */
+  venueByVenue?: Maybe<Venue>,
+  /** Reads and enables pagination through a set of `WatchList`. */
+  watchLists: WatchListsConnection,
+};
+
+
+/** A genre in the application. */
+export type EventArtistToEventsArgs = {
+  after?: Maybe<Scalars['Cursor']>,
+  before?: Maybe<Scalars['Cursor']>,
+  condition?: Maybe<ArtistToEventCondition>,
+  filter?: Maybe<ArtistToEventFilter>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  orderBy?: Maybe<Array<ArtistToEventsOrderBy>>
+};
+
+
+/** A genre in the application. */
+export type EventWatchListsArgs = {
+  after?: Maybe<Scalars['Cursor']>,
+  before?: Maybe<Scalars['Cursor']>,
+  condition?: Maybe<WatchListCondition>,
+  filter?: Maybe<WatchListFilter>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  orderBy?: Maybe<Array<WatchListsOrderBy>>
+};
+
+/** A condition to be used against `Event` object types. All fields are tested for equality and combined with a logical ‘and.’ */
+export type EventCondition = {
+  /** Checks for equality with the object’s `city` field. */
+  city?: Maybe<Scalars['Int']>,
+  /** Checks for equality with the object’s `contributor` field. */
+  contributor?: Maybe<Scalars['Int']>,
+  /** Checks for equality with the object’s `country` field. */
+  country?: Maybe<Scalars['String']>,
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: Maybe<Scalars['Datetime']>,
+  /** Checks for equality with the object’s `id` field. */
+  id?: Maybe<Scalars['String']>,
+  /** Checks for equality with the object’s `name` field. */
+  name?: Maybe<Scalars['String']>,
+  /** Checks for equality with the object’s `region` field. */
+  region?: Maybe<Scalars['String']>,
+  /** Checks for equality with the object’s `startDate` field. */
+  startDate?: Maybe<Scalars['BigInt']>,
+  /** Checks for equality with the object’s `venue` field. */
+  venue?: Maybe<Scalars['String']>,
+};
+
+/** A filter to be used against `Event` object types. All fields are combined with a logical ‘and.’ */
+export type EventFilter = {
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<EventFilter>>,
+  /** Filter by the object’s `city` field. */
+  city?: Maybe<IntFilter>,
+  /** Filter by the object’s `contributor` field. */
+  contributor?: Maybe<IntFilter>,
+  /** Filter by the object’s `country` field. */
+  country?: Maybe<StringFilter>,
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: Maybe<DatetimeFilter>,
+  /** Filter by the object’s `id` field. */
+  id?: Maybe<StringFilter>,
+  /** Filter by the object’s `name` field. */
+  name?: Maybe<StringFilter>,
+  /** Negates the expression. */
+  not?: Maybe<EventFilter>,
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<EventFilter>>,
+  /** Filter by the object’s `region` field. */
+  region?: Maybe<StringFilter>,
+  /** Filter by the object’s `startDate` field. */
+  startDate?: Maybe<BigIntFilter>,
+  /** Filter by the object’s `venue` field. */
+  venue?: Maybe<StringFilter>,
+};
+
+/** An input for mutations affecting `Event` */
+export type EventInput = {
+  /** Whether to display event if it has been approved. */
+  approved?: Maybe<Scalars['Boolean']>,
+  /** Banner of event page. */
+  banner?: Maybe<Scalars['String']>,
+  /** Ref to city where event takes place. */
+  city: Scalars['Int'],
+  /** Who submitted the event. */
+  contributor?: Maybe<Scalars['Int']>,
+  /** Ref to country where event takes place. */
+  country?: Maybe<Scalars['String']>,
+  createdAt?: Maybe<Scalars['Datetime']>,
+  /** Description of event. */
+  description?: Maybe<Scalars['String']>,
+  /** End date of event. */
+  endDate?: Maybe<Scalars['BigInt']>,
+  /** Primary key and id of event. */
+  id: Scalars['String'],
+  /** Name of event. */
+  name?: Maybe<Scalars['String']>,
+  /** Ref to region where event takes place. */
+  region?: Maybe<Scalars['String']>,
+  /** Start date of event. */
+  startDate: Scalars['BigInt'],
+  /** Id by the ticket provider useful for affiliate links. */
+  ticketproviderid?: Maybe<Scalars['String']>,
+  /** URL by the ticket provider useful for affiliate links. */
+  ticketproviderurl?: Maybe<Scalars['String']>,
+  /** Type of event. */
+  type?: Maybe<EventType>,
+  updatedAt?: Maybe<Scalars['Datetime']>,
+  /** Ref to venue where event takes place. */
+  venue: Scalars['String'],
+};
+
+/** Represents an update to a `Event`. Fields that are set will be updated. */
+export type EventPatch = {
+  /** Whether to display event if it has been approved. */
+  approved?: Maybe<Scalars['Boolean']>,
+  /** Banner of event page. */
+  banner?: Maybe<Scalars['String']>,
+  /** Ref to city where event takes place. */
+  city?: Maybe<Scalars['Int']>,
+  /** Who submitted the event. */
+  contributor?: Maybe<Scalars['Int']>,
+  /** Ref to country where event takes place. */
+  country?: Maybe<Scalars['String']>,
+  createdAt?: Maybe<Scalars['Datetime']>,
+  /** Description of event. */
+  description?: Maybe<Scalars['String']>,
+  /** End date of event. */
+  endDate?: Maybe<Scalars['BigInt']>,
+  /** Primary key and id of event. */
+  id?: Maybe<Scalars['String']>,
+  /** Name of event. */
+  name?: Maybe<Scalars['String']>,
+  /** Ref to region where event takes place. */
+  region?: Maybe<Scalars['String']>,
+  /** Start date of event. */
+  startDate?: Maybe<Scalars['BigInt']>,
+  /** Id by the ticket provider useful for affiliate links. */
+  ticketproviderid?: Maybe<Scalars['String']>,
+  /** URL by the ticket provider useful for affiliate links. */
+  ticketproviderurl?: Maybe<Scalars['String']>,
+  /** Type of event. */
+  type?: Maybe<EventType>,
+  updatedAt?: Maybe<Scalars['Datetime']>,
+  /** Ref to venue where event takes place. */
+  venue?: Maybe<Scalars['String']>,
+};
+
+/** A connection to a list of `Event` values. */
+export type EventsConnection = {
+   __typename?: 'EventsConnection',
+  /** A list of edges which contains the `Event` and cursor to aid in pagination. */
+  edges: Array<EventsEdge>,
+  /** A list of `Event` objects. */
+  nodes: Array<Event>,
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo,
+  /** The count of *all* `Event` you could get from the connection. */
+  totalCount: Scalars['Int'],
+};
+
+/** A `Event` edge in the connection. */
+export type EventsEdge = {
+   __typename?: 'EventsEdge',
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>,
+  /** The `Event` at the end of the edge. */
+  node: Event,
+};
+
+/** Methods to use when ordering `Event`. */
+export enum EventsOrderBy {
+  CityAsc = 'CITY_ASC',
+  CityDesc = 'CITY_DESC',
+  ContributorAsc = 'CONTRIBUTOR_ASC',
+  ContributorDesc = 'CONTRIBUTOR_DESC',
+  CountryAsc = 'COUNTRY_ASC',
+  CountryDesc = 'COUNTRY_DESC',
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  NameAsc = 'NAME_ASC',
+  NameDesc = 'NAME_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  RegionAsc = 'REGION_ASC',
+  RegionDesc = 'REGION_DESC',
+  StartDateAsc = 'START_DATE_ASC',
+  StartDateDesc = 'START_DATE_DESC',
+  VenueAsc = 'VENUE_ASC',
+  VenueDesc = 'VENUE_DESC'
 }
 
 export enum EventType {
-  Eventbrite = "EVENTBRITE",
-  Ticketfly = "TICKETFLY",
-  Ticketmaster = "TICKETMASTER",
-  Seetickets = "SEETICKETS",
-  Etix = "ETIX",
-  Other = "OTHER"
-}
-/** Methods to use when ordering `Region`. */
-export enum RegionsOrderBy {
-  Natural = "NATURAL",
-  NameAsc = "NAME_ASC",
-  NameDesc = "NAME_DESC",
-  CountryAsc = "COUNTRY_ASC",
-  CountryDesc = "COUNTRY_DESC",
-  PrimaryKeyAsc = "PRIMARY_KEY_ASC",
-  PrimaryKeyDesc = "PRIMARY_KEY_DESC"
-}
-/** Methods to use when ordering `City`. */
-export enum CitiesOrderBy {
-  Natural = "NATURAL",
-  IdAsc = "ID_ASC",
-  IdDesc = "ID_DESC",
-  RegionAsc = "REGION_ASC",
-  RegionDesc = "REGION_DESC",
-  CountryAsc = "COUNTRY_ASC",
-  CountryDesc = "COUNTRY_DESC",
-  PrimaryKeyAsc = "PRIMARY_KEY_ASC",
-  PrimaryKeyDesc = "PRIMARY_KEY_DESC"
-}
-/** Methods to use when ordering `Event`. */
-export enum EventsOrderBy {
-  Natural = "NATURAL",
-  IdAsc = "ID_ASC",
-  IdDesc = "ID_DESC",
-  VenueAsc = "VENUE_ASC",
-  VenueDesc = "VENUE_DESC",
-  CityAsc = "CITY_ASC",
-  CityDesc = "CITY_DESC",
-  RegionAsc = "REGION_ASC",
-  RegionDesc = "REGION_DESC",
-  CountryAsc = "COUNTRY_ASC",
-  CountryDesc = "COUNTRY_DESC",
-  NameAsc = "NAME_ASC",
-  NameDesc = "NAME_DESC",
-  StartDateAsc = "START_DATE_ASC",
-  StartDateDesc = "START_DATE_DESC",
-  ContributorAsc = "CONTRIBUTOR_ASC",
-  ContributorDesc = "CONTRIBUTOR_DESC",
-  CreatedAtAsc = "CREATED_AT_ASC",
-  CreatedAtDesc = "CREATED_AT_DESC",
-  PrimaryKeyAsc = "PRIMARY_KEY_ASC",
-  PrimaryKeyDesc = "PRIMARY_KEY_DESC"
-}
-/** Methods to use when ordering `WatchedToAccount`. */
-export enum WatchedToAccountsOrderBy {
-  Natural = "NATURAL",
-  IdAsc = "ID_ASC",
-  IdDesc = "ID_DESC",
-  UserIdAsc = "USER_ID_ASC",
-  UserIdDesc = "USER_ID_DESC",
-  RegionAsc = "REGION_ASC",
-  RegionDesc = "REGION_DESC",
-  CityIdAsc = "CITY_ID_ASC",
-  CityIdDesc = "CITY_ID_DESC",
-  PrimaryKeyAsc = "PRIMARY_KEY_ASC",
-  PrimaryKeyDesc = "PRIMARY_KEY_DESC"
+  Etix = 'ETIX',
+  Eventbrite = 'EVENTBRITE',
+  Other = 'OTHER',
+  Seetickets = 'SEETICKETS',
+  Ticketfly = 'TICKETFLY',
+  Ticketmaster = 'TICKETMASTER'
 }
 
-export enum Frequency {
-  EveryDay = "EVERY_DAY",
-  ThreeTimesAWeek = "THREE_TIMES_A_WEEK",
-  TwoTimesAWeek = "TWO_TIMES_A_WEEK",
-  OnceAWeek = "ONCE_A_WEEK",
-  OnceEveryTwoWeeks = "ONCE_EVERY_TWO_WEEKS",
-  Never = "NEVER"
-}
-/** Methods to use when ordering `UserEmail`. */
-export enum UserEmailsOrderBy {
-  Natural = "NATURAL",
-  IdAsc = "ID_ASC",
-  IdDesc = "ID_DESC",
-  UserIdAsc = "USER_ID_ASC",
-  UserIdDesc = "USER_ID_DESC",
-  PrimaryKeyAsc = "PRIMARY_KEY_ASC",
-  PrimaryKeyDesc = "PRIMARY_KEY_DESC"
-}
-/** Methods to use when ordering `PushSubscription`. */
-export enum PushSubscriptionsOrderBy {
-  Natural = "NATURAL",
-  IdAsc = "ID_ASC",
-  IdDesc = "ID_DESC",
-  UserIdAsc = "USER_ID_ASC",
-  UserIdDesc = "USER_ID_DESC",
-  PrimaryKeyAsc = "PRIMARY_KEY_ASC",
-  PrimaryKeyDesc = "PRIMARY_KEY_DESC"
-}
-/** Methods to use when ordering `WatchList`. */
-export enum WatchListsOrderBy {
-  Natural = "NATURAL",
-  IdAsc = "ID_ASC",
-  IdDesc = "ID_DESC",
-  UserIdAsc = "USER_ID_ASC",
-  UserIdDesc = "USER_ID_DESC",
-  EventIdAsc = "EVENT_ID_ASC",
-  EventIdDesc = "EVENT_ID_DESC",
-  PrimaryKeyAsc = "PRIMARY_KEY_ASC",
-  PrimaryKeyDesc = "PRIMARY_KEY_DESC"
-}
+/** Join table for followed artists or venues by a user. */
+export type FollowList = {
+   __typename?: 'FollowList',
+  /** Reads a single `Artist` that is related to this `FollowList`. */
+  artist?: Maybe<Artist>,
+  /** Ref to artist. */
+  artistId?: Maybe<Scalars['String']>,
+  /** Primary key and id of row. */
+  id: Scalars['Int'],
+  /** Reads a single `User` that is related to this `FollowList`. */
+  user?: Maybe<User>,
+  /** Ref to user. */
+  userId: Scalars['Int'],
+  /** Reads a single `Venue` that is related to this `FollowList`. */
+  venue?: Maybe<Venue>,
+  /** Ref to venue. */
+  venueId?: Maybe<Scalars['String']>,
+};
+
+/** 
+ * A condition to be used against `FollowList` object types. All fields are tested
+ * for equality and combined with a logical ‘and.’
+ */
+export type FollowListCondition = {
+  /** Checks for equality with the object’s `artistId` field. */
+  artistId?: Maybe<Scalars['String']>,
+  /** Checks for equality with the object’s `id` field. */
+  id?: Maybe<Scalars['Int']>,
+  /** Checks for equality with the object’s `userId` field. */
+  userId?: Maybe<Scalars['Int']>,
+  /** Checks for equality with the object’s `venueId` field. */
+  venueId?: Maybe<Scalars['String']>,
+};
+
+/** A filter to be used against `FollowList` object types. All fields are combined with a logical ‘and.’ */
+export type FollowListFilter = {
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<FollowListFilter>>,
+  /** Filter by the object’s `artistId` field. */
+  artistId?: Maybe<StringFilter>,
+  /** Filter by the object’s `id` field. */
+  id?: Maybe<IntFilter>,
+  /** Negates the expression. */
+  not?: Maybe<FollowListFilter>,
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<FollowListFilter>>,
+  /** Filter by the object’s `userId` field. */
+  userId?: Maybe<IntFilter>,
+  /** Filter by the object’s `venueId` field. */
+  venueId?: Maybe<StringFilter>,
+};
+
+/** An input for mutations affecting `FollowList` */
+export type FollowListInput = {
+  /** Ref to artist. */
+  artistId?: Maybe<Scalars['String']>,
+  /** Primary key and id of row. */
+  id?: Maybe<Scalars['Int']>,
+  /** Ref to user. */
+  userId: Scalars['Int'],
+  /** Ref to venue. */
+  venueId?: Maybe<Scalars['String']>,
+};
+
+/** Represents an update to a `FollowList`. Fields that are set will be updated. */
+export type FollowListPatch = {
+  /** Ref to artist. */
+  artistId?: Maybe<Scalars['String']>,
+  /** Primary key and id of row. */
+  id?: Maybe<Scalars['Int']>,
+  /** Ref to user. */
+  userId?: Maybe<Scalars['Int']>,
+  /** Ref to venue. */
+  venueId?: Maybe<Scalars['String']>,
+};
+
+/** A connection to a list of `FollowList` values. */
+export type FollowListsConnection = {
+   __typename?: 'FollowListsConnection',
+  /** A list of edges which contains the `FollowList` and cursor to aid in pagination. */
+  edges: Array<FollowListsEdge>,
+  /** A list of `FollowList` objects. */
+  nodes: Array<FollowList>,
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo,
+  /** The count of *all* `FollowList` you could get from the connection. */
+  totalCount: Scalars['Int'],
+};
+
+/** A `FollowList` edge in the connection. */
+export type FollowListsEdge = {
+   __typename?: 'FollowListsEdge',
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>,
+  /** The `FollowList` at the end of the edge. */
+  node: FollowList,
+};
+
 /** Methods to use when ordering `FollowList`. */
 export enum FollowListsOrderBy {
-  Natural = "NATURAL",
-  IdAsc = "ID_ASC",
-  IdDesc = "ID_DESC",
-  UserIdAsc = "USER_ID_ASC",
-  UserIdDesc = "USER_ID_DESC",
-  ArtistIdAsc = "ARTIST_ID_ASC",
-  ArtistIdDesc = "ARTIST_ID_DESC",
-  VenueIdAsc = "VENUE_ID_ASC",
-  VenueIdDesc = "VENUE_ID_DESC",
-  PrimaryKeyAsc = "PRIMARY_KEY_ASC",
-  PrimaryKeyDesc = "PRIMARY_KEY_DESC"
+  ArtistIdAsc = 'ARTIST_ID_ASC',
+  ArtistIdDesc = 'ARTIST_ID_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  UserIdAsc = 'USER_ID_ASC',
+  UserIdDesc = 'USER_ID_DESC',
+  VenueIdAsc = 'VENUE_ID_ASC',
+  VenueIdDesc = 'VENUE_ID_DESC'
 }
-/** Methods to use when ordering `Venue`. */
-export enum VenuesOrderBy {
-  Natural = "NATURAL",
-  NameAsc = "NAME_ASC",
-  NameDesc = "NAME_DESC",
-  CityAsc = "CITY_ASC",
-  CityDesc = "CITY_DESC",
-  PrimaryKeyAsc = "PRIMARY_KEY_ASC",
-  PrimaryKeyDesc = "PRIMARY_KEY_DESC"
+
+/** All input for the `forgotPassword` mutation. */
+export type ForgotPasswordInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  email: Scalars['String'],
+};
+
+/** The output of our `forgotPassword` mutation. */
+export type ForgotPasswordPayload = {
+   __typename?: 'ForgotPasswordPayload',
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+};
+
+export enum Frequency {
+  EveryDay = 'EVERY_DAY',
+  Never = 'NEVER',
+  OnceAWeek = 'ONCE_A_WEEK',
+  OnceEveryTwoWeeks = 'ONCE_EVERY_TWO_WEEKS',
+  ThreeTimesAWeek = 'THREE_TIMES_A_WEEK',
+  TwoTimesAWeek = 'TWO_TIMES_A_WEEK'
 }
-/** Methods to use when ordering `Country`. */
-export enum CountriesOrderBy {
-  Natural = "NATURAL",
-  CodeAsc = "CODE_ASC",
-  CodeDesc = "CODE_DESC",
-  PrimaryKeyAsc = "PRIMARY_KEY_ASC",
-  PrimaryKeyDesc = "PRIMARY_KEY_DESC"
-}
+
+/** A genre in the application. */
+export type Genre = {
+   __typename?: 'Genre',
+  createdAt: Scalars['Datetime'],
+  description?: Maybe<Scalars['String']>,
+  /** Reads and enables pagination through a set of `GenreToArtist`. */
+  genreToArtists: GenreToArtistsConnection,
+  /** Primary key and name of genre. */
+  name: Scalars['String'],
+  updatedAt: Scalars['Datetime'],
+};
+
+
+/** A genre in the application. */
+export type GenreGenreToArtistsArgs = {
+  after?: Maybe<Scalars['Cursor']>,
+  before?: Maybe<Scalars['Cursor']>,
+  condition?: Maybe<GenreToArtistCondition>,
+  filter?: Maybe<GenreToArtistFilter>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  orderBy?: Maybe<Array<GenreToArtistsOrderBy>>
+};
+
+/** A condition to be used against `Genre` object types. All fields are tested for equality and combined with a logical ‘and.’ */
+export type GenreCondition = {
+  /** Checks for equality with the object’s `name` field. */
+  name?: Maybe<Scalars['String']>,
+};
+
+/** A filter to be used against `Genre` object types. All fields are combined with a logical ‘and.’ */
+export type GenreFilter = {
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<GenreFilter>>,
+  /** Filter by the object’s `name` field. */
+  name?: Maybe<StringFilter>,
+  /** Negates the expression. */
+  not?: Maybe<GenreFilter>,
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<GenreFilter>>,
+};
+
+/** An input for mutations affecting `Genre` */
+export type GenreInput = {
+  createdAt?: Maybe<Scalars['Datetime']>,
+  description?: Maybe<Scalars['String']>,
+  /** Primary key and name of genre. */
+  name: Scalars['String'],
+  updatedAt?: Maybe<Scalars['Datetime']>,
+};
+
+/** Represents an update to a `Genre`. Fields that are set will be updated. */
+export type GenrePatch = {
+  createdAt?: Maybe<Scalars['Datetime']>,
+  description?: Maybe<Scalars['String']>,
+  /** Primary key and name of genre. */
+  name?: Maybe<Scalars['String']>,
+  updatedAt?: Maybe<Scalars['Datetime']>,
+};
+
+/** A connection to a list of `Genre` values. */
+export type GenresConnection = {
+   __typename?: 'GenresConnection',
+  /** A list of edges which contains the `Genre` and cursor to aid in pagination. */
+  edges: Array<GenresEdge>,
+  /** A list of `Genre` objects. */
+  nodes: Array<Genre>,
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo,
+  /** The count of *all* `Genre` you could get from the connection. */
+  totalCount: Scalars['Int'],
+};
+
+/** A `Genre` edge in the connection. */
+export type GenresEdge = {
+   __typename?: 'GenresEdge',
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>,
+  /** The `Genre` at the end of the edge. */
+  node: Genre,
+};
+
 /** Methods to use when ordering `Genre`. */
 export enum GenresOrderBy {
-  Natural = "NATURAL",
-  NameAsc = "NAME_ASC",
-  NameDesc = "NAME_DESC",
-  PrimaryKeyAsc = "PRIMARY_KEY_ASC",
-  PrimaryKeyDesc = "PRIMARY_KEY_DESC"
+  NameAsc = 'NAME_ASC',
+  NameDesc = 'NAME_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC'
 }
+
+/** A join table between genres and artists. */
+export type GenreToArtist = {
+   __typename?: 'GenreToArtist',
+  /** Reads a single `Artist` that is related to this `GenreToArtist`. */
+  artist?: Maybe<Artist>,
+  /** Ref to the artist. */
+  artistId: Scalars['String'],
+  /** Reads a single `Genre` that is related to this `GenreToArtist`. */
+  genre?: Maybe<Genre>,
+  /** Ref to the genre. */
+  genreId: Scalars['String'],
+  /** Id of the row. */
+  id: Scalars['Int'],
+};
+
+/** 
+ * A condition to be used against `GenreToArtist` object types. All fields are
+ * tested for equality and combined with a logical ‘and.’
+ */
+export type GenreToArtistCondition = {
+  /** Checks for equality with the object’s `artistId` field. */
+  artistId?: Maybe<Scalars['String']>,
+  /** Checks for equality with the object’s `genreId` field. */
+  genreId?: Maybe<Scalars['String']>,
+  /** Checks for equality with the object’s `id` field. */
+  id?: Maybe<Scalars['Int']>,
+};
+
+/** A filter to be used against `GenreToArtist` object types. All fields are combined with a logical ‘and.’ */
+export type GenreToArtistFilter = {
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<GenreToArtistFilter>>,
+  /** Filter by the object’s `artistId` field. */
+  artistId?: Maybe<StringFilter>,
+  /** Filter by the object’s `genreId` field. */
+  genreId?: Maybe<StringFilter>,
+  /** Filter by the object’s `id` field. */
+  id?: Maybe<IntFilter>,
+  /** Negates the expression. */
+  not?: Maybe<GenreToArtistFilter>,
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<GenreToArtistFilter>>,
+};
+
+/** An input for mutations affecting `GenreToArtist` */
+export type GenreToArtistInput = {
+  /** Ref to the artist. */
+  artistId: Scalars['String'],
+  /** Ref to the genre. */
+  genreId: Scalars['String'],
+  /** Id of the row. */
+  id?: Maybe<Scalars['Int']>,
+};
+
+/** Represents an update to a `GenreToArtist`. Fields that are set will be updated. */
+export type GenreToArtistPatch = {
+  /** Ref to the artist. */
+  artistId?: Maybe<Scalars['String']>,
+  /** Ref to the genre. */
+  genreId?: Maybe<Scalars['String']>,
+  /** Id of the row. */
+  id?: Maybe<Scalars['Int']>,
+};
+
+/** A connection to a list of `GenreToArtist` values. */
+export type GenreToArtistsConnection = {
+   __typename?: 'GenreToArtistsConnection',
+  /** A list of edges which contains the `GenreToArtist` and cursor to aid in pagination. */
+  edges: Array<GenreToArtistsEdge>,
+  /** A list of `GenreToArtist` objects. */
+  nodes: Array<GenreToArtist>,
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo,
+  /** The count of *all* `GenreToArtist` you could get from the connection. */
+  totalCount: Scalars['Int'],
+};
+
+/** A `GenreToArtist` edge in the connection. */
+export type GenreToArtistsEdge = {
+   __typename?: 'GenreToArtistsEdge',
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>,
+  /** The `GenreToArtist` at the end of the edge. */
+  node: GenreToArtist,
+};
+
+/** Methods to use when ordering `GenreToArtist`. */
+export enum GenreToArtistsOrderBy {
+  ArtistIdAsc = 'ARTIST_ID_ASC',
+  ArtistIdDesc = 'ARTIST_ID_DESC',
+  GenreIdAsc = 'GENRE_ID_ASC',
+  GenreIdDesc = 'GENRE_ID_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC'
+}
+
+/** A filter to be used against Int fields. All fields are combined with a logical ‘and.’ */
+export type IntFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: Maybe<Scalars['Int']>,
+  /** Equal to the specified value. */
+  equalTo?: Maybe<Scalars['Int']>,
+  /** Greater than the specified value. */
+  greaterThan?: Maybe<Scalars['Int']>,
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: Maybe<Scalars['Int']>,
+  /** Included in the specified list. */
+  in?: Maybe<Array<Scalars['Int']>>,
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: Maybe<Scalars['Boolean']>,
+  /** Less than the specified value. */
+  lessThan?: Maybe<Scalars['Int']>,
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: Maybe<Scalars['Int']>,
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: Maybe<Scalars['Int']>,
+  /** Not equal to the specified value. */
+  notEqualTo?: Maybe<Scalars['Int']>,
+  /** Not included in the specified list. */
+  notIn?: Maybe<Array<Scalars['Int']>>,
+};
+
+export type LoginInput = {
+  password: Scalars['String'],
+  username: Scalars['String'],
+};
+
+export type LoginPayload = {
+   __typename?: 'LoginPayload',
+  user: User,
+};
+
+export type LogoutPayload = {
+   __typename?: 'LogoutPayload',
+  success?: Maybe<Scalars['Boolean']>,
+};
+
+/** All input for the `makeEmailPrimary` mutation. */
+export type MakeEmailPrimaryInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  emailId?: Maybe<Scalars['Int']>,
+};
+
+/** The output of our `makeEmailPrimary` mutation. */
+export type MakeEmailPrimaryPayload = {
+   __typename?: 'MakeEmailPrimaryPayload',
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+  /** Reads a single `User` that is related to this `UserEmail`. */
+  user?: Maybe<User>,
+  userEmail?: Maybe<UserEmail>,
+  /** An edge for our `UserEmail`. May be used by Relay 1. */
+  userEmailEdge?: Maybe<UserEmailsEdge>,
+};
+
+
+/** The output of our `makeEmailPrimary` mutation. */
+export type MakeEmailPrimaryPayloadUserEmailEdgeArgs = {
+  orderBy?: Maybe<Array<UserEmailsOrderBy>>
+};
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type Mutation = {
+   __typename?: 'Mutation',
+  /** Enter your old password and a new password to change your password. */
+  changePassword?: Maybe<ChangePasswordPayload>,
+  /** 
+ * If you're certain you want to delete your account, use
+   * `requestAccountDeletion` to request an account deletion token, and then supply
+   * the token through this mutation to complete account deletion.
+ */
+  confirmAccountDeletion?: Maybe<ConfirmAccountDeletionPayload>,
+  /** Creates a single `Artist`. */
+  createArtist?: Maybe<CreateArtistPayload>,
+  /** Creates a single `ArtistToEvent`. */
+  createArtistToEvent?: Maybe<CreateArtistToEventPayload>,
+  /** Creates a single `City`. */
+  createCity?: Maybe<CreateCityPayload>,
+  /** Creates a single `Country`. */
+  createCountry?: Maybe<CreateCountryPayload>,
+  /** Creates a single `Event`. */
+  createEvent?: Maybe<CreateEventPayload>,
+  /** Creates a single `FollowList`. */
+  createFollowList?: Maybe<CreateFollowListPayload>,
+  /** Creates a single `Genre`. */
+  createGenre?: Maybe<CreateGenrePayload>,
+  /** Creates a single `GenreToArtist`. */
+  createGenreToArtist?: Maybe<CreateGenreToArtistPayload>,
+  /** Creates a single `PushSubscription`. */
+  createPushSubscription?: Maybe<CreatePushSubscriptionPayload>,
+  /** Creates a single `Region`. */
+  createRegion?: Maybe<CreateRegionPayload>,
+  /** Creates a single `UserEmail`. */
+  createUserEmail?: Maybe<CreateUserEmailPayload>,
+  /** Creates a single `Venue`. */
+  createVenue?: Maybe<CreateVenuePayload>,
+  /** Creates a single `WatchedToAccount`. */
+  createWatchedToAccount?: Maybe<CreateWatchedToAccountPayload>,
+  /** Creates a single `WatchList`. */
+  createWatchList?: Maybe<CreateWatchListPayload>,
+  /** Deletes a single `Artist` using a unique key. */
+  deleteArtist?: Maybe<DeleteArtistPayload>,
+  /** Deletes a single `ArtistToEvent` using a unique key. */
+  deleteArtistToEvent?: Maybe<DeleteArtistToEventPayload>,
+  /** Deletes a single `City` using a unique key. */
+  deleteCity?: Maybe<DeleteCityPayload>,
+  /** Deletes a single `Country` using a unique key. */
+  deleteCountry?: Maybe<DeleteCountryPayload>,
+  /** Deletes a single `Event` using a unique key. */
+  deleteEvent?: Maybe<DeleteEventPayload>,
+  /** Deletes a single `FollowList` using a unique key. */
+  deleteFollowList?: Maybe<DeleteFollowListPayload>,
+  /** Deletes a single `Genre` using a unique key. */
+  deleteGenre?: Maybe<DeleteGenrePayload>,
+  /** Deletes a single `GenreToArtist` using a unique key. */
+  deleteGenreToArtist?: Maybe<DeleteGenreToArtistPayload>,
+  /** Deletes a single `PushSubscription` using a unique key. */
+  deletePushSubscription?: Maybe<DeletePushSubscriptionPayload>,
+  /** Deletes a single `Region` using a unique key. */
+  deleteRegion?: Maybe<DeleteRegionPayload>,
+  /** Deletes a single `UserAuthentication` using a unique key. */
+  deleteUserAuthentication?: Maybe<DeleteUserAuthenticationPayload>,
+  /** Deletes a single `UserEmail` using a unique key. */
+  deleteUserEmail?: Maybe<DeleteUserEmailPayload>,
+  /** Deletes a single `Venue` using a unique key. */
+  deleteVenue?: Maybe<DeleteVenuePayload>,
+  /** Deletes a single `WatchedToAccount` using a unique key. */
+  deleteWatchedToAccount?: Maybe<DeleteWatchedToAccountPayload>,
+  /** Deletes a single `WatchList` using a unique key. */
+  deleteWatchList?: Maybe<DeleteWatchListPayload>,
+  /** 
+ * If you've forgotten your password, give us one of your email addresses and
+   * we'll send you a reset token. Note this only works if you have added an email address!
+ */
+  forgotPassword?: Maybe<ForgotPasswordPayload>,
+  /** Use this mutation to log in to your account; this login uses sessions so you do not need to take further action. */
+  login?: Maybe<LoginPayload>,
+  /** Use this mutation to logout from your account. Don't forget to clear the client state! */
+  logout?: Maybe<LogoutPayload>,
+  /** 
+ * Your primary email is where we'll notify of account events; other emails may
+   * be used for discovery or login. Use this when you're changing your email address.
+ */
+  makeEmailPrimary?: Maybe<MakeEmailPrimaryPayload>,
+  /** Use this mutation to create an account on our system. This may only be used if you are logged out. */
+  register?: Maybe<RegisterPayload>,
+  /** Begin the account deletion flow by requesting the confirmation email */
+  requestAccountDeletion?: Maybe<RequestAccountDeletionPayload>,
+  /** 
+ * If you didn't receive the verification code for this email, we can resend it.
+   * We silently cap the rate of resends on the backend, so calls to this function
+   * may not result in another email being sent if it has been called recently.
+ */
+  resendEmailVerificationCode?: Maybe<ResendEmailVerificationCodePayload>,
+  /** 
+ * After triggering forgotPassword, you'll be sent a reset token. Combine this
+   * with your user ID and a new password to reset your password.
+ */
+  resetPassword?: Maybe<ResetPasswordPayload>,
+  /** Updates a single `Artist` using a unique key and a patch. */
+  updateArtist?: Maybe<UpdateArtistPayload>,
+  /** Updates a single `ArtistToEvent` using a unique key and a patch. */
+  updateArtistToEvent?: Maybe<UpdateArtistToEventPayload>,
+  /** Updates a single `City` using a unique key and a patch. */
+  updateCity?: Maybe<UpdateCityPayload>,
+  /** Updates a single `Country` using a unique key and a patch. */
+  updateCountry?: Maybe<UpdateCountryPayload>,
+  /** Updates a single `Event` using a unique key and a patch. */
+  updateEvent?: Maybe<UpdateEventPayload>,
+  /** Updates a single `FollowList` using a unique key and a patch. */
+  updateFollowList?: Maybe<UpdateFollowListPayload>,
+  /** Updates a single `Genre` using a unique key and a patch. */
+  updateGenre?: Maybe<UpdateGenrePayload>,
+  /** Updates a single `GenreToArtist` using a unique key and a patch. */
+  updateGenreToArtist?: Maybe<UpdateGenreToArtistPayload>,
+  /** Updates a single `PushSubscription` using a unique key and a patch. */
+  updatePushSubscription?: Maybe<UpdatePushSubscriptionPayload>,
+  /** Updates a single `Region` using a unique key and a patch. */
+  updateRegion?: Maybe<UpdateRegionPayload>,
+  /** Updates a single `User` using a unique key and a patch. */
+  updateUser?: Maybe<UpdateUserPayload>,
+  /** Updates a single `Venue` using a unique key and a patch. */
+  updateVenue?: Maybe<UpdateVenuePayload>,
+  /** Updates a single `WatchedToAccount` using a unique key and a patch. */
+  updateWatchedToAccount?: Maybe<UpdateWatchedToAccountPayload>,
+  /** Updates a single `WatchList` using a unique key and a patch. */
+  updateWatchList?: Maybe<UpdateWatchListPayload>,
+  /** 
+ * Once you have received a verification token for your email, you may call this
+   * mutation with that token to make your email verified.
+ */
+  verifyEmail?: Maybe<VerifyEmailPayload>,
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationChangePasswordArgs = {
+  input: ChangePasswordInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationConfirmAccountDeletionArgs = {
+  input: ConfirmAccountDeletionInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateArtistArgs = {
+  input: CreateArtistInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateArtistToEventArgs = {
+  input: CreateArtistToEventInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateCityArgs = {
+  input: CreateCityInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateCountryArgs = {
+  input: CreateCountryInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateEventArgs = {
+  input: CreateEventInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateFollowListArgs = {
+  input: CreateFollowListInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateGenreArgs = {
+  input: CreateGenreInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateGenreToArtistArgs = {
+  input: CreateGenreToArtistInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreatePushSubscriptionArgs = {
+  input: CreatePushSubscriptionInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateRegionArgs = {
+  input: CreateRegionInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateUserEmailArgs = {
+  input: CreateUserEmailInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateVenueArgs = {
+  input: CreateVenueInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateWatchedToAccountArgs = {
+  input: CreateWatchedToAccountInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateWatchListArgs = {
+  input: CreateWatchListInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteArtistArgs = {
+  input: DeleteArtistInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteArtistToEventArgs = {
+  input: DeleteArtistToEventInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteCityArgs = {
+  input: DeleteCityInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteCountryArgs = {
+  input: DeleteCountryInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteEventArgs = {
+  input: DeleteEventInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteFollowListArgs = {
+  input: DeleteFollowListInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteGenreArgs = {
+  input: DeleteGenreInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteGenreToArtistArgs = {
+  input: DeleteGenreToArtistInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeletePushSubscriptionArgs = {
+  input: DeletePushSubscriptionInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteRegionArgs = {
+  input: DeleteRegionInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteUserAuthenticationArgs = {
+  input: DeleteUserAuthenticationInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteUserEmailArgs = {
+  input: DeleteUserEmailInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteVenueArgs = {
+  input: DeleteVenueInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteWatchedToAccountArgs = {
+  input: DeleteWatchedToAccountInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteWatchListArgs = {
+  input: DeleteWatchListInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationForgotPasswordArgs = {
+  input: ForgotPasswordInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationLoginArgs = {
+  input: LoginInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationMakeEmailPrimaryArgs = {
+  input: MakeEmailPrimaryInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationRegisterArgs = {
+  input: RegisterInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationRequestAccountDeletionArgs = {
+  input: RequestAccountDeletionInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationResendEmailVerificationCodeArgs = {
+  input: ResendEmailVerificationCodeInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationResetPasswordArgs = {
+  input: ResetPasswordInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateArtistArgs = {
+  input: UpdateArtistInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateArtistToEventArgs = {
+  input: UpdateArtistToEventInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateCityArgs = {
+  input: UpdateCityInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateCountryArgs = {
+  input: UpdateCountryInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateEventArgs = {
+  input: UpdateEventInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateFollowListArgs = {
+  input: UpdateFollowListInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateGenreArgs = {
+  input: UpdateGenreInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateGenreToArtistArgs = {
+  input: UpdateGenreToArtistInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdatePushSubscriptionArgs = {
+  input: UpdatePushSubscriptionInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateRegionArgs = {
+  input: UpdateRegionInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateUserArgs = {
+  input: UpdateUserInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateVenueArgs = {
+  input: UpdateVenueInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateWatchedToAccountArgs = {
+  input: UpdateWatchedToAccountInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateWatchListArgs = {
+  input: UpdateWatchListInput
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationVerifyEmailArgs = {
+  input: VerifyEmailInput
+};
+
+/** Information about pagination in a connection. */
+export type PageInfo = {
+   __typename?: 'PageInfo',
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['Cursor']>,
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean'],
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean'],
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['Cursor']>,
+};
+
+/** A table with push subscription info. */
+export type PushSubscription = {
+   __typename?: 'PushSubscription',
+  /** An authentication secret, which is one of the inputs of the message content encryption process. */
+  auth: Scalars['String'],
+  createdAt: Scalars['Datetime'],
+  /** 
+ * This contains a unique URL to a Firebase Cloud Messaging endpoint. This url is
+   * a public but unguessable endpoint to the Browser Push Service used by the
+   * application server to send push notifications to this subscription.
+ */
+  endpoint: Scalars['String'],
+  /** 
+ * This is useful in certain cases, for example, if a message might contain an
+   * authentication code that expires after 1 minute.
+ */
+  expirationTime?: Maybe<Scalars['Datetime']>,
+  /** Unique identifier for the push subscription. */
+  id: Scalars['Int'],
+  /** An encryption key that our server will use to encrypt the message. */
+  p256Dh: Scalars['String'],
+  updatedAt: Scalars['Datetime'],
+  /** Reads a single `User` that is related to this `PushSubscription`. */
+  user?: Maybe<User>,
+  /** Reference to the account this belongs to. */
+  userId: Scalars['Int'],
+};
+
+/** 
+ * A condition to be used against `PushSubscription` object types. All fields are
+ * tested for equality and combined with a logical ‘and.’
+ */
+export type PushSubscriptionCondition = {
+  /** Checks for equality with the object’s `id` field. */
+  id?: Maybe<Scalars['Int']>,
+  /** Checks for equality with the object’s `userId` field. */
+  userId?: Maybe<Scalars['Int']>,
+};
+
+/** A filter to be used against `PushSubscription` object types. All fields are combined with a logical ‘and.’ */
+export type PushSubscriptionFilter = {
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<PushSubscriptionFilter>>,
+  /** Filter by the object’s `id` field. */
+  id?: Maybe<IntFilter>,
+  /** Negates the expression. */
+  not?: Maybe<PushSubscriptionFilter>,
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<PushSubscriptionFilter>>,
+  /** Filter by the object’s `userId` field. */
+  userId?: Maybe<IntFilter>,
+};
+
+/** An input for mutations affecting `PushSubscription` */
+export type PushSubscriptionInput = {
+  /** An authentication secret, which is one of the inputs of the message content encryption process. */
+  auth: Scalars['String'],
+  createdAt?: Maybe<Scalars['Datetime']>,
+  /** 
+ * This contains a unique URL to a Firebase Cloud Messaging endpoint. This url is
+   * a public but unguessable endpoint to the Browser Push Service used by the
+   * application server to send push notifications to this subscription.
+ */
+  endpoint: Scalars['String'],
+  /** 
+ * This is useful in certain cases, for example, if a message might contain an
+   * authentication code that expires after 1 minute.
+ */
+  expirationTime?: Maybe<Scalars['Datetime']>,
+  /** Unique identifier for the push subscription. */
+  id?: Maybe<Scalars['Int']>,
+  /** An encryption key that our server will use to encrypt the message. */
+  p256Dh: Scalars['String'],
+  updatedAt?: Maybe<Scalars['Datetime']>,
+  /** Reference to the account this belongs to. */
+  userId: Scalars['Int'],
+};
+
+/** Represents an update to a `PushSubscription`. Fields that are set will be updated. */
+export type PushSubscriptionPatch = {
+  /** An authentication secret, which is one of the inputs of the message content encryption process. */
+  auth?: Maybe<Scalars['String']>,
+  createdAt?: Maybe<Scalars['Datetime']>,
+  /** 
+ * This contains a unique URL to a Firebase Cloud Messaging endpoint. This url is
+   * a public but unguessable endpoint to the Browser Push Service used by the
+   * application server to send push notifications to this subscription.
+ */
+  endpoint?: Maybe<Scalars['String']>,
+  /** 
+ * This is useful in certain cases, for example, if a message might contain an
+   * authentication code that expires after 1 minute.
+ */
+  expirationTime?: Maybe<Scalars['Datetime']>,
+  /** Unique identifier for the push subscription. */
+  id?: Maybe<Scalars['Int']>,
+  /** An encryption key that our server will use to encrypt the message. */
+  p256Dh?: Maybe<Scalars['String']>,
+  updatedAt?: Maybe<Scalars['Datetime']>,
+  /** Reference to the account this belongs to. */
+  userId?: Maybe<Scalars['Int']>,
+};
+
+/** A connection to a list of `PushSubscription` values. */
+export type PushSubscriptionsConnection = {
+   __typename?: 'PushSubscriptionsConnection',
+  /** A list of edges which contains the `PushSubscription` and cursor to aid in pagination. */
+  edges: Array<PushSubscriptionsEdge>,
+  /** A list of `PushSubscription` objects. */
+  nodes: Array<PushSubscription>,
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo,
+  /** The count of *all* `PushSubscription` you could get from the connection. */
+  totalCount: Scalars['Int'],
+};
+
+/** A `PushSubscription` edge in the connection. */
+export type PushSubscriptionsEdge = {
+   __typename?: 'PushSubscriptionsEdge',
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>,
+  /** The `PushSubscription` at the end of the edge. */
+  node: PushSubscription,
+};
+
+/** Methods to use when ordering `PushSubscription`. */
+export enum PushSubscriptionsOrderBy {
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  UserIdAsc = 'USER_ID_ASC',
+  UserIdDesc = 'USER_ID_DESC'
+}
+
+/** The root query type which gives access points into the data universe. */
+export type Query = {
+   __typename?: 'Query',
+  artist?: Maybe<Artist>,
+  /** Reads and enables pagination through a set of `Artist`. */
+  artists?: Maybe<ArtistsConnection>,
+  artistToEvent?: Maybe<ArtistToEvent>,
+  /** Reads and enables pagination through a set of `ArtistToEvent`. */
+  artistToEvents?: Maybe<ArtistToEventsConnection>,
+  /** Reads and enables pagination through a set of `City`. */
+  cities?: Maybe<CitiesConnection>,
+  city?: Maybe<City>,
+  /** Reads and enables pagination through a set of `Country`. */
+  countries?: Maybe<CountriesConnection>,
+  country?: Maybe<Country>,
+  /** The currently logged in user (or null if not logged in). */
+  currentUser?: Maybe<User>,
+  event?: Maybe<Event>,
+  /** Reads and enables pagination through a set of `Event`. */
+  events?: Maybe<EventsConnection>,
+  followList?: Maybe<FollowList>,
+  /** Reads and enables pagination through a set of `FollowList`. */
+  followLists?: Maybe<FollowListsConnection>,
+  genre?: Maybe<Genre>,
+  /** Reads and enables pagination through a set of `Genre`. */
+  genres?: Maybe<GenresConnection>,
+  genreToArtist?: Maybe<GenreToArtist>,
+  /** Reads and enables pagination through a set of `GenreToArtist`. */
+  genreToArtists?: Maybe<GenreToArtistsConnection>,
+  pushSubscription?: Maybe<PushSubscription>,
+  /** Reads and enables pagination through a set of `PushSubscription`. */
+  pushSubscriptions?: Maybe<PushSubscriptionsConnection>,
+  /** 
+ * Exposes the root query type nested one level down. This is helpful for Relay 1
+   * which can only query top level fields if they are in a particular form.
+ */
+  query: Query,
+  region?: Maybe<Region>,
+  /** Reads and enables pagination through a set of `Region`. */
+  regions?: Maybe<RegionsConnection>,
+  /** Returns events by city containing a given query term. */
+  searchEventsByCity: EventsConnection,
+  /** Returns events by region containing a given query term. */
+  searchEventsByRegion: EventsConnection,
+  user?: Maybe<User>,
+  userAuthentication?: Maybe<UserAuthentication>,
+  userByUsername?: Maybe<User>,
+  userEmail?: Maybe<UserEmail>,
+  venue?: Maybe<Venue>,
+  /** Reads and enables pagination through a set of `Venue`. */
+  venues?: Maybe<VenuesConnection>,
+  watchedToAccount?: Maybe<WatchedToAccount>,
+  /** Reads and enables pagination through a set of `WatchedToAccount`. */
+  watchedToAccounts?: Maybe<WatchedToAccountsConnection>,
+  watchList?: Maybe<WatchList>,
+  /** Reads and enables pagination through a set of `WatchList`. */
+  watchLists?: Maybe<WatchListsConnection>,
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryArtistArgs = {
+  name: Scalars['String']
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryArtistsArgs = {
+  after?: Maybe<Scalars['Cursor']>,
+  before?: Maybe<Scalars['Cursor']>,
+  condition?: Maybe<ArtistCondition>,
+  filter?: Maybe<ArtistFilter>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  orderBy?: Maybe<Array<ArtistsOrderBy>>
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryArtistToEventArgs = {
+  id: Scalars['Int']
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryArtistToEventsArgs = {
+  after?: Maybe<Scalars['Cursor']>,
+  before?: Maybe<Scalars['Cursor']>,
+  condition?: Maybe<ArtistToEventCondition>,
+  filter?: Maybe<ArtistToEventFilter>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  orderBy?: Maybe<Array<ArtistToEventsOrderBy>>
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryCitiesArgs = {
+  after?: Maybe<Scalars['Cursor']>,
+  before?: Maybe<Scalars['Cursor']>,
+  condition?: Maybe<CityCondition>,
+  filter?: Maybe<CityFilter>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  orderBy?: Maybe<Array<CitiesOrderBy>>
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryCityArgs = {
+  id: Scalars['Int']
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryCountriesArgs = {
+  after?: Maybe<Scalars['Cursor']>,
+  before?: Maybe<Scalars['Cursor']>,
+  condition?: Maybe<CountryCondition>,
+  filter?: Maybe<CountryFilter>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  orderBy?: Maybe<Array<CountriesOrderBy>>
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryCountryArgs = {
+  code: Scalars['String']
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryEventArgs = {
+  id: Scalars['String']
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryEventsArgs = {
+  after?: Maybe<Scalars['Cursor']>,
+  before?: Maybe<Scalars['Cursor']>,
+  condition?: Maybe<EventCondition>,
+  filter?: Maybe<EventFilter>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  orderBy?: Maybe<Array<EventsOrderBy>>
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryFollowListArgs = {
+  id: Scalars['Int']
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryFollowListsArgs = {
+  after?: Maybe<Scalars['Cursor']>,
+  before?: Maybe<Scalars['Cursor']>,
+  condition?: Maybe<FollowListCondition>,
+  filter?: Maybe<FollowListFilter>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  orderBy?: Maybe<Array<FollowListsOrderBy>>
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryGenreArgs = {
+  name: Scalars['String']
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryGenresArgs = {
+  after?: Maybe<Scalars['Cursor']>,
+  before?: Maybe<Scalars['Cursor']>,
+  condition?: Maybe<GenreCondition>,
+  filter?: Maybe<GenreFilter>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  orderBy?: Maybe<Array<GenresOrderBy>>
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryGenreToArtistArgs = {
+  id: Scalars['Int']
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryGenreToArtistsArgs = {
+  after?: Maybe<Scalars['Cursor']>,
+  before?: Maybe<Scalars['Cursor']>,
+  condition?: Maybe<GenreToArtistCondition>,
+  filter?: Maybe<GenreToArtistFilter>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  orderBy?: Maybe<Array<GenreToArtistsOrderBy>>
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryPushSubscriptionArgs = {
+  id: Scalars['Int']
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryPushSubscriptionsArgs = {
+  after?: Maybe<Scalars['Cursor']>,
+  before?: Maybe<Scalars['Cursor']>,
+  condition?: Maybe<PushSubscriptionCondition>,
+  filter?: Maybe<PushSubscriptionFilter>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  orderBy?: Maybe<Array<PushSubscriptionsOrderBy>>
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryRegionArgs = {
+  name: Scalars['String']
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryRegionsArgs = {
+  after?: Maybe<Scalars['Cursor']>,
+  before?: Maybe<Scalars['Cursor']>,
+  condition?: Maybe<RegionCondition>,
+  filter?: Maybe<RegionFilter>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  orderBy?: Maybe<Array<RegionsOrderBy>>
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QuerySearchEventsByCityArgs = {
+  after?: Maybe<Scalars['Cursor']>,
+  before?: Maybe<Scalars['Cursor']>,
+  cityid?: Maybe<Scalars['Int']>,
+  filter?: Maybe<EventFilter>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  query?: Maybe<Scalars['String']>
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QuerySearchEventsByRegionArgs = {
+  after?: Maybe<Scalars['Cursor']>,
+  before?: Maybe<Scalars['Cursor']>,
+  filter?: Maybe<EventFilter>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  query?: Maybe<Scalars['String']>,
+  regionName?: Maybe<Scalars['String']>
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryUserArgs = {
+  id: Scalars['Int']
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryUserAuthenticationArgs = {
+  id: Scalars['Int']
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryUserByUsernameArgs = {
+  username: Scalars['String']
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryUserEmailArgs = {
+  id: Scalars['Int']
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryVenueArgs = {
+  name: Scalars['String']
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryVenuesArgs = {
+  after?: Maybe<Scalars['Cursor']>,
+  before?: Maybe<Scalars['Cursor']>,
+  condition?: Maybe<VenueCondition>,
+  filter?: Maybe<VenueFilter>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  orderBy?: Maybe<Array<VenuesOrderBy>>
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryWatchedToAccountArgs = {
+  id: Scalars['Int']
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryWatchedToAccountsArgs = {
+  after?: Maybe<Scalars['Cursor']>,
+  before?: Maybe<Scalars['Cursor']>,
+  condition?: Maybe<WatchedToAccountCondition>,
+  filter?: Maybe<WatchedToAccountFilter>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  orderBy?: Maybe<Array<WatchedToAccountsOrderBy>>
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryWatchListArgs = {
+  id: Scalars['Int']
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryWatchListsArgs = {
+  after?: Maybe<Scalars['Cursor']>,
+  before?: Maybe<Scalars['Cursor']>,
+  condition?: Maybe<WatchListCondition>,
+  filter?: Maybe<WatchListFilter>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  orderBy?: Maybe<Array<WatchListsOrderBy>>
+};
+
+/** A table with regions. */
+export type Region = {
+   __typename?: 'Region',
+  /** Reads and enables pagination through a set of `City`. */
+  citiesByRegion: CitiesConnection,
+  /** Country ref region belongs to. */
+  country?: Maybe<Scalars['String']>,
+  /** Reads a single `Country` that is related to this `Region`. */
+  countryByCountry?: Maybe<Country>,
+  createdAt: Scalars['Datetime'],
+  /** Description of the region. */
+  description?: Maybe<Scalars['String']>,
+  /** Reads and enables pagination through a set of `Event`. */
+  eventsByRegion: EventsConnection,
+  /** Latitude location of the region. */
+  lat?: Maybe<Scalars['BigFloat']>,
+  /** Longitude location of the region. */
+  lon?: Maybe<Scalars['BigFloat']>,
+  /** Name and primary key of region. */
+  name: Scalars['String'],
+  /** Photo of the region. */
+  photo?: Maybe<Scalars['String']>,
+  updatedAt: Scalars['Datetime'],
+  /** Reads and enables pagination through a set of `WatchedToAccount`. */
+  watchedToAccountsByRegion: WatchedToAccountsConnection,
+};
+
+
+/** A table with regions. */
+export type RegionCitiesByRegionArgs = {
+  after?: Maybe<Scalars['Cursor']>,
+  before?: Maybe<Scalars['Cursor']>,
+  condition?: Maybe<CityCondition>,
+  filter?: Maybe<CityFilter>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  orderBy?: Maybe<Array<CitiesOrderBy>>
+};
+
+
+/** A table with regions. */
+export type RegionEventsByRegionArgs = {
+  after?: Maybe<Scalars['Cursor']>,
+  before?: Maybe<Scalars['Cursor']>,
+  condition?: Maybe<EventCondition>,
+  filter?: Maybe<EventFilter>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  orderBy?: Maybe<Array<EventsOrderBy>>
+};
+
+
+/** A table with regions. */
+export type RegionWatchedToAccountsByRegionArgs = {
+  after?: Maybe<Scalars['Cursor']>,
+  before?: Maybe<Scalars['Cursor']>,
+  condition?: Maybe<WatchedToAccountCondition>,
+  filter?: Maybe<WatchedToAccountFilter>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  orderBy?: Maybe<Array<WatchedToAccountsOrderBy>>
+};
+
+/** A condition to be used against `Region` object types. All fields are tested for equality and combined with a logical ‘and.’ */
+export type RegionCondition = {
+  /** Checks for equality with the object’s `country` field. */
+  country?: Maybe<Scalars['String']>,
+  /** Checks for equality with the object’s `name` field. */
+  name?: Maybe<Scalars['String']>,
+};
+
+/** A filter to be used against `Region` object types. All fields are combined with a logical ‘and.’ */
+export type RegionFilter = {
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<RegionFilter>>,
+  /** Filter by the object’s `country` field. */
+  country?: Maybe<StringFilter>,
+  /** Filter by the object’s `name` field. */
+  name?: Maybe<StringFilter>,
+  /** Negates the expression. */
+  not?: Maybe<RegionFilter>,
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<RegionFilter>>,
+};
+
+/** An input for mutations affecting `Region` */
+export type RegionInput = {
+  /** Country ref region belongs to. */
+  country?: Maybe<Scalars['String']>,
+  createdAt?: Maybe<Scalars['Datetime']>,
+  /** Description of the region. */
+  description?: Maybe<Scalars['String']>,
+  /** Latitude location of the region. */
+  lat?: Maybe<Scalars['BigFloat']>,
+  /** Longitude location of the region. */
+  lon?: Maybe<Scalars['BigFloat']>,
+  /** Name and primary key of region. */
+  name: Scalars['String'],
+  /** Photo of the region. */
+  photo?: Maybe<Scalars['String']>,
+  updatedAt?: Maybe<Scalars['Datetime']>,
+};
+
+/** Represents an update to a `Region`. Fields that are set will be updated. */
+export type RegionPatch = {
+  /** Country ref region belongs to. */
+  country?: Maybe<Scalars['String']>,
+  createdAt?: Maybe<Scalars['Datetime']>,
+  /** Description of the region. */
+  description?: Maybe<Scalars['String']>,
+  /** Latitude location of the region. */
+  lat?: Maybe<Scalars['BigFloat']>,
+  /** Longitude location of the region. */
+  lon?: Maybe<Scalars['BigFloat']>,
+  /** Name and primary key of region. */
+  name?: Maybe<Scalars['String']>,
+  /** Photo of the region. */
+  photo?: Maybe<Scalars['String']>,
+  updatedAt?: Maybe<Scalars['Datetime']>,
+};
+
+/** A connection to a list of `Region` values. */
+export type RegionsConnection = {
+   __typename?: 'RegionsConnection',
+  /** A list of edges which contains the `Region` and cursor to aid in pagination. */
+  edges: Array<RegionsEdge>,
+  /** A list of `Region` objects. */
+  nodes: Array<Region>,
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo,
+  /** The count of *all* `Region` you could get from the connection. */
+  totalCount: Scalars['Int'],
+};
+
+/** A `Region` edge in the connection. */
+export type RegionsEdge = {
+   __typename?: 'RegionsEdge',
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>,
+  /** The `Region` at the end of the edge. */
+  node: Region,
+};
+
+/** Methods to use when ordering `Region`. */
+export enum RegionsOrderBy {
+  CountryAsc = 'COUNTRY_ASC',
+  CountryDesc = 'COUNTRY_DESC',
+  NameAsc = 'NAME_ASC',
+  NameDesc = 'NAME_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC'
+}
+
+export type RegisterInput = {
+  avatarUrl?: Maybe<Scalars['String']>,
+  email: Scalars['String'],
+  name?: Maybe<Scalars['String']>,
+  password: Scalars['String'],
+  username: Scalars['String'],
+};
+
+export type RegisterPayload = {
+   __typename?: 'RegisterPayload',
+  user: User,
+};
+
+/** All input for the `requestAccountDeletion` mutation. */
+export type RequestAccountDeletionInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+};
+
+/** The output of our `requestAccountDeletion` mutation. */
+export type RequestAccountDeletionPayload = {
+   __typename?: 'RequestAccountDeletionPayload',
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+  success?: Maybe<Scalars['Boolean']>,
+};
+
+/** All input for the `resendEmailVerificationCode` mutation. */
+export type ResendEmailVerificationCodeInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  emailId?: Maybe<Scalars['Int']>,
+};
+
+/** The output of our `resendEmailVerificationCode` mutation. */
+export type ResendEmailVerificationCodePayload = {
+   __typename?: 'ResendEmailVerificationCodePayload',
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+  success?: Maybe<Scalars['Boolean']>,
+};
+
+/** All input for the `resetPassword` mutation. */
+export type ResetPasswordInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  newPassword: Scalars['String'],
+  resetToken: Scalars['String'],
+  userId: Scalars['Int'],
+};
+
+/** The output of our `resetPassword` mutation. */
+export type ResetPasswordPayload = {
+   __typename?: 'ResetPasswordPayload',
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+  success?: Maybe<Scalars['Boolean']>,
+};
+
+/** A filter to be used against String fields. All fields are combined with a logical ‘and.’ */
+export type StringFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: Maybe<Scalars['String']>,
+  /** Ends with the specified string (case-sensitive). */
+  endsWith?: Maybe<Scalars['String']>,
+  /** Ends with the specified string (case-insensitive). */
+  endsWithInsensitive?: Maybe<Scalars['String']>,
+  /** Equal to the specified value. */
+  equalTo?: Maybe<Scalars['String']>,
+  /** Greater than the specified value. */
+  greaterThan?: Maybe<Scalars['String']>,
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: Maybe<Scalars['String']>,
+  /** Included in the specified list. */
+  in?: Maybe<Array<Scalars['String']>>,
+  /** Contains the specified string (case-sensitive). */
+  includes?: Maybe<Scalars['String']>,
+  /** Contains the specified string (case-insensitive). */
+  includesInsensitive?: Maybe<Scalars['String']>,
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: Maybe<Scalars['Boolean']>,
+  /** Less than the specified value. */
+  lessThan?: Maybe<Scalars['String']>,
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: Maybe<Scalars['String']>,
+  /** 
+ * Matches the specified pattern (case-sensitive). An underscore (_) matches any
+   * single character; a percent sign (%) matches any sequence of zero or more characters.
+ */
+  like?: Maybe<Scalars['String']>,
+  /** 
+ * Matches the specified pattern (case-insensitive). An underscore (_) matches
+   * any single character; a percent sign (%) matches any sequence of zero or more characters.
+ */
+  likeInsensitive?: Maybe<Scalars['String']>,
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: Maybe<Scalars['String']>,
+  /** Does not end with the specified string (case-sensitive). */
+  notEndsWith?: Maybe<Scalars['String']>,
+  /** Does not end with the specified string (case-insensitive). */
+  notEndsWithInsensitive?: Maybe<Scalars['String']>,
+  /** Not equal to the specified value. */
+  notEqualTo?: Maybe<Scalars['String']>,
+  /** Not included in the specified list. */
+  notIn?: Maybe<Array<Scalars['String']>>,
+  /** Does not contain the specified string (case-sensitive). */
+  notIncludes?: Maybe<Scalars['String']>,
+  /** Does not contain the specified string (case-insensitive). */
+  notIncludesInsensitive?: Maybe<Scalars['String']>,
+  /** 
+ * Does not match the specified pattern (case-sensitive). An underscore (_)
+   * matches any single character; a percent sign (%) matches any sequence of zero
+   * or more characters.
+ */
+  notLike?: Maybe<Scalars['String']>,
+  /** 
+ * Does not match the specified pattern (case-insensitive). An underscore (_)
+   * matches any single character; a percent sign (%) matches any sequence of zero
+   * or more characters.
+ */
+  notLikeInsensitive?: Maybe<Scalars['String']>,
+  /** Does not match the specified pattern using the SQL standard's definition of a regular expression. */
+  notSimilarTo?: Maybe<Scalars['String']>,
+  /** Does not start with the specified string (case-sensitive). */
+  notStartsWith?: Maybe<Scalars['String']>,
+  /** Does not start with the specified string (case-insensitive). */
+  notStartsWithInsensitive?: Maybe<Scalars['String']>,
+  /** Matches the specified pattern using the SQL standard's definition of a regular expression. */
+  similarTo?: Maybe<Scalars['String']>,
+  /** Starts with the specified string (case-sensitive). */
+  startsWith?: Maybe<Scalars['String']>,
+  /** Starts with the specified string (case-insensitive). */
+  startsWithInsensitive?: Maybe<Scalars['String']>,
+};
+
+/** The root subscription type: contains realtime events you can subscribe to with the `subscription` operation. */
+export type Subscription = {
+   __typename?: 'Subscription',
+  /** Triggered when the logged in user's record is updated in some way. */
+  currentUserUpdated?: Maybe<UserSubscriptionPayload>,
+};
+
+/** All input for the `updateArtist` mutation. */
+export type UpdateArtistInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Primary key and name of artist. */
+  name: Scalars['String'],
+  /** An object where the defined keys will be set on the `Artist` being updated. */
+  patch: ArtistPatch,
+};
+
+/** The output of our update `Artist` mutation. */
+export type UpdateArtistPayload = {
+   __typename?: 'UpdateArtistPayload',
+  /** The `Artist` that was updated by this mutation. */
+  artist?: Maybe<Artist>,
+  /** An edge for our `Artist`. May be used by Relay 1. */
+  artistEdge?: Maybe<ArtistsEdge>,
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+};
+
+
+/** The output of our update `Artist` mutation. */
+export type UpdateArtistPayloadArtistEdgeArgs = {
+  orderBy?: Maybe<Array<ArtistsOrderBy>>
+};
+
+/** All input for the `updateArtistToEvent` mutation. */
+export type UpdateArtistToEventInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Primary key and id of row. */
+  id: Scalars['Int'],
+  /** An object where the defined keys will be set on the `ArtistToEvent` being updated. */
+  patch: ArtistToEventPatch,
+};
+
+/** The output of our update `ArtistToEvent` mutation. */
+export type UpdateArtistToEventPayload = {
+   __typename?: 'UpdateArtistToEventPayload',
+  /** Reads a single `Artist` that is related to this `ArtistToEvent`. */
+  artist?: Maybe<Artist>,
+  /** The `ArtistToEvent` that was updated by this mutation. */
+  artistToEvent?: Maybe<ArtistToEvent>,
+  /** An edge for our `ArtistToEvent`. May be used by Relay 1. */
+  artistToEventEdge?: Maybe<ArtistToEventsEdge>,
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Reads a single `Event` that is related to this `ArtistToEvent`. */
+  event?: Maybe<Event>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+};
+
+
+/** The output of our update `ArtistToEvent` mutation. */
+export type UpdateArtistToEventPayloadArtistToEventEdgeArgs = {
+  orderBy?: Maybe<Array<ArtistToEventsOrderBy>>
+};
+
+/** All input for the `updateCity` mutation. */
+export type UpdateCityInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Primary key and id for city. */
+  id: Scalars['Int'],
+  /** An object where the defined keys will be set on the `City` being updated. */
+  patch: CityPatch,
+};
+
+/** The output of our update `City` mutation. */
+export type UpdateCityPayload = {
+   __typename?: 'UpdateCityPayload',
+  /** The `City` that was updated by this mutation. */
+  city?: Maybe<City>,
+  /** An edge for our `City`. May be used by Relay 1. */
+  cityEdge?: Maybe<CitiesEdge>,
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Reads a single `Country` that is related to this `City`. */
+  countryByCountry?: Maybe<Country>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+  /** Reads a single `Region` that is related to this `City`. */
+  regionByRegion?: Maybe<Region>,
+};
+
+
+/** The output of our update `City` mutation. */
+export type UpdateCityPayloadCityEdgeArgs = {
+  orderBy?: Maybe<Array<CitiesOrderBy>>
+};
+
+/** All input for the `updateCountry` mutation. */
+export type UpdateCountryInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Primary key and code for country. */
+  code: Scalars['String'],
+  /** An object where the defined keys will be set on the `Country` being updated. */
+  patch: CountryPatch,
+};
+
+/** The output of our update `Country` mutation. */
+export type UpdateCountryPayload = {
+   __typename?: 'UpdateCountryPayload',
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** The `Country` that was updated by this mutation. */
+  country?: Maybe<Country>,
+  /** An edge for our `Country`. May be used by Relay 1. */
+  countryEdge?: Maybe<CountriesEdge>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+};
+
+
+/** The output of our update `Country` mutation. */
+export type UpdateCountryPayloadCountryEdgeArgs = {
+  orderBy?: Maybe<Array<CountriesOrderBy>>
+};
+
+/** All input for the `updateEvent` mutation. */
+export type UpdateEventInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Primary key and id of event. */
+  id: Scalars['String'],
+  /** An object where the defined keys will be set on the `Event` being updated. */
+  patch: EventPatch,
+};
+
+/** The output of our update `Event` mutation. */
+export type UpdateEventPayload = {
+   __typename?: 'UpdateEventPayload',
+  /** Reads a single `City` that is related to this `Event`. */
+  cityByCity?: Maybe<City>,
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Reads a single `Country` that is related to this `Event`. */
+  countryByCountry?: Maybe<Country>,
+  /** The `Event` that was updated by this mutation. */
+  event?: Maybe<Event>,
+  /** An edge for our `Event`. May be used by Relay 1. */
+  eventEdge?: Maybe<EventsEdge>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+  /** Reads a single `Region` that is related to this `Event`. */
+  regionByRegion?: Maybe<Region>,
+  /** Reads a single `User` that is related to this `Event`. */
+  userByContributor?: Maybe<User>,
+  /** Reads a single `Venue` that is related to this `Event`. */
+  venueByVenue?: Maybe<Venue>,
+};
+
+
+/** The output of our update `Event` mutation. */
+export type UpdateEventPayloadEventEdgeArgs = {
+  orderBy?: Maybe<Array<EventsOrderBy>>
+};
+
+/** All input for the `updateFollowList` mutation. */
+export type UpdateFollowListInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Primary key and id of row. */
+  id: Scalars['Int'],
+  /** An object where the defined keys will be set on the `FollowList` being updated. */
+  patch: FollowListPatch,
+};
+
+/** The output of our update `FollowList` mutation. */
+export type UpdateFollowListPayload = {
+   __typename?: 'UpdateFollowListPayload',
+  /** Reads a single `Artist` that is related to this `FollowList`. */
+  artist?: Maybe<Artist>,
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** The `FollowList` that was updated by this mutation. */
+  followList?: Maybe<FollowList>,
+  /** An edge for our `FollowList`. May be used by Relay 1. */
+  followListEdge?: Maybe<FollowListsEdge>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+  /** Reads a single `User` that is related to this `FollowList`. */
+  user?: Maybe<User>,
+  /** Reads a single `Venue` that is related to this `FollowList`. */
+  venue?: Maybe<Venue>,
+};
+
+
+/** The output of our update `FollowList` mutation. */
+export type UpdateFollowListPayloadFollowListEdgeArgs = {
+  orderBy?: Maybe<Array<FollowListsOrderBy>>
+};
+
+/** All input for the `updateGenre` mutation. */
+export type UpdateGenreInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Primary key and name of genre. */
+  name: Scalars['String'],
+  /** An object where the defined keys will be set on the `Genre` being updated. */
+  patch: GenrePatch,
+};
+
+/** The output of our update `Genre` mutation. */
+export type UpdateGenrePayload = {
+   __typename?: 'UpdateGenrePayload',
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** The `Genre` that was updated by this mutation. */
+  genre?: Maybe<Genre>,
+  /** An edge for our `Genre`. May be used by Relay 1. */
+  genreEdge?: Maybe<GenresEdge>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+};
+
+
+/** The output of our update `Genre` mutation. */
+export type UpdateGenrePayloadGenreEdgeArgs = {
+  orderBy?: Maybe<Array<GenresOrderBy>>
+};
+
+/** All input for the `updateGenreToArtist` mutation. */
+export type UpdateGenreToArtistInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Id of the row. */
+  id: Scalars['Int'],
+  /** An object where the defined keys will be set on the `GenreToArtist` being updated. */
+  patch: GenreToArtistPatch,
+};
+
+/** The output of our update `GenreToArtist` mutation. */
+export type UpdateGenreToArtistPayload = {
+   __typename?: 'UpdateGenreToArtistPayload',
+  /** Reads a single `Artist` that is related to this `GenreToArtist`. */
+  artist?: Maybe<Artist>,
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Reads a single `Genre` that is related to this `GenreToArtist`. */
+  genre?: Maybe<Genre>,
+  /** The `GenreToArtist` that was updated by this mutation. */
+  genreToArtist?: Maybe<GenreToArtist>,
+  /** An edge for our `GenreToArtist`. May be used by Relay 1. */
+  genreToArtistEdge?: Maybe<GenreToArtistsEdge>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+};
+
+
+/** The output of our update `GenreToArtist` mutation. */
+export type UpdateGenreToArtistPayloadGenreToArtistEdgeArgs = {
+  orderBy?: Maybe<Array<GenreToArtistsOrderBy>>
+};
+
+/** All input for the `updatePushSubscription` mutation. */
+export type UpdatePushSubscriptionInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Unique identifier for the push subscription. */
+  id: Scalars['Int'],
+  /** An object where the defined keys will be set on the `PushSubscription` being updated. */
+  patch: PushSubscriptionPatch,
+};
+
+/** The output of our update `PushSubscription` mutation. */
+export type UpdatePushSubscriptionPayload = {
+   __typename?: 'UpdatePushSubscriptionPayload',
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** The `PushSubscription` that was updated by this mutation. */
+  pushSubscription?: Maybe<PushSubscription>,
+  /** An edge for our `PushSubscription`. May be used by Relay 1. */
+  pushSubscriptionEdge?: Maybe<PushSubscriptionsEdge>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+  /** Reads a single `User` that is related to this `PushSubscription`. */
+  user?: Maybe<User>,
+};
+
+
+/** The output of our update `PushSubscription` mutation. */
+export type UpdatePushSubscriptionPayloadPushSubscriptionEdgeArgs = {
+  orderBy?: Maybe<Array<PushSubscriptionsOrderBy>>
+};
+
+/** All input for the `updateRegion` mutation. */
+export type UpdateRegionInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Name and primary key of region. */
+  name: Scalars['String'],
+  /** An object where the defined keys will be set on the `Region` being updated. */
+  patch: RegionPatch,
+};
+
+/** The output of our update `Region` mutation. */
+export type UpdateRegionPayload = {
+   __typename?: 'UpdateRegionPayload',
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Reads a single `Country` that is related to this `Region`. */
+  countryByCountry?: Maybe<Country>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+  /** The `Region` that was updated by this mutation. */
+  region?: Maybe<Region>,
+  /** An edge for our `Region`. May be used by Relay 1. */
+  regionEdge?: Maybe<RegionsEdge>,
+};
+
+
+/** The output of our update `Region` mutation. */
+export type UpdateRegionPayloadRegionEdgeArgs = {
+  orderBy?: Maybe<Array<RegionsOrderBy>>
+};
+
+/** All input for the `updateUser` mutation. */
+export type UpdateUserInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Unique identifier for the user. */
+  id: Scalars['Int'],
+  /** An object where the defined keys will be set on the `User` being updated. */
+  patch: UserPatch,
+};
+
+/** The output of our update `User` mutation. */
+export type UpdateUserPayload = {
+   __typename?: 'UpdateUserPayload',
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+  /** The `User` that was updated by this mutation. */
+  user?: Maybe<User>,
+  /** An edge for our `User`. May be used by Relay 1. */
+  userEdge?: Maybe<UsersEdge>,
+};
+
+
+/** The output of our update `User` mutation. */
+export type UpdateUserPayloadUserEdgeArgs = {
+  orderBy?: Maybe<Array<UsersOrderBy>>
+};
+
+/** All input for the `updateVenue` mutation. */
+export type UpdateVenueInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Primary key and name of venue. */
+  name: Scalars['String'],
+  /** An object where the defined keys will be set on the `Venue` being updated. */
+  patch: VenuePatch,
+};
+
+/** The output of our update `Venue` mutation. */
+export type UpdateVenuePayload = {
+   __typename?: 'UpdateVenuePayload',
+  /** Reads a single `City` that is related to this `Venue`. */
+  cityByCity?: Maybe<City>,
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+  /** The `Venue` that was updated by this mutation. */
+  venue?: Maybe<Venue>,
+  /** An edge for our `Venue`. May be used by Relay 1. */
+  venueEdge?: Maybe<VenuesEdge>,
+};
+
+
+/** The output of our update `Venue` mutation. */
+export type UpdateVenuePayloadVenueEdgeArgs = {
+  orderBy?: Maybe<Array<VenuesOrderBy>>
+};
+
+/** All input for the `updateWatchedToAccount` mutation. */
+export type UpdateWatchedToAccountInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Id of the row. */
+  id: Scalars['Int'],
+  /** An object where the defined keys will be set on the `WatchedToAccount` being updated. */
+  patch: WatchedToAccountPatch,
+};
+
+/** The output of our update `WatchedToAccount` mutation. */
+export type UpdateWatchedToAccountPayload = {
+   __typename?: 'UpdateWatchedToAccountPayload',
+  /** Reads a single `City` that is related to this `WatchedToAccount`. */
+  city?: Maybe<City>,
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+  /** Reads a single `Region` that is related to this `WatchedToAccount`. */
+  regionByRegion?: Maybe<Region>,
+  /** Reads a single `User` that is related to this `WatchedToAccount`. */
+  user?: Maybe<User>,
+  /** The `WatchedToAccount` that was updated by this mutation. */
+  watchedToAccount?: Maybe<WatchedToAccount>,
+  /** An edge for our `WatchedToAccount`. May be used by Relay 1. */
+  watchedToAccountEdge?: Maybe<WatchedToAccountsEdge>,
+};
+
+
+/** The output of our update `WatchedToAccount` mutation. */
+export type UpdateWatchedToAccountPayloadWatchedToAccountEdgeArgs = {
+  orderBy?: Maybe<Array<WatchedToAccountsOrderBy>>
+};
+
+/** All input for the `updateWatchList` mutation. */
+export type UpdateWatchListInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Primary key and id of row. */
+  id: Scalars['Int'],
+  /** An object where the defined keys will be set on the `WatchList` being updated. */
+  patch: WatchListPatch,
+};
+
+/** The output of our update `WatchList` mutation. */
+export type UpdateWatchListPayload = {
+   __typename?: 'UpdateWatchListPayload',
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Reads a single `Event` that is related to this `WatchList`. */
+  event?: Maybe<Event>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+  /** Reads a single `User` that is related to this `WatchList`. */
+  user?: Maybe<User>,
+  /** The `WatchList` that was updated by this mutation. */
+  watchList?: Maybe<WatchList>,
+  /** An edge for our `WatchList`. May be used by Relay 1. */
+  watchListEdge?: Maybe<WatchListsEdge>,
+};
+
+
+/** The output of our update `WatchList` mutation. */
+export type UpdateWatchListPayloadWatchListEdgeArgs = {
+  orderBy?: Maybe<Array<WatchListsOrderBy>>
+};
+
+/** A user who can log in to the application. */
+export type User = {
+   __typename?: 'User',
+  createdAt: Scalars['Datetime'],
+  /** Boolean yes or no for email notifications */
+  emailNotification?: Maybe<Scalars['Boolean']>,
+  /** Reads and enables pagination through a set of `Event`. */
+  eventsByContributor: EventsConnection,
+  /** Reads and enables pagination through a set of `FollowList`. */
+  followLists: FollowListsConnection,
+  hasPassword?: Maybe<Scalars['Boolean']>,
+  /** Unique identifier for the user. */
+  id: Scalars['Int'],
+  /** If true, the user has elevated privileges. */
+  isAdmin: Scalars['Boolean'],
+  isVerified: Scalars['Boolean'],
+  /** Public-facing name (or pseudonym) of the user. */
+  name?: Maybe<Scalars['String']>,
+  /** Designates notification frequency */
+  notificationFrequency: Frequency,
+  /** Optional avatar URL. */
+  profilePhoto?: Maybe<Scalars['String']>,
+  /** Boolean yes or no for push notifications */
+  pushNotification?: Maybe<Scalars['Boolean']>,
+  /** Reads and enables pagination through a set of `PushSubscription`. */
+  pushSubscriptions: PushSubscriptionsConnection,
+  updatedAt: Scalars['Datetime'],
+  /** Reads and enables pagination through a set of `UserAuthentication`. */
+  userAuthenticationsList: Array<UserAuthentication>,
+  /** Reads and enables pagination through a set of `UserEmail`. */
+  userEmails: UserEmailsConnection,
+  /** Public-facing username (or 'handle') of the user. */
+  username: Scalars['String'],
+  /** Reads and enables pagination through a set of `WatchedToAccount`. */
+  watchedToAccounts: WatchedToAccountsConnection,
+  /** Reads and enables pagination through a set of `WatchList`. */
+  watchLists: WatchListsConnection,
+};
+
+
+/** A user who can log in to the application. */
+export type UserEventsByContributorArgs = {
+  after?: Maybe<Scalars['Cursor']>,
+  before?: Maybe<Scalars['Cursor']>,
+  condition?: Maybe<EventCondition>,
+  filter?: Maybe<EventFilter>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  orderBy?: Maybe<Array<EventsOrderBy>>
+};
+
+
+/** A user who can log in to the application. */
+export type UserFollowListsArgs = {
+  after?: Maybe<Scalars['Cursor']>,
+  before?: Maybe<Scalars['Cursor']>,
+  condition?: Maybe<FollowListCondition>,
+  filter?: Maybe<FollowListFilter>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  orderBy?: Maybe<Array<FollowListsOrderBy>>
+};
+
+
+/** A user who can log in to the application. */
+export type UserPushSubscriptionsArgs = {
+  after?: Maybe<Scalars['Cursor']>,
+  before?: Maybe<Scalars['Cursor']>,
+  condition?: Maybe<PushSubscriptionCondition>,
+  filter?: Maybe<PushSubscriptionFilter>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  orderBy?: Maybe<Array<PushSubscriptionsOrderBy>>
+};
+
+
+/** A user who can log in to the application. */
+export type UserUserAuthenticationsListArgs = {
+  condition?: Maybe<UserAuthenticationCondition>,
+  filter?: Maybe<UserAuthenticationFilter>,
+  first?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  orderBy?: Maybe<Array<UserAuthenticationsOrderBy>>
+};
+
+
+/** A user who can log in to the application. */
+export type UserUserEmailsArgs = {
+  after?: Maybe<Scalars['Cursor']>,
+  before?: Maybe<Scalars['Cursor']>,
+  condition?: Maybe<UserEmailCondition>,
+  filter?: Maybe<UserEmailFilter>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  orderBy?: Maybe<Array<UserEmailsOrderBy>>
+};
+
+
+/** A user who can log in to the application. */
+export type UserWatchedToAccountsArgs = {
+  after?: Maybe<Scalars['Cursor']>,
+  before?: Maybe<Scalars['Cursor']>,
+  condition?: Maybe<WatchedToAccountCondition>,
+  filter?: Maybe<WatchedToAccountFilter>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  orderBy?: Maybe<Array<WatchedToAccountsOrderBy>>
+};
+
+
+/** A user who can log in to the application. */
+export type UserWatchListsArgs = {
+  after?: Maybe<Scalars['Cursor']>,
+  before?: Maybe<Scalars['Cursor']>,
+  condition?: Maybe<WatchListCondition>,
+  filter?: Maybe<WatchListFilter>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  orderBy?: Maybe<Array<WatchListsOrderBy>>
+};
+
+/** Contains information about the login providers this user has used, so that they may disconnect them should they wish. */
+export type UserAuthentication = {
+   __typename?: 'UserAuthentication',
+  createdAt: Scalars['Datetime'],
+  id: Scalars['Int'],
+  /** A unique identifier for the user within the login service. */
+  identifier: Scalars['String'],
+  /** The login service used, e.g. `twitter` or `github`. */
+  service: Scalars['String'],
+  updatedAt: Scalars['Datetime'],
+  /** Reads a single `User` that is related to this `UserAuthentication`. */
+  user?: Maybe<User>,
+  userId: Scalars['Int'],
+};
+
+/** 
+ * A condition to be used against `UserAuthentication` object types. All fields are
+ * tested for equality and combined with a logical ‘and.’
+ */
+export type UserAuthenticationCondition = {
+  /** Checks for equality with the object’s `id` field. */
+  id?: Maybe<Scalars['Int']>,
+  /** Checks for equality with the object’s `service` field. */
+  service?: Maybe<Scalars['String']>,
+  /** Checks for equality with the object’s `userId` field. */
+  userId?: Maybe<Scalars['Int']>,
+};
+
+/** A filter to be used against `UserAuthentication` object types. All fields are combined with a logical ‘and.’ */
+export type UserAuthenticationFilter = {
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<UserAuthenticationFilter>>,
+  /** Filter by the object’s `id` field. */
+  id?: Maybe<IntFilter>,
+  /** Negates the expression. */
+  not?: Maybe<UserAuthenticationFilter>,
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<UserAuthenticationFilter>>,
+  /** Filter by the object’s `service` field. */
+  service?: Maybe<StringFilter>,
+  /** Filter by the object’s `userId` field. */
+  userId?: Maybe<IntFilter>,
+};
+
 /** Methods to use when ordering `UserAuthentication`. */
 export enum UserAuthenticationsOrderBy {
-  Natural = "NATURAL",
-  IdAsc = "ID_ASC",
-  IdDesc = "ID_DESC",
-  ServiceAsc = "SERVICE_ASC",
-  ServiceDesc = "SERVICE_DESC",
-  PrimaryKeyAsc = "PRIMARY_KEY_ASC",
-  PrimaryKeyDesc = "PRIMARY_KEY_DESC"
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  ServiceAsc = 'SERVICE_ASC',
+  ServiceDesc = 'SERVICE_DESC',
+  UserIdAsc = 'USER_ID_ASC',
+  UserIdDesc = 'USER_ID_DESC'
 }
+
+/** Information about a user's email address. */
+export type UserEmail = {
+   __typename?: 'UserEmail',
+  createdAt: Scalars['Datetime'],
+  /** The users email address, in `a@b.c` format. */
+  email: Scalars['String'],
+  id: Scalars['Int'],
+  isPrimary: Scalars['Boolean'],
+  /** 
+ * True if the user has is_verified their email address (by clicking the link in
+   * the email we sent them, or logging in with a social login provider), false otherwise.
+ */
+  isVerified: Scalars['Boolean'],
+  updatedAt: Scalars['Datetime'],
+  /** Reads a single `User` that is related to this `UserEmail`. */
+  user?: Maybe<User>,
+  userId: Scalars['Int'],
+};
+
+/** 
+ * A condition to be used against `UserEmail` object types. All fields are tested
+ * for equality and combined with a logical ‘and.’
+ */
+export type UserEmailCondition = {
+  /** Checks for equality with the object’s `id` field. */
+  id?: Maybe<Scalars['Int']>,
+  /** Checks for equality with the object’s `isPrimary` field. */
+  isPrimary?: Maybe<Scalars['Boolean']>,
+  /** Checks for equality with the object’s `userId` field. */
+  userId?: Maybe<Scalars['Int']>,
+};
+
+/** A filter to be used against `UserEmail` object types. All fields are combined with a logical ‘and.’ */
+export type UserEmailFilter = {
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<UserEmailFilter>>,
+  /** Filter by the object’s `id` field. */
+  id?: Maybe<IntFilter>,
+  /** Filter by the object’s `isPrimary` field. */
+  isPrimary?: Maybe<BooleanFilter>,
+  /** Negates the expression. */
+  not?: Maybe<UserEmailFilter>,
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<UserEmailFilter>>,
+  /** Filter by the object’s `userId` field. */
+  userId?: Maybe<IntFilter>,
+};
+
+/** An input for mutations affecting `UserEmail` */
+export type UserEmailInput = {
+  /** The users email address, in `a@b.c` format. */
+  email: Scalars['String'],
+};
+
+/** A connection to a list of `UserEmail` values. */
+export type UserEmailsConnection = {
+   __typename?: 'UserEmailsConnection',
+  /** A list of edges which contains the `UserEmail` and cursor to aid in pagination. */
+  edges: Array<UserEmailsEdge>,
+  /** A list of `UserEmail` objects. */
+  nodes: Array<UserEmail>,
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo,
+  /** The count of *all* `UserEmail` you could get from the connection. */
+  totalCount: Scalars['Int'],
+};
+
+/** A `UserEmail` edge in the connection. */
+export type UserEmailsEdge = {
+   __typename?: 'UserEmailsEdge',
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>,
+  /** The `UserEmail` at the end of the edge. */
+  node: UserEmail,
+};
+
+/** Methods to use when ordering `UserEmail`. */
+export enum UserEmailsOrderBy {
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  IsPrimaryAsc = 'IS_PRIMARY_ASC',
+  IsPrimaryDesc = 'IS_PRIMARY_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  UserIdAsc = 'USER_ID_ASC',
+  UserIdDesc = 'USER_ID_DESC'
+}
+
+/** Represents an update to a `User`. Fields that are set will be updated. */
+export type UserPatch = {
+  /** Boolean yes or no for email notifications */
+  emailNotification?: Maybe<Scalars['Boolean']>,
+  /** Public-facing name (or pseudonym) of the user. */
+  name?: Maybe<Scalars['String']>,
+  /** Designates notification frequency */
+  notificationFrequency?: Maybe<Frequency>,
+  /** Optional avatar URL. */
+  profilePhoto?: Maybe<Scalars['String']>,
+  /** Boolean yes or no for push notifications */
+  pushNotification?: Maybe<Scalars['Boolean']>,
+  /** Public-facing username (or 'handle') of the user. */
+  username?: Maybe<Scalars['String']>,
+};
+
+/** A `User` edge in the connection. */
+export type UsersEdge = {
+   __typename?: 'UsersEdge',
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>,
+  /** The `User` at the end of the edge. */
+  node: User,
+};
+
 /** Methods to use when ordering `User`. */
 export enum UsersOrderBy {
-  Natural = "NATURAL",
-  IdAsc = "ID_ASC",
-  IdDesc = "ID_DESC",
-  UsernameAsc = "USERNAME_ASC",
-  UsernameDesc = "USERNAME_DESC",
-  PrimaryKeyAsc = "PRIMARY_KEY_ASC",
-  PrimaryKeyDesc = "PRIMARY_KEY_DESC"
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  UsernameAsc = 'USERNAME_ASC',
+  UsernameDesc = 'USERNAME_DESC'
 }
 
-/** A location in a connection that can be used for resuming pagination. */
-export type Cursor = any;
+export type UserSubscriptionPayload = {
+   __typename?: 'UserSubscriptionPayload',
+  event?: Maybe<Scalars['String']>,
+  user?: Maybe<User>,
+};
 
-/** A point in time as described by the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) standard. May or may not include a timezone. */
-export type Datetime = any;
+/** A venue in the application. */
+export type Venue = {
+   __typename?: 'Venue',
+  /** Address of venue. */
+  address?: Maybe<Scalars['String']>,
+  /** Ref to city of venue. */
+  city: Scalars['Int'],
+  /** Reads a single `City` that is related to this `Venue`. */
+  cityByCity?: Maybe<City>,
+  createdAt: Scalars['Datetime'],
+  /** Description of venue. */
+  description?: Maybe<Scalars['String']>,
+  /** Reads and enables pagination through a set of `Event`. */
+  eventsByVenue: EventsConnection,
+  /** Reads and enables pagination through a set of `FollowList`. */
+  followLists: FollowListsConnection,
+  /** Latitude of venue. */
+  lat?: Maybe<Scalars['BigFloat']>,
+  /** Logo of venue. */
+  logo?: Maybe<Scalars['String']>,
+  /** Longitude of venue. */
+  lon?: Maybe<Scalars['BigFloat']>,
+  /** Primary key and name of venue. */
+  name: Scalars['String'],
+  /** Photo of venue. */
+  photo?: Maybe<Scalars['String']>,
+  updatedAt: Scalars['Datetime'],
+};
 
-/** A signed eight-byte integer. The upper big integer values are greater than the max value for a JavaScript number. Therefore all big integers will be output as strings and not numbers. */
-export type BigInt = any;
 
-/** A floating point number that requires more precision than IEEE 754 binary 64 */
-export type BigFloat = any;
+/** A venue in the application. */
+export type VenueEventsByVenueArgs = {
+  after?: Maybe<Scalars['Cursor']>,
+  before?: Maybe<Scalars['Cursor']>,
+  condition?: Maybe<EventCondition>,
+  filter?: Maybe<EventFilter>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  orderBy?: Maybe<Array<EventsOrderBy>>
+};
 
-// ====================================================
-// Documents
-// ====================================================
 
-export namespace AllLocations {
-  export type Variables = {
-    currentDate: BigInt;
-  };
+/** A venue in the application. */
+export type VenueFollowListsArgs = {
+  after?: Maybe<Scalars['Cursor']>,
+  before?: Maybe<Scalars['Cursor']>,
+  condition?: Maybe<FollowListCondition>,
+  filter?: Maybe<FollowListFilter>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  orderBy?: Maybe<Array<FollowListsOrderBy>>
+};
 
-  export type Query = {
-    __typename?: "Query";
+/** A condition to be used against `Venue` object types. All fields are tested for equality and combined with a logical ‘and.’ */
+export type VenueCondition = {
+  /** Checks for equality with the object’s `city` field. */
+  city?: Maybe<Scalars['Int']>,
+  /** Checks for equality with the object’s `name` field. */
+  name?: Maybe<Scalars['String']>,
+};
 
-    regions: Maybe<Regions>;
-  };
+/** A filter to be used against `Venue` object types. All fields are combined with a logical ‘and.’ */
+export type VenueFilter = {
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<VenueFilter>>,
+  /** Filter by the object’s `city` field. */
+  city?: Maybe<IntFilter>,
+  /** Filter by the object’s `name` field. */
+  name?: Maybe<StringFilter>,
+  /** Negates the expression. */
+  not?: Maybe<VenueFilter>,
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<VenueFilter>>,
+};
 
-  export type Regions = {
-    __typename?: "RegionsConnection";
+/** An input for mutations affecting `Venue` */
+export type VenueInput = {
+  /** Address of venue. */
+  address?: Maybe<Scalars['String']>,
+  /** Ref to city of venue. */
+  city: Scalars['Int'],
+  createdAt?: Maybe<Scalars['Datetime']>,
+  /** Description of venue. */
+  description?: Maybe<Scalars['String']>,
+  /** Latitude of venue. */
+  lat?: Maybe<Scalars['BigFloat']>,
+  /** Logo of venue. */
+  logo?: Maybe<Scalars['String']>,
+  /** Longitude of venue. */
+  lon?: Maybe<Scalars['BigFloat']>,
+  /** Primary key and name of venue. */
+  name: Scalars['String'],
+  /** Photo of venue. */
+  photo?: Maybe<Scalars['String']>,
+  updatedAt?: Maybe<Scalars['Datetime']>,
+};
 
-    nodes: Nodes[];
-  };
+/** Represents an update to a `Venue`. Fields that are set will be updated. */
+export type VenuePatch = {
+  /** Address of venue. */
+  address?: Maybe<Scalars['String']>,
+  /** Ref to city of venue. */
+  city?: Maybe<Scalars['Int']>,
+  createdAt?: Maybe<Scalars['Datetime']>,
+  /** Description of venue. */
+  description?: Maybe<Scalars['String']>,
+  /** Latitude of venue. */
+  lat?: Maybe<Scalars['BigFloat']>,
+  /** Logo of venue. */
+  logo?: Maybe<Scalars['String']>,
+  /** Longitude of venue. */
+  lon?: Maybe<Scalars['BigFloat']>,
+  /** Primary key and name of venue. */
+  name?: Maybe<Scalars['String']>,
+  /** Photo of venue. */
+  photo?: Maybe<Scalars['String']>,
+  updatedAt?: Maybe<Scalars['Datetime']>,
+};
 
-  export type Nodes = {
-    __typename?: "Region";
+/** A connection to a list of `Venue` values. */
+export type VenuesConnection = {
+   __typename?: 'VenuesConnection',
+  /** A list of edges which contains the `Venue` and cursor to aid in pagination. */
+  edges: Array<VenuesEdge>,
+  /** A list of `Venue` objects. */
+  nodes: Array<Venue>,
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo,
+  /** The count of *all* `Venue` you could get from the connection. */
+  totalCount: Scalars['Int'],
+};
 
-    name: string;
+/** A `Venue` edge in the connection. */
+export type VenuesEdge = {
+   __typename?: 'VenuesEdge',
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>,
+  /** The `Venue` at the end of the edge. */
+  node: Venue,
+};
 
-    lat: Maybe<BigFloat>;
-
-    lon: Maybe<BigFloat>;
-
-    citiesByRegion: CitiesByRegion;
-  };
-
-  export type CitiesByRegion = {
-    __typename?: "CitiesConnection";
-
-    nodes: _Nodes[];
-  };
-
-  export type _Nodes = {
-    __typename?: "City";
-
-    id: number;
-
-    name: Maybe<string>;
-
-    venuesByCity: VenuesByCity;
-  };
-
-  export type VenuesByCity = {
-    __typename?: "VenuesConnection";
-
-    nodes: __Nodes[];
-  };
-
-  export type __Nodes = {
-    __typename?: "Venue";
-
-    eventsByVenue: EventsByVenue;
-  };
-
-  export type EventsByVenue = {
-    __typename?: "EventsConnection";
-
-    totalCount: number;
-  };
+/** Methods to use when ordering `Venue`. */
+export enum VenuesOrderBy {
+  CityAsc = 'CITY_ASC',
+  CityDesc = 'CITY_DESC',
+  NameAsc = 'NAME_ASC',
+  NameDesc = 'NAME_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC'
 }
 
-export namespace ArtistByName {
-  export type Variables = {
-    name: string;
-    userId: number;
-  };
+/** All input for the `verifyEmail` mutation. */
+export type VerifyEmailInput = {
+  /** 
+ * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  token: Scalars['String'],
+  userEmailId: Scalars['Int'],
+};
 
-  export type Query = {
-    __typename?: "Query";
+/** The output of our `verifyEmail` mutation. */
+export type VerifyEmailPayload = {
+   __typename?: 'VerifyEmailPayload',
+  /** 
+ * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+ */
+  clientMutationId?: Maybe<Scalars['String']>,
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>,
+  success?: Maybe<Scalars['Boolean']>,
+};
 
-    artist: Maybe<Artist>;
-  };
+/** A join table for watched location to an account. */
+export type WatchedToAccount = {
+   __typename?: 'WatchedToAccount',
+  /** Reads a single `City` that is related to this `WatchedToAccount`. */
+  city?: Maybe<City>,
+  /** Ref to city. */
+  cityId?: Maybe<Scalars['Int']>,
+  /** Id of the row. */
+  id: Scalars['Int'],
+  /** Ref to region. */
+  region?: Maybe<Scalars['String']>,
+  /** Reads a single `Region` that is related to this `WatchedToAccount`. */
+  regionByRegion?: Maybe<Region>,
+  /** Reads a single `User` that is related to this `WatchedToAccount`. */
+  user?: Maybe<User>,
+  /** Ref to user account. */
+  userId: Scalars['Int'],
+};
 
-  export type Artist = {
-    __typename?: "Artist";
+/** 
+ * A condition to be used against `WatchedToAccount` object types. All fields are
+ * tested for equality and combined with a logical ‘and.’
+ */
+export type WatchedToAccountCondition = {
+  /** Checks for equality with the object’s `cityId` field. */
+  cityId?: Maybe<Scalars['Int']>,
+  /** Checks for equality with the object’s `id` field. */
+  id?: Maybe<Scalars['Int']>,
+  /** Checks for equality with the object’s `region` field. */
+  region?: Maybe<Scalars['String']>,
+  /** Checks for equality with the object’s `userId` field. */
+  userId?: Maybe<Scalars['Int']>,
+};
 
-    name: string;
+/** A filter to be used against `WatchedToAccount` object types. All fields are combined with a logical ‘and.’ */
+export type WatchedToAccountFilter = {
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<WatchedToAccountFilter>>,
+  /** Filter by the object’s `cityId` field. */
+  cityId?: Maybe<IntFilter>,
+  /** Filter by the object’s `id` field. */
+  id?: Maybe<IntFilter>,
+  /** Negates the expression. */
+  not?: Maybe<WatchedToAccountFilter>,
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<WatchedToAccountFilter>>,
+  /** Filter by the object’s `region` field. */
+  region?: Maybe<StringFilter>,
+  /** Filter by the object’s `userId` field. */
+  userId?: Maybe<IntFilter>,
+};
 
-    description: Maybe<string>;
+/** An input for mutations affecting `WatchedToAccount` */
+export type WatchedToAccountInput = {
+  /** Ref to city. */
+  cityId?: Maybe<Scalars['Int']>,
+  /** Id of the row. */
+  id?: Maybe<Scalars['Int']>,
+  /** Ref to region. */
+  region?: Maybe<Scalars['String']>,
+  /** Ref to user account. */
+  userId: Scalars['Int'],
+};
 
-    photo: Maybe<string>;
+/** Represents an update to a `WatchedToAccount`. Fields that are set will be updated. */
+export type WatchedToAccountPatch = {
+  /** Ref to city. */
+  cityId?: Maybe<Scalars['Int']>,
+  /** Id of the row. */
+  id?: Maybe<Scalars['Int']>,
+  /** Ref to region. */
+  region?: Maybe<Scalars['String']>,
+  /** Ref to user account. */
+  userId?: Maybe<Scalars['Int']>,
+};
 
-    twitterUsername: Maybe<string>;
+/** A connection to a list of `WatchedToAccount` values. */
+export type WatchedToAccountsConnection = {
+   __typename?: 'WatchedToAccountsConnection',
+  /** A list of edges which contains the `WatchedToAccount` and cursor to aid in pagination. */
+  edges: Array<WatchedToAccountsEdge>,
+  /** A list of `WatchedToAccount` objects. */
+  nodes: Array<WatchedToAccount>,
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo,
+  /** The count of *all* `WatchedToAccount` you could get from the connection. */
+  totalCount: Scalars['Int'],
+};
 
-    twitterUrl: Maybe<string>;
+/** A `WatchedToAccount` edge in the connection. */
+export type WatchedToAccountsEdge = {
+   __typename?: 'WatchedToAccountsEdge',
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>,
+  /** The `WatchedToAccount` at the end of the edge. */
+  node: WatchedToAccount,
+};
 
-    facebookUsername: Maybe<string>;
-
-    facebookUrl: Maybe<string>;
-
-    instagramUsername: Maybe<string>;
-
-    instagramUrl: Maybe<string>;
-
-    soundcloudUsername: Maybe<string>;
-
-    soundcloudUrl: Maybe<string>;
-
-    youtubeUsername: Maybe<string>;
-
-    youtubeUrl: Maybe<string>;
-
-    spotifyUrl: Maybe<string>;
-
-    homepage: Maybe<string>;
-
-    genreToArtists: GenreToArtists;
-
-    followLists: FollowLists;
-
-    artistToEvents: ArtistToEvents;
-  };
-
-  export type GenreToArtists = {
-    __typename?: "GenreToArtistsConnection";
-
-    nodes: Nodes[];
-  };
-
-  export type Nodes = {
-    __typename?: "GenreToArtist";
-
-    genreId: string;
-  };
-
-  export type FollowLists = {
-    __typename?: "FollowListsConnection";
-
-    nodes: _Nodes[];
-  };
-
-  export type _Nodes = {
-    __typename?: "FollowList";
-
-    id: number;
-  };
-
-  export type ArtistToEvents = {
-    __typename?: "ArtistToEventsConnection";
-
-    nodes: __Nodes[];
-  };
-
-  export type __Nodes = {
-    __typename?: "ArtistToEvent";
-
-    event: Maybe<Event>;
-  };
-
-  export type Event = {
-    __typename?: "Event";
-
-    name: Maybe<string>;
-
-    venue: string;
-
-    startDate: BigInt;
-
-    id: string;
-
-    ticketproviderurl: Maybe<string>;
-
-    ticketproviderid: Maybe<string>;
-
-    watchLists: WatchLists;
-  };
-
-  export type WatchLists = {
-    __typename?: "WatchListsConnection";
-
-    nodes: ___Nodes[];
-  };
-
-  export type ___Nodes = {
-    __typename?: "WatchList";
-
-    id: number;
-  };
+/** Methods to use when ordering `WatchedToAccount`. */
+export enum WatchedToAccountsOrderBy {
+  CityIdAsc = 'CITY_ID_ASC',
+  CityIdDesc = 'CITY_ID_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  RegionAsc = 'REGION_ASC',
+  RegionDesc = 'REGION_DESC',
+  UserIdAsc = 'USER_ID_ASC',
+  UserIdDesc = 'USER_ID_DESC'
 }
 
-export namespace CreateFollowList {
-  export type Variables = {
-    userId: number;
-    artistId?: Maybe<string>;
-    venueId?: Maybe<string>;
-  };
+/** Join table for events watched by a user. */
+export type WatchList = {
+   __typename?: 'WatchList',
+  /** Reads a single `Event` that is related to this `WatchList`. */
+  event?: Maybe<Event>,
+  /** Ref to event. */
+  eventId: Scalars['String'],
+  /** Primary key and id of row. */
+  id: Scalars['Int'],
+  /** Reads a single `User` that is related to this `WatchList`. */
+  user?: Maybe<User>,
+  /** Ref to user. */
+  userId: Scalars['Int'],
+};
 
-  export type Mutation = {
-    __typename?: "Mutation";
+/** 
+ * A condition to be used against `WatchList` object types. All fields are tested
+ * for equality and combined with a logical ‘and.’
+ */
+export type WatchListCondition = {
+  /** Checks for equality with the object’s `eventId` field. */
+  eventId?: Maybe<Scalars['String']>,
+  /** Checks for equality with the object’s `id` field. */
+  id?: Maybe<Scalars['Int']>,
+  /** Checks for equality with the object’s `userId` field. */
+  userId?: Maybe<Scalars['Int']>,
+};
 
-    createFollowList: Maybe<CreateFollowList>;
-  };
+/** A filter to be used against `WatchList` object types. All fields are combined with a logical ‘and.’ */
+export type WatchListFilter = {
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<WatchListFilter>>,
+  /** Filter by the object’s `eventId` field. */
+  eventId?: Maybe<StringFilter>,
+  /** Filter by the object’s `id` field. */
+  id?: Maybe<IntFilter>,
+  /** Negates the expression. */
+  not?: Maybe<WatchListFilter>,
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<WatchListFilter>>,
+  /** Filter by the object’s `userId` field. */
+  userId?: Maybe<IntFilter>,
+};
 
-  export type CreateFollowList = {
-    __typename?: "CreateFollowListPayload";
+/** An input for mutations affecting `WatchList` */
+export type WatchListInput = {
+  /** Ref to event. */
+  eventId: Scalars['String'],
+  /** Primary key and id of row. */
+  id?: Maybe<Scalars['Int']>,
+  /** Ref to user. */
+  userId: Scalars['Int'],
+};
 
-    followList: Maybe<FollowList>;
-  };
+/** Represents an update to a `WatchList`. Fields that are set will be updated. */
+export type WatchListPatch = {
+  /** Ref to event. */
+  eventId?: Maybe<Scalars['String']>,
+  /** Primary key and id of row. */
+  id?: Maybe<Scalars['Int']>,
+  /** Ref to user. */
+  userId?: Maybe<Scalars['Int']>,
+};
 
-  export type FollowList = {
-    __typename?: "FollowList";
+/** A connection to a list of `WatchList` values. */
+export type WatchListsConnection = {
+   __typename?: 'WatchListsConnection',
+  /** A list of edges which contains the `WatchList` and cursor to aid in pagination. */
+  edges: Array<WatchListsEdge>,
+  /** A list of `WatchList` objects. */
+  nodes: Array<WatchList>,
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo,
+  /** The count of *all* `WatchList` you could get from the connection. */
+  totalCount: Scalars['Int'],
+};
 
-    id: number;
-  };
+/** A `WatchList` edge in the connection. */
+export type WatchListsEdge = {
+   __typename?: 'WatchListsEdge',
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>,
+  /** The `WatchList` at the end of the edge. */
+  node: WatchList,
+};
+
+/** Methods to use when ordering `WatchList`. */
+export enum WatchListsOrderBy {
+  EventIdAsc = 'EVENT_ID_ASC',
+  EventIdDesc = 'EVENT_ID_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  UserIdAsc = 'USER_ID_ASC',
+  UserIdDesc = 'USER_ID_DESC'
 }
 
-export namespace CreatePushSubscription {
-  export type Variables = {
-    userId: number;
-    endpoint: string;
-    p256Dh: string;
-    auth: string;
-  };
+export type AllLocationsQueryVariables = {
+  currentDate: Scalars['BigInt']
+};
 
-  export type Mutation = {
-    __typename?: "Mutation";
 
-    createPushSubscription: Maybe<CreatePushSubscription>;
-  };
+export type AllLocationsQuery = (
+  { __typename?: 'Query' }
+  & { regions: Maybe<(
+    { __typename?: 'RegionsConnection' }
+    & { nodes: Array<(
+      { __typename?: 'Region' }
+      & Pick<Region, 'name' | 'lat' | 'lon'>
+      & { citiesByRegion: (
+        { __typename?: 'CitiesConnection' }
+        & { nodes: Array<(
+          { __typename?: 'City' }
+          & Pick<City, 'id' | 'name'>
+          & { venuesByCity: (
+            { __typename?: 'VenuesConnection' }
+            & { nodes: Array<(
+              { __typename?: 'Venue' }
+              & { eventsByVenue: (
+                { __typename?: 'EventsConnection' }
+                & Pick<EventsConnection, 'totalCount'>
+              ) }
+            )> }
+          ) }
+        )> }
+      ) }
+    )> }
+  )> }
+);
 
-  export type CreatePushSubscription = {
-    __typename?: "CreatePushSubscriptionPayload";
+export type ArtistByNameQueryVariables = {
+  name: Scalars['String'],
+  userId: Scalars['Int']
+};
 
-    clientMutationId: Maybe<string>;
-  };
+
+export type ArtistByNameQuery = (
+  { __typename?: 'Query' }
+  & { artist: Maybe<(
+    { __typename?: 'Artist' }
+    & Pick<Artist, 'name' | 'description' | 'photo' | 'twitterUsername' | 'twitterUrl' | 'facebookUsername' | 'facebookUrl' | 'instagramUsername' | 'instagramUrl' | 'soundcloudUsername' | 'soundcloudUrl' | 'youtubeUsername' | 'youtubeUrl' | 'spotifyUrl' | 'homepage'>
+    & { genreToArtists: (
+      { __typename?: 'GenreToArtistsConnection' }
+      & { nodes: Array<(
+        { __typename?: 'GenreToArtist' }
+        & Pick<GenreToArtist, 'genreId'>
+      )> }
+    ), followLists: (
+      { __typename?: 'FollowListsConnection' }
+      & { nodes: Array<(
+        { __typename?: 'FollowList' }
+        & Pick<FollowList, 'id'>
+      )> }
+    ), artistToEvents: (
+      { __typename?: 'ArtistToEventsConnection' }
+      & { nodes: Array<(
+        { __typename?: 'ArtistToEvent' }
+        & { event: Maybe<(
+          { __typename?: 'Event' }
+          & Pick<Event, 'name' | 'venue' | 'startDate' | 'id' | 'ticketproviderurl' | 'ticketproviderid'>
+          & { watchLists: (
+            { __typename?: 'WatchListsConnection' }
+            & { nodes: Array<(
+              { __typename?: 'WatchList' }
+              & Pick<WatchList, 'id'>
+            )> }
+          ) }
+        )> }
+      )> }
+    ) }
+  )> }
+);
+
+export type CreateFollowListMutationVariables = {
+  userId: Scalars['Int'],
+  artistId?: Maybe<Scalars['String']>,
+  venueId?: Maybe<Scalars['String']>
+};
+
+
+export type CreateFollowListMutation = (
+  { __typename?: 'Mutation' }
+  & { createFollowList: Maybe<(
+    { __typename?: 'CreateFollowListPayload' }
+    & { followList: Maybe<(
+      { __typename?: 'FollowList' }
+      & Pick<FollowList, 'id'>
+    )> }
+  )> }
+);
+
+export type CreatePushSubscriptionMutationVariables = {
+  userId: Scalars['Int'],
+  endpoint: Scalars['String'],
+  p256Dh: Scalars['String'],
+  auth: Scalars['String']
+};
+
+
+export type CreatePushSubscriptionMutation = (
+  { __typename?: 'Mutation' }
+  & { createPushSubscription: Maybe<(
+    { __typename?: 'CreatePushSubscriptionPayload' }
+    & Pick<CreatePushSubscriptionPayload, 'clientMutationId'>
+  )> }
+);
+
+export type CreateWatchListMutationVariables = {
+  userId: Scalars['Int'],
+  eventId: Scalars['String']
+};
+
+
+export type CreateWatchListMutation = (
+  { __typename?: 'Mutation' }
+  & { createWatchList: Maybe<(
+    { __typename?: 'CreateWatchListPayload' }
+    & { watchList: Maybe<(
+      { __typename?: 'WatchList' }
+      & Pick<WatchList, 'id'>
+    )> }
+  )> }
+);
+
+export type CreateWatchedToAccountMutationVariables = {
+  userId: Scalars['Int'],
+  region?: Maybe<Scalars['String']>,
+  cityId?: Maybe<Scalars['Int']>
+};
+
+
+export type CreateWatchedToAccountMutation = (
+  { __typename?: 'Mutation' }
+  & { createWatchedToAccount: Maybe<(
+    { __typename?: 'CreateWatchedToAccountPayload' }
+    & { watchedToAccount: Maybe<(
+      { __typename?: 'WatchedToAccount' }
+      & Pick<WatchedToAccount, 'id' | 'region'>
+      & { city: Maybe<(
+        { __typename?: 'City' }
+        & Pick<City, 'id' | 'name'>
+      )> }
+    )> }
+  )> }
+);
+
+export type CurrentUserQueryVariables = {};
+
+
+export type CurrentUserQuery = (
+  { __typename?: 'Query' }
+  & { currentUser: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'username' | 'notificationFrequency' | 'pushNotification' | 'emailNotification' | 'profilePhoto' | 'id'>
+    & { watchLists: (
+      { __typename?: 'WatchListsConnection' }
+      & Pick<WatchListsConnection, 'totalCount'>
+    ), pushSubscriptions: (
+      { __typename?: 'PushSubscriptionsConnection' }
+      & { nodes: Array<(
+        { __typename?: 'PushSubscription' }
+        & Pick<PushSubscription, 'id'>
+      )> }
+    ) }
+  )> }
+);
+
+export type DeletePushSubscriptionByIdMutationVariables = {
+  id: Scalars['Int']
+};
+
+
+export type DeletePushSubscriptionByIdMutation = (
+  { __typename?: 'Mutation' }
+  & { deletePushSubscription: Maybe<(
+    { __typename?: 'DeletePushSubscriptionPayload' }
+    & Pick<DeletePushSubscriptionPayload, 'clientMutationId'>
+  )> }
+);
+
+export type DeleteWatchedByIdMutationVariables = {
+  id: Scalars['Int']
+};
+
+
+export type DeleteWatchedByIdMutation = (
+  { __typename?: 'Mutation' }
+  & { deleteWatchedToAccount: Maybe<(
+    { __typename?: 'DeleteWatchedToAccountPayload' }
+    & Pick<DeleteWatchedToAccountPayload, 'clientMutationId'>
+  )> }
+);
+
+export type EventByIdQueryVariables = {
+  eventId: Scalars['String'],
+  userId: Scalars['Int']
+};
+
+
+export type EventByIdQuery = (
+  { __typename?: 'Query' }
+  & { event: Maybe<(
+    { __typename?: 'Event' }
+    & Pick<Event, 'id' | 'name' | 'startDate' | 'endDate' | 'ticketproviderurl' | 'ticketproviderid' | 'description' | 'banner'>
+    & { venueByVenue: Maybe<(
+      { __typename?: 'Venue' }
+      & Pick<Venue, 'name' | 'lat' | 'lon' | 'city' | 'address'>
+    )>, watchLists: (
+      { __typename?: 'WatchListsConnection' }
+      & { nodes: Array<(
+        { __typename?: 'WatchList' }
+        & Pick<WatchList, 'id'>
+      )> }
+    ), artistToEvents: (
+      { __typename?: 'ArtistToEventsConnection' }
+      & { nodes: Array<(
+        { __typename?: 'ArtistToEvent' }
+        & { artist: Maybe<(
+          { __typename?: 'Artist' }
+          & Pick<Artist, 'name'>
+        )> }
+      )> }
+    ) }
+  )> }
+);
+
+export type RemoveFollowlistMutationVariables = {
+  followListId: Scalars['Int']
+};
+
+
+export type RemoveFollowlistMutation = (
+  { __typename?: 'Mutation' }
+  & { deleteFollowList: Maybe<(
+    { __typename?: 'DeleteFollowListPayload' }
+    & Pick<DeleteFollowListPayload, 'clientMutationId'>
+  )> }
+);
+
+export type RemoveWatchlistMutationVariables = {
+  watchListId: Scalars['Int']
+};
+
+
+export type RemoveWatchlistMutation = (
+  { __typename?: 'Mutation' }
+  & { deleteWatchList: Maybe<(
+    { __typename?: 'DeleteWatchListPayload' }
+    & Pick<DeleteWatchListPayload, 'clientMutationId'>
+  )> }
+);
+
+export type SearchEventsByCityQueryVariables = {
+  query: Scalars['String'],
+  cityId: Scalars['Int'],
+  userId: Scalars['Int'],
+  greaterThan: Scalars['BigInt'],
+  lessThan: Scalars['BigInt'],
+  batchSize?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>
+};
+
+
+export type SearchEventsByCityQuery = (
+  { __typename?: 'Query' }
+  & { searchEventsByCity: (
+    { __typename?: 'EventsConnection' }
+    & Pick<EventsConnection, 'totalCount'>
+    & { nodes: Array<(
+      { __typename?: 'Event' }
+      & Pick<Event, 'id' | 'name' | 'startDate' | 'ticketproviderurl' | 'ticketproviderid' | 'venue' | 'createdAt'>
+      & { venueByVenue: Maybe<(
+        { __typename?: 'Venue' }
+        & Pick<Venue, 'lat' | 'lon'>
+      )>, artistToEvents: (
+        { __typename?: 'ArtistToEventsConnection' }
+        & { nodes: Array<(
+          { __typename?: 'ArtistToEvent' }
+          & { artist: Maybe<(
+            { __typename?: 'Artist' }
+            & Pick<Artist, 'photo'>
+          )> }
+        )> }
+      ), watchLists: (
+        { __typename?: 'WatchListsConnection' }
+        & { nodes: Array<(
+          { __typename?: 'WatchList' }
+          & Pick<WatchList, 'id'>
+        )> }
+      ) }
+    )> }
+  ) }
+);
+
+export type SearchEventsByRegionQueryVariables = {
+  query: Scalars['String'],
+  regionName: Scalars['String'],
+  userId: Scalars['Int'],
+  greaterThan: Scalars['BigInt'],
+  lessThan: Scalars['BigInt'],
+  batchSize?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>
+};
+
+
+export type SearchEventsByRegionQuery = (
+  { __typename?: 'Query' }
+  & { searchEventsByRegion: (
+    { __typename?: 'EventsConnection' }
+    & Pick<EventsConnection, 'totalCount'>
+    & { nodes: Array<(
+      { __typename?: 'Event' }
+      & Pick<Event, 'id' | 'name' | 'startDate' | 'ticketproviderurl' | 'ticketproviderid' | 'venue' | 'createdAt'>
+      & { venueByVenue: Maybe<(
+        { __typename?: 'Venue' }
+        & Pick<Venue, 'lat' | 'lon'>
+      )>, artistToEvents: (
+        { __typename?: 'ArtistToEventsConnection' }
+        & { nodes: Array<(
+          { __typename?: 'ArtistToEvent' }
+          & { artist: Maybe<(
+            { __typename?: 'Artist' }
+            & Pick<Artist, 'photo'>
+          )> }
+        )> }
+      ), watchLists: (
+        { __typename?: 'WatchListsConnection' }
+        & { nodes: Array<(
+          { __typename?: 'WatchList' }
+          & Pick<WatchList, 'id'>
+        )> }
+      ) }
+    )> }
+  ) }
+);
+
+export type UpdateAccountMutationVariables = {
+  userId: Scalars['Int'],
+  profilePhoto?: Maybe<Scalars['String']>,
+  notificationFrequency?: Maybe<Frequency>,
+  pushNotification?: Maybe<Scalars['Boolean']>,
+  emailNotification?: Maybe<Scalars['Boolean']>
+};
+
+
+export type UpdateAccountMutation = (
+  { __typename?: 'Mutation' }
+  & { updateUser: Maybe<(
+    { __typename?: 'UpdateUserPayload' }
+    & { user: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'username' | 'notificationFrequency' | 'profilePhoto' | 'pushNotification' | 'emailNotification' | 'id'>
+      & { watchLists: (
+        { __typename?: 'WatchListsConnection' }
+        & Pick<WatchListsConnection, 'totalCount'>
+      ) }
+    )> }
+  )> }
+);
+
+export type UserByUsernameQueryVariables = {
+  username: Scalars['String'],
+  userId: Scalars['Int']
+};
+
+
+export type UserByUsernameQuery = (
+  { __typename?: 'Query' }
+  & { userByUsername: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'username' | 'profilePhoto'>
+    & { watchLists: (
+      { __typename?: 'WatchListsConnection' }
+      & Pick<WatchListsConnection, 'totalCount'>
+      & { nodes: Array<(
+        { __typename?: 'WatchList' }
+        & { event: Maybe<(
+          { __typename?: 'Event' }
+          & Pick<Event, 'id' | 'name' | 'startDate' | 'ticketproviderurl' | 'ticketproviderid' | 'venue' | 'createdAt'>
+          & { artistToEvents: (
+            { __typename?: 'ArtistToEventsConnection' }
+            & { nodes: Array<(
+              { __typename?: 'ArtistToEvent' }
+              & { artist: Maybe<(
+                { __typename?: 'Artist' }
+                & Pick<Artist, 'photo'>
+              )> }
+            )> }
+          ), watchLists: (
+            { __typename?: 'WatchListsConnection' }
+            & { nodes: Array<(
+              { __typename?: 'WatchList' }
+              & Pick<WatchList, 'id'>
+            )> }
+          ) }
+        )> }
+      )> }
+    ), followLists: (
+      { __typename?: 'FollowListsConnection' }
+      & Pick<FollowListsConnection, 'totalCount'>
+      & { nodes: Array<(
+        { __typename?: 'FollowList' }
+        & Pick<FollowList, 'id'>
+        & { artist: Maybe<(
+          { __typename?: 'Artist' }
+          & Pick<Artist, 'name' | 'photo'>
+        )>, venue: Maybe<(
+          { __typename?: 'Venue' }
+          & Pick<Venue, 'name' | 'photo'>
+        )> }
+      )> }
+    ) }
+  )> }
+);
+
+export type VenueByNameQueryVariables = {
+  name: Scalars['String'],
+  userId: Scalars['Int'],
+  currentDate: Scalars['BigInt']
+};
+
+
+export type VenueByNameQuery = (
+  { __typename?: 'Query' }
+  & { venue: Maybe<(
+    { __typename?: 'Venue' }
+    & Pick<Venue, 'name' | 'description' | 'lat' | 'lon' | 'city' | 'address' | 'photo' | 'logo'>
+    & { followLists: (
+      { __typename?: 'FollowListsConnection' }
+      & { nodes: Array<(
+        { __typename?: 'FollowList' }
+        & Pick<FollowList, 'id'>
+      )> }
+    ), eventsByVenue: (
+      { __typename?: 'EventsConnection' }
+      & { nodes: Array<(
+        { __typename?: 'Event' }
+        & Pick<Event, 'name' | 'startDate' | 'ticketproviderurl' | 'ticketproviderid' | 'id'>
+        & { artistToEvents: (
+          { __typename?: 'ArtistToEventsConnection' }
+          & { nodes: Array<(
+            { __typename?: 'ArtistToEvent' }
+            & { artist: Maybe<(
+              { __typename?: 'Artist' }
+              & Pick<Artist, 'photo'>
+            )> }
+          )> }
+        ) }
+      )> }
+    ) }
+  )> }
+);
+
+export type WatchedLocationByAccountQueryVariables = {
+  userId: Scalars['Int']
+};
+
+
+export type WatchedLocationByAccountQuery = (
+  { __typename?: 'Query' }
+  & { watchedToAccounts: Maybe<(
+    { __typename?: 'WatchedToAccountsConnection' }
+    & { nodes: Array<(
+      { __typename?: 'WatchedToAccount' }
+      & Pick<WatchedToAccount, 'id' | 'region'>
+      & { city: Maybe<(
+        { __typename?: 'City' }
+        & Pick<City, 'id' | 'name'>
+      )> }
+    )> }
+  )> }
+);
+
+
+export const AllLocationsDocument = gql`
+    query allLocations($currentDate: BigInt!) {
+  regions {
+    nodes {
+      name
+      lat
+      lon
+      citiesByRegion(orderBy: REGION_ASC) {
+        nodes {
+          id
+          name
+          venuesByCity {
+            nodes {
+              eventsByVenue(filter: {startDate: {greaterThanOrEqualTo: $currentDate}}) {
+                totalCount
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }
+    `;
 
-export namespace CreateWatchList {
-  export type Variables = {
-    userId: number;
-    eventId: string;
-  };
-
-  export type Mutation = {
-    __typename?: "Mutation";
-
-    createWatchList: Maybe<CreateWatchList>;
-  };
-
-  export type CreateWatchList = {
-    __typename?: "CreateWatchListPayload";
-
-    watchList: Maybe<WatchList>;
-  };
-
-  export type WatchList = {
-    __typename?: "WatchList";
-
-    id: number;
-  };
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class AllLocationsGQL extends Apollo.Query<AllLocationsQuery, AllLocationsQueryVariables> {
+    document = AllLocationsDocument;
+    
+  }
+export const ArtistByNameDocument = gql`
+    query artistByName($name: String!, $userId: Int!) {
+  artist(name: $name) {
+    name
+    description
+    photo
+    twitterUsername
+    twitterUrl
+    facebookUsername
+    facebookUrl
+    instagramUsername
+    instagramUrl
+    soundcloudUsername
+    soundcloudUrl
+    youtubeUsername
+    youtubeUrl
+    spotifyUrl
+    homepage
+    genreToArtists {
+      nodes {
+        genreId
+      }
+    }
+    followLists(filter: {userId: {equalTo: $userId}}) {
+      nodes {
+        id
+      }
+    }
+    artistToEvents {
+      nodes {
+        event {
+          name
+          venue
+          startDate
+          id
+          ticketproviderurl
+          ticketproviderid
+          watchLists(filter: {userId: {equalTo: $userId}}) {
+            nodes {
+              id
+            }
+          }
+        }
+      }
+    }
+  }
 }
+    `;
 
-export namespace CreateWatchedToAccount {
-  export type Variables = {
-    userId: number;
-    region?: Maybe<string>;
-    cityId?: Maybe<number>;
-  };
-
-  export type Mutation = {
-    __typename?: "Mutation";
-
-    createWatchedToAccount: Maybe<CreateWatchedToAccount>;
-  };
-
-  export type CreateWatchedToAccount = {
-    __typename?: "CreateWatchedToAccountPayload";
-
-    watchedToAccount: Maybe<WatchedToAccount>;
-  };
-
-  export type WatchedToAccount = {
-    __typename?: "WatchedToAccount";
-
-    id: number;
-
-    region: Maybe<string>;
-
-    city: Maybe<City>;
-  };
-
-  export type City = {
-    __typename?: "City";
-
-    id: number;
-
-    name: Maybe<string>;
-  };
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class ArtistByNameGQL extends Apollo.Query<ArtistByNameQuery, ArtistByNameQueryVariables> {
+    document = ArtistByNameDocument;
+    
+  }
+export const CreateFollowListDocument = gql`
+    mutation createFollowList($userId: Int!, $artistId: String, $venueId: String) {
+  createFollowList(input: {followList: {userId: $userId, artistId: $artistId, venueId: $venueId}}) {
+    followList {
+      id
+    }
+  }
 }
+    `;
 
-export namespace CurrentUser {
-  export type Variables = {};
-
-  export type Query = {
-    __typename?: "Query";
-
-    currentUser: Maybe<CurrentUser>;
-  };
-
-  export type CurrentUser = {
-    __typename?: "User";
-
-    username: string;
-
-    notificationFrequency: Frequency;
-
-    pushNotification: Maybe<boolean>;
-
-    emailNotification: Maybe<boolean>;
-
-    profilePhoto: Maybe<string>;
-
-    id: number;
-
-    watchLists: WatchLists;
-
-    pushSubscriptions: PushSubscriptions;
-  };
-
-  export type WatchLists = {
-    __typename?: "WatchListsConnection";
-
-    totalCount: number;
-  };
-
-  export type PushSubscriptions = {
-    __typename?: "PushSubscriptionsConnection";
-
-    nodes: Nodes[];
-  };
-
-  export type Nodes = {
-    __typename?: "PushSubscription";
-
-    id: number;
-  };
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class CreateFollowListGQL extends Apollo.Mutation<CreateFollowListMutation, CreateFollowListMutationVariables> {
+    document = CreateFollowListDocument;
+    
+  }
+export const CreatePushSubscriptionDocument = gql`
+    mutation createPushSubscription($userId: Int!, $endpoint: String!, $p256Dh: String!, $auth: String!) {
+  createPushSubscription(input: {pushSubscription: {userId: $userId, endpoint: $endpoint, expirationTime: null, p256Dh: $p256Dh, auth: $auth}}) {
+    clientMutationId
+  }
 }
+    `;
 
-export namespace DeletePushSubscriptionById {
-  export type Variables = {
-    id: number;
-  };
-
-  export type Mutation = {
-    __typename?: "Mutation";
-
-    deletePushSubscription: Maybe<DeletePushSubscription>;
-  };
-
-  export type DeletePushSubscription = {
-    __typename?: "DeletePushSubscriptionPayload";
-
-    clientMutationId: Maybe<string>;
-  };
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class CreatePushSubscriptionGQL extends Apollo.Mutation<CreatePushSubscriptionMutation, CreatePushSubscriptionMutationVariables> {
+    document = CreatePushSubscriptionDocument;
+    
+  }
+export const CreateWatchListDocument = gql`
+    mutation createWatchList($userId: Int!, $eventId: String!) {
+  createWatchList(input: {watchList: {userId: $userId, eventId: $eventId}}) {
+    watchList {
+      id
+    }
+  }
 }
+    `;
 
-export namespace DeleteWatchedById {
-  export type Variables = {
-    id: number;
-  };
-
-  export type Mutation = {
-    __typename?: "Mutation";
-
-    deleteWatchedToAccount: Maybe<DeleteWatchedToAccount>;
-  };
-
-  export type DeleteWatchedToAccount = {
-    __typename?: "DeleteWatchedToAccountPayload";
-
-    clientMutationId: Maybe<string>;
-  };
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class CreateWatchListGQL extends Apollo.Mutation<CreateWatchListMutation, CreateWatchListMutationVariables> {
+    document = CreateWatchListDocument;
+    
+  }
+export const CreateWatchedToAccountDocument = gql`
+    mutation createWatchedToAccount($userId: Int!, $region: String, $cityId: Int) {
+  createWatchedToAccount(input: {watchedToAccount: {userId: $userId, region: $region, cityId: $cityId}}) {
+    watchedToAccount {
+      id
+      region
+      city {
+        id
+        name
+      }
+    }
+  }
 }
+    `;
 
-export namespace EventById {
-  export type Variables = {
-    eventId: string;
-    userId: number;
-  };
-
-  export type Query = {
-    __typename?: "Query";
-
-    event: Maybe<Event>;
-  };
-
-  export type Event = {
-    __typename?: "Event";
-
-    id: string;
-
-    name: Maybe<string>;
-
-    startDate: BigInt;
-
-    endDate: Maybe<BigInt>;
-
-    ticketproviderurl: Maybe<string>;
-
-    ticketproviderid: Maybe<string>;
-
-    description: Maybe<string>;
-
-    banner: Maybe<string>;
-
-    venueByVenue: Maybe<VenueByVenue>;
-
-    watchLists: WatchLists;
-
-    artistToEvents: ArtistToEvents;
-  };
-
-  export type VenueByVenue = {
-    __typename?: "Venue";
-
-    name: string;
-
-    lat: Maybe<BigFloat>;
-
-    lon: Maybe<BigFloat>;
-
-    city: number;
-
-    address: Maybe<string>;
-  };
-
-  export type WatchLists = {
-    __typename?: "WatchListsConnection";
-
-    nodes: Nodes[];
-  };
-
-  export type Nodes = {
-    __typename?: "WatchList";
-
-    id: number;
-  };
-
-  export type ArtistToEvents = {
-    __typename?: "ArtistToEventsConnection";
-
-    nodes: _Nodes[];
-  };
-
-  export type _Nodes = {
-    __typename?: "ArtistToEvent";
-
-    artist: Maybe<Artist>;
-  };
-
-  export type Artist = {
-    __typename?: "Artist";
-
-    name: string;
-  };
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class CreateWatchedToAccountGQL extends Apollo.Mutation<CreateWatchedToAccountMutation, CreateWatchedToAccountMutationVariables> {
+    document = CreateWatchedToAccountDocument;
+    
+  }
+export const CurrentUserDocument = gql`
+    query currentUser {
+  currentUser {
+    username
+    notificationFrequency
+    pushNotification
+    emailNotification
+    profilePhoto
+    id
+    watchLists {
+      totalCount
+    }
+    pushSubscriptions {
+      nodes {
+        id
+      }
+    }
+  }
 }
+    `;
 
-export namespace ForgotPassword {
-  export type Variables = {
-    email: string;
-  };
-
-  export type Mutation = {
-    __typename?: "Mutation";
-
-    forgotPassword: Maybe<ForgotPassword>;
-  };
-
-  export type ForgotPassword = {
-    __typename?: "ForgotPasswordPayload";
-
-    success: Maybe<boolean>;
-  };
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class CurrentUserGQL extends Apollo.Query<CurrentUserQuery, CurrentUserQueryVariables> {
+    document = CurrentUserDocument;
+    
+  }
+export const DeletePushSubscriptionByIdDocument = gql`
+    mutation deletePushSubscriptionById($id: Int!) {
+  deletePushSubscription(input: {id: $id}) {
+    clientMutationId
+  }
 }
+    `;
 
-export namespace LoginUser {
-  export type Variables = {
-    username: string;
-    password: string;
-  };
-
-  export type Mutation = {
-    __typename?: "Mutation";
-
-    login: Maybe<Login>;
-  };
-
-  export type Login = {
-    __typename?: "LoginPayload";
-
-    user: User;
-  };
-
-  export type User = {
-    __typename?: "User";
-
-    username: string;
-  };
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class DeletePushSubscriptionByIdGQL extends Apollo.Mutation<DeletePushSubscriptionByIdMutation, DeletePushSubscriptionByIdMutationVariables> {
+    document = DeletePushSubscriptionByIdDocument;
+    
+  }
+export const DeleteWatchedByIdDocument = gql`
+    mutation deleteWatchedById($id: Int!) {
+  deleteWatchedToAccount(input: {id: $id}) {
+    clientMutationId
+  }
 }
+    `;
 
-export namespace RegisterUser {
-  export type Variables = {
-    username: string;
-    email: string;
-    password: string;
-  };
-
-  export type Mutation = {
-    __typename?: "Mutation";
-
-    register: Maybe<Register>;
-  };
-
-  export type Register = {
-    __typename?: "RegisterPayload";
-
-    user: User;
-  };
-
-  export type User = {
-    __typename?: "User";
-
-    username: string;
-  };
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class DeleteWatchedByIdGQL extends Apollo.Mutation<DeleteWatchedByIdMutation, DeleteWatchedByIdMutationVariables> {
+    document = DeleteWatchedByIdDocument;
+    
+  }
+export const EventByIdDocument = gql`
+    query eventById($eventId: String!, $userId: Int!) {
+  event(id: $eventId) {
+    id
+    name
+    startDate
+    endDate
+    ticketproviderurl
+    ticketproviderid
+    description
+    banner
+    venueByVenue {
+      name
+      lat
+      lon
+      city
+      address
+    }
+    watchLists(filter: {userId: {equalTo: $userId}}) {
+      nodes {
+        id
+      }
+    }
+    artistToEvents {
+      nodes {
+        artist {
+          name
+        }
+      }
+    }
+  }
 }
+    `;
 
-export namespace RemoveFollowlist {
-  export type Variables = {
-    followListId: number;
-  };
-
-  export type Mutation = {
-    __typename?: "Mutation";
-
-    deleteFollowList: Maybe<DeleteFollowList>;
-  };
-
-  export type DeleteFollowList = {
-    __typename?: "DeleteFollowListPayload";
-
-    clientMutationId: Maybe<string>;
-  };
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class EventByIdGQL extends Apollo.Query<EventByIdQuery, EventByIdQueryVariables> {
+    document = EventByIdDocument;
+    
+  }
+export const RemoveFollowlistDocument = gql`
+    mutation removeFollowlist($followListId: Int!) {
+  deleteFollowList(input: {id: $followListId}) {
+    clientMutationId
+  }
 }
+    `;
 
-export namespace RemoveWatchlist {
-  export type Variables = {
-    watchListId: number;
-  };
-
-  export type Mutation = {
-    __typename?: "Mutation";
-
-    deleteWatchList: Maybe<DeleteWatchList>;
-  };
-
-  export type DeleteWatchList = {
-    __typename?: "DeleteWatchListPayload";
-
-    clientMutationId: Maybe<string>;
-  };
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class RemoveFollowlistGQL extends Apollo.Mutation<RemoveFollowlistMutation, RemoveFollowlistMutationVariables> {
+    document = RemoveFollowlistDocument;
+    
+  }
+export const RemoveWatchlistDocument = gql`
+    mutation removeWatchlist($watchListId: Int!) {
+  deleteWatchList(input: {id: $watchListId}) {
+    clientMutationId
+  }
 }
+    `;
 
-export namespace ResetPassword {
-  export type Variables = {
-    userId: number;
-    token: string;
-    newPassword: string;
-  };
-
-  export type Mutation = {
-    __typename?: "Mutation";
-
-    resetPassword: Maybe<ResetPassword>;
-  };
-
-  export type ResetPassword = {
-    __typename?: "ResetPasswordPayload";
-
-    user: Maybe<User>;
-  };
-
-  export type User = {
-    __typename?: "User";
-
-    username: string;
-  };
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class RemoveWatchlistGQL extends Apollo.Mutation<RemoveWatchlistMutation, RemoveWatchlistMutationVariables> {
+    document = RemoveWatchlistDocument;
+    
+  }
+export const SearchEventsByCityDocument = gql`
+    query searchEventsByCity($query: String!, $cityId: Int!, $userId: Int!, $greaterThan: BigInt!, $lessThan: BigInt!, $batchSize: Int, $offset: Int) {
+  searchEventsByCity(query: $query, cityid: $cityId, filter: {startDate: {greaterThanOrEqualTo: $greaterThan, lessThanOrEqualTo: $lessThan}}, first: $batchSize, offset: $offset) {
+    totalCount
+    nodes {
+      id
+      name
+      startDate
+      ticketproviderurl
+      ticketproviderid
+      venue
+      createdAt
+      venueByVenue {
+        lat
+        lon
+      }
+      artistToEvents(first: 1) {
+        nodes {
+          artist {
+            photo
+          }
+        }
+      }
+      watchLists(filter: {userId: {equalTo: $userId}}) {
+        nodes {
+          id
+        }
+      }
+    }
+  }
 }
+    `;
 
-export namespace SearchEventsByCity {
-  export type Variables = {
-    query: string;
-    cityId: number;
-    userId: number;
-    greaterThan: BigInt;
-    lessThan: BigInt;
-    batchSize?: Maybe<number>;
-    offset?: Maybe<number>;
-  };
-
-  export type Query = {
-    __typename?: "Query";
-
-    searchEventsByCity: SearchEventsByCity;
-  };
-
-  export type SearchEventsByCity = {
-    __typename?: "EventsConnection";
-
-    totalCount: number;
-
-    nodes: Nodes[];
-  };
-
-  export type Nodes = {
-    __typename?: "Event";
-
-    id: string;
-
-    name: Maybe<string>;
-
-    startDate: BigInt;
-
-    ticketproviderurl: Maybe<string>;
-
-    ticketproviderid: Maybe<string>;
-
-    venue: string;
-
-    createdAt: Datetime;
-
-    venueByVenue: Maybe<VenueByVenue>;
-
-    artistToEvents: ArtistToEvents;
-
-    watchLists: WatchLists;
-  };
-
-  export type VenueByVenue = {
-    __typename?: "Venue";
-
-    lat: Maybe<BigFloat>;
-
-    lon: Maybe<BigFloat>;
-  };
-
-  export type ArtistToEvents = {
-    __typename?: "ArtistToEventsConnection";
-
-    nodes: _Nodes[];
-  };
-
-  export type _Nodes = {
-    __typename?: "ArtistToEvent";
-
-    artist: Maybe<Artist>;
-  };
-
-  export type Artist = {
-    __typename?: "Artist";
-
-    photo: Maybe<string>;
-  };
-
-  export type WatchLists = {
-    __typename?: "WatchListsConnection";
-
-    nodes: __Nodes[];
-  };
-
-  export type __Nodes = {
-    __typename?: "WatchList";
-
-    id: number;
-  };
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class SearchEventsByCityGQL extends Apollo.Query<SearchEventsByCityQuery, SearchEventsByCityQueryVariables> {
+    document = SearchEventsByCityDocument;
+    
+  }
+export const SearchEventsByRegionDocument = gql`
+    query searchEventsByRegion($query: String!, $regionName: String!, $userId: Int!, $greaterThan: BigInt!, $lessThan: BigInt!, $batchSize: Int, $offset: Int) {
+  searchEventsByRegion(query: $query, regionName: $regionName, filter: {startDate: {greaterThanOrEqualTo: $greaterThan, lessThanOrEqualTo: $lessThan}}, first: $batchSize, offset: $offset) {
+    totalCount
+    nodes {
+      id
+      name
+      startDate
+      ticketproviderurl
+      ticketproviderid
+      venue
+      createdAt
+      venueByVenue {
+        lat
+        lon
+      }
+      artistToEvents(first: 1) {
+        nodes {
+          artist {
+            photo
+          }
+        }
+      }
+      watchLists(filter: {userId: {equalTo: $userId}}) {
+        nodes {
+          id
+        }
+      }
+    }
+  }
 }
+    `;
 
-export namespace SearchEventsByRegion {
-  export type Variables = {
-    query: string;
-    regionName: string;
-    userId: number;
-    greaterThan: BigInt;
-    lessThan: BigInt;
-    batchSize?: Maybe<number>;
-    offset?: Maybe<number>;
-  };
-
-  export type Query = {
-    __typename?: "Query";
-
-    searchEventsByRegion: SearchEventsByRegion;
-  };
-
-  export type SearchEventsByRegion = {
-    __typename?: "EventsConnection";
-
-    totalCount: number;
-
-    nodes: Nodes[];
-  };
-
-  export type Nodes = {
-    __typename?: "Event";
-
-    id: string;
-
-    name: Maybe<string>;
-
-    startDate: BigInt;
-
-    ticketproviderurl: Maybe<string>;
-
-    ticketproviderid: Maybe<string>;
-
-    venue: string;
-
-    createdAt: Datetime;
-
-    venueByVenue: Maybe<VenueByVenue>;
-
-    artistToEvents: ArtistToEvents;
-
-    watchLists: WatchLists;
-  };
-
-  export type VenueByVenue = {
-    __typename?: "Venue";
-
-    lat: Maybe<BigFloat>;
-
-    lon: Maybe<BigFloat>;
-  };
-
-  export type ArtistToEvents = {
-    __typename?: "ArtistToEventsConnection";
-
-    nodes: _Nodes[];
-  };
-
-  export type _Nodes = {
-    __typename?: "ArtistToEvent";
-
-    artist: Maybe<Artist>;
-  };
-
-  export type Artist = {
-    __typename?: "Artist";
-
-    photo: Maybe<string>;
-  };
-
-  export type WatchLists = {
-    __typename?: "WatchListsConnection";
-
-    nodes: __Nodes[];
-  };
-
-  export type __Nodes = {
-    __typename?: "WatchList";
-
-    id: number;
-  };
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class SearchEventsByRegionGQL extends Apollo.Query<SearchEventsByRegionQuery, SearchEventsByRegionQueryVariables> {
+    document = SearchEventsByRegionDocument;
+    
+  }
+export const UpdateAccountDocument = gql`
+    mutation updateAccount($userId: Int!, $profilePhoto: String, $notificationFrequency: Frequency, $pushNotification: Boolean, $emailNotification: Boolean) {
+  updateUser(input: {id: $userId, patch: {notificationFrequency: $notificationFrequency, profilePhoto: $profilePhoto, pushNotification: $pushNotification, emailNotification: $emailNotification}}) {
+    user {
+      username
+      notificationFrequency
+      profilePhoto
+      pushNotification
+      emailNotification
+      id
+      watchLists {
+        totalCount
+      }
+    }
+  }
 }
+    `;
 
-export namespace UpdateAccount {
-  export type Variables = {
-    userId: number;
-    profilePhoto?: Maybe<string>;
-    notificationFrequency?: Maybe<Frequency>;
-    pushNotification?: Maybe<boolean>;
-    emailNotification?: Maybe<boolean>;
-  };
-
-  export type Mutation = {
-    __typename?: "Mutation";
-
-    updateUser: Maybe<UpdateUser>;
-  };
-
-  export type UpdateUser = {
-    __typename?: "UpdateUserPayload";
-
-    user: Maybe<User>;
-  };
-
-  export type User = {
-    __typename?: "User";
-
-    username: string;
-
-    notificationFrequency: Frequency;
-
-    profilePhoto: Maybe<string>;
-
-    pushNotification: Maybe<boolean>;
-
-    emailNotification: Maybe<boolean>;
-
-    id: number;
-
-    watchLists: WatchLists;
-  };
-
-  export type WatchLists = {
-    __typename?: "WatchListsConnection";
-
-    totalCount: number;
-  };
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class UpdateAccountGQL extends Apollo.Mutation<UpdateAccountMutation, UpdateAccountMutationVariables> {
+    document = UpdateAccountDocument;
+    
+  }
+export const UserByUsernameDocument = gql`
+    query userByUsername($username: String!, $userId: Int!) {
+  userByUsername(username: $username) {
+    username
+    profilePhoto
+    watchLists {
+      totalCount
+      nodes {
+        event {
+          id
+          name
+          startDate
+          ticketproviderurl
+          ticketproviderid
+          venue
+          createdAt
+          artistToEvents(first: 1) {
+            nodes {
+              artist {
+                photo
+              }
+            }
+          }
+          watchLists(filter: {userId: {equalTo: $userId}}) {
+            nodes {
+              id
+            }
+          }
+        }
+      }
+    }
+    followLists {
+      totalCount
+      nodes {
+        id
+        artist {
+          name
+          photo
+        }
+        venue {
+          name
+          photo
+        }
+      }
+    }
+  }
 }
+    `;
 
-export namespace UserByUsername {
-  export type Variables = {
-    username: string;
-    userId: number;
-  };
-
-  export type Query = {
-    __typename?: "Query";
-
-    userByUsername: Maybe<UserByUsername>;
-  };
-
-  export type UserByUsername = {
-    __typename?: "User";
-
-    username: string;
-
-    profilePhoto: Maybe<string>;
-
-    watchLists: WatchLists;
-
-    followLists: FollowLists;
-  };
-
-  export type WatchLists = {
-    __typename?: "WatchListsConnection";
-
-    totalCount: number;
-
-    nodes: Nodes[];
-  };
-
-  export type Nodes = {
-    __typename?: "WatchList";
-
-    event: Maybe<Event>;
-  };
-
-  export type Event = {
-    __typename?: "Event";
-
-    id: string;
-
-    name: Maybe<string>;
-
-    startDate: BigInt;
-
-    ticketproviderurl: Maybe<string>;
-
-    ticketproviderid: Maybe<string>;
-
-    venue: string;
-
-    createdAt: Datetime;
-
-    artistToEvents: ArtistToEvents;
-
-    watchLists: _WatchLists;
-  };
-
-  export type ArtistToEvents = {
-    __typename?: "ArtistToEventsConnection";
-
-    nodes: _Nodes[];
-  };
-
-  export type _Nodes = {
-    __typename?: "ArtistToEvent";
-
-    artist: Maybe<Artist>;
-  };
-
-  export type Artist = {
-    __typename?: "Artist";
-
-    photo: Maybe<string>;
-  };
-
-  export type _WatchLists = {
-    __typename?: "WatchListsConnection";
-
-    nodes: __Nodes[];
-  };
-
-  export type __Nodes = {
-    __typename?: "WatchList";
-
-    id: number;
-  };
-
-  export type FollowLists = {
-    __typename?: "FollowListsConnection";
-
-    totalCount: number;
-
-    nodes: ___Nodes[];
-  };
-
-  export type ___Nodes = {
-    __typename?: "FollowList";
-
-    id: number;
-
-    artist: Maybe<_Artist>;
-
-    venue: Maybe<Venue>;
-  };
-
-  export type _Artist = {
-    __typename?: "Artist";
-
-    name: string;
-
-    photo: Maybe<string>;
-  };
-
-  export type Venue = {
-    __typename?: "Venue";
-
-    name: string;
-
-    photo: Maybe<string>;
-  };
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class UserByUsernameGQL extends Apollo.Query<UserByUsernameQuery, UserByUsernameQueryVariables> {
+    document = UserByUsernameDocument;
+    
+  }
+export const VenueByNameDocument = gql`
+    query venueByName($name: String!, $userId: Int!, $currentDate: BigInt!) {
+  venue(name: $name) {
+    name
+    description
+    lat
+    lon
+    city
+    address
+    photo
+    logo
+    followLists(filter: {userId: {equalTo: $userId}}) {
+      nodes {
+        id
+      }
+    }
+    eventsByVenue(orderBy: START_DATE_ASC, filter: {startDate: {greaterThanOrEqualTo: $currentDate}}) {
+      nodes {
+        name
+        startDate
+        ticketproviderurl
+        ticketproviderid
+        id
+        artistToEvents(first: 1) {
+          nodes {
+            artist {
+              photo
+            }
+          }
+        }
+      }
+    }
+  }
 }
+    `;
 
-export namespace VenueByName {
-  export type Variables = {
-    name: string;
-    userId: number;
-    currentDate: BigInt;
-  };
-
-  export type Query = {
-    __typename?: "Query";
-
-    venue: Maybe<Venue>;
-  };
-
-  export type Venue = {
-    __typename?: "Venue";
-
-    name: string;
-
-    description: Maybe<string>;
-
-    lat: Maybe<BigFloat>;
-
-    lon: Maybe<BigFloat>;
-
-    city: number;
-
-    address: Maybe<string>;
-
-    photo: Maybe<string>;
-
-    logo: Maybe<string>;
-
-    followLists: FollowLists;
-
-    eventsByVenue: EventsByVenue;
-  };
-
-  export type FollowLists = {
-    __typename?: "FollowListsConnection";
-
-    nodes: Nodes[];
-  };
-
-  export type Nodes = {
-    __typename?: "FollowList";
-
-    id: number;
-  };
-
-  export type EventsByVenue = {
-    __typename?: "EventsConnection";
-
-    nodes: _Nodes[];
-  };
-
-  export type _Nodes = {
-    __typename?: "Event";
-
-    name: Maybe<string>;
-
-    startDate: BigInt;
-
-    ticketproviderurl: Maybe<string>;
-
-    ticketproviderid: Maybe<string>;
-
-    id: string;
-
-    artistToEvents: ArtistToEvents;
-  };
-
-  export type ArtistToEvents = {
-    __typename?: "ArtistToEventsConnection";
-
-    nodes: __Nodes[];
-  };
-
-  export type __Nodes = {
-    __typename?: "ArtistToEvent";
-
-    artist: Maybe<Artist>;
-  };
-
-  export type Artist = {
-    __typename?: "Artist";
-
-    photo: Maybe<string>;
-  };
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class VenueByNameGQL extends Apollo.Query<VenueByNameQuery, VenueByNameQueryVariables> {
+    document = VenueByNameDocument;
+    
+  }
+export const WatchedLocationByAccountDocument = gql`
+    query watchedLocationByAccount($userId: Int!) {
+  watchedToAccounts(filter: {userId: {equalTo: $userId}}) {
+    nodes {
+      id
+      region
+      city {
+        id
+        name
+      }
+    }
+  }
 }
+    `;
 
-export namespace VerifyUserEmail {
-  export type Variables = {
-    token: string;
-  };
-
-  export type Mutation = {
-    __typename?: "Mutation";
-
-    verifyUserEmail: Maybe<VerifyUserEmail>;
-  };
-
-  export type VerifyUserEmail = {
-    __typename?: "VerifyUserEmailPayload";
-
-    userEmail: Maybe<UserEmail>;
-  };
-
-  export type UserEmail = {
-    __typename?: "UserEmail";
-
-    isVerified: boolean;
-  };
-}
-
-export namespace WatchedLocationByAccount {
-  export type Variables = {
-    userId: number;
-  };
-
-  export type Query = {
-    __typename?: "Query";
-
-    watchedToAccounts: Maybe<WatchedToAccounts>;
-  };
-
-  export type WatchedToAccounts = {
-    __typename?: "WatchedToAccountsConnection";
-
-    nodes: Nodes[];
-  };
-
-  export type Nodes = {
-    __typename?: "WatchedToAccount";
-
-    id: number;
-
-    region: Maybe<string>;
-
-    city: Maybe<City>;
-  };
-
-  export type City = {
-    __typename?: "City";
-
-    id: number;
-
-    name: Maybe<string>;
-  };
-}
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class WatchedLocationByAccountGQL extends Apollo.Query<WatchedLocationByAccountQuery, WatchedLocationByAccountQueryVariables> {
+    document = WatchedLocationByAccountDocument;
+    
+  }

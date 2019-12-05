@@ -8,7 +8,13 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "generate": "gql-gen --config codegen.yml"
+    "gql:build": "yarn gql:build:codegen && yarn gql:build:tsc",
+    "gql:build:essential": "yarn run gql:build",
+    "gql:watch": "touch index.ts && concurrently --kill-others --names 'codegen,tsc' --prefix-colors 'blue,yellow' 'yarn gql:watch:codegen' 'yarn gql:watch:tsc'",
+    "gql:build:codegen": "graphql-codegen --config codegen.yml",
+    "gql:build:tsc": "tsc",
+    "gql:watch:codegen": "yarn gql:build:codegen --watch",
+    "gql:watch:tsc": "yarn gql:build:tsc --watch"
   },
   "private": true,
   "dependencies": {

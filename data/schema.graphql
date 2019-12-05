@@ -1,3 +1,536 @@
+"""An artist in the application."""
+type Artist {
+  """Reads and enables pagination through a set of `ArtistToEvent`."""
+  artistToEvents(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ArtistToEventCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ArtistToEventFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ArtistToEvent`."""
+    orderBy: [ArtistToEventsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ArtistToEventsConnection!
+  createdAt: Datetime!
+
+  """Description of the artist."""
+  description: String
+
+  """Facebook url of the artist."""
+  facebookUrl: String
+
+  """Facebook username of the artist."""
+  facebookUsername: String
+
+  """Reads and enables pagination through a set of `FollowList`."""
+  followLists(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: FollowListCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: FollowListFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `FollowList`."""
+    orderBy: [FollowListsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FollowListsConnection!
+
+  """Reads and enables pagination through a set of `GenreToArtist`."""
+  genreToArtists(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: GenreToArtistCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: GenreToArtistFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `GenreToArtist`."""
+    orderBy: [GenreToArtistsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): GenreToArtistsConnection!
+
+  """Homepage url of the artist."""
+  homepage: String
+
+  """Instagram url of the artist."""
+  instagramUrl: String
+
+  """Instagram username of the artist."""
+  instagramUsername: String
+
+  """Primary key and name of artist."""
+  name: String!
+
+  """Photo of the artist."""
+  photo: String
+
+  """Soundcloud url of the artist."""
+  soundcloudUrl: String
+
+  """Soundcloud username of the artist."""
+  soundcloudUsername: String
+
+  """Spotify url of the artist."""
+  spotifyUrl: String
+
+  """Twitter url of the artist."""
+  twitterUrl: String
+
+  """Twitter username of the artist."""
+  twitterUsername: String
+  updatedAt: Datetime!
+
+  """Youtube url of the artist."""
+  youtubeUrl: String
+
+  """Youtube username of the artist."""
+  youtubeUsername: String
+}
+
+"""
+A condition to be used against `Artist` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input ArtistCondition {
+  """Checks for equality with the object’s `name` field."""
+  name: String
+}
+
+"""
+A filter to be used against `Artist` object types. All fields are combined with a logical ‘and.’
+"""
+input ArtistFilter {
+  """Checks for all expressions in this list."""
+  and: [ArtistFilter!]
+
+  """Filter by the object’s `name` field."""
+  name: StringFilter
+
+  """Negates the expression."""
+  not: ArtistFilter
+
+  """Checks for any expressions in this list."""
+  or: [ArtistFilter!]
+}
+
+"""An input for mutations affecting `Artist`"""
+input ArtistInput {
+  createdAt: Datetime
+
+  """Description of the artist."""
+  description: String
+
+  """Facebook url of the artist."""
+  facebookUrl: String
+
+  """Facebook username of the artist."""
+  facebookUsername: String
+
+  """Homepage url of the artist."""
+  homepage: String
+
+  """Instagram url of the artist."""
+  instagramUrl: String
+
+  """Instagram username of the artist."""
+  instagramUsername: String
+
+  """Primary key and name of artist."""
+  name: String!
+
+  """Photo of the artist."""
+  photo: String
+
+  """Soundcloud url of the artist."""
+  soundcloudUrl: String
+
+  """Soundcloud username of the artist."""
+  soundcloudUsername: String
+
+  """Spotify url of the artist."""
+  spotifyUrl: String
+
+  """Twitter url of the artist."""
+  twitterUrl: String
+
+  """Twitter username of the artist."""
+  twitterUsername: String
+  updatedAt: Datetime
+
+  """Youtube url of the artist."""
+  youtubeUrl: String
+
+  """Youtube username of the artist."""
+  youtubeUsername: String
+}
+
+"""
+Represents an update to a `Artist`. Fields that are set will be updated.
+"""
+input ArtistPatch {
+  createdAt: Datetime
+
+  """Description of the artist."""
+  description: String
+
+  """Facebook url of the artist."""
+  facebookUrl: String
+
+  """Facebook username of the artist."""
+  facebookUsername: String
+
+  """Homepage url of the artist."""
+  homepage: String
+
+  """Instagram url of the artist."""
+  instagramUrl: String
+
+  """Instagram username of the artist."""
+  instagramUsername: String
+
+  """Primary key and name of artist."""
+  name: String
+
+  """Photo of the artist."""
+  photo: String
+
+  """Soundcloud url of the artist."""
+  soundcloudUrl: String
+
+  """Soundcloud username of the artist."""
+  soundcloudUsername: String
+
+  """Spotify url of the artist."""
+  spotifyUrl: String
+
+  """Twitter url of the artist."""
+  twitterUrl: String
+
+  """Twitter username of the artist."""
+  twitterUsername: String
+  updatedAt: Datetime
+
+  """Youtube url of the artist."""
+  youtubeUrl: String
+
+  """Youtube username of the artist."""
+  youtubeUsername: String
+}
+
+"""A connection to a list of `Artist` values."""
+type ArtistsConnection {
+  """
+  A list of edges which contains the `Artist` and cursor to aid in pagination.
+  """
+  edges: [ArtistsEdge!]!
+
+  """A list of `Artist` objects."""
+  nodes: [Artist!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Artist` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Artist` edge in the connection."""
+type ArtistsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Artist` at the end of the edge."""
+  node: Artist!
+}
+
+"""Methods to use when ordering `Artist`."""
+enum ArtistsOrderBy {
+  NAME_ASC
+  NAME_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""A join table for artists at an event."""
+type ArtistToEvent {
+  """Reads a single `Artist` that is related to this `ArtistToEvent`."""
+  artist: Artist
+
+  """Ref to artist."""
+  artistId: String!
+
+  """Reads a single `Event` that is related to this `ArtistToEvent`."""
+  event: Event
+
+  """Ref to event."""
+  eventId: String!
+
+  """Primary key and id of row."""
+  id: Int!
+}
+
+"""
+A condition to be used against `ArtistToEvent` object types. All fields are
+tested for equality and combined with a logical ‘and.’
+"""
+input ArtistToEventCondition {
+  """Checks for equality with the object’s `artistId` field."""
+  artistId: String
+
+  """Checks for equality with the object’s `eventId` field."""
+  eventId: String
+
+  """Checks for equality with the object’s `id` field."""
+  id: Int
+}
+
+"""
+A filter to be used against `ArtistToEvent` object types. All fields are combined with a logical ‘and.’
+"""
+input ArtistToEventFilter {
+  """Checks for all expressions in this list."""
+  and: [ArtistToEventFilter!]
+
+  """Filter by the object’s `artistId` field."""
+  artistId: StringFilter
+
+  """Filter by the object’s `eventId` field."""
+  eventId: StringFilter
+
+  """Filter by the object’s `id` field."""
+  id: IntFilter
+
+  """Negates the expression."""
+  not: ArtistToEventFilter
+
+  """Checks for any expressions in this list."""
+  or: [ArtistToEventFilter!]
+}
+
+"""An input for mutations affecting `ArtistToEvent`"""
+input ArtistToEventInput {
+  """Ref to artist."""
+  artistId: String!
+
+  """Ref to event."""
+  eventId: String!
+
+  """Primary key and id of row."""
+  id: Int
+}
+
+"""
+Represents an update to a `ArtistToEvent`. Fields that are set will be updated.
+"""
+input ArtistToEventPatch {
+  """Ref to artist."""
+  artistId: String
+
+  """Ref to event."""
+  eventId: String
+
+  """Primary key and id of row."""
+  id: Int
+}
+
+"""A connection to a list of `ArtistToEvent` values."""
+type ArtistToEventsConnection {
+  """
+  A list of edges which contains the `ArtistToEvent` and cursor to aid in pagination.
+  """
+  edges: [ArtistToEventsEdge!]!
+
+  """A list of `ArtistToEvent` objects."""
+  nodes: [ArtistToEvent!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `ArtistToEvent` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `ArtistToEvent` edge in the connection."""
+type ArtistToEventsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `ArtistToEvent` at the end of the edge."""
+  node: ArtistToEvent!
+}
+
+"""Methods to use when ordering `ArtistToEvent`."""
+enum ArtistToEventsOrderBy {
+  ARTIST_ID_ASC
+  ARTIST_ID_DESC
+  EVENT_ID_ASC
+  EVENT_ID_DESC
+  ID_ASC
+  ID_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""
+A floating point number that requires more precision than IEEE 754 binary 64
+"""
+scalar BigFloat
+
+"""
+A signed eight-byte integer. The upper big integer values are greater than the
+max value for a JavaScript number. Therefore all big integers will be output as
+strings and not numbers.
+"""
+scalar BigInt
+
+"""
+A filter to be used against BigInt fields. All fields are combined with a logical ‘and.’
+"""
+input BigIntFilter {
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: BigInt
+
+  """Equal to the specified value."""
+  equalTo: BigInt
+
+  """Greater than the specified value."""
+  greaterThan: BigInt
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: BigInt
+
+  """Included in the specified list."""
+  in: [BigInt!]
+
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Less than the specified value."""
+  lessThan: BigInt
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: BigInt
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: BigInt
+
+  """Not equal to the specified value."""
+  notEqualTo: BigInt
+
+  """Not included in the specified list."""
+  notIn: [BigInt!]
+}
+
+"""
+A filter to be used against Boolean fields. All fields are combined with a logical ‘and.’
+"""
+input BooleanFilter {
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: Boolean
+
+  """Equal to the specified value."""
+  equalTo: Boolean
+
+  """Greater than the specified value."""
+  greaterThan: Boolean
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: Boolean
+
+  """Included in the specified list."""
+  in: [Boolean!]
+
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Less than the specified value."""
+  lessThan: Boolean
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: Boolean
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: Boolean
+
+  """Not equal to the specified value."""
+  notEqualTo: Boolean
+
+  """Not included in the specified list."""
+  notIn: [Boolean!]
+}
+
 """All input for the `changePassword` mutation."""
 input ChangePasswordInput {
   """
@@ -24,6 +557,259 @@ type ChangePasswordPayload {
   success: Boolean
 }
 
+"""A connection to a list of `City` values."""
+type CitiesConnection {
+  """
+  A list of edges which contains the `City` and cursor to aid in pagination.
+  """
+  edges: [CitiesEdge!]!
+
+  """A list of `City` objects."""
+  nodes: [City!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `City` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `City` edge in the connection."""
+type CitiesEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `City` at the end of the edge."""
+  node: City!
+}
+
+"""Methods to use when ordering `City`."""
+enum CitiesOrderBy {
+  COUNTRY_ASC
+  COUNTRY_DESC
+  ID_ASC
+  ID_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  REGION_ASC
+  REGION_DESC
+}
+
+"""A city in the application."""
+type City {
+  """Region ref for country."""
+  country: String
+
+  """Reads a single `Country` that is related to this `City`."""
+  countryByCountry: Country
+  createdAt: Datetime!
+
+  """Description of the genre."""
+  description: String
+
+  """Reads and enables pagination through a set of `Event`."""
+  eventsByCity(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: EventCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: EventFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Event`."""
+    orderBy: [EventsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): EventsConnection!
+
+  """Primary key and id for city."""
+  id: Int!
+
+  """Name for city."""
+  name: String
+
+  """Photo for city."""
+  photo: String
+
+  """Region ref for city."""
+  region: String
+
+  """Reads a single `Region` that is related to this `City`."""
+  regionByRegion: Region
+  updatedAt: Datetime!
+
+  """Reads and enables pagination through a set of `Venue`."""
+  venuesByCity(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: VenueCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: VenueFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Venue`."""
+    orderBy: [VenuesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): VenuesConnection!
+
+  """Reads and enables pagination through a set of `WatchedToAccount`."""
+  watchedToAccounts(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: WatchedToAccountCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: WatchedToAccountFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `WatchedToAccount`."""
+    orderBy: [WatchedToAccountsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): WatchedToAccountsConnection!
+}
+
+"""
+A condition to be used against `City` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input CityCondition {
+  """Checks for equality with the object’s `country` field."""
+  country: String
+
+  """Checks for equality with the object’s `id` field."""
+  id: Int
+
+  """Checks for equality with the object’s `region` field."""
+  region: String
+}
+
+"""
+A filter to be used against `City` object types. All fields are combined with a logical ‘and.’
+"""
+input CityFilter {
+  """Checks for all expressions in this list."""
+  and: [CityFilter!]
+
+  """Filter by the object’s `country` field."""
+  country: StringFilter
+
+  """Filter by the object’s `id` field."""
+  id: IntFilter
+
+  """Negates the expression."""
+  not: CityFilter
+
+  """Checks for any expressions in this list."""
+  or: [CityFilter!]
+
+  """Filter by the object’s `region` field."""
+  region: StringFilter
+}
+
+"""An input for mutations affecting `City`"""
+input CityInput {
+  """Region ref for country."""
+  country: String
+  createdAt: Datetime
+
+  """Description of the genre."""
+  description: String
+
+  """Primary key and id for city."""
+  id: Int
+
+  """Name for city."""
+  name: String
+
+  """Photo for city."""
+  photo: String
+
+  """Region ref for city."""
+  region: String
+  updatedAt: Datetime
+}
+
+"""Represents an update to a `City`. Fields that are set will be updated."""
+input CityPatch {
+  """Region ref for country."""
+  country: String
+  createdAt: Datetime
+
+  """Description of the genre."""
+  description: String
+
+  """Primary key and id for city."""
+  id: Int
+
+  """Name for city."""
+  name: String
+
+  """Photo for city."""
+  photo: String
+
+  """Region ref for city."""
+  region: String
+  updatedAt: Datetime
+}
+
 """All input for the `confirmAccountDeletion` mutation."""
 input ConfirmAccountDeletionInput {
   """
@@ -47,6 +833,601 @@ type ConfirmAccountDeletionPayload {
   """
   query: Query
   success: Boolean
+}
+
+"""A connection to a list of `Country` values."""
+type CountriesConnection {
+  """
+  A list of edges which contains the `Country` and cursor to aid in pagination.
+  """
+  edges: [CountriesEdge!]!
+
+  """A list of `Country` objects."""
+  nodes: [Country!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Country` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Country` edge in the connection."""
+type CountriesEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Country` at the end of the edge."""
+  node: Country!
+}
+
+"""Methods to use when ordering `Country`."""
+enum CountriesOrderBy {
+  CODE_ASC
+  CODE_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""A country in the application."""
+type Country {
+  """Reads and enables pagination through a set of `City`."""
+  citiesByCountry(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CityCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CityFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `City`."""
+    orderBy: [CitiesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CitiesConnection!
+
+  """Primary key and code for country."""
+  code: String!
+  createdAt: Datetime!
+
+  """Reads and enables pagination through a set of `Event`."""
+  eventsByCountry(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: EventCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: EventFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Event`."""
+    orderBy: [EventsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): EventsConnection!
+
+  """Name for country."""
+  name: String
+
+  """Reads and enables pagination through a set of `Region`."""
+  regionsByCountry(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: RegionCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: RegionFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Region`."""
+    orderBy: [RegionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): RegionsConnection!
+  updatedAt: Datetime!
+}
+
+"""
+A condition to be used against `Country` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input CountryCondition {
+  """Checks for equality with the object’s `code` field."""
+  code: String
+}
+
+"""
+A filter to be used against `Country` object types. All fields are combined with a logical ‘and.’
+"""
+input CountryFilter {
+  """Checks for all expressions in this list."""
+  and: [CountryFilter!]
+
+  """Filter by the object’s `code` field."""
+  code: StringFilter
+
+  """Negates the expression."""
+  not: CountryFilter
+
+  """Checks for any expressions in this list."""
+  or: [CountryFilter!]
+}
+
+"""An input for mutations affecting `Country`"""
+input CountryInput {
+  """Primary key and code for country."""
+  code: String!
+  createdAt: Datetime
+
+  """Name for country."""
+  name: String
+  updatedAt: Datetime
+}
+
+"""
+Represents an update to a `Country`. Fields that are set will be updated.
+"""
+input CountryPatch {
+  """Primary key and code for country."""
+  code: String
+  createdAt: Datetime
+
+  """Name for country."""
+  name: String
+  updatedAt: Datetime
+}
+
+"""All input for the create `Artist` mutation."""
+input CreateArtistInput {
+  """The `Artist` to be created by this mutation."""
+  artist: ArtistInput!
+
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+}
+
+"""The output of our create `Artist` mutation."""
+type CreateArtistPayload {
+  """The `Artist` that was created by this mutation."""
+  artist: Artist
+
+  """An edge for our `Artist`. May be used by Relay 1."""
+  artistEdge(
+    """The method to use when ordering `Artist`."""
+    orderBy: [ArtistsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ArtistsEdge
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the create `ArtistToEvent` mutation."""
+input CreateArtistToEventInput {
+  """The `ArtistToEvent` to be created by this mutation."""
+  artistToEvent: ArtistToEventInput!
+
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+}
+
+"""The output of our create `ArtistToEvent` mutation."""
+type CreateArtistToEventPayload {
+  """Reads a single `Artist` that is related to this `ArtistToEvent`."""
+  artist: Artist
+
+  """The `ArtistToEvent` that was created by this mutation."""
+  artistToEvent: ArtistToEvent
+
+  """An edge for our `ArtistToEvent`. May be used by Relay 1."""
+  artistToEventEdge(
+    """The method to use when ordering `ArtistToEvent`."""
+    orderBy: [ArtistToEventsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ArtistToEventsEdge
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """Reads a single `Event` that is related to this `ArtistToEvent`."""
+  event: Event
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the create `City` mutation."""
+input CreateCityInput {
+  """The `City` to be created by this mutation."""
+  city: CityInput!
+
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+}
+
+"""The output of our create `City` mutation."""
+type CreateCityPayload {
+  """The `City` that was created by this mutation."""
+  city: City
+
+  """An edge for our `City`. May be used by Relay 1."""
+  cityEdge(
+    """The method to use when ordering `City`."""
+    orderBy: [CitiesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CitiesEdge
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """Reads a single `Country` that is related to this `City`."""
+  countryByCountry: Country
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `Region` that is related to this `City`."""
+  regionByRegion: Region
+}
+
+"""All input for the create `Country` mutation."""
+input CreateCountryInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `Country` to be created by this mutation."""
+  country: CountryInput!
+}
+
+"""The output of our create `Country` mutation."""
+type CreateCountryPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Country` that was created by this mutation."""
+  country: Country
+
+  """An edge for our `Country`. May be used by Relay 1."""
+  countryEdge(
+    """The method to use when ordering `Country`."""
+    orderBy: [CountriesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CountriesEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the create `Event` mutation."""
+input CreateEventInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `Event` to be created by this mutation."""
+  event: EventInput!
+}
+
+"""The output of our create `Event` mutation."""
+type CreateEventPayload {
+  """Reads a single `City` that is related to this `Event`."""
+  cityByCity: City
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """Reads a single `Country` that is related to this `Event`."""
+  countryByCountry: Country
+
+  """The `Event` that was created by this mutation."""
+  event: Event
+
+  """An edge for our `Event`. May be used by Relay 1."""
+  eventEdge(
+    """The method to use when ordering `Event`."""
+    orderBy: [EventsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): EventsEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `Region` that is related to this `Event`."""
+  regionByRegion: Region
+
+  """Reads a single `User` that is related to this `Event`."""
+  userByContributor: User
+
+  """Reads a single `Venue` that is related to this `Event`."""
+  venueByVenue: Venue
+}
+
+"""All input for the create `FollowList` mutation."""
+input CreateFollowListInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `FollowList` to be created by this mutation."""
+  followList: FollowListInput!
+}
+
+"""The output of our create `FollowList` mutation."""
+type CreateFollowListPayload {
+  """Reads a single `Artist` that is related to this `FollowList`."""
+  artist: Artist
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `FollowList` that was created by this mutation."""
+  followList: FollowList
+
+  """An edge for our `FollowList`. May be used by Relay 1."""
+  followListEdge(
+    """The method to use when ordering `FollowList`."""
+    orderBy: [FollowListsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FollowListsEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `User` that is related to this `FollowList`."""
+  user: User
+
+  """Reads a single `Venue` that is related to this `FollowList`."""
+  venue: Venue
+}
+
+"""All input for the create `Genre` mutation."""
+input CreateGenreInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `Genre` to be created by this mutation."""
+  genre: GenreInput!
+}
+
+"""The output of our create `Genre` mutation."""
+type CreateGenrePayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Genre` that was created by this mutation."""
+  genre: Genre
+
+  """An edge for our `Genre`. May be used by Relay 1."""
+  genreEdge(
+    """The method to use when ordering `Genre`."""
+    orderBy: [GenresOrderBy!] = [PRIMARY_KEY_ASC]
+  ): GenresEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the create `GenreToArtist` mutation."""
+input CreateGenreToArtistInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `GenreToArtist` to be created by this mutation."""
+  genreToArtist: GenreToArtistInput!
+}
+
+"""The output of our create `GenreToArtist` mutation."""
+type CreateGenreToArtistPayload {
+  """Reads a single `Artist` that is related to this `GenreToArtist`."""
+  artist: Artist
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """Reads a single `Genre` that is related to this `GenreToArtist`."""
+  genre: Genre
+
+  """The `GenreToArtist` that was created by this mutation."""
+  genreToArtist: GenreToArtist
+
+  """An edge for our `GenreToArtist`. May be used by Relay 1."""
+  genreToArtistEdge(
+    """The method to use when ordering `GenreToArtist`."""
+    orderBy: [GenreToArtistsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): GenreToArtistsEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the create `PushSubscription` mutation."""
+input CreatePushSubscriptionInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `PushSubscription` to be created by this mutation."""
+  pushSubscription: PushSubscriptionInput!
+}
+
+"""The output of our create `PushSubscription` mutation."""
+type CreatePushSubscriptionPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `PushSubscription` that was created by this mutation."""
+  pushSubscription: PushSubscription
+
+  """An edge for our `PushSubscription`. May be used by Relay 1."""
+  pushSubscriptionEdge(
+    """The method to use when ordering `PushSubscription`."""
+    orderBy: [PushSubscriptionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): PushSubscriptionsEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `User` that is related to this `PushSubscription`."""
+  user: User
+}
+
+"""All input for the create `Region` mutation."""
+input CreateRegionInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `Region` to be created by this mutation."""
+  region: RegionInput!
+}
+
+"""The output of our create `Region` mutation."""
+type CreateRegionPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """Reads a single `Country` that is related to this `Region`."""
+  countryByCountry: Country
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """The `Region` that was created by this mutation."""
+  region: Region
+
+  """An edge for our `Region`. May be used by Relay 1."""
+  regionEdge(
+    """The method to use when ordering `Region`."""
+    orderBy: [RegionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): RegionsEdge
 }
 
 """All input for the create `UserEmail` mutation."""
@@ -87,6 +1468,129 @@ type CreateUserEmailPayload {
   ): UserEmailsEdge
 }
 
+"""All input for the create `Venue` mutation."""
+input CreateVenueInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `Venue` to be created by this mutation."""
+  venue: VenueInput!
+}
+
+"""The output of our create `Venue` mutation."""
+type CreateVenuePayload {
+  """Reads a single `City` that is related to this `Venue`."""
+  cityByCity: City
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """The `Venue` that was created by this mutation."""
+  venue: Venue
+
+  """An edge for our `Venue`. May be used by Relay 1."""
+  venueEdge(
+    """The method to use when ordering `Venue`."""
+    orderBy: [VenuesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): VenuesEdge
+}
+
+"""All input for the create `WatchedToAccount` mutation."""
+input CreateWatchedToAccountInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `WatchedToAccount` to be created by this mutation."""
+  watchedToAccount: WatchedToAccountInput!
+}
+
+"""The output of our create `WatchedToAccount` mutation."""
+type CreateWatchedToAccountPayload {
+  """Reads a single `City` that is related to this `WatchedToAccount`."""
+  city: City
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `Region` that is related to this `WatchedToAccount`."""
+  regionByRegion: Region
+
+  """Reads a single `User` that is related to this `WatchedToAccount`."""
+  user: User
+
+  """The `WatchedToAccount` that was created by this mutation."""
+  watchedToAccount: WatchedToAccount
+
+  """An edge for our `WatchedToAccount`. May be used by Relay 1."""
+  watchedToAccountEdge(
+    """The method to use when ordering `WatchedToAccount`."""
+    orderBy: [WatchedToAccountsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): WatchedToAccountsEdge
+}
+
+"""All input for the create `WatchList` mutation."""
+input CreateWatchListInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `WatchList` to be created by this mutation."""
+  watchList: WatchListInput!
+}
+
+"""The output of our create `WatchList` mutation."""
+type CreateWatchListPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """Reads a single `Event` that is related to this `WatchList`."""
+  event: Event
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `User` that is related to this `WatchList`."""
+  user: User
+
+  """The `WatchList` that was created by this mutation."""
+  watchList: WatchList
+
+  """An edge for our `WatchList`. May be used by Relay 1."""
+  watchListEdge(
+    """The method to use when ordering `WatchList`."""
+    orderBy: [WatchListsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): WatchListsEdge
+}
+
 """A location in a connection that can be used for resuming pagination."""
 scalar Cursor
 
@@ -95,6 +1599,456 @@ A point in time as described by the [ISO
 8601](https://en.wikipedia.org/wiki/ISO_8601) standard. May or may not include a timezone.
 """
 scalar Datetime
+
+"""
+A filter to be used against Datetime fields. All fields are combined with a logical ‘and.’
+"""
+input DatetimeFilter {
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: Datetime
+
+  """Equal to the specified value."""
+  equalTo: Datetime
+
+  """Greater than the specified value."""
+  greaterThan: Datetime
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: Datetime
+
+  """Included in the specified list."""
+  in: [Datetime!]
+
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Less than the specified value."""
+  lessThan: Datetime
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: Datetime
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: Datetime
+
+  """Not equal to the specified value."""
+  notEqualTo: Datetime
+
+  """Not included in the specified list."""
+  notIn: [Datetime!]
+}
+
+"""All input for the `deleteArtist` mutation."""
+input DeleteArtistInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """Primary key and name of artist."""
+  name: String!
+}
+
+"""The output of our delete `Artist` mutation."""
+type DeleteArtistPayload {
+  """The `Artist` that was deleted by this mutation."""
+  artist: Artist
+
+  """An edge for our `Artist`. May be used by Relay 1."""
+  artistEdge(
+    """The method to use when ordering `Artist`."""
+    orderBy: [ArtistsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ArtistsEdge
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  deletedArtistNodeId: ID
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `deleteArtistToEvent` mutation."""
+input DeleteArtistToEventInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """Primary key and id of row."""
+  id: Int!
+}
+
+"""The output of our delete `ArtistToEvent` mutation."""
+type DeleteArtistToEventPayload {
+  """Reads a single `Artist` that is related to this `ArtistToEvent`."""
+  artist: Artist
+
+  """The `ArtistToEvent` that was deleted by this mutation."""
+  artistToEvent: ArtistToEvent
+
+  """An edge for our `ArtistToEvent`. May be used by Relay 1."""
+  artistToEventEdge(
+    """The method to use when ordering `ArtistToEvent`."""
+    orderBy: [ArtistToEventsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ArtistToEventsEdge
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  deletedArtistToEventNodeId: ID
+
+  """Reads a single `Event` that is related to this `ArtistToEvent`."""
+  event: Event
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `deleteCity` mutation."""
+input DeleteCityInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """Primary key and id for city."""
+  id: Int!
+}
+
+"""The output of our delete `City` mutation."""
+type DeleteCityPayload {
+  """The `City` that was deleted by this mutation."""
+  city: City
+
+  """An edge for our `City`. May be used by Relay 1."""
+  cityEdge(
+    """The method to use when ordering `City`."""
+    orderBy: [CitiesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CitiesEdge
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """Reads a single `Country` that is related to this `City`."""
+  countryByCountry: Country
+  deletedCityNodeId: ID
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `Region` that is related to this `City`."""
+  regionByRegion: Region
+}
+
+"""All input for the `deleteCountry` mutation."""
+input DeleteCountryInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """Primary key and code for country."""
+  code: String!
+}
+
+"""The output of our delete `Country` mutation."""
+type DeleteCountryPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Country` that was deleted by this mutation."""
+  country: Country
+
+  """An edge for our `Country`. May be used by Relay 1."""
+  countryEdge(
+    """The method to use when ordering `Country`."""
+    orderBy: [CountriesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CountriesEdge
+  deletedCountryNodeId: ID
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `deleteEvent` mutation."""
+input DeleteEventInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """Primary key and id of event."""
+  id: String!
+}
+
+"""The output of our delete `Event` mutation."""
+type DeleteEventPayload {
+  """Reads a single `City` that is related to this `Event`."""
+  cityByCity: City
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """Reads a single `Country` that is related to this `Event`."""
+  countryByCountry: Country
+  deletedEventNodeId: ID
+
+  """The `Event` that was deleted by this mutation."""
+  event: Event
+
+  """An edge for our `Event`. May be used by Relay 1."""
+  eventEdge(
+    """The method to use when ordering `Event`."""
+    orderBy: [EventsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): EventsEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `Region` that is related to this `Event`."""
+  regionByRegion: Region
+
+  """Reads a single `User` that is related to this `Event`."""
+  userByContributor: User
+
+  """Reads a single `Venue` that is related to this `Event`."""
+  venueByVenue: Venue
+}
+
+"""All input for the `deleteFollowList` mutation."""
+input DeleteFollowListInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """Primary key and id of row."""
+  id: Int!
+}
+
+"""The output of our delete `FollowList` mutation."""
+type DeleteFollowListPayload {
+  """Reads a single `Artist` that is related to this `FollowList`."""
+  artist: Artist
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  deletedFollowListNodeId: ID
+
+  """The `FollowList` that was deleted by this mutation."""
+  followList: FollowList
+
+  """An edge for our `FollowList`. May be used by Relay 1."""
+  followListEdge(
+    """The method to use when ordering `FollowList`."""
+    orderBy: [FollowListsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FollowListsEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `User` that is related to this `FollowList`."""
+  user: User
+
+  """Reads a single `Venue` that is related to this `FollowList`."""
+  venue: Venue
+}
+
+"""All input for the `deleteGenre` mutation."""
+input DeleteGenreInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """Primary key and name of genre."""
+  name: String!
+}
+
+"""The output of our delete `Genre` mutation."""
+type DeleteGenrePayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  deletedGenreNodeId: ID
+
+  """The `Genre` that was deleted by this mutation."""
+  genre: Genre
+
+  """An edge for our `Genre`. May be used by Relay 1."""
+  genreEdge(
+    """The method to use when ordering `Genre`."""
+    orderBy: [GenresOrderBy!] = [PRIMARY_KEY_ASC]
+  ): GenresEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `deleteGenreToArtist` mutation."""
+input DeleteGenreToArtistInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """Id of the row."""
+  id: Int!
+}
+
+"""The output of our delete `GenreToArtist` mutation."""
+type DeleteGenreToArtistPayload {
+  """Reads a single `Artist` that is related to this `GenreToArtist`."""
+  artist: Artist
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  deletedGenreToArtistNodeId: ID
+
+  """Reads a single `Genre` that is related to this `GenreToArtist`."""
+  genre: Genre
+
+  """The `GenreToArtist` that was deleted by this mutation."""
+  genreToArtist: GenreToArtist
+
+  """An edge for our `GenreToArtist`. May be used by Relay 1."""
+  genreToArtistEdge(
+    """The method to use when ordering `GenreToArtist`."""
+    orderBy: [GenreToArtistsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): GenreToArtistsEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `deletePushSubscription` mutation."""
+input DeletePushSubscriptionInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """Unique identifier for the push subscription."""
+  id: Int!
+}
+
+"""The output of our delete `PushSubscription` mutation."""
+type DeletePushSubscriptionPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  deletedPushSubscriptionNodeId: ID
+
+  """The `PushSubscription` that was deleted by this mutation."""
+  pushSubscription: PushSubscription
+
+  """An edge for our `PushSubscription`. May be used by Relay 1."""
+  pushSubscriptionEdge(
+    """The method to use when ordering `PushSubscription`."""
+    orderBy: [PushSubscriptionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): PushSubscriptionsEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `User` that is related to this `PushSubscription`."""
+  user: User
+}
+
+"""All input for the `deleteRegion` mutation."""
+input DeleteRegionInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """Name and primary key of region."""
+  name: String!
+}
+
+"""The output of our delete `Region` mutation."""
+type DeleteRegionPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """Reads a single `Country` that is related to this `Region`."""
+  countryByCountry: Country
+  deletedRegionNodeId: ID
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """The `Region` that was deleted by this mutation."""
+  region: Region
+
+  """An edge for our `Region`. May be used by Relay 1."""
+  regionEdge(
+    """The method to use when ordering `Region`."""
+    orderBy: [RegionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): RegionsEdge
+}
 
 """All input for the `deleteUserAuthentication` mutation."""
 input DeleteUserAuthenticationInput {
@@ -164,6 +2118,641 @@ type DeleteUserEmailPayload {
   ): UserEmailsEdge
 }
 
+"""All input for the `deleteVenue` mutation."""
+input DeleteVenueInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """Primary key and name of venue."""
+  name: String!
+}
+
+"""The output of our delete `Venue` mutation."""
+type DeleteVenuePayload {
+  """Reads a single `City` that is related to this `Venue`."""
+  cityByCity: City
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  deletedVenueNodeId: ID
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """The `Venue` that was deleted by this mutation."""
+  venue: Venue
+
+  """An edge for our `Venue`. May be used by Relay 1."""
+  venueEdge(
+    """The method to use when ordering `Venue`."""
+    orderBy: [VenuesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): VenuesEdge
+}
+
+"""All input for the `deleteWatchedToAccount` mutation."""
+input DeleteWatchedToAccountInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """Id of the row."""
+  id: Int!
+}
+
+"""The output of our delete `WatchedToAccount` mutation."""
+type DeleteWatchedToAccountPayload {
+  """Reads a single `City` that is related to this `WatchedToAccount`."""
+  city: City
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  deletedWatchedToAccountNodeId: ID
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `Region` that is related to this `WatchedToAccount`."""
+  regionByRegion: Region
+
+  """Reads a single `User` that is related to this `WatchedToAccount`."""
+  user: User
+
+  """The `WatchedToAccount` that was deleted by this mutation."""
+  watchedToAccount: WatchedToAccount
+
+  """An edge for our `WatchedToAccount`. May be used by Relay 1."""
+  watchedToAccountEdge(
+    """The method to use when ordering `WatchedToAccount`."""
+    orderBy: [WatchedToAccountsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): WatchedToAccountsEdge
+}
+
+"""All input for the `deleteWatchList` mutation."""
+input DeleteWatchListInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """Primary key and id of row."""
+  id: Int!
+}
+
+"""The output of our delete `WatchList` mutation."""
+type DeleteWatchListPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  deletedWatchListNodeId: ID
+
+  """Reads a single `Event` that is related to this `WatchList`."""
+  event: Event
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `User` that is related to this `WatchList`."""
+  user: User
+
+  """The `WatchList` that was deleted by this mutation."""
+  watchList: WatchList
+
+  """An edge for our `WatchList`. May be used by Relay 1."""
+  watchListEdge(
+    """The method to use when ordering `WatchList`."""
+    orderBy: [WatchListsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): WatchListsEdge
+}
+
+"""A genre in the application."""
+type Event {
+  """Whether to display event if it has been approved."""
+  approved: Boolean
+
+  """Reads and enables pagination through a set of `ArtistToEvent`."""
+  artistToEvents(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ArtistToEventCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ArtistToEventFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ArtistToEvent`."""
+    orderBy: [ArtistToEventsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ArtistToEventsConnection!
+
+  """Banner of event page."""
+  banner: String
+
+  """Ref to city where event takes place."""
+  city: Int!
+
+  """Reads a single `City` that is related to this `Event`."""
+  cityByCity: City
+
+  """Who submitted the event."""
+  contributor: Int
+
+  """Ref to country where event takes place."""
+  country: String
+
+  """Reads a single `Country` that is related to this `Event`."""
+  countryByCountry: Country
+  createdAt: Datetime!
+
+  """Description of event."""
+  description: String
+
+  """End date of event."""
+  endDate: BigInt
+
+  """Primary key and id of event."""
+  id: String!
+
+  """Name of event."""
+  name: String
+
+  """Ref to region where event takes place."""
+  region: String
+
+  """Reads a single `Region` that is related to this `Event`."""
+  regionByRegion: Region
+
+  """Start date of event."""
+  startDate: BigInt!
+
+  """Id by the ticket provider useful for affiliate links."""
+  ticketproviderid: String
+
+  """URL by the ticket provider useful for affiliate links."""
+  ticketproviderurl: String
+
+  """Type of event."""
+  type: EventType
+  updatedAt: Datetime!
+
+  """Reads a single `User` that is related to this `Event`."""
+  userByContributor: User
+
+  """Ref to venue where event takes place."""
+  venue: String!
+
+  """Reads a single `Venue` that is related to this `Event`."""
+  venueByVenue: Venue
+
+  """Reads and enables pagination through a set of `WatchList`."""
+  watchLists(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: WatchListCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: WatchListFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `WatchList`."""
+    orderBy: [WatchListsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): WatchListsConnection!
+}
+
+"""
+A condition to be used against `Event` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input EventCondition {
+  """Checks for equality with the object’s `city` field."""
+  city: Int
+
+  """Checks for equality with the object’s `contributor` field."""
+  contributor: Int
+
+  """Checks for equality with the object’s `country` field."""
+  country: String
+
+  """Checks for equality with the object’s `createdAt` field."""
+  createdAt: Datetime
+
+  """Checks for equality with the object’s `id` field."""
+  id: String
+
+  """Checks for equality with the object’s `name` field."""
+  name: String
+
+  """Checks for equality with the object’s `region` field."""
+  region: String
+
+  """Checks for equality with the object’s `startDate` field."""
+  startDate: BigInt
+
+  """Checks for equality with the object’s `venue` field."""
+  venue: String
+}
+
+"""
+A filter to be used against `Event` object types. All fields are combined with a logical ‘and.’
+"""
+input EventFilter {
+  """Checks for all expressions in this list."""
+  and: [EventFilter!]
+
+  """Filter by the object’s `city` field."""
+  city: IntFilter
+
+  """Filter by the object’s `contributor` field."""
+  contributor: IntFilter
+
+  """Filter by the object’s `country` field."""
+  country: StringFilter
+
+  """Filter by the object’s `createdAt` field."""
+  createdAt: DatetimeFilter
+
+  """Filter by the object’s `id` field."""
+  id: StringFilter
+
+  """Filter by the object’s `name` field."""
+  name: StringFilter
+
+  """Negates the expression."""
+  not: EventFilter
+
+  """Checks for any expressions in this list."""
+  or: [EventFilter!]
+
+  """Filter by the object’s `region` field."""
+  region: StringFilter
+
+  """Filter by the object’s `startDate` field."""
+  startDate: BigIntFilter
+
+  """Filter by the object’s `venue` field."""
+  venue: StringFilter
+}
+
+"""An input for mutations affecting `Event`"""
+input EventInput {
+  """Whether to display event if it has been approved."""
+  approved: Boolean
+
+  """Banner of event page."""
+  banner: String
+
+  """Ref to city where event takes place."""
+  city: Int!
+
+  """Who submitted the event."""
+  contributor: Int
+
+  """Ref to country where event takes place."""
+  country: String
+  createdAt: Datetime
+
+  """Description of event."""
+  description: String
+
+  """End date of event."""
+  endDate: BigInt
+
+  """Primary key and id of event."""
+  id: String!
+
+  """Name of event."""
+  name: String
+
+  """Ref to region where event takes place."""
+  region: String
+
+  """Start date of event."""
+  startDate: BigInt!
+
+  """Id by the ticket provider useful for affiliate links."""
+  ticketproviderid: String
+
+  """URL by the ticket provider useful for affiliate links."""
+  ticketproviderurl: String
+
+  """Type of event."""
+  type: EventType
+  updatedAt: Datetime
+
+  """Ref to venue where event takes place."""
+  venue: String!
+}
+
+"""
+Represents an update to a `Event`. Fields that are set will be updated.
+"""
+input EventPatch {
+  """Whether to display event if it has been approved."""
+  approved: Boolean
+
+  """Banner of event page."""
+  banner: String
+
+  """Ref to city where event takes place."""
+  city: Int
+
+  """Who submitted the event."""
+  contributor: Int
+
+  """Ref to country where event takes place."""
+  country: String
+  createdAt: Datetime
+
+  """Description of event."""
+  description: String
+
+  """End date of event."""
+  endDate: BigInt
+
+  """Primary key and id of event."""
+  id: String
+
+  """Name of event."""
+  name: String
+
+  """Ref to region where event takes place."""
+  region: String
+
+  """Start date of event."""
+  startDate: BigInt
+
+  """Id by the ticket provider useful for affiliate links."""
+  ticketproviderid: String
+
+  """URL by the ticket provider useful for affiliate links."""
+  ticketproviderurl: String
+
+  """Type of event."""
+  type: EventType
+  updatedAt: Datetime
+
+  """Ref to venue where event takes place."""
+  venue: String
+}
+
+"""A connection to a list of `Event` values."""
+type EventsConnection {
+  """
+  A list of edges which contains the `Event` and cursor to aid in pagination.
+  """
+  edges: [EventsEdge!]!
+
+  """A list of `Event` objects."""
+  nodes: [Event!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Event` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Event` edge in the connection."""
+type EventsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Event` at the end of the edge."""
+  node: Event!
+}
+
+"""Methods to use when ordering `Event`."""
+enum EventsOrderBy {
+  CITY_ASC
+  CITY_DESC
+  CONTRIBUTOR_ASC
+  CONTRIBUTOR_DESC
+  COUNTRY_ASC
+  COUNTRY_DESC
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  ID_ASC
+  ID_DESC
+  NAME_ASC
+  NAME_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  REGION_ASC
+  REGION_DESC
+  START_DATE_ASC
+  START_DATE_DESC
+  VENUE_ASC
+  VENUE_DESC
+}
+
+enum EventType {
+  ETIX
+  EVENTBRITE
+  OTHER
+  SEETICKETS
+  TICKETFLY
+  TICKETMASTER
+}
+
+"""Join table for followed artists or venues by a user."""
+type FollowList {
+  """Reads a single `Artist` that is related to this `FollowList`."""
+  artist: Artist
+
+  """Ref to artist."""
+  artistId: String
+
+  """Primary key and id of row."""
+  id: Int!
+
+  """Reads a single `User` that is related to this `FollowList`."""
+  user: User
+
+  """Ref to user."""
+  userId: Int!
+
+  """Reads a single `Venue` that is related to this `FollowList`."""
+  venue: Venue
+
+  """Ref to venue."""
+  venueId: String
+}
+
+"""
+A condition to be used against `FollowList` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input FollowListCondition {
+  """Checks for equality with the object’s `artistId` field."""
+  artistId: String
+
+  """Checks for equality with the object’s `id` field."""
+  id: Int
+
+  """Checks for equality with the object’s `userId` field."""
+  userId: Int
+
+  """Checks for equality with the object’s `venueId` field."""
+  venueId: String
+}
+
+"""
+A filter to be used against `FollowList` object types. All fields are combined with a logical ‘and.’
+"""
+input FollowListFilter {
+  """Checks for all expressions in this list."""
+  and: [FollowListFilter!]
+
+  """Filter by the object’s `artistId` field."""
+  artistId: StringFilter
+
+  """Filter by the object’s `id` field."""
+  id: IntFilter
+
+  """Negates the expression."""
+  not: FollowListFilter
+
+  """Checks for any expressions in this list."""
+  or: [FollowListFilter!]
+
+  """Filter by the object’s `userId` field."""
+  userId: IntFilter
+
+  """Filter by the object’s `venueId` field."""
+  venueId: StringFilter
+}
+
+"""An input for mutations affecting `FollowList`"""
+input FollowListInput {
+  """Ref to artist."""
+  artistId: String
+
+  """Primary key and id of row."""
+  id: Int
+
+  """Ref to user."""
+  userId: Int!
+
+  """Ref to venue."""
+  venueId: String
+}
+
+"""
+Represents an update to a `FollowList`. Fields that are set will be updated.
+"""
+input FollowListPatch {
+  """Ref to artist."""
+  artistId: String
+
+  """Primary key and id of row."""
+  id: Int
+
+  """Ref to user."""
+  userId: Int
+
+  """Ref to venue."""
+  venueId: String
+}
+
+"""A connection to a list of `FollowList` values."""
+type FollowListsConnection {
+  """
+  A list of edges which contains the `FollowList` and cursor to aid in pagination.
+  """
+  edges: [FollowListsEdge!]!
+
+  """A list of `FollowList` objects."""
+  nodes: [FollowList!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `FollowList` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `FollowList` edge in the connection."""
+type FollowListsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `FollowList` at the end of the edge."""
+  node: FollowList!
+}
+
+"""Methods to use when ordering `FollowList`."""
+enum FollowListsOrderBy {
+  ARTIST_ID_ASC
+  ARTIST_ID_DESC
+  ID_ASC
+  ID_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  USER_ID_ASC
+  USER_ID_DESC
+  VENUE_ID_ASC
+  VENUE_ID_DESC
+}
+
 """All input for the `forgotPassword` mutation."""
 input ForgotPasswordInput {
   """
@@ -186,6 +2775,304 @@ type ForgotPasswordPayload {
   Our root query field type. Allows us to run any query from our mutation payload.
   """
   query: Query
+}
+
+enum Frequency {
+  EVERY_DAY
+  NEVER
+  ONCE_A_WEEK
+  ONCE_EVERY_TWO_WEEKS
+  THREE_TIMES_A_WEEK
+  TWO_TIMES_A_WEEK
+}
+
+"""A genre in the application."""
+type Genre {
+  createdAt: Datetime!
+  description: String
+
+  """Reads and enables pagination through a set of `GenreToArtist`."""
+  genreToArtists(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: GenreToArtistCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: GenreToArtistFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `GenreToArtist`."""
+    orderBy: [GenreToArtistsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): GenreToArtistsConnection!
+
+  """Primary key and name of genre."""
+  name: String!
+  updatedAt: Datetime!
+}
+
+"""
+A condition to be used against `Genre` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input GenreCondition {
+  """Checks for equality with the object’s `name` field."""
+  name: String
+}
+
+"""
+A filter to be used against `Genre` object types. All fields are combined with a logical ‘and.’
+"""
+input GenreFilter {
+  """Checks for all expressions in this list."""
+  and: [GenreFilter!]
+
+  """Filter by the object’s `name` field."""
+  name: StringFilter
+
+  """Negates the expression."""
+  not: GenreFilter
+
+  """Checks for any expressions in this list."""
+  or: [GenreFilter!]
+}
+
+"""An input for mutations affecting `Genre`"""
+input GenreInput {
+  createdAt: Datetime
+  description: String
+
+  """Primary key and name of genre."""
+  name: String!
+  updatedAt: Datetime
+}
+
+"""
+Represents an update to a `Genre`. Fields that are set will be updated.
+"""
+input GenrePatch {
+  createdAt: Datetime
+  description: String
+
+  """Primary key and name of genre."""
+  name: String
+  updatedAt: Datetime
+}
+
+"""A connection to a list of `Genre` values."""
+type GenresConnection {
+  """
+  A list of edges which contains the `Genre` and cursor to aid in pagination.
+  """
+  edges: [GenresEdge!]!
+
+  """A list of `Genre` objects."""
+  nodes: [Genre!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Genre` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Genre` edge in the connection."""
+type GenresEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Genre` at the end of the edge."""
+  node: Genre!
+}
+
+"""Methods to use when ordering `Genre`."""
+enum GenresOrderBy {
+  NAME_ASC
+  NAME_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""A join table between genres and artists."""
+type GenreToArtist {
+  """Reads a single `Artist` that is related to this `GenreToArtist`."""
+  artist: Artist
+
+  """Ref to the artist."""
+  artistId: String!
+
+  """Reads a single `Genre` that is related to this `GenreToArtist`."""
+  genre: Genre
+
+  """Ref to the genre."""
+  genreId: String!
+
+  """Id of the row."""
+  id: Int!
+}
+
+"""
+A condition to be used against `GenreToArtist` object types. All fields are
+tested for equality and combined with a logical ‘and.’
+"""
+input GenreToArtistCondition {
+  """Checks for equality with the object’s `artistId` field."""
+  artistId: String
+
+  """Checks for equality with the object’s `genreId` field."""
+  genreId: String
+
+  """Checks for equality with the object’s `id` field."""
+  id: Int
+}
+
+"""
+A filter to be used against `GenreToArtist` object types. All fields are combined with a logical ‘and.’
+"""
+input GenreToArtistFilter {
+  """Checks for all expressions in this list."""
+  and: [GenreToArtistFilter!]
+
+  """Filter by the object’s `artistId` field."""
+  artistId: StringFilter
+
+  """Filter by the object’s `genreId` field."""
+  genreId: StringFilter
+
+  """Filter by the object’s `id` field."""
+  id: IntFilter
+
+  """Negates the expression."""
+  not: GenreToArtistFilter
+
+  """Checks for any expressions in this list."""
+  or: [GenreToArtistFilter!]
+}
+
+"""An input for mutations affecting `GenreToArtist`"""
+input GenreToArtistInput {
+  """Ref to the artist."""
+  artistId: String!
+
+  """Ref to the genre."""
+  genreId: String!
+
+  """Id of the row."""
+  id: Int
+}
+
+"""
+Represents an update to a `GenreToArtist`. Fields that are set will be updated.
+"""
+input GenreToArtistPatch {
+  """Ref to the artist."""
+  artistId: String
+
+  """Ref to the genre."""
+  genreId: String
+
+  """Id of the row."""
+  id: Int
+}
+
+"""A connection to a list of `GenreToArtist` values."""
+type GenreToArtistsConnection {
+  """
+  A list of edges which contains the `GenreToArtist` and cursor to aid in pagination.
+  """
+  edges: [GenreToArtistsEdge!]!
+
+  """A list of `GenreToArtist` objects."""
+  nodes: [GenreToArtist!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `GenreToArtist` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `GenreToArtist` edge in the connection."""
+type GenreToArtistsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `GenreToArtist` at the end of the edge."""
+  node: GenreToArtist!
+}
+
+"""Methods to use when ordering `GenreToArtist`."""
+enum GenreToArtistsOrderBy {
+  ARTIST_ID_ASC
+  ARTIST_ID_DESC
+  GENRE_ID_ASC
+  GENRE_ID_DESC
+  ID_ASC
+  ID_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""
+A filter to be used against Int fields. All fields are combined with a logical ‘and.’
+"""
+input IntFilter {
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: Int
+
+  """Equal to the specified value."""
+  equalTo: Int
+
+  """Greater than the specified value."""
+  greaterThan: Int
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: Int
+
+  """Included in the specified list."""
+  in: [Int!]
+
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Less than the specified value."""
+  lessThan: Int
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: Int
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: Int
+
+  """Not equal to the specified value."""
+  notEqualTo: Int
+
+  """Not included in the specified list."""
+  notIn: [Int!]
 }
 
 input LoginInput {
@@ -259,6 +3146,86 @@ type Mutation {
     input: ConfirmAccountDeletionInput!
   ): ConfirmAccountDeletionPayload
 
+  """Creates a single `Artist`."""
+  createArtist(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateArtistInput!
+  ): CreateArtistPayload
+
+  """Creates a single `ArtistToEvent`."""
+  createArtistToEvent(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateArtistToEventInput!
+  ): CreateArtistToEventPayload
+
+  """Creates a single `City`."""
+  createCity(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateCityInput!
+  ): CreateCityPayload
+
+  """Creates a single `Country`."""
+  createCountry(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateCountryInput!
+  ): CreateCountryPayload
+
+  """Creates a single `Event`."""
+  createEvent(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateEventInput!
+  ): CreateEventPayload
+
+  """Creates a single `FollowList`."""
+  createFollowList(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateFollowListInput!
+  ): CreateFollowListPayload
+
+  """Creates a single `Genre`."""
+  createGenre(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateGenreInput!
+  ): CreateGenrePayload
+
+  """Creates a single `GenreToArtist`."""
+  createGenreToArtist(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateGenreToArtistInput!
+  ): CreateGenreToArtistPayload
+
+  """Creates a single `PushSubscription`."""
+  createPushSubscription(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreatePushSubscriptionInput!
+  ): CreatePushSubscriptionPayload
+
+  """Creates a single `Region`."""
+  createRegion(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateRegionInput!
+  ): CreateRegionPayload
+
   """Creates a single `UserEmail`."""
   createUserEmail(
     """
@@ -266,6 +3233,110 @@ type Mutation {
     """
     input: CreateUserEmailInput!
   ): CreateUserEmailPayload
+
+  """Creates a single `Venue`."""
+  createVenue(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateVenueInput!
+  ): CreateVenuePayload
+
+  """Creates a single `WatchedToAccount`."""
+  createWatchedToAccount(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateWatchedToAccountInput!
+  ): CreateWatchedToAccountPayload
+
+  """Creates a single `WatchList`."""
+  createWatchList(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateWatchListInput!
+  ): CreateWatchListPayload
+
+  """Deletes a single `Artist` using a unique key."""
+  deleteArtist(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteArtistInput!
+  ): DeleteArtistPayload
+
+  """Deletes a single `ArtistToEvent` using a unique key."""
+  deleteArtistToEvent(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteArtistToEventInput!
+  ): DeleteArtistToEventPayload
+
+  """Deletes a single `City` using a unique key."""
+  deleteCity(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteCityInput!
+  ): DeleteCityPayload
+
+  """Deletes a single `Country` using a unique key."""
+  deleteCountry(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteCountryInput!
+  ): DeleteCountryPayload
+
+  """Deletes a single `Event` using a unique key."""
+  deleteEvent(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteEventInput!
+  ): DeleteEventPayload
+
+  """Deletes a single `FollowList` using a unique key."""
+  deleteFollowList(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteFollowListInput!
+  ): DeleteFollowListPayload
+
+  """Deletes a single `Genre` using a unique key."""
+  deleteGenre(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteGenreInput!
+  ): DeleteGenrePayload
+
+  """Deletes a single `GenreToArtist` using a unique key."""
+  deleteGenreToArtist(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteGenreToArtistInput!
+  ): DeleteGenreToArtistPayload
+
+  """Deletes a single `PushSubscription` using a unique key."""
+  deletePushSubscription(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeletePushSubscriptionInput!
+  ): DeletePushSubscriptionPayload
+
+  """Deletes a single `Region` using a unique key."""
+  deleteRegion(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteRegionInput!
+  ): DeleteRegionPayload
 
   """Deletes a single `UserAuthentication` using a unique key."""
   deleteUserAuthentication(
@@ -282,6 +3353,30 @@ type Mutation {
     """
     input: DeleteUserEmailInput!
   ): DeleteUserEmailPayload
+
+  """Deletes a single `Venue` using a unique key."""
+  deleteVenue(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteVenueInput!
+  ): DeleteVenuePayload
+
+  """Deletes a single `WatchedToAccount` using a unique key."""
+  deleteWatchedToAccount(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteWatchedToAccountInput!
+  ): DeleteWatchedToAccountPayload
+
+  """Deletes a single `WatchList` using a unique key."""
+  deleteWatchList(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteWatchListInput!
+  ): DeleteWatchListPayload
 
   """
   If you've forgotten your password, give us one of your email addresses and
@@ -361,6 +3456,86 @@ type Mutation {
     input: ResetPasswordInput!
   ): ResetPasswordPayload
 
+  """Updates a single `Artist` using a unique key and a patch."""
+  updateArtist(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateArtistInput!
+  ): UpdateArtistPayload
+
+  """Updates a single `ArtistToEvent` using a unique key and a patch."""
+  updateArtistToEvent(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateArtistToEventInput!
+  ): UpdateArtistToEventPayload
+
+  """Updates a single `City` using a unique key and a patch."""
+  updateCity(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateCityInput!
+  ): UpdateCityPayload
+
+  """Updates a single `Country` using a unique key and a patch."""
+  updateCountry(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateCountryInput!
+  ): UpdateCountryPayload
+
+  """Updates a single `Event` using a unique key and a patch."""
+  updateEvent(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateEventInput!
+  ): UpdateEventPayload
+
+  """Updates a single `FollowList` using a unique key and a patch."""
+  updateFollowList(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateFollowListInput!
+  ): UpdateFollowListPayload
+
+  """Updates a single `Genre` using a unique key and a patch."""
+  updateGenre(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateGenreInput!
+  ): UpdateGenrePayload
+
+  """Updates a single `GenreToArtist` using a unique key and a patch."""
+  updateGenreToArtist(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateGenreToArtistInput!
+  ): UpdateGenreToArtistPayload
+
+  """Updates a single `PushSubscription` using a unique key and a patch."""
+  updatePushSubscription(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdatePushSubscriptionInput!
+  ): UpdatePushSubscriptionPayload
+
+  """Updates a single `Region` using a unique key and a patch."""
+  updateRegion(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateRegionInput!
+  ): UpdateRegionPayload
+
   """Updates a single `User` using a unique key and a patch."""
   updateUser(
     """
@@ -368,6 +3543,30 @@ type Mutation {
     """
     input: UpdateUserInput!
   ): UpdateUserPayload
+
+  """Updates a single `Venue` using a unique key and a patch."""
+  updateVenue(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateVenueInput!
+  ): UpdateVenuePayload
+
+  """Updates a single `WatchedToAccount` using a unique key and a patch."""
+  updateWatchedToAccount(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateWatchedToAccountInput!
+  ): UpdateWatchedToAccountPayload
+
+  """Updates a single `WatchList` using a unique key and a patch."""
+  updateWatchList(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateWatchListInput!
+  ): UpdateWatchListPayload
 
   """
   Once you have received a verification token for your email, you may call this
@@ -396,20 +3595,948 @@ type PageInfo {
   startCursor: Cursor
 }
 
+"""A table with push subscription info."""
+type PushSubscription {
+  """
+  An authentication secret, which is one of the inputs of the message content encryption process.
+  """
+  auth: String!
+  createdAt: Datetime!
+
+  """
+  This contains a unique URL to a Firebase Cloud Messaging endpoint. This url is
+  a public but unguessable endpoint to the Browser Push Service used by the
+  application server to send push notifications to this subscription.
+  """
+  endpoint: String!
+
+  """
+  This is useful in certain cases, for example, if a message might contain an
+  authentication code that expires after 1 minute.
+  """
+  expirationTime: Datetime
+
+  """Unique identifier for the push subscription."""
+  id: Int!
+
+  """An encryption key that our server will use to encrypt the message."""
+  p256Dh: String!
+  updatedAt: Datetime!
+
+  """Reads a single `User` that is related to this `PushSubscription`."""
+  user: User
+
+  """Reference to the account this belongs to."""
+  userId: Int!
+}
+
+"""
+A condition to be used against `PushSubscription` object types. All fields are
+tested for equality and combined with a logical ‘and.’
+"""
+input PushSubscriptionCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: Int
+
+  """Checks for equality with the object’s `userId` field."""
+  userId: Int
+}
+
+"""
+A filter to be used against `PushSubscription` object types. All fields are combined with a logical ‘and.’
+"""
+input PushSubscriptionFilter {
+  """Checks for all expressions in this list."""
+  and: [PushSubscriptionFilter!]
+
+  """Filter by the object’s `id` field."""
+  id: IntFilter
+
+  """Negates the expression."""
+  not: PushSubscriptionFilter
+
+  """Checks for any expressions in this list."""
+  or: [PushSubscriptionFilter!]
+
+  """Filter by the object’s `userId` field."""
+  userId: IntFilter
+}
+
+"""An input for mutations affecting `PushSubscription`"""
+input PushSubscriptionInput {
+  """
+  An authentication secret, which is one of the inputs of the message content encryption process.
+  """
+  auth: String!
+  createdAt: Datetime
+
+  """
+  This contains a unique URL to a Firebase Cloud Messaging endpoint. This url is
+  a public but unguessable endpoint to the Browser Push Service used by the
+  application server to send push notifications to this subscription.
+  """
+  endpoint: String!
+
+  """
+  This is useful in certain cases, for example, if a message might contain an
+  authentication code that expires after 1 minute.
+  """
+  expirationTime: Datetime
+
+  """Unique identifier for the push subscription."""
+  id: Int
+
+  """An encryption key that our server will use to encrypt the message."""
+  p256Dh: String!
+  updatedAt: Datetime
+
+  """Reference to the account this belongs to."""
+  userId: Int!
+}
+
+"""
+Represents an update to a `PushSubscription`. Fields that are set will be updated.
+"""
+input PushSubscriptionPatch {
+  """
+  An authentication secret, which is one of the inputs of the message content encryption process.
+  """
+  auth: String
+  createdAt: Datetime
+
+  """
+  This contains a unique URL to a Firebase Cloud Messaging endpoint. This url is
+  a public but unguessable endpoint to the Browser Push Service used by the
+  application server to send push notifications to this subscription.
+  """
+  endpoint: String
+
+  """
+  This is useful in certain cases, for example, if a message might contain an
+  authentication code that expires after 1 minute.
+  """
+  expirationTime: Datetime
+
+  """Unique identifier for the push subscription."""
+  id: Int
+
+  """An encryption key that our server will use to encrypt the message."""
+  p256Dh: String
+  updatedAt: Datetime
+
+  """Reference to the account this belongs to."""
+  userId: Int
+}
+
+"""A connection to a list of `PushSubscription` values."""
+type PushSubscriptionsConnection {
+  """
+  A list of edges which contains the `PushSubscription` and cursor to aid in pagination.
+  """
+  edges: [PushSubscriptionsEdge!]!
+
+  """A list of `PushSubscription` objects."""
+  nodes: [PushSubscription!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `PushSubscription` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+"""A `PushSubscription` edge in the connection."""
+type PushSubscriptionsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `PushSubscription` at the end of the edge."""
+  node: PushSubscription!
+}
+
+"""Methods to use when ordering `PushSubscription`."""
+enum PushSubscriptionsOrderBy {
+  ID_ASC
+  ID_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  USER_ID_ASC
+  USER_ID_DESC
+}
+
 """The root query type which gives access points into the data universe."""
 type Query {
+  artist(name: String!): Artist
+
+  """Reads and enables pagination through a set of `Artist`."""
+  artists(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ArtistCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ArtistFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Artist`."""
+    orderBy: [ArtistsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ArtistsConnection
+  artistToEvent(id: Int!): ArtistToEvent
+
+  """Reads and enables pagination through a set of `ArtistToEvent`."""
+  artistToEvents(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ArtistToEventCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ArtistToEventFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ArtistToEvent`."""
+    orderBy: [ArtistToEventsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ArtistToEventsConnection
+
+  """Reads and enables pagination through a set of `City`."""
+  cities(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CityCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CityFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `City`."""
+    orderBy: [CitiesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CitiesConnection
+  city(id: Int!): City
+
+  """Reads and enables pagination through a set of `Country`."""
+  countries(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CountryCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CountryFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Country`."""
+    orderBy: [CountriesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CountriesConnection
+  country(code: String!): Country
+
   """The currently logged in user (or null if not logged in)."""
   currentUser: User
+  event(id: String!): Event
+
+  """Reads and enables pagination through a set of `Event`."""
+  events(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: EventCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: EventFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Event`."""
+    orderBy: [EventsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): EventsConnection
+  followList(id: Int!): FollowList
+
+  """Reads and enables pagination through a set of `FollowList`."""
+  followLists(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: FollowListCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: FollowListFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `FollowList`."""
+    orderBy: [FollowListsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FollowListsConnection
+  genre(name: String!): Genre
+
+  """Reads and enables pagination through a set of `Genre`."""
+  genres(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: GenreCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: GenreFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Genre`."""
+    orderBy: [GenresOrderBy!] = [PRIMARY_KEY_ASC]
+  ): GenresConnection
+  genreToArtist(id: Int!): GenreToArtist
+
+  """Reads and enables pagination through a set of `GenreToArtist`."""
+  genreToArtists(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: GenreToArtistCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: GenreToArtistFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `GenreToArtist`."""
+    orderBy: [GenreToArtistsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): GenreToArtistsConnection
+  pushSubscription(id: Int!): PushSubscription
+
+  """Reads and enables pagination through a set of `PushSubscription`."""
+  pushSubscriptions(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: PushSubscriptionCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: PushSubscriptionFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `PushSubscription`."""
+    orderBy: [PushSubscriptionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): PushSubscriptionsConnection
 
   """
   Exposes the root query type nested one level down. This is helpful for Relay 1
   which can only query top level fields if they are in a particular form.
   """
   query: Query!
+  region(name: String!): Region
+
+  """Reads and enables pagination through a set of `Region`."""
+  regions(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: RegionCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: RegionFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Region`."""
+    orderBy: [RegionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): RegionsConnection
+
+  """Returns events by city containing a given query term."""
+  searchEventsByCity(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+    cityid: Int
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: EventFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+    query: String
+  ): EventsConnection!
+
+  """Returns events by region containing a given query term."""
+  searchEventsByRegion(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: EventFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+    query: String
+    regionName: String
+  ): EventsConnection!
   user(id: Int!): User
   userAuthentication(id: Int!): UserAuthentication
   userByUsername(username: String!): User
   userEmail(id: Int!): UserEmail
+  venue(name: String!): Venue
+
+  """Reads and enables pagination through a set of `Venue`."""
+  venues(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: VenueCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: VenueFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Venue`."""
+    orderBy: [VenuesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): VenuesConnection
+  watchedToAccount(id: Int!): WatchedToAccount
+
+  """Reads and enables pagination through a set of `WatchedToAccount`."""
+  watchedToAccounts(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: WatchedToAccountCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: WatchedToAccountFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `WatchedToAccount`."""
+    orderBy: [WatchedToAccountsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): WatchedToAccountsConnection
+  watchList(id: Int!): WatchList
+
+  """Reads and enables pagination through a set of `WatchList`."""
+  watchLists(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: WatchListCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: WatchListFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `WatchList`."""
+    orderBy: [WatchListsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): WatchListsConnection
+}
+
+"""A table with regions."""
+type Region {
+  """Reads and enables pagination through a set of `City`."""
+  citiesByRegion(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CityCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CityFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `City`."""
+    orderBy: [CitiesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CitiesConnection!
+
+  """Country ref region belongs to."""
+  country: String
+
+  """Reads a single `Country` that is related to this `Region`."""
+  countryByCountry: Country
+  createdAt: Datetime!
+
+  """Description of the region."""
+  description: String
+
+  """Reads and enables pagination through a set of `Event`."""
+  eventsByRegion(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: EventCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: EventFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Event`."""
+    orderBy: [EventsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): EventsConnection!
+
+  """Latitude location of the region."""
+  lat: BigFloat
+
+  """Longitude location of the region."""
+  lon: BigFloat
+
+  """Name and primary key of region."""
+  name: String!
+
+  """Photo of the region."""
+  photo: String
+  updatedAt: Datetime!
+
+  """Reads and enables pagination through a set of `WatchedToAccount`."""
+  watchedToAccountsByRegion(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: WatchedToAccountCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: WatchedToAccountFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `WatchedToAccount`."""
+    orderBy: [WatchedToAccountsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): WatchedToAccountsConnection!
+}
+
+"""
+A condition to be used against `Region` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input RegionCondition {
+  """Checks for equality with the object’s `country` field."""
+  country: String
+
+  """Checks for equality with the object’s `name` field."""
+  name: String
+}
+
+"""
+A filter to be used against `Region` object types. All fields are combined with a logical ‘and.’
+"""
+input RegionFilter {
+  """Checks for all expressions in this list."""
+  and: [RegionFilter!]
+
+  """Filter by the object’s `country` field."""
+  country: StringFilter
+
+  """Filter by the object’s `name` field."""
+  name: StringFilter
+
+  """Negates the expression."""
+  not: RegionFilter
+
+  """Checks for any expressions in this list."""
+  or: [RegionFilter!]
+}
+
+"""An input for mutations affecting `Region`"""
+input RegionInput {
+  """Country ref region belongs to."""
+  country: String
+  createdAt: Datetime
+
+  """Description of the region."""
+  description: String
+
+  """Latitude location of the region."""
+  lat: BigFloat
+
+  """Longitude location of the region."""
+  lon: BigFloat
+
+  """Name and primary key of region."""
+  name: String!
+
+  """Photo of the region."""
+  photo: String
+  updatedAt: Datetime
+}
+
+"""
+Represents an update to a `Region`. Fields that are set will be updated.
+"""
+input RegionPatch {
+  """Country ref region belongs to."""
+  country: String
+  createdAt: Datetime
+
+  """Description of the region."""
+  description: String
+
+  """Latitude location of the region."""
+  lat: BigFloat
+
+  """Longitude location of the region."""
+  lon: BigFloat
+
+  """Name and primary key of region."""
+  name: String
+
+  """Photo of the region."""
+  photo: String
+  updatedAt: Datetime
+}
+
+"""A connection to a list of `Region` values."""
+type RegionsConnection {
+  """
+  A list of edges which contains the `Region` and cursor to aid in pagination.
+  """
+  edges: [RegionsEdge!]!
+
+  """A list of `Region` objects."""
+  nodes: [Region!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Region` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Region` edge in the connection."""
+type RegionsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Region` at the end of the edge."""
+  node: Region!
+}
+
+"""Methods to use when ordering `Region`."""
+enum RegionsOrderBy {
+  COUNTRY_ASC
+  COUNTRY_DESC
+  NAME_ASC
+  NAME_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
 }
 
 input RegisterInput {
@@ -501,11 +4628,573 @@ type ResetPasswordPayload {
 }
 
 """
+A filter to be used against String fields. All fields are combined with a logical ‘and.’
+"""
+input StringFilter {
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: String
+
+  """Ends with the specified string (case-sensitive)."""
+  endsWith: String
+
+  """Ends with the specified string (case-insensitive)."""
+  endsWithInsensitive: String
+
+  """Equal to the specified value."""
+  equalTo: String
+
+  """Greater than the specified value."""
+  greaterThan: String
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: String
+
+  """Included in the specified list."""
+  in: [String!]
+
+  """Contains the specified string (case-sensitive)."""
+  includes: String
+
+  """Contains the specified string (case-insensitive)."""
+  includesInsensitive: String
+
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Less than the specified value."""
+  lessThan: String
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: String
+
+  """
+  Matches the specified pattern (case-sensitive). An underscore (_) matches any
+  single character; a percent sign (%) matches any sequence of zero or more characters.
+  """
+  like: String
+
+  """
+  Matches the specified pattern (case-insensitive). An underscore (_) matches
+  any single character; a percent sign (%) matches any sequence of zero or more characters.
+  """
+  likeInsensitive: String
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: String
+
+  """Does not end with the specified string (case-sensitive)."""
+  notEndsWith: String
+
+  """Does not end with the specified string (case-insensitive)."""
+  notEndsWithInsensitive: String
+
+  """Not equal to the specified value."""
+  notEqualTo: String
+
+  """Not included in the specified list."""
+  notIn: [String!]
+
+  """Does not contain the specified string (case-sensitive)."""
+  notIncludes: String
+
+  """Does not contain the specified string (case-insensitive)."""
+  notIncludesInsensitive: String
+
+  """
+  Does not match the specified pattern (case-sensitive). An underscore (_)
+  matches any single character; a percent sign (%) matches any sequence of zero
+  or more characters.
+  """
+  notLike: String
+
+  """
+  Does not match the specified pattern (case-insensitive). An underscore (_)
+  matches any single character; a percent sign (%) matches any sequence of zero
+  or more characters.
+  """
+  notLikeInsensitive: String
+
+  """
+  Does not match the specified pattern using the SQL standard's definition of a regular expression.
+  """
+  notSimilarTo: String
+
+  """Does not start with the specified string (case-sensitive)."""
+  notStartsWith: String
+
+  """Does not start with the specified string (case-insensitive)."""
+  notStartsWithInsensitive: String
+
+  """
+  Matches the specified pattern using the SQL standard's definition of a regular expression.
+  """
+  similarTo: String
+
+  """Starts with the specified string (case-sensitive)."""
+  startsWith: String
+
+  """Starts with the specified string (case-insensitive)."""
+  startsWithInsensitive: String
+}
+
+"""
 The root subscription type: contains realtime events you can subscribe to with the `subscription` operation.
 """
 type Subscription {
   """Triggered when the logged in user's record is updated in some way."""
   currentUserUpdated: UserSubscriptionPayload
+}
+
+"""All input for the `updateArtist` mutation."""
+input UpdateArtistInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """Primary key and name of artist."""
+  name: String!
+
+  """
+  An object where the defined keys will be set on the `Artist` being updated.
+  """
+  patch: ArtistPatch!
+}
+
+"""The output of our update `Artist` mutation."""
+type UpdateArtistPayload {
+  """The `Artist` that was updated by this mutation."""
+  artist: Artist
+
+  """An edge for our `Artist`. May be used by Relay 1."""
+  artistEdge(
+    """The method to use when ordering `Artist`."""
+    orderBy: [ArtistsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ArtistsEdge
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `updateArtistToEvent` mutation."""
+input UpdateArtistToEventInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """Primary key and id of row."""
+  id: Int!
+
+  """
+  An object where the defined keys will be set on the `ArtistToEvent` being updated.
+  """
+  patch: ArtistToEventPatch!
+}
+
+"""The output of our update `ArtistToEvent` mutation."""
+type UpdateArtistToEventPayload {
+  """Reads a single `Artist` that is related to this `ArtistToEvent`."""
+  artist: Artist
+
+  """The `ArtistToEvent` that was updated by this mutation."""
+  artistToEvent: ArtistToEvent
+
+  """An edge for our `ArtistToEvent`. May be used by Relay 1."""
+  artistToEventEdge(
+    """The method to use when ordering `ArtistToEvent`."""
+    orderBy: [ArtistToEventsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ArtistToEventsEdge
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """Reads a single `Event` that is related to this `ArtistToEvent`."""
+  event: Event
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `updateCity` mutation."""
+input UpdateCityInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """Primary key and id for city."""
+  id: Int!
+
+  """
+  An object where the defined keys will be set on the `City` being updated.
+  """
+  patch: CityPatch!
+}
+
+"""The output of our update `City` mutation."""
+type UpdateCityPayload {
+  """The `City` that was updated by this mutation."""
+  city: City
+
+  """An edge for our `City`. May be used by Relay 1."""
+  cityEdge(
+    """The method to use when ordering `City`."""
+    orderBy: [CitiesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CitiesEdge
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """Reads a single `Country` that is related to this `City`."""
+  countryByCountry: Country
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `Region` that is related to this `City`."""
+  regionByRegion: Region
+}
+
+"""All input for the `updateCountry` mutation."""
+input UpdateCountryInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """Primary key and code for country."""
+  code: String!
+
+  """
+  An object where the defined keys will be set on the `Country` being updated.
+  """
+  patch: CountryPatch!
+}
+
+"""The output of our update `Country` mutation."""
+type UpdateCountryPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Country` that was updated by this mutation."""
+  country: Country
+
+  """An edge for our `Country`. May be used by Relay 1."""
+  countryEdge(
+    """The method to use when ordering `Country`."""
+    orderBy: [CountriesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CountriesEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `updateEvent` mutation."""
+input UpdateEventInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """Primary key and id of event."""
+  id: String!
+
+  """
+  An object where the defined keys will be set on the `Event` being updated.
+  """
+  patch: EventPatch!
+}
+
+"""The output of our update `Event` mutation."""
+type UpdateEventPayload {
+  """Reads a single `City` that is related to this `Event`."""
+  cityByCity: City
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """Reads a single `Country` that is related to this `Event`."""
+  countryByCountry: Country
+
+  """The `Event` that was updated by this mutation."""
+  event: Event
+
+  """An edge for our `Event`. May be used by Relay 1."""
+  eventEdge(
+    """The method to use when ordering `Event`."""
+    orderBy: [EventsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): EventsEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `Region` that is related to this `Event`."""
+  regionByRegion: Region
+
+  """Reads a single `User` that is related to this `Event`."""
+  userByContributor: User
+
+  """Reads a single `Venue` that is related to this `Event`."""
+  venueByVenue: Venue
+}
+
+"""All input for the `updateFollowList` mutation."""
+input UpdateFollowListInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """Primary key and id of row."""
+  id: Int!
+
+  """
+  An object where the defined keys will be set on the `FollowList` being updated.
+  """
+  patch: FollowListPatch!
+}
+
+"""The output of our update `FollowList` mutation."""
+type UpdateFollowListPayload {
+  """Reads a single `Artist` that is related to this `FollowList`."""
+  artist: Artist
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `FollowList` that was updated by this mutation."""
+  followList: FollowList
+
+  """An edge for our `FollowList`. May be used by Relay 1."""
+  followListEdge(
+    """The method to use when ordering `FollowList`."""
+    orderBy: [FollowListsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FollowListsEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `User` that is related to this `FollowList`."""
+  user: User
+
+  """Reads a single `Venue` that is related to this `FollowList`."""
+  venue: Venue
+}
+
+"""All input for the `updateGenre` mutation."""
+input UpdateGenreInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """Primary key and name of genre."""
+  name: String!
+
+  """
+  An object where the defined keys will be set on the `Genre` being updated.
+  """
+  patch: GenrePatch!
+}
+
+"""The output of our update `Genre` mutation."""
+type UpdateGenrePayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Genre` that was updated by this mutation."""
+  genre: Genre
+
+  """An edge for our `Genre`. May be used by Relay 1."""
+  genreEdge(
+    """The method to use when ordering `Genre`."""
+    orderBy: [GenresOrderBy!] = [PRIMARY_KEY_ASC]
+  ): GenresEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `updateGenreToArtist` mutation."""
+input UpdateGenreToArtistInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """Id of the row."""
+  id: Int!
+
+  """
+  An object where the defined keys will be set on the `GenreToArtist` being updated.
+  """
+  patch: GenreToArtistPatch!
+}
+
+"""The output of our update `GenreToArtist` mutation."""
+type UpdateGenreToArtistPayload {
+  """Reads a single `Artist` that is related to this `GenreToArtist`."""
+  artist: Artist
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """Reads a single `Genre` that is related to this `GenreToArtist`."""
+  genre: Genre
+
+  """The `GenreToArtist` that was updated by this mutation."""
+  genreToArtist: GenreToArtist
+
+  """An edge for our `GenreToArtist`. May be used by Relay 1."""
+  genreToArtistEdge(
+    """The method to use when ordering `GenreToArtist`."""
+    orderBy: [GenreToArtistsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): GenreToArtistsEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `updatePushSubscription` mutation."""
+input UpdatePushSubscriptionInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """Unique identifier for the push subscription."""
+  id: Int!
+
+  """
+  An object where the defined keys will be set on the `PushSubscription` being updated.
+  """
+  patch: PushSubscriptionPatch!
+}
+
+"""The output of our update `PushSubscription` mutation."""
+type UpdatePushSubscriptionPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `PushSubscription` that was updated by this mutation."""
+  pushSubscription: PushSubscription
+
+  """An edge for our `PushSubscription`. May be used by Relay 1."""
+  pushSubscriptionEdge(
+    """The method to use when ordering `PushSubscription`."""
+    orderBy: [PushSubscriptionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): PushSubscriptionsEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `User` that is related to this `PushSubscription`."""
+  user: User
+}
+
+"""All input for the `updateRegion` mutation."""
+input UpdateRegionInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """Name and primary key of region."""
+  name: String!
+
+  """
+  An object where the defined keys will be set on the `Region` being updated.
+  """
+  patch: RegionPatch!
+}
+
+"""The output of our update `Region` mutation."""
+type UpdateRegionPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """Reads a single `Country` that is related to this `Region`."""
+  countryByCountry: Country
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """The `Region` that was updated by this mutation."""
+  region: Region
+
+  """An edge for our `Region`. May be used by Relay 1."""
+  regionEdge(
+    """The method to use when ordering `Region`."""
+    orderBy: [RegionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): RegionsEdge
 }
 
 """All input for the `updateUser` mutation."""
@@ -548,11 +5237,218 @@ type UpdateUserPayload {
   ): UsersEdge
 }
 
+"""All input for the `updateVenue` mutation."""
+input UpdateVenueInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """Primary key and name of venue."""
+  name: String!
+
+  """
+  An object where the defined keys will be set on the `Venue` being updated.
+  """
+  patch: VenuePatch!
+}
+
+"""The output of our update `Venue` mutation."""
+type UpdateVenuePayload {
+  """Reads a single `City` that is related to this `Venue`."""
+  cityByCity: City
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """The `Venue` that was updated by this mutation."""
+  venue: Venue
+
+  """An edge for our `Venue`. May be used by Relay 1."""
+  venueEdge(
+    """The method to use when ordering `Venue`."""
+    orderBy: [VenuesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): VenuesEdge
+}
+
+"""All input for the `updateWatchedToAccount` mutation."""
+input UpdateWatchedToAccountInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """Id of the row."""
+  id: Int!
+
+  """
+  An object where the defined keys will be set on the `WatchedToAccount` being updated.
+  """
+  patch: WatchedToAccountPatch!
+}
+
+"""The output of our update `WatchedToAccount` mutation."""
+type UpdateWatchedToAccountPayload {
+  """Reads a single `City` that is related to this `WatchedToAccount`."""
+  city: City
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `Region` that is related to this `WatchedToAccount`."""
+  regionByRegion: Region
+
+  """Reads a single `User` that is related to this `WatchedToAccount`."""
+  user: User
+
+  """The `WatchedToAccount` that was updated by this mutation."""
+  watchedToAccount: WatchedToAccount
+
+  """An edge for our `WatchedToAccount`. May be used by Relay 1."""
+  watchedToAccountEdge(
+    """The method to use when ordering `WatchedToAccount`."""
+    orderBy: [WatchedToAccountsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): WatchedToAccountsEdge
+}
+
+"""All input for the `updateWatchList` mutation."""
+input UpdateWatchListInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """Primary key and id of row."""
+  id: Int!
+
+  """
+  An object where the defined keys will be set on the `WatchList` being updated.
+  """
+  patch: WatchListPatch!
+}
+
+"""The output of our update `WatchList` mutation."""
+type UpdateWatchListPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """Reads a single `Event` that is related to this `WatchList`."""
+  event: Event
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `User` that is related to this `WatchList`."""
+  user: User
+
+  """The `WatchList` that was updated by this mutation."""
+  watchList: WatchList
+
+  """An edge for our `WatchList`. May be used by Relay 1."""
+  watchListEdge(
+    """The method to use when ordering `WatchList`."""
+    orderBy: [WatchListsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): WatchListsEdge
+}
+
 """A user who can log in to the application."""
 type User {
-  """Optional avatar URL."""
-  avatarUrl: String
   createdAt: Datetime!
+
+  """Boolean yes or no for email notifications"""
+  emailNotification: Boolean
+
+  """Reads and enables pagination through a set of `Event`."""
+  eventsByContributor(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: EventCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: EventFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Event`."""
+    orderBy: [EventsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): EventsConnection!
+
+  """Reads and enables pagination through a set of `FollowList`."""
+  followLists(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: FollowListCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: FollowListFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `FollowList`."""
+    orderBy: [FollowListsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FollowListsConnection!
   hasPassword: Boolean
 
   """Unique identifier for the user."""
@@ -564,6 +5460,49 @@ type User {
 
   """Public-facing name (or pseudonym) of the user."""
   name: String
+
+  """Designates notification frequency"""
+  notificationFrequency: Frequency!
+
+  """Optional avatar URL."""
+  profilePhoto: String
+
+  """Boolean yes or no for push notifications"""
+  pushNotification: Boolean
+
+  """Reads and enables pagination through a set of `PushSubscription`."""
+  pushSubscriptions(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: PushSubscriptionCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: PushSubscriptionFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `PushSubscription`."""
+    orderBy: [PushSubscriptionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): PushSubscriptionsConnection!
   updatedAt: Datetime!
 
   """Reads and enables pagination through a set of `UserAuthentication`."""
@@ -572,6 +5511,11 @@ type User {
     A condition to be used in determining which values should be returned by the collection.
     """
     condition: UserAuthenticationCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: UserAuthenticationFilter
 
     """Only read the first `n` values of the set."""
     first: Int
@@ -596,6 +5540,11 @@ type User {
     """
     condition: UserEmailCondition
 
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: UserEmailFilter
+
     """Only read the first `n` values of the set."""
     first: Int
 
@@ -614,6 +5563,74 @@ type User {
 
   """Public-facing username (or 'handle') of the user."""
   username: String!
+
+  """Reads and enables pagination through a set of `WatchedToAccount`."""
+  watchedToAccounts(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: WatchedToAccountCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: WatchedToAccountFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `WatchedToAccount`."""
+    orderBy: [WatchedToAccountsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): WatchedToAccountsConnection!
+
+  """Reads and enables pagination through a set of `WatchList`."""
+  watchLists(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: WatchListCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: WatchListFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `WatchList`."""
+    orderBy: [WatchListsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): WatchListsConnection!
 }
 
 """
@@ -648,6 +5665,29 @@ input UserAuthenticationCondition {
 
   """Checks for equality with the object’s `userId` field."""
   userId: Int
+}
+
+"""
+A filter to be used against `UserAuthentication` object types. All fields are combined with a logical ‘and.’
+"""
+input UserAuthenticationFilter {
+  """Checks for all expressions in this list."""
+  and: [UserAuthenticationFilter!]
+
+  """Filter by the object’s `id` field."""
+  id: IntFilter
+
+  """Negates the expression."""
+  not: UserAuthenticationFilter
+
+  """Checks for any expressions in this list."""
+  or: [UserAuthenticationFilter!]
+
+  """Filter by the object’s `service` field."""
+  service: StringFilter
+
+  """Filter by the object’s `userId` field."""
+  userId: IntFilter
 }
 
 """Methods to use when ordering `UserAuthentication`."""
@@ -699,6 +5739,29 @@ input UserEmailCondition {
   userId: Int
 }
 
+"""
+A filter to be used against `UserEmail` object types. All fields are combined with a logical ‘and.’
+"""
+input UserEmailFilter {
+  """Checks for all expressions in this list."""
+  and: [UserEmailFilter!]
+
+  """Filter by the object’s `id` field."""
+  id: IntFilter
+
+  """Filter by the object’s `isPrimary` field."""
+  isPrimary: BooleanFilter
+
+  """Negates the expression."""
+  not: UserEmailFilter
+
+  """Checks for any expressions in this list."""
+  or: [UserEmailFilter!]
+
+  """Filter by the object’s `userId` field."""
+  userId: IntFilter
+}
+
 """An input for mutations affecting `UserEmail`"""
 input UserEmailInput {
   """The users email address, in `a@b.c` format."""
@@ -746,11 +5809,20 @@ enum UserEmailsOrderBy {
 
 """Represents an update to a `User`. Fields that are set will be updated."""
 input UserPatch {
-  """Optional avatar URL."""
-  avatarUrl: String
+  """Boolean yes or no for email notifications"""
+  emailNotification: Boolean
 
   """Public-facing name (or pseudonym) of the user."""
   name: String
+
+  """Designates notification frequency"""
+  notificationFrequency: Frequency
+
+  """Optional avatar URL."""
+  profilePhoto: String
+
+  """Boolean yes or no for push notifications"""
+  pushNotification: Boolean
 
   """Public-facing username (or 'handle') of the user."""
   username: String
@@ -781,6 +5853,234 @@ type UserSubscriptionPayload {
   user: User
 }
 
+"""A venue in the application."""
+type Venue {
+  """Address of venue."""
+  address: String
+
+  """Ref to city of venue."""
+  city: Int!
+
+  """Reads a single `City` that is related to this `Venue`."""
+  cityByCity: City
+  createdAt: Datetime!
+
+  """Description of venue."""
+  description: String
+
+  """Reads and enables pagination through a set of `Event`."""
+  eventsByVenue(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: EventCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: EventFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Event`."""
+    orderBy: [EventsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): EventsConnection!
+
+  """Reads and enables pagination through a set of `FollowList`."""
+  followLists(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: FollowListCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: FollowListFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `FollowList`."""
+    orderBy: [FollowListsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FollowListsConnection!
+
+  """Latitude of venue."""
+  lat: BigFloat
+
+  """Logo of venue."""
+  logo: String
+
+  """Longitude of venue."""
+  lon: BigFloat
+
+  """Primary key and name of venue."""
+  name: String!
+
+  """Photo of venue."""
+  photo: String
+  updatedAt: Datetime!
+}
+
+"""
+A condition to be used against `Venue` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input VenueCondition {
+  """Checks for equality with the object’s `city` field."""
+  city: Int
+
+  """Checks for equality with the object’s `name` field."""
+  name: String
+}
+
+"""
+A filter to be used against `Venue` object types. All fields are combined with a logical ‘and.’
+"""
+input VenueFilter {
+  """Checks for all expressions in this list."""
+  and: [VenueFilter!]
+
+  """Filter by the object’s `city` field."""
+  city: IntFilter
+
+  """Filter by the object’s `name` field."""
+  name: StringFilter
+
+  """Negates the expression."""
+  not: VenueFilter
+
+  """Checks for any expressions in this list."""
+  or: [VenueFilter!]
+}
+
+"""An input for mutations affecting `Venue`"""
+input VenueInput {
+  """Address of venue."""
+  address: String
+
+  """Ref to city of venue."""
+  city: Int!
+  createdAt: Datetime
+
+  """Description of venue."""
+  description: String
+
+  """Latitude of venue."""
+  lat: BigFloat
+
+  """Logo of venue."""
+  logo: String
+
+  """Longitude of venue."""
+  lon: BigFloat
+
+  """Primary key and name of venue."""
+  name: String!
+
+  """Photo of venue."""
+  photo: String
+  updatedAt: Datetime
+}
+
+"""
+Represents an update to a `Venue`. Fields that are set will be updated.
+"""
+input VenuePatch {
+  """Address of venue."""
+  address: String
+
+  """Ref to city of venue."""
+  city: Int
+  createdAt: Datetime
+
+  """Description of venue."""
+  description: String
+
+  """Latitude of venue."""
+  lat: BigFloat
+
+  """Logo of venue."""
+  logo: String
+
+  """Longitude of venue."""
+  lon: BigFloat
+
+  """Primary key and name of venue."""
+  name: String
+
+  """Photo of venue."""
+  photo: String
+  updatedAt: Datetime
+}
+
+"""A connection to a list of `Venue` values."""
+type VenuesConnection {
+  """
+  A list of edges which contains the `Venue` and cursor to aid in pagination.
+  """
+  edges: [VenuesEdge!]!
+
+  """A list of `Venue` objects."""
+  nodes: [Venue!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Venue` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Venue` edge in the connection."""
+type VenuesEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Venue` at the end of the edge."""
+  node: Venue!
+}
+
+"""Methods to use when ordering `Venue`."""
+enum VenuesOrderBy {
+  CITY_ASC
+  CITY_DESC
+  NAME_ASC
+  NAME_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
 """All input for the `verifyEmail` mutation."""
 input VerifyEmailInput {
   """
@@ -805,4 +6105,268 @@ type VerifyEmailPayload {
   """
   query: Query
   success: Boolean
+}
+
+"""A join table for watched location to an account."""
+type WatchedToAccount {
+  """Reads a single `City` that is related to this `WatchedToAccount`."""
+  city: City
+
+  """Ref to city."""
+  cityId: Int
+
+  """Id of the row."""
+  id: Int!
+
+  """Ref to region."""
+  region: String
+
+  """Reads a single `Region` that is related to this `WatchedToAccount`."""
+  regionByRegion: Region
+
+  """Reads a single `User` that is related to this `WatchedToAccount`."""
+  user: User
+
+  """Ref to user account."""
+  userId: Int!
+}
+
+"""
+A condition to be used against `WatchedToAccount` object types. All fields are
+tested for equality and combined with a logical ‘and.’
+"""
+input WatchedToAccountCondition {
+  """Checks for equality with the object’s `cityId` field."""
+  cityId: Int
+
+  """Checks for equality with the object’s `id` field."""
+  id: Int
+
+  """Checks for equality with the object’s `region` field."""
+  region: String
+
+  """Checks for equality with the object’s `userId` field."""
+  userId: Int
+}
+
+"""
+A filter to be used against `WatchedToAccount` object types. All fields are combined with a logical ‘and.’
+"""
+input WatchedToAccountFilter {
+  """Checks for all expressions in this list."""
+  and: [WatchedToAccountFilter!]
+
+  """Filter by the object’s `cityId` field."""
+  cityId: IntFilter
+
+  """Filter by the object’s `id` field."""
+  id: IntFilter
+
+  """Negates the expression."""
+  not: WatchedToAccountFilter
+
+  """Checks for any expressions in this list."""
+  or: [WatchedToAccountFilter!]
+
+  """Filter by the object’s `region` field."""
+  region: StringFilter
+
+  """Filter by the object’s `userId` field."""
+  userId: IntFilter
+}
+
+"""An input for mutations affecting `WatchedToAccount`"""
+input WatchedToAccountInput {
+  """Ref to city."""
+  cityId: Int
+
+  """Id of the row."""
+  id: Int
+
+  """Ref to region."""
+  region: String
+
+  """Ref to user account."""
+  userId: Int!
+}
+
+"""
+Represents an update to a `WatchedToAccount`. Fields that are set will be updated.
+"""
+input WatchedToAccountPatch {
+  """Ref to city."""
+  cityId: Int
+
+  """Id of the row."""
+  id: Int
+
+  """Ref to region."""
+  region: String
+
+  """Ref to user account."""
+  userId: Int
+}
+
+"""A connection to a list of `WatchedToAccount` values."""
+type WatchedToAccountsConnection {
+  """
+  A list of edges which contains the `WatchedToAccount` and cursor to aid in pagination.
+  """
+  edges: [WatchedToAccountsEdge!]!
+
+  """A list of `WatchedToAccount` objects."""
+  nodes: [WatchedToAccount!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `WatchedToAccount` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+"""A `WatchedToAccount` edge in the connection."""
+type WatchedToAccountsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `WatchedToAccount` at the end of the edge."""
+  node: WatchedToAccount!
+}
+
+"""Methods to use when ordering `WatchedToAccount`."""
+enum WatchedToAccountsOrderBy {
+  CITY_ID_ASC
+  CITY_ID_DESC
+  ID_ASC
+  ID_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  REGION_ASC
+  REGION_DESC
+  USER_ID_ASC
+  USER_ID_DESC
+}
+
+"""Join table for events watched by a user."""
+type WatchList {
+  """Reads a single `Event` that is related to this `WatchList`."""
+  event: Event
+
+  """Ref to event."""
+  eventId: String!
+
+  """Primary key and id of row."""
+  id: Int!
+
+  """Reads a single `User` that is related to this `WatchList`."""
+  user: User
+
+  """Ref to user."""
+  userId: Int!
+}
+
+"""
+A condition to be used against `WatchList` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input WatchListCondition {
+  """Checks for equality with the object’s `eventId` field."""
+  eventId: String
+
+  """Checks for equality with the object’s `id` field."""
+  id: Int
+
+  """Checks for equality with the object’s `userId` field."""
+  userId: Int
+}
+
+"""
+A filter to be used against `WatchList` object types. All fields are combined with a logical ‘and.’
+"""
+input WatchListFilter {
+  """Checks for all expressions in this list."""
+  and: [WatchListFilter!]
+
+  """Filter by the object’s `eventId` field."""
+  eventId: StringFilter
+
+  """Filter by the object’s `id` field."""
+  id: IntFilter
+
+  """Negates the expression."""
+  not: WatchListFilter
+
+  """Checks for any expressions in this list."""
+  or: [WatchListFilter!]
+
+  """Filter by the object’s `userId` field."""
+  userId: IntFilter
+}
+
+"""An input for mutations affecting `WatchList`"""
+input WatchListInput {
+  """Ref to event."""
+  eventId: String!
+
+  """Primary key and id of row."""
+  id: Int
+
+  """Ref to user."""
+  userId: Int!
+}
+
+"""
+Represents an update to a `WatchList`. Fields that are set will be updated.
+"""
+input WatchListPatch {
+  """Ref to event."""
+  eventId: String
+
+  """Primary key and id of row."""
+  id: Int
+
+  """Ref to user."""
+  userId: Int
+}
+
+"""A connection to a list of `WatchList` values."""
+type WatchListsConnection {
+  """
+  A list of edges which contains the `WatchList` and cursor to aid in pagination.
+  """
+  edges: [WatchListsEdge!]!
+
+  """A list of `WatchList` objects."""
+  nodes: [WatchList!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `WatchList` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `WatchList` edge in the connection."""
+type WatchListsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `WatchList` at the end of the edge."""
+  node: WatchList!
+}
+
+"""Methods to use when ordering `WatchList`."""
+enum WatchListsOrderBy {
+  EVENT_ID_ASC
+  EVENT_ID_DESC
+  ID_ASC
+  ID_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  USER_ID_ASC
+  USER_ID_DESC
 }

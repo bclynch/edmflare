@@ -1,10 +1,10 @@
-import session from "express-session";
-import * as redis from "redis";
-import ConnectRedis from "connect-redis";
-import ConnectPgSimple from "connect-pg-simple";
-import { Express } from "express";
-import { getRootPgPool } from "./installDatabasePools";
-import { getWebsocketMiddlewares } from "../app";
+import session from 'express-session';
+import * as redis from 'redis';
+import ConnectRedis from 'connect-redis';
+import ConnectPgSimple from 'connect-pg-simple';
+import { Express } from 'express';
+import { getRootPgPool } from './installDatabasePools';
+import { getWebsocketMiddlewares } from '../app';
 
 const RedisStore = ConnectRedis(session);
 const PgStore = ConnectPgSimple(session);
@@ -17,7 +17,7 @@ const DAY = 24 * HOUR;
 
 const { SECRET = String(Math.random()) } = process.env;
 const MAXIMUM_SESSION_DURATION_IN_MILLISECONDS =
-  parseInt(process.env.MAXIMUM_SESSION_DURATION_IN_MILLISECONDS || "", 10) ||
+  parseInt(process.env.MAXIMUM_SESSION_DURATION_IN_MILLISECONDS || '', 10) ||
   3 * DAY;
 
 export default (app: Express) => {
@@ -42,8 +42,8 @@ export default (app: Express) => {
        */
       new PgStore({
         pool: rootPgPool,
-        schemaName: "edm_private",
-        tableName: "connect_pg_simple_sessions",
+        schemaName: 'edm_private',
+        tableName: 'connect_pg_simple_sessions',
       });
 
   const sessionMiddleware = session({
