@@ -15,9 +15,9 @@ export class AppService {
   private _subject: BehaviorSubject<any>;
 
   // used in location search component
-  locations: string[];
+  locations: string[] = [];
   locationsObj = {};
-  locationDirectory;
+  locationDirectory = [];
 
   readonly VAPID_PUBLIC_KEY = 'BCcrOxeXijgM9gmGD8_lfxo-mC2qKL3XKwFgYyTtETro2aTTZLXpbB4LLM0uihjLBD-3loEzDB3vBDt5Vko-eiU';
 

@@ -3,6 +3,7 @@
 import chalk from 'chalk';
 import { createServer } from 'http';
 import { makeApp, getShutdownActions } from './app';
+// import { scrapeEvents } from './scraping/scrape';
 
 // @ts-ignore
 const packageJson = require('../../../package.json');
@@ -16,6 +17,12 @@ async function main() {
 
   // Add our application to our HTTP server
   httpServer.addListener('request', app);
+
+  // set up cron job for scraping shows + sending new event emails
+  // scrape.initScrapeCronJob();
+  // email.initEmailCronJob();
+
+  // scrapeEvents();
 
   // And finally, we open the listen port
   const PORT = parseInt(process.env.PORT || '', 10) || 3000;
