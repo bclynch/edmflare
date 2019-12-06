@@ -1,9 +1,9 @@
-import { Pool, PoolClient } from "../db/__tests__/edm/functions/node_modules/pg";
+import { Pool, PoolClient } from '../db/__tests__/edm/functions/node_modules/pg';
 
 const pools = {};
 
 if (!process.env.TEST_DATABASE_URL) {
-  throw new Error("Cannot run tests without a TEST_DATABASE_URL");
+  throw new Error('Cannot run tests without a TEST_DATABASE_URL');
 }
 export const TEST_DATABASE_URL: string = process.env.TEST_DATABASE_URL;
 
@@ -19,7 +19,7 @@ afterAll(() => {
         delete pools[key];
         await pool.end();
       } catch (e) {
-        console.error("Failed to release connection!");
+        console.error('Failed to release connection!');
         console.error(e);
       }
     })
@@ -62,13 +62,13 @@ export const asRoot = async <T>(
 ): Promise<T> => {
   const {
     rows: [{ role }],
-  } = await client.query("select current_setting('role') as role");
-  await client.query("reset role");
+  } = await client.query('select current_setting(\'role\') as role');
+  await client.query('reset role');
   try {
     return await callback(client);
   } finally {
     try {
-      await client.query("select set_config('role', $1, true)", [role]);
+      await client.query('select set_config(\'role\', $1, true)', [role]);
     } catch (e) {
       // Transaction was probably aborted, don't clobber the error
     }
@@ -91,13 +91,13 @@ export const createUsers = async function createUsers(
 ) {
   const users = [];
   if (userCreationCounter > 25) {
-    throw new Error("Too many users created!");
+    throw new Error('Too many users created!');
   }
   for (let i = 0; i < count; i++) {
-    const userLetter = "abcdefghijklmnopqrstuvwxyz"[userCreationCounter];
+    const userLetter = 'abcdefghijklmnopqrstuvwxyz'[userCreationCounter];
     userCreationCounter++;
     const password = userLetter.repeat(12);
-    const email = `${userLetter}${i || ""}@b.c`;
+    const email = `${userLetter}${i || ''}@b.c`;
     const user: User = (await client.query(
       `SELECT * FROM edm_private.really_create_user(
         username := $1,

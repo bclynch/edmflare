@@ -2,8 +2,8 @@ import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, OnChanges } 
 import { FormControl } from '@angular/forms';
 import { Observable, SubscriptionLike } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { AppService } from 'src/app/services/app.service';
-import { LocationService } from 'src/app/services/location.service';
+import { AppService } from '../../services/app.service';
+import { LocationService } from '../../services/location.service';
 
 @Component({
   selector: 'app-location-search',
@@ -15,12 +15,12 @@ export class LocationSearchComponent implements OnInit, OnDestroy, OnChanges {
   @Input() placeholder = '';
   @Input() value = '';
   @Input() floatLabel = true;
-  @Input() color;
+  @Input() color: string;
   @Output() selected: EventEmitter<string> = new EventEmitter<string>();
 
   myControl = new FormControl();
-  options: string[];
-  filteredOptions: Observable<any>;
+  options: string[] = [];
+  filteredOptions: Observable<string[]> = new Observable;
 
   initSubscription: SubscriptionLike;
 
@@ -49,19 +49,21 @@ export class LocationSearchComponent implements OnInit, OnDestroy, OnChanges {
       .pipe(
         startWith(''),
         map(value => {
+          console.log('VAL: ', value);
           return this._filter(value);
         })
       );
   }
 
   private _filter(value: string): string[] {
-    let filteredArr = [];
+    let filteredArr: string[] = [];
     if (value) {
       const filterValue = value.toLowerCase();
 
       filteredArr = this.options.filter(option => option.toLowerCase().includes(filterValue));
     }
     filteredArr.unshift('📍 Use my current location');
+    console.log('FILTERED ARR: ', filteredArr);
     return filteredArr;
   }
 
@@ -79,11 +81,11 @@ export class LocationSearchComponent implements OnInit, OnDestroy, OnChanges {
           let closestRegion;
           let closestDistance = 100000;
           // identify which region is closest to user
-          this.appService.locationDirectory.forEach((location) => {
-            const distance = this.calculateDistance({ lat: location.lat, lon: location.lon }, { lat: data.coords.latitude, lon: data.coords.longitude });
+          this.appService.locationDirectory.forEach(({ lat, lon, name }) => {
+            const distance = this.calculateDistance({ lat, lon }, { lat: data.coords.latitude, lon: data.coords.longitude });
             // if region is closer than current one replace above vars
             if (distance < closestDistance) {
-              closestRegion = location.name;
+              closestRegion = name;
               closestDistance = distance;
             }
           });

@@ -1,5 +1,4 @@
-const db = require('./db'),
-CronJob = require('cron').CronJob;
+const CronJob = require('cron').CronJob;
 import citiesArr from '../data/cities';
 import Hashids from 'hashids';
 const hashids = new Hashids('edmflare');
@@ -11,7 +10,8 @@ import createNestedArr from '../utils/createNestedArr';
 import asyncForEach from '../utils/asyncForEach';
 import sanitize from '../utils/sanitize';
 import moment from 'moment';
-import uploadImages from '../imgProcessing/imageProcessor'
+import uploadImages from '../imgProcessing/imageProcessor';
+import db from '../data/db';
 
 function initScrapeCronJob() {
   // setup job to fire every night to scrape 3am EST (7am UTC server time)
@@ -82,7 +82,7 @@ interface Artist {
   homepage: string;
 }
 
-function scrapeEvents() {
+export function scrapeEvents() {
   console.time(chalk.cyan.bold('Total scrape time'));
 
   // clear master db objects from last time
@@ -528,14 +528,19 @@ function compareCities(venues: { city: string }[]) {
       }
     });
 
+    if (!citiesToAdd.length) {
+      resolve();
+      return;
+    }
+
     let sql = 'BEGIN; ';
 
     citiesToAdd.forEach((city) => {
       sql += `INSERT INTO edm.city(name) VALUES ('${sanitize(city)}'); `;
     });
 
-    // fetching updated list of cities
-    sql += 'SELECT id, name, region, country FROM edm.city;';
+    // fetching recently added list to snag id to add to dbCitiesObj
+    sql += `SELECT id, name, region, country FROM edm.city ORDER BY created_at DESC LIMIT ${citiesToAdd.length};`;
 
     sql += 'COMMIT;';
 
@@ -544,8 +549,11 @@ function compareCities(venues: { city: string }[]) {
       if (data) {
         console.log(chalk.green(`Added ${citiesToAdd.length} cities to the database`));
         // add to master db city obj
-        data.rows.forEach(({ id, name, region, country }: { id: number; name: string; region: string; country: string; }) => {
-          if (!dbCitiesObj[name]) dbCitiesObj[name] = { id, region, country, name };
+        // data comes in as an arr of results and we need to snag the SELECT query with data[1 + citiesToAdd.length] which has the rows
+        data[1 + citiesToAdd.length].rows.forEach(({ id, name, region, country }: { id: number; name: string; region: string; country: string; }) => {
+          // keys to search by name or id
+          dbCitiesObj[name] = { id, region, country, name };
+          dbCitiesObj[id] = { id, region, country, name };
         });
         resolve();
       }
@@ -580,13 +588,13 @@ function fetchDBVenues() {
 
     console.log(chalk.yellow('Fetching db venues...'));
     // fetch names of venues
-    const sql = 'SELECT name FROM edm.venue;';
+    const sql = 'SELECT name, city FROM edm.venue;';
 
     db.query(sql, (err: any, data: { rows: any }) => {
       if (err) reject(err);
-      data.rows.forEach(({ name }: { name: string; }) => {
+      data.rows.forEach(({ name, city }: { name: string; city: number }) => {
         // add sanitized venue to our master obj to check against later if exists
-        dbVenueObj[sanitize(name)] = {};
+        dbVenueObj[sanitize(name)] = { city };
       });
       if (data) resolve();
     });
@@ -626,6 +634,7 @@ function fetchDBCities() {
       data.rows.forEach(({ id, name, region, country }: { id: number; name: string; region: string; country: string; }) => {
         // add city name to our master obj to check against later if exists with id
         dbCitiesObj[name] = { id, region, country, name };
+        dbCitiesObj[id] = { id, region, country, name };
       });
       if (data) resolve();
     });
@@ -694,27 +703,26 @@ function createEvents(events: Event[]) {
       const sanitizedVenue = sanitize(venue);
       // snag city off venue obj
       const { city } = dbVenueObj[sanitizedVenue];
-      const { region, country } = dbCitiesObj[city];
 
       if (event) {
-        sql += `
-        INSERT INTO edm.event(id, venue, city, region, country, name, description, type, start_date, end_date, ticketProviderId, ticketProviderUrl, banner, approved)
-        VALUES (
-        '${id}',
-        '${sanitizedVenue}',
-        '${dbCitiesObj[city].id}',
-        ${region ? "'" + region + "'" : null},
-        ${country ? "'" + country + "'" : null},
-        ${name ? "'" + sanitize(name) + "'" : "'" + artists.map((artist) => (sanitize(artist))).join(', ') + "'"},
-        ${description ? "'" + sanitize(description) + "'" : null},
-        ${type ? "'" + type + "'" : null},
-        ${startTime},
-        ${endTime ? endTime : null},
-        ${ticketProviderId ? "'" + ticketProviderId + "'" : null},
-        ${ticketProviderUrl ? "'" + ticketProviderUrl + "'" : null},
-        ${banner ? "'" + banner + "'" : null}, true)
-        ON CONFLICT (id)
-        DO NOTHING;
+        sql += `\
+        INSERT INTO edm.event(id, venue, city, region, country, name, description, type, start_date, end_date, ticketProviderId, ticketProviderUrl, banner, approved)\
+        VALUES (\
+        '${id}',\
+        '${sanitizedVenue}',\
+        '${dbCitiesObj[city].id}',\
+        ${dbCitiesObj[city].region ? "'" + dbCitiesObj[city].region + "'" : null},\
+        ${dbCitiesObj[city].country ? "'" + dbCitiesObj[city].country + "'" : null},\
+        ${name ? "'" + sanitize(name) + "'" : "'" + artists.map((artist) => (sanitize(artist))).join(', ') + "'"},\
+        ${description ? "'" + sanitize(description) + "'" : null},\
+        ${type ? "'" + type + "'" : null},\
+        ${startTime},\
+        ${endTime ? endTime : null},\
+        ${ticketProviderId ? "'" + ticketProviderId + "'" : null},\
+        ${ticketProviderUrl ? "'" + ticketProviderUrl + "'" : null},\
+        ${banner ? "'" + banner + "'" : null}, true)\
+        ON CONFLICT (id)\
+        DO NOTHING;\
         `;
         // add to our master obj to check against later
         dbEventObj[id] = {};
@@ -755,17 +763,17 @@ function createVenues(venues: Venue[]): Promise<string> {
 
               const venueCity = dbCitiesObj[decodeURI(city).trim()];
 
-              sql += `
-              INSERT INTO edm.venue(name, description, lat, lon, city, address, photo, logo)
-              VALUES (
-              '${name}',
-              ${description ? "'" + sanitize(description) + "'" : null},
-              ${lat ? lat : null},
-              ${lon ? lon : null},
-              ${venueCity.id},
-              ${address ? "'" + sanitize(address) + "'" : null},
-              ${photo ? "'" + photo + "'" : null},
-              null);
+              sql += `\
+              INSERT INTO edm.venue(name, description, lat, lon, city, address, photo, logo)\
+              VALUES (\
+              '${name}',\
+              ${description ? "'" + sanitize(description) + "'" : null},\
+              ${lat ? lat : null},\
+              ${lon ? lon : null},\
+              ${venueCity.id},\
+              ${address ? "'" + sanitize(address) + "'" : null},\
+              ${photo ? "'" + photo + "'" : null},\
+              null);\
               `;
               // add to our master obj to check against later
               dbVenueObj[name] = { city: venueCity.name };
@@ -808,25 +816,25 @@ function createArtists(artists: Artist[]): Promise<string> {
         homepage
       } = artist;
       if (!dbArtistObj[sanitize(name)]) {
-        sql += `
-        INSERT INTO edm.artist(name, description, photo, twitter_username, twitter_url, facebook_username, facebook_url,
-        instagram_username, instagram_url, soundcloud_username, soundcloud_url, youtube_username, youtube_url, spotify_url, homepage)
-        VALUES (
-        '${sanitize(name)}',
-        ${bio ? "'" + bio + "'" : null},
-        ${photo ? "'" + photo + "'" : null},
-        ${twitterUsername ? "'" + sanitize(twitterUsername) + "'" : null},
-        ${twitterUrl ? "'" + twitterUrl + "'" : null},
-        ${facebookUsername ? "'" + sanitize(facebookUsername) + "'" : null},
-        ${facebookUrl ? "'" + facebookUrl + "'" : null},
-        ${instagramUsername ? "'" + sanitize(instagramUsername) + "'" : null},
-        ${instagramUrl ? "'" + instagramUrl + "'" : null},
-        ${soundcloudUsername ? "'" + sanitize(soundcloudUsername) + "'" : null},
-        ${soundcloudUrl ? "'" + soundcloudUrl + "'" : null},
-        ${youtubeUsername ? "'" + sanitize(youtubeUsername) + "'" : null},
-        ${youtubeUrl ? "'" + youtubeUrl + "'" : null},
-        ${spotifyUrl ? "'" + spotifyUrl + "'" : null},
-        ${homepage ? "'" + homepage + "'" : null});
+        sql += `\
+        INSERT INTO edm.artist(name, description, photo, twitter_username, twitter_url, facebook_username, facebook_url,\
+        instagram_username, instagram_url, soundcloud_username, soundcloud_url, youtube_username, youtube_url, spotify_url, homepage)\
+        VALUES (\
+        '${sanitize(name)}',\
+        ${bio ? "'" + bio + "'" : null},\
+        ${photo ? "'" + photo + "'" : null},\
+        ${twitterUsername ? "'" + sanitize(twitterUsername) + "'" : null},\
+        ${twitterUrl ? "'" + twitterUrl + "'" : null},\
+        ${facebookUsername ? "'" + sanitize(facebookUsername) + "'" : null},\
+        ${facebookUrl ? "'" + facebookUrl + "'" : null},\
+        ${instagramUsername ? "'" + sanitize(instagramUsername) + "'" : null},\
+        ${instagramUrl ? "'" + instagramUrl + "'" : null},\
+        ${soundcloudUsername ? "'" + sanitize(soundcloudUsername) + "'" : null},\
+        ${soundcloudUrl ? "'" + soundcloudUrl + "'" : null},\
+        ${youtubeUsername ? "'" + sanitize(youtubeUsername) + "'" : null},\
+        ${youtubeUrl ? "'" + youtubeUrl + "'" : null},\
+        ${spotifyUrl ? "'" + spotifyUrl + "'" : null},\
+        ${homepage ? "'" + homepage + "'" : null});\
         `;
         // add to our master obj to check against later
         dbArtistObj[sanitize(name)] = {};

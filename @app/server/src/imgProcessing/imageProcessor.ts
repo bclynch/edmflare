@@ -12,7 +12,7 @@ const photoBucket = process.env.NODE_ENV === 'production' ? new aws.S3({params: 
 ///////////////////////////////////////////////////////
 
 function uploadToS3(buffer: Buffer, destFileName: string, callback: any) {
-  return new Promise((resolve, reject) => {
+  return new Promise(() => {
     photoBucket
       .upload({
           ACL: 'public-read',
@@ -27,8 +27,8 @@ function uploadToS3(buffer: Buffer, destFileName: string, callback: any) {
     });
 }
 
-export default function uploadImages(images: { photo: any; name: string; }[], type: string, path: string) {
-  return new Promise((resolve, reject) => {
+export default (images: { photo: any; name: string; }[], type: string, path: string) => {
+  return new Promise((resolve) => {
 
     // We would run into memory issues grabbing a ton of buffers at the same time
     // Plan is to go one by one convert the url to a buffer and then upload to s3 before next image
@@ -74,7 +74,7 @@ export default function uploadImages(images: { photo: any; name: string; }[], ty
 
 function convertUrlToBuffer(url: string): Promise<Buffer> {
   return new Promise((resolve, reject)=> {
-    request(url, (err: any, response: any, buffer: Buffer) => {
+    request(url, (err: any, buffer: Buffer) => {
       if (err) reject(err);
       resolve(buffer);
     });
