@@ -79,12 +79,11 @@ information, see the
 
 * **Increase development velocity:**
 
-  - **Autoformatting** ─ Thanks to `prettier` and `eslint`, code can be
-    auto-formatted (and auto-fixed) on save
-  - **Linting** — provided by `eslint`, `prettier` and `@typescript-eslint`. Can
-    be extended with extremely powerful lint rules to protect your project from
-    bugs, bad practices, and inconsistencies; configured with sensible but not
-    too intrusive (hopefully) defaults focused on GraphQL development
+  - **Autoformatting** ─ Thanks to `eslint`, code can be auto-formatted on save
+  - **Linting** — provided by `eslint` and `@typescript-eslint`. Can be extended
+    with extremely powerful lint rules to protect your project from bugs, bad
+    practices, and inconsistencies; configured with sensible but not too
+    intrusive (hopefully) defaults focused on GraphQL development
   - **Debuggability** ─ The server, worker, tests and client are all ready to be
     debugged using
     [VSCode's built in breakpoints](https://code.visualstudio.com/docs/editor/debugging)
