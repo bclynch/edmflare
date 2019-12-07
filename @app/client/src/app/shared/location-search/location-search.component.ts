@@ -48,10 +48,7 @@ export class LocationSearchComponent implements OnInit, OnDestroy, OnChanges {
     this.filteredOptions = this.myControl.valueChanges
       .pipe(
         startWith(''),
-        map(value => {
-          console.log('VAL: ', value);
-          return this._filter(value);
-        })
+        map(value => (this._filter(value)))
       );
   }
 
@@ -63,7 +60,6 @@ export class LocationSearchComponent implements OnInit, OnDestroy, OnChanges {
       filteredArr = this.options.filter(option => option.toLowerCase().includes(filterValue));
     }
     filteredArr.unshift('📍 Use my current location');
-    console.log('FILTERED ARR: ', filteredArr);
     return filteredArr;
   }
 

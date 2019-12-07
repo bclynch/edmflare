@@ -22,11 +22,8 @@ export class NavbarComponent {
     private location: Location,
     private router: Router
   ) {
-    this.userService.signedIn.subscribe((signedIn) => this.signedIn = signedIn);
-  }
-
-  logout() {
-    console.log('LOGOUT USER');
-    // this.userService.logoutUser().subscribe((x) => console.log('x', x));
+    this.userService.signedIn.subscribe((signedIn) => {
+      this.signedIn = signedIn;
+    });
   }
 }

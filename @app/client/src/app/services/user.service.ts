@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { CookieService } from 'ngx-cookie-service';
-import { CurrentUserGQL, CreateFollowListGQL, RemoveFollowlistGQL } from '../generated/graphql';
+import { CurrentUserGQL, CreateFollowListGQL, RemoveFollowlistGQL, LogoutGQL } from '../generated/graphql';
 import { Observable, BehaviorSubject, throwError } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { EmailService } from './email.service';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { ENV } from '../../environments/environment';
 import { map, catchError } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class UserService {
@@ -25,7 +26,9 @@ export class UserService {
     private removeFollowlistGQL: RemoveFollowlistGQL,
     private snackBar: MatSnackBar,
     private emailService: EmailService,
-    private http: HttpClient
+    private http: HttpClient,
+    private logoutGQL: LogoutGQL,
+    private router: Router,
   ) {
     this.signedInSubject = new BehaviorSubject<boolean>(false);
     this.signedIn = this.signedInSubject;
@@ -67,21 +70,15 @@ export class UserService {
   }
 
   logoutUser() {
-    // console.log('${ENV.apiBaseURL}/logout', `${ENV.apiBaseURL}/logout`);
-    // const headerDict = {
-    //   'Access-Control-Allow-Origin': 'http://localhost:4200'
-    // };
-    // return this.http.get(`${ENV.apiBaseURL}/logout`, {
-    //   headers: new HttpHeaders(headerDict)
-    // })
-    //   .pipe(map(response => response))
-    //   .pipe(catchError((error: HttpErrorResponse) => throwError(error.message || 'server error.')
-    // ));
-    // this.signedInSubject.next(false);
-    // // reset apollo cache and refetch queries
-    // this.apollo.getClient().resetStore();
-    // // reload window to update db role
-    // window.location.reload();
+    this.logoutGQL.mutate().subscribe(({ data }) => {
+      if (data.logout.success) {
+        // reset apollo cache and refetch queries
+        this.signedInSubject.next(false);
+        this.user = null;
+        this.apollo.getClient().resetStore();
+        this.router.navigateByUrl('/');
+      }
+    });
   }
 
   registerUserAccount({ username, email, matchingPassword }: { username: string; email: string; matchingPassword: { password: string; } }) {
