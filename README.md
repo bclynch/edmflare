@@ -18,18 +18,36 @@
 - Wire up client to play nice here
   - ~~[Proxy info with angular to play nice CORS](https://levelup.gitconnected.com/simple-application-with-angular-6-node-js-express-2873304fff0f)~~
   - Fix createdAt filter for search queries
-  - Figure out how to logout
+  - ~~Figure out how to logout~~
   - ~~Fix misc issues with refactored db~~
   - Next month util range is broken
-  - Set up password forget
-  - Set up password reset
-  - Fix email to work with SES
+  - ~~Set up password forget~~
+  - ~~Set up password reset~~
+  - ~~Fix email to work with SES~~
   - Set up fb login
   - Set up google log in
   - Set up twitter log in
-  - Fix local login
+  - ~~Fix local login~~
   - Bring back other functionality (scraping / emails / etc as required)
 - Look at Docker for production
+
+## Running Local Dev Currently
+
+```
+// open different terminal instances for ea
+
+// watch for tsc changes on server
+yarn server watch
+
+// run server
+yarn server dev
+
+// server worker instance
+yarn worker dev
+
+// spin up Angular client
+yarn client start
+```
 
 ## Features
 

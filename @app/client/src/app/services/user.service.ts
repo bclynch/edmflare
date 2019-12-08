@@ -1,32 +1,24 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import { CookieService } from 'ngx-cookie-service';
-import { CurrentUserGQL, CreateFollowListGQL, RemoveFollowlistGQL, LogoutGQL } from '../generated/graphql';
-import { Observable, BehaviorSubject, throwError } from 'rxjs';
+import { CurrentUserGQL, CreateFollowListGQL, RemoveFollowlistGQL, LogoutGQL, LoginGQL, RegisterGQL } from '../generated/graphql';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { EmailService } from './email.service';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { ENV } from '../../environments/environment';
-import { map, catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 @Injectable()
 export class UserService {
   public signedIn: Observable<boolean>;
-  private signedInSubject: BehaviorSubject<boolean>;
+  public signedInSubject: BehaviorSubject<boolean>;
   user = null;
 
   constructor(
     private apollo: Apollo,
-    private cookieService: CookieService,
-    // private loginUserGQL: LoginUserGQL,
-    // private registerUserGQL: RegisterUserGQL,
+    private loginGQL: LoginGQL,
+    private registerGQL: RegisterGQL,
     private currentUserGQL: CurrentUserGQL,
     private createFollowListGQL: CreateFollowListGQL,
     private removeFollowlistGQL: RemoveFollowlistGQL,
     private snackBar: MatSnackBar,
-    private emailService: EmailService,
-    private http: HttpClient,
     private logoutGQL: LogoutGQL,
     private router: Router,
   ) {
@@ -35,7 +27,7 @@ export class UserService {
   }
 
   fetchUser(): Promise<string> {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       this.currentUserGQL.fetch().subscribe(
         ({ data }) => {
           console.log(data);
@@ -45,31 +37,28 @@ export class UserService {
           }
           resolve();
         },
-        (err) => resolve()
+        () => resolve()
       );
     });
   }
 
-  loginUser({ username, password }: { username: string; password: string; }) {
-    return new Promise<string>((resolve, reject) => {
-      // this.loginUserGQL.mutate({ username, password }).subscribe(({ data }) => {
-      //   console.log('got data', data);
-      //   // if (authData.authenticateUserAccount.jwtToken) {
-      //   //   this.signedInSubject.next(true);
-      //   //   // reset apollo cache and refetch queries
-      //   //   this.apollo.getClient().resetStore();
-      //   //   resolve(authData.authenticateUserAccount.jwtToken);
-      //   //  }
-      //   resolve();
-      // }, (error) => {
-      //   console.log('there was an error sending the query', error);
-      //   alert('The email or password is incorrect. Please check your account information and login again');
-      //   reject();
-      // });
+  loginUser({ username, password }: { username: string; password: string; }): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.loginGQL.mutate({ username, password }).subscribe(({ data }) => {
+        this.signedInSubject.next(true);
+        this.user = data.login.user;
+        // reset apollo cache and refetch queries
+        this.apollo.getClient().resetStore();
+        resolve();
+      }, (error) => {
+        console.log('there was an error sending the query', error);
+        alert('The email or password is incorrect. Please check your account information and login again');
+        reject();
+      });
     });
   }
 
-  logoutUser() {
+  logoutUser(): void {
     this.logoutGQL.mutate().subscribe(({ data }) => {
       if (data.logout.success) {
         // reset apollo cache and refetch queries
@@ -81,52 +70,36 @@ export class UserService {
     });
   }
 
-  registerUserAccount({ username, email, matchingPassword }: { username: string; email: string; matchingPassword: { password: string; } }) {
-    return new Promise<string>((resolve, reject) => {
-      console.log({ username, email, matchingPassword });
-      // this.registerUserGQL.mutate({ username, email, password: matchingPassword.password }).subscribe(
-      //   ({ data }) => {
-      //     const userObj = data as any;
-
-      //     // send welcome registration email
-      //     console.log(email);
-      //     // this.emailService.sendRegistrationEmail(email).subscribe(
-      //     //   (result) => {}
-      //     // );
-
-      //     // auth to snag token
-      //     // this.authUserAccount({ email: model.email, password: model.matchingPassword.password }).then((token) => {
-      //     //   userObj.token = token;
-      //     //   // save user token to local storage
-      //     //   this.cookieService.set('edm-token', token);
-
-      //       resolve();
-      //     // }, () => {
-      //     //   console.log('err');
-      //     // });
-      //   }, err => {
-      //     console.log('err', err);
-      //     switch (err.message) {
-      //       case 'GraphQL error: duplicate key value violates unique constraint "account_username_key"':
-      //         alert('That username already exists, please select a new one!');
-      //         break;
-      //       case 'GraphQL error: duplicate key value violates unique constraint "user_account_email_key"':
-      //         alert('The selected email already exists. Try resetting your password or use a new email address.');
-      //         break;
-      //       case 'GraphQL error: permission denied for function register_account':
-      //         alert('Looks like you\'re still logged into another account. Make sure you\'re logged out or reload the page and try again');
-      //         break;
-      //       default:
-      //         alert('There is an issue submitting your registration. Please reload and try again');
-      //     }
-      //     reject();
-      //   }
-      // );
+  registerUserAccount({ username, email, matchingPassword }: { username: string; email: string; matchingPassword: { password: string; } }): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.registerGQL.mutate({ username, email, password: matchingPassword.password }).subscribe(
+        ({ data }) => {
+          this.user = data.register.user;
+          this.signedInSubject.next(true);
+          resolve();
+        }, err => {
+          console.log('err', err);
+          switch (err.message) {
+            case 'GraphQL error: An account using that email address has already been created.':
+              alert('That email already exists. Try logging in or using a new one.');
+              break;
+            case 'GraphQL error: Conflict occurred':
+              alert('That username username already exists. Try logging in or using a new one.');
+              break;
+            case 'GraphQL error: permission denied for function register_account':
+              alert('Looks like you\'re still logged into another account. Make sure you\'re logged out or reload the page and try again');
+              break;
+            default:
+              alert('There is an issue submitting your registration. Please reload and try again');
+          }
+          reject();
+        }
+      );
     });
   }
 
-  follow(artistId: string, venueId: string, name: string) {
-    return new Promise((resolve, reject) => {
+  follow(artistId: string, venueId: string, name: string): Promise<number> {
+    return new Promise<number>((resolve) => {
       if (this.user) {
         this.createFollowListGQL.mutate({ userId: this.user.id, artistId, venueId }).subscribe(
           ({ data }) => {
@@ -145,8 +118,8 @@ export class UserService {
     });
   }
 
-  unfollow(followListId: number) {
-    return new Promise((resolve, reject) => {
+  unfollow(followListId: number): Promise<void> {
+    return new Promise<void>((resolve) => {
       this.removeFollowlistGQL.mutate({ followListId }).subscribe(
         () => resolve()
       );

@@ -1,6 +1,10 @@
 <app-pagewrapper>
 	<div class="verifyContainer">
-		<h1 *ngIf="!isVerified">Verifying Email</h1>
-		<h1 *ngIf="isVerified">Email Verified</h1>
+		<img class="logoImg" src="assets/icons/icon-192x192.png" alt="EDM Flare Logo" />
+		<h1 *ngIf="!isVerified">Verifying Email...</h1>
+		<div *ngIf="isVerified">
+			<h1>Email Verified</h1>
+			<div>Thank you for verifying your email address. You may now close this window.</div>
+		</div>
 	</div>
 </app-pagewrapper>

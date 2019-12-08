@@ -50,9 +50,6 @@ export class LoginComponent implements OnInit, OnDestroy {
         } else {
           this.router.navigateByUrl('/');
         }
-
-        // // reload window to update db role
-        // setTimeout(() => window.location.reload(), 200);
       },
       () => {}
     );

@@ -1,5 +1,5 @@
-import { Task } from "graphile-worker";
-import { SendEmailPayload } from "./send_email";
+import { Task } from 'graphile-worker';
+import { SendEmailPayload } from './send_email';
 
 interface UserForgotPasswordPayload {
   /**
@@ -21,6 +21,7 @@ interface UserForgotPasswordPayload {
 const task: Task = async (inPayload, { addJob, withPgClient }) => {
   const payload: UserForgotPasswordPayload = inPayload as any;
   const { id: userEmailId, email, token } = payload;
+  console.log('PAYLOAD: ', payload);
   const {
     rows: [user],
   } = await withPgClient(pgClient =>
@@ -36,25 +37,25 @@ const task: Task = async (inPayload, { addJob, withPgClient }) => {
     )
   );
   if (!user) {
-    console.error("User not found; aborting");
+    console.error('User not found; aborting');
     return;
   }
   const sendEmailPayload: SendEmailPayload = {
     options: {
       to: email,
-      subject: "Password reset",
+      subject: 'Password reset',
     },
-    template: "password_reset.mjml",
+    template: 'password_reset.mjml',
     variables: {
       token,
-      verifyLink: `${process.env.ROOT_URL}/reset?id=${encodeURIComponent(
+      verifyLink: `${process.env.CLIENT_ROOT_URL}/password-reset?id=${encodeURIComponent(
         String(userEmailId)
       )}&user_id=${encodeURIComponent(user.id)}&token=${encodeURIComponent(
         token
       )}`,
     },
   };
-  await addJob("send_email", sendEmailPayload);
+  await addJob('send_email', sendEmailPayload);
 };
 
 module.exports = task;

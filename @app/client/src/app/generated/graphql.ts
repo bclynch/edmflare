@@ -1810,6 +1810,24 @@ export namespace ArtistByName {
   } 
 }
 
+export namespace ConfirmAccountDeletion {
+  export type Variables = {
+    token: string;
+  }
+
+  export type Mutation = {
+    __typename?: "Mutation";
+    
+    confirmAccountDeletion: Maybe<ConfirmAccountDeletion>;
+  }
+
+  export type ConfirmAccountDeletion = {
+    __typename?: "ConfirmAccountDeletionPayload";
+    
+    success: Maybe<boolean>;
+  } 
+}
+
 export namespace CreateFollowList {
   export type Variables = {
     userId: number;
@@ -2088,6 +2106,53 @@ export namespace EventById {
   } 
 }
 
+export namespace ForgotPassword {
+  export type Variables = {
+    email: string;
+  }
+
+  export type Mutation = {
+    __typename?: "Mutation";
+    
+    forgotPassword: Maybe<ForgotPassword>;
+  }
+
+  export type ForgotPassword = {
+    __typename?: "ForgotPasswordPayload";
+    
+    clientMutationId: Maybe<string>;
+  } 
+}
+
+export namespace Login {
+  export type Variables = {
+    username: string;
+    password: string;
+  }
+
+  export type Mutation = {
+    __typename?: "Mutation";
+    
+    login: Maybe<Login>;
+  }
+
+  export type Login = {
+    __typename?: "LoginPayload";
+    
+    user: User;
+  } 
+
+  export type User = {
+    __typename?: "User";
+    
+    id: number;
+    
+    username: string;
+    
+    name: Maybe<string>;
+  } 
+}
+
 export namespace Logout {
   export type Variables = {
   }
@@ -2102,6 +2167,37 @@ export namespace Logout {
     __typename?: "LogoutPayload";
     
     success: Maybe<boolean>;
+  } 
+}
+
+export namespace Register {
+  export type Variables = {
+    username: string;
+    password: string;
+    email: string;
+    name?: Maybe<string>;
+  }
+
+  export type Mutation = {
+    __typename?: "Mutation";
+    
+    register: Maybe<Register>;
+  }
+
+  export type Register = {
+    __typename?: "RegisterPayload";
+    
+    user: User;
+  } 
+
+  export type User = {
+    __typename?: "User";
+    
+    id: number;
+    
+    username: string;
+    
+    name: Maybe<string>;
   } 
 }
 
@@ -2138,6 +2234,61 @@ export namespace RemoveWatchlist {
     __typename?: "DeleteWatchListPayload";
     
     clientMutationId: Maybe<string>;
+  } 
+}
+
+export namespace RequestAccountDeletion {
+  export type Variables = {
+  }
+
+  export type Mutation = {
+    __typename?: "Mutation";
+    
+    requestAccountDeletion: Maybe<RequestAccountDeletion>;
+  }
+
+  export type RequestAccountDeletion = {
+    __typename?: "RequestAccountDeletionPayload";
+    
+    success: Maybe<boolean>;
+  } 
+}
+
+export namespace ResendEmailVerification {
+  export type Variables = {
+    emailId: number;
+  }
+
+  export type Mutation = {
+    __typename?: "Mutation";
+    
+    resendEmailVerificationCode: Maybe<ResendEmailVerificationCode>;
+  }
+
+  export type ResendEmailVerificationCode = {
+    __typename?: "ResendEmailVerificationCodePayload";
+    
+    success: Maybe<boolean>;
+  } 
+}
+
+export namespace ResetPassword {
+  export type Variables = {
+    userId: number;
+    token: string;
+    password: string;
+  }
+
+  export type Mutation = {
+    __typename?: "Mutation";
+    
+    resetPassword: Maybe<ResetPassword>;
+  }
+
+  export type ResetPassword = {
+    __typename?: "ResetPasswordPayload";
+    
+    success: Maybe<boolean>;
   } 
 }
 
@@ -2578,6 +2729,41 @@ export namespace VenueByName {
   } 
 }
 
+export namespace VerifyEmail {
+  export type Variables = {
+    id: number;
+    token: string;
+  }
+
+  export type Mutation = {
+    __typename?: "Mutation";
+    
+    verifyEmail: Maybe<VerifyEmail>;
+  }
+
+  export type VerifyEmail = {
+    __typename?: "VerifyEmailPayload";
+    
+    success: Maybe<boolean>;
+    
+    query: Maybe<Query>;
+  } 
+
+  export type Query = {
+    __typename?: "Query";
+    
+    currentUser: Maybe<CurrentUser>;
+  } 
+
+  export type CurrentUser = {
+    __typename?: "User";
+    
+    id: number;
+    
+    isVerified: boolean;
+  } 
+}
+
 export namespace WatchedLocationByAccount {
   export type Variables = {
     userId: number;
@@ -2724,6 +2910,22 @@ import gql from 'graphql-tag';
         }
       }
     }
+  }
+}
+    
+      
+    
+  `;
+        
+    }
+    @Injectable({
+        providedIn: 'root'
+    })
+    export class ConfirmAccountDeletionGQL extends Apollo.Mutation<ConfirmAccountDeletion.Mutation, ConfirmAccountDeletion.Variables> {
+        document: any = gql`
+    mutation confirmAccountDeletion($token: String!) {
+  confirmAccountDeletion(input: {token: $token}) {
+    success
   }
 }
     
@@ -2913,11 +3115,67 @@ import gql from 'graphql-tag';
     @Injectable({
         providedIn: 'root'
     })
+    export class ForgotPasswordGQL extends Apollo.Mutation<ForgotPassword.Mutation, ForgotPassword.Variables> {
+        document: any = gql`
+    mutation forgotPassword($email: String!) {
+  forgotPassword(input: {email: $email}) {
+    clientMutationId
+  }
+}
+    
+      
+    
+  `;
+        
+    }
+    @Injectable({
+        providedIn: 'root'
+    })
+    export class LoginGQL extends Apollo.Mutation<Login.Mutation, Login.Variables> {
+        document: any = gql`
+    mutation login($username: String!, $password: String!) {
+  login(input: {username: $username, password: $password}) {
+    user {
+      id
+      username
+      name
+    }
+  }
+}
+    
+      
+    
+  `;
+        
+    }
+    @Injectable({
+        providedIn: 'root'
+    })
     export class LogoutGQL extends Apollo.Mutation<Logout.Mutation, Logout.Variables> {
         document: any = gql`
     mutation logout {
   logout {
     success
+  }
+}
+    
+      
+    
+  `;
+        
+    }
+    @Injectable({
+        providedIn: 'root'
+    })
+    export class RegisterGQL extends Apollo.Mutation<Register.Mutation, Register.Variables> {
+        document: any = gql`
+    mutation register($username: String!, $password: String!, $email: String!, $name: String) {
+  register(input: {username: $username, password: $password, email: $email, name: $name}) {
+    user {
+      id
+      username
+      name
+    }
   }
 }
     
@@ -2950,6 +3208,54 @@ import gql from 'graphql-tag';
     mutation removeWatchlist($watchListId: Int!) {
   deleteWatchList(input: {id: $watchListId}) {
     clientMutationId
+  }
+}
+    
+      
+    
+  `;
+        
+    }
+    @Injectable({
+        providedIn: 'root'
+    })
+    export class RequestAccountDeletionGQL extends Apollo.Mutation<RequestAccountDeletion.Mutation, RequestAccountDeletion.Variables> {
+        document: any = gql`
+    mutation requestAccountDeletion {
+  requestAccountDeletion(input: {}) {
+    success
+  }
+}
+    
+      
+    
+  `;
+        
+    }
+    @Injectable({
+        providedIn: 'root'
+    })
+    export class ResendEmailVerificationGQL extends Apollo.Mutation<ResendEmailVerification.Mutation, ResendEmailVerification.Variables> {
+        document: any = gql`
+    mutation resendEmailVerification($emailId: Int!) {
+  resendEmailVerificationCode(input: {emailId: $emailId}) {
+    success
+  }
+}
+    
+      
+    
+  `;
+        
+    }
+    @Injectable({
+        providedIn: 'root'
+    })
+    export class ResetPasswordGQL extends Apollo.Mutation<ResetPassword.Mutation, ResetPassword.Variables> {
+        document: any = gql`
+    mutation resetPassword($userId: Int!, $token: String!, $password: String!) {
+  resetPassword(input: {userId: $userId, resetToken: $token, newPassword: $password}) {
+    success
   }
 }
     
@@ -3157,6 +3463,28 @@ import gql from 'graphql-tag';
             }
           }
         }
+      }
+    }
+  }
+}
+    
+      
+    
+  `;
+        
+    }
+    @Injectable({
+        providedIn: 'root'
+    })
+    export class VerifyEmailGQL extends Apollo.Mutation<VerifyEmail.Mutation, VerifyEmail.Variables> {
+        document: any = gql`
+    mutation verifyEmail($id: Int!, $token: String!) {
+  verifyEmail(input: {userEmailId: $id, token: $token}) {
+    success
+    query {
+      currentUser {
+        id
+        isVerified
       }
     }
   }

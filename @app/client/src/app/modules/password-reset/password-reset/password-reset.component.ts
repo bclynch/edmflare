@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-// import { ResetPasswordGQL } from 'src/app/generated/graphql';
-import { EmailService } from 'src/app/services/email.service';
-import { FormGroupDirective, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { ResetPasswordGQL } from 'src/app/generated/graphql';
 
 @Component({
   selector: 'app-password-reset',
@@ -11,68 +10,52 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class PasswordResetComponent implements OnInit {
 
+  isReset = false;
+
+  token: string;
+  userId: number;
+
   resetForm: FormGroup = this.fb.group({
-    email: [
+    password: [
       '',
       Validators.compose([
         Validators.required,
-        Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/)
+        Validators.minLength(8),
+        Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/) // this is for the letters (both uppercase and lowercase) and numbers validation + min 8 chars
       ])
     ]
   });
 
   formValidationMessages = {
-    'email': [
-      { type: 'required', message: 'Email is required' },
-      { type: 'pattern', message: 'Enter a valid email' }
+    'password': [
+      { type: 'required', message: 'Password is required' },
+      { type: 'minlength', message: 'Password must be at least 8 characters long' },
+      { type: 'pattern', message: 'Your password must contain at least one uppercase, one lowercase, and one number' }
     ]
   };
 
   constructor(
     private fb: FormBuilder,
-    // private resetPasswordGQL: ResetPasswordGQL,
-    private emailService: EmailService,
-    public snackBar: MatSnackBar,
-  ) { }
+    private resetPasswordGQL: ResetPasswordGQL,
+    private route: ActivatedRoute
+  ) {
+    this.token = this.route.snapshot.queryParams.token;
+    this.userId = +this.route.snapshot.queryParams['user_id'];
+  }
 
   ngOnInit() {
   }
 
-  sendReset(formDirective: FormGroupDirective) {
-    // this.resetPasswordGQL.mutate({ email: this.resetForm.value.email })
-    //   .subscribe(
-    //     (result) => {
-    //       this.emailService.sendResetEmail(this.resetForm.value.email, result.data.resetPassword.string).subscribe(
-    //         (data: any) => {
-    //           console.log(data);
-    //           if (data.result === 'Forgot email sent') {
-    //             this.resetForm.reset();
-    //             formDirective.resetForm();
-    //             this.snackBar.open('Your password reset email has been sent. Please check your inbox for the new password. It might take a minute or two to send.', 'Close', {
-    //               duration: 10000,
-    //             });
-    //           }
-    //         }
-    //       );
-    //     },
-    //     err => {
-    //       switch (err.message) {
-    //         case 'GraphQL error: permission denied for function reset_password':
-    //           this.snackBar.open('Cannot reset password while user is logged in', 'Close', {
-    //             duration: 5000,
-    //           });
-    //           break;
-    //         case 'GraphQL error: column "user does not exist" does not exist':
-    //           this.snackBar.open('That email doesn\'t exist. Check what you entered and try again', 'Close', {
-    //             duration: 5000,
-    //           });
-    //           break;
-    //         default:
-    //           this.snackBar.open('Something went wrong. Check your email address and try again', 'Close', {
-    //             duration: 5000,
-    //           });
-    //       }
-    //     }
-    //   );
+  sendReset() {
+    if (this.resetForm.valid) {
+      this.resetPasswordGQL.mutate({ userId: this.userId, token: this.token, password: this.resetForm.value.password }).subscribe(
+        ({ data }) => {
+            if (data.resetPassword.success) this.isReset = true;
+        },
+        (err) => {
+          console.log('ERR: ', err);
+        }
+      );
+    }
   }
 }

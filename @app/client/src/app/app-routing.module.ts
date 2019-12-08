@@ -80,6 +80,10 @@ const routes: Routes = [
     loadChildren: () => import('./modules/close-account/close-account.module').then(m => m.CloseAccountModule),
   },
   {
+    path: 'password-forgot',
+    loadChildren: () => import('./modules/password-forgot/password-forgot.module').then(m => m.PasswordForgotModule),
+  },
+  {
     path: 'password-reset',
     loadChildren: () => import('./modules/password-reset/password-reset.module').then(m => m.PasswordResetModule),
   },

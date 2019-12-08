@@ -1,6 +1,6 @@
-import { Task } from "graphile-worker";
-import { projectName } from "@app/config";
-import { SendEmailPayload } from "./send_email";
+import { Task } from 'graphile-worker';
+import { projectName } from '@app/config';
+import { SendEmailPayload } from './send_email';
 
 interface UserForgotPasswordUnregisteredEmailPayload {
   email: string;
@@ -15,12 +15,12 @@ const task: Task = async (inPayload, { addJob }) => {
       to: email,
       subject: `Password reset request failed: you don't have a ${projectName} account`,
     },
-    template: "password_reset_unregistered.mjml",
+    template: 'password_reset_unregistered.mjml',
     variables: {
-      url: process.env.ROOT_URL,
+      url: process.env.CLIENT_ROOT_URL,
     },
   };
-  await addJob("send_email", sendEmailPayload);
+  await addJob('send_email', sendEmailPayload);
 };
 
 module.exports = task;

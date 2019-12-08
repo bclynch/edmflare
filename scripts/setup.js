@@ -212,6 +212,13 @@ async function updateDotenv(answers) {
   );
 
   add(
+    'CLIENT_ROOT_URL',
+    'http://localhost:4200',
+    `\
+# Url to send redirects back to client`
+  );
+
+  add(
     'GITHUB_KEY',
     'b623f2031909b642dc91',
     `\

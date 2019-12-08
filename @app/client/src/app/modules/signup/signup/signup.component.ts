@@ -79,20 +79,18 @@ export class SignupComponent implements OnInit {
   }
 
   signup() {
-    console.log('this.signupForm', this.signupForm);
-    if (this.signupForm.valid) this.userServive.registerUserAccount(this.signupForm.value).then(
-      () => {
-        if (this.redirect) {
-          this.router.navigateByUrl(this.redirect);
-        } else {
-          this.router.navigateByUrl('/');
-        }
-
-        // reload window to update db role
-        // setTimeout(() => window.location.reload(), 200);
-      },
-      () => {}
-    );
+    if (this.signupForm.valid) {
+      this.userServive.registerUserAccount(this.signupForm.value).then(
+        () => {
+          if (this.redirect) {
+            this.router.navigateByUrl(this.redirect);
+          } else {
+            this.router.navigateByUrl('/');
+          }
+        },
+        () => {}
+      );
+    }
   }
 }
 
