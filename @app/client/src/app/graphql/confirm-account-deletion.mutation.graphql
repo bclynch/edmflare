@@ -1,0 +1,5 @@
+mutation confirmAccountDeletion($token: String!) {
+  confirmAccountDeletion(input: { token: $token }) {
+    success
+  }
+}

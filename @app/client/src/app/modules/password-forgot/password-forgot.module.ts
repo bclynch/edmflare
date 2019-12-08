@@ -1,22 +1,25 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { VerifyEmailComponent } from './verify-email/verify-email.component';
+import { PasswordForgotComponent } from './password-forgot/password-forgot.component';
 import { Routes, RouterModule } from '@angular/router';
 import { SharedModule } from '../../shared/shared.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const routes: Routes = [
   {
     path: '',
-    component: VerifyEmailComponent
+    component: PasswordForgotComponent
   }
 ];
 
 @NgModule({
-  declarations: [VerifyEmailComponent],
+  declarations: [PasswordForgotComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
-    SharedModule
+    SharedModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
-export class VerifyEmailModule { }
+export class PasswordForgotModule { }

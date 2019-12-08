@@ -2,10 +2,27 @@
   <app-settings-wrapper>
     <div class="closeContainer">
       <h1 class="settingsHeader">Close Account</h1>
-      <div>
-        <h3>Close Your EDM Flare Account</h3>
-        <div>This can't be reversed, so make sure you're sure this is what you want.</div>
-        <button mat-flat-button color="primary" (click)="closeAccount()">Delete</button>
+      <div *ngIf="!token">
+        <div *ngIf="!confirmationSent">
+          <div>Deleting your user account will delete all data (except that which we
+            must retain for legal, compliance and accounting reasons) and cannot be
+            undone. Make sure you want to do this.</div><br>
+          <div>To protect your account, we require you to confirm you wish to delete
+            your account here, then you will be sent an email with a confirmation
+            code (to check your identity) and when you click that link you will be
+            asked to confirm your account deletion again.</div><br>
+          <button mat-flat-button color="primary" (click)="requestDeletion()">Request Account Deletion</button>
+        </div>
+        <div *ngIf="confirmationSent">
+          <h4>Confirm deletion via email link</h4>
+          <div>You've been sent an email with a confirmation link in it, you must
+            click it to confirm that you are the account holder so that you
+            may continue deleting your account.</div>
+        </div>
+      </div>
+      <div *ngIf="token">
+        <h4>Press this button and your account will be deleted.</h4>
+        <button mat-flat-button color="warning" (click)="confirmDeletion()">PERMANENTLY DELETE MY ACCOUNT</button>
       </div>
     </div>
   </app-settings-wrapper>
