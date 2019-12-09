@@ -5,7 +5,7 @@
   z-index: 9999;
   width: 100vw;
   height: var(--height-navbar);
-  transition: all .3s ease-in-out;
+  transition: all 0.3s ease-in-out;
   overflow: hidden;
 
   &.hidden {
@@ -34,11 +34,15 @@
         }
       }
       .right {
-
         button {
           height: var(--height-navbar);
           color: var(--color-font);
-          font-size: .85em;
+          font-size: 0.85em;
+
+          img {
+            width: calc(var(--height-navbar) - 20px);
+            border-radius: 50%;
+          }
         }
       }
       mat-icon {

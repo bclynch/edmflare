@@ -4,48 +4,57 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  
+
   form {
     max-width: 400px;
+    width: 85%;
 
     h1 {
       text-align: center;
     }
     .mat-form-field {
       display: block;
+      width: 100%;
+    }
+    .passwordWrapper {
+      display: flex;
+      align-items: center;
+
+      fa-icon {
+        color: var(--color-font);
+      }
     }
     .linkWrapper {
       margin-bottom: 15px;
 
-      a { 
-        color:#3659e3;
+      a {
+        color: #3659e3;
         text-decoration: none;
         cursor: pointer;
-        font-size: .8em;
+        font-size: 0.8em;
       }
       a:hover {
         text-decoration: underline;
       }
     }
-    button[type='submit'] {
+    button[type="submit"] {
       color: white;
       font-size: 1.2em;
       line-height: 2em;
       padding: 0 1.2em;
+      width: 100%;
+      margin-bottom: 2em;
     }
     .new {
       margin-top: 15px;
+      display: flex;
+      justify-content: center;
 
       .createNewBtn {
-        font-size: .8em;
+        font-size: 0.8em;
         line-height: 1.4em;
-        padding: 0 .8em;
+        padding: 0 0.8em;
       }
-    }
-  }
-  @media (min-width: 1024px) {
-    form {
-      max-width: 50vw;
     }
   }
 }

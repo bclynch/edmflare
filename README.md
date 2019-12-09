@@ -2,45 +2,44 @@
 
 ## Table of contents
 
-- [Features](#features)
-- [Todos](#todos)
-- [Prerequisites](#prerequisites)
-- [Getting Started](#getting-started)
-- [Running](#running)
-- [Docker development](#docker-development-1)
-- [Production build](#production-build-for-local-mode)
+-   [Features](#features)
+-   [Todos](#todos)
+-   [Prerequisites](#prerequisites)
+-   [Getting Started](#getting-started)
+-   [Running](#running)
+-   [Docker development](#docker-development-1)
+-   [Production build](#production-build-for-local-mode)
 
 ## Todos
 
-- ~~Do db migration stuff with existing model~~
-  - ~~Trying to run setup script is not creating db in postgres. Template db
-    exists, but is not in pgadmin~~
-- Wire up client to play nice here
-  - ~~[Proxy info with angular to play nice CORS](https://levelup.gitconnected.com/simple-application-with-angular-6-node-js-express-2873304fff0f)~~
-  - Fix createdAt filter for search queries
-  - ~~Figure out how to logout~~
-  - ~~Fix misc issues with refactored db~~
-  - Next month util range is broken
-  - ~~Set up password forget~~
-  - ~~Set up password reset~~
-  - ~~Fix email to work with SES~~
-  - ~~Set up fb login~~
-  - ~~Set up google log in~~
-  - ~~Set up twitter log in~~
-  - Make sure deleting users and such doesn't fuck up the userid and id balance
-  - ~~Fix local login~~
-  - Show user photo in login / logged in btn in nav
-  - Walk user through a newly registered page
-    - Show theme
-    - Show apps
-    - Setup fav locales
-    - Set up notifications
-  - Redo login / register page
-    - [Login ideas](https://www.google.com/search?q=login+page+ui&sxsrf=ACYBGNRwyIbk-rGIjGLwA7KrslkUQAdWng:1575822185751&source=lnms&tbm=isch&sa=X&ved=2ahUKEwja_fCMu6bmAhVsUN8KHTlFAvcQ_AUoAXoECAsQAw&biw=1341&bih=701&dpr=2)
-    - [Register ideas](https://www.google.com/search?q=register+page+ui&sxsrf=ACYBGNSR1JqV4HNMsIGRDUqu25wybh2G4Q:1575822255175&source=lnms&tbm=isch&sa=X&ved=2ahUKEwj1sv6tu6bmAhXxm-AKHftRCdsQ_AUoAXoECAsQAw&biw=1341&bih=701&dpr=2)
-  - Bring back other functionality (scraping / emails / etc as required)
-- Migrating existing db to new one. Probably need some kind of script
-- Look at Docker for production
+-   ~~Do db migration stuff with existing model~~
+    -   ~~Trying to run setup script is not creating db in postgres. Template db
+        exists, but is not in pgadmin~~
+-   Wire up client to play nice here
+    -   ~~[Proxy info with angular to play nice CORS](https://levelup.gitconnected.com/simple-application-with-angular-6-node-js-express-2873304fff0f)~~
+    -   Fix createdAt filter for search queries
+    -   ~~Figure out how to logout~~
+    -   ~~Fix misc issues with refactored db~~
+    -   Next month util range is broken
+    -   ~~Set up password forget~~
+    -   ~~Set up password reset~~
+    -   ~~Fix email to work with SES~~
+    -   ~~Set up fb login~~
+    -   ~~Set up google log in~~
+    -   ~~Set up twitter log in~~
+    -   Make sure deleting users and such doesn't fuck up the userid and id balance
+    -   ~~Fix local login~~
+    -   ~~Show user photo in login / logged in btn in nav~~
+    -   Walk user through a newly registered page
+        -   Show theme
+        -   Show apps
+        -   Setup fav locales
+        -   Set up notifications
+    -   ~~Rework login / register page~~
+    -   Bring back other functionality (scraping / emails / etc as required)
+-   Migrating existing db to new one. Probably need some kind of script
+-   Fix up look of the emails that are going out to people. Mostly just changing color scheme and maybe add logo
+-   Look at Docker for production
 
 ## Running Local Dev Currently
 
@@ -103,10 +102,10 @@ You should make a choice and stick to it. (Developing locally but deploying with
 
 Requires:
 
-- Node.js v10+ must be installed (v12 recommended)
-- PostgreSQL v10+ server must be available
-- `pg_dump` command must be available (or you can remove this functionality)
-- VSCode is recommended, but any editor will do
+-   Node.js v10+ must be installed (v12 recommended)
+-   PostgreSQL v10+ server must be available
+-   `pg_dump` command must be available (or you can remove this functionality)
+-   VSCode is recommended, but any editor will do
 
 This software has been developed under Mac and Linux, and should work in a
 `bash` environment.
@@ -115,11 +114,11 @@ This software has been developed under Mac and Linux, and should work in a
 
 Requires:
 
-- [`docker`](https://docs.docker.com/install/)
-- [`docker-compose`](https://docs.docker.com/compose/install/)
-- Ensure you've allocated Docker **at least** 4GB of RAM; significantly more
-  recommended
-  - (Development only, production is much more efficient)
+-   [`docker`](https://docs.docker.com/install/)
+-   [`docker-compose`](https://docs.docker.com/compose/install/)
+-   Ensure you've allocated Docker **at least** 4GB of RAM; significantly more
+    recommended
+    -   (Development only, production is much more efficient)
 
 Has been tested on Windows and Linux (Ubuntu 18.04LTS).
 
@@ -158,19 +157,19 @@ http://localhost:5000
 
 This main command runs a number of tasks:
 
-- uses [`graphile-migrate`](https://github.com/graphile/migrate) to watch
-  the`migrations/current.sql` file for changes, and automatically runs it
-  against your database when it changes
-- watches the TypeScript source code of the server, and compiles it from
-  `@app/*/src` to `@app/*/dist` so node/`graphile-worker`/etc. can run the
-  compiled code directly
-- runs the node server (includes PostGraphile and Next.js middleware)
-- runs `graphile-worker` to execute your tasks (e.g. sending emails)
-- watches your GraphQL files and your PostGraphile schema for changes and
-  generates your TypeScript React hooks for you automatically, leading to
-  strongly typed code with minimal effort
-- runs the `jest` tests in watch mode, automatically re-running as the database
-  or test files change
+-   uses [`graphile-migrate`](https://github.com/graphile/migrate) to watch
+    the`migrations/current.sql` file for changes, and automatically runs it
+    against your database when it changes
+-   watches the TypeScript source code of the server, and compiles it from
+    `@app/*/src` to `@app/*/dist` so node/`graphile-worker`/etc. can run the
+    compiled code directly
+-   runs the node server (includes PostGraphile and Next.js middleware)
+-   runs `graphile-worker` to execute your tasks (e.g. sending emails)
+-   watches your GraphQL files and your PostGraphile schema for changes and
+    generates your TypeScript React hooks for you automatically, leading to
+    strongly typed code with minimal effort
+-   runs the `jest` tests in watch mode, automatically re-running as the database
+    or test files change
 
 **NOTE**: `docker-compose up server` also runs the PostgreSQL server that the
 system connects to.

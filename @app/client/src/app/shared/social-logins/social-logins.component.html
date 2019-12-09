@@ -1,0 +1,11 @@
+<div class="loginsContainer">
+  <button
+    *ngFor="let button of buttons"
+    mat-flat-button
+    (click)="auth($event, button.service)"
+    [style.background]="button.background"
+  >
+    <fa-icon [icon]="button.icon"></fa-icon>
+    Sign In Using {{ button.label }}
+  </button>
+</div>

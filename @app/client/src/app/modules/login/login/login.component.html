@@ -5,21 +5,32 @@
       <mat-form-field>
         <input matInput placeholder="Username" formControlName="username" />
       </mat-form-field>
-      <mat-form-field>
-        <input matInput placeholder="Password" type="password" formControlName="password" />
-      </mat-form-field>
-      <div class="linkWrapper"><a [routerLink]="['/password-forgot']">Forgot your password?</a></div>
-      <button mat-flat-button color="primary" type="submit">Login</button>
-      <button mat-flat-button color="primary" (click)="github($event)">Github</button>
-      <button mat-flat-button color="primary" (click)="facebook($event)">Facebook</button>
-      <button mat-flat-button color="primary" (click)="google($event)">Google</button>
-      <button mat-flat-button color="primary" (click)="twitter($event)">Twitter</button>
-      <div class="new">New to EDM Flare?
+      <div class="passwordWrapper">
+        <mat-form-field>
+          <input
+            matInput
+            placeholder="Password"
+            type="password"
+            formControlName="password"
+          />
+        </mat-form-field>
+        <a [routerLink]="['/password-forgot']">
+          <button mat-button matTooltip="Forgot your password?">
+            <fa-icon [icon]="faQuestionCircle"></fa-icon>
+          </button>
+        </a>
+      </div>
+      <div class="linkWrapper"></div>
+      <button mat-flat-button color="accent" type="submit">Login</button>
+      <app-social-logins></app-social-logins>
+      <div class="new">
+        New to EDM Flare?
         <a [routerLink]="['/signup']" [queryParams]="{ redirect: redirect }">
-          <button mat-button color="primary" class="createNewBtn">Create a New Account</button>
+          <button mat-button color="primary" class="createNewBtn">
+            Create a New Account
+          </button>
         </a>
       </div>
     </form>
-    <app-get-app></app-get-app>
   </div>
 </app-pagewrapper>
