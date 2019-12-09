@@ -21,7 +21,7 @@
     "@agm/core": "~1.1.0",
     "@agm/js-marker-clusterer": "~1.1.0",
     "@agm/snazzy-info-window": "~1.1.0",
-    "@angular-devkit/build-angular": "~0.803.19",
+    "@angular-devkit/build-angular": "^0.803.20",
     "@angular/animations": "^8.0.0",
     "@angular/cdk": "8.0.0",
     "@angular/common": "~8.2.14",
