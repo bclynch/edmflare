@@ -1,5 +1,5 @@
-import { makeExtendSchemaPlugin, gql } from "graphile-utils";
-import { ERROR_MESSAGE_OVERRIDES } from "../utils/handleErrors";
+import { makeExtendSchemaPlugin, gql } from 'graphile-utils';
+import { ERROR_MESSAGE_OVERRIDES } from '../utils/handleErrors';
 
 const PassportLoginPlugin = makeExtendSchemaPlugin(build => ({
   typeDefs: gql`
@@ -75,8 +75,8 @@ const PassportLoginPlugin = makeExtendSchemaPlugin(build => ({
           );
 
           if (!details || !details.user_id) {
-            const e = new Error("Registration failed");
-            e["code"] = "FFFFF";
+            const e = new Error('Registration failed');
+            e['code'] = 'FFFFF';
             throw e;
           }
 
@@ -107,20 +107,20 @@ const PassportLoginPlugin = makeExtendSchemaPlugin(build => ({
         } catch (e) {
           const { code } = e;
           const safeErrorCodes = [
-            "WEAKP",
-            "LOCKD",
-            "EMTKN",
+            'WEAKP',
+            'LOCKD',
+            'EMTKN',
             ...Object.keys(ERROR_MESSAGE_OVERRIDES),
           ];
           if (safeErrorCodes.includes(code)) {
             throw e;
           } else {
             console.error(
-              "Unrecognised error in PassportLoginPlugin; replacing with sanitised version"
+              'Unrecognised error in PassportLoginPlugin; replacing with sanitised version'
             );
             console.error(e);
-            const error = new Error("Registration failed");
-            error["code"] = code;
+            const error = new Error('Registration failed');
+            error['code'] = code;
             throw error;
           }
         }
@@ -139,8 +139,8 @@ const PassportLoginPlugin = makeExtendSchemaPlugin(build => ({
           );
 
           if (!session) {
-            const error = new Error("Incorrect username/password");
-            error["code"] = "CREDS";
+            const error = new Error('Incorrect username/password');
+            error['code'] = 'CREDS';
             throw error;
           }
 
@@ -170,13 +170,13 @@ const PassportLoginPlugin = makeExtendSchemaPlugin(build => ({
           };
         } catch (e) {
           const { code } = e;
-          const safeErrorCodes = ["LOCKD", "CREDS"];
+          const safeErrorCodes = ['LOCKD', 'CREDS'];
           if (safeErrorCodes.includes(code)) {
             throw e;
           } else {
             console.error(e);
-            const error = new Error("Login failed");
-            error["code"] = e.code;
+            const error = new Error('Login failed');
+            error['code'] = e.code;
             throw error;
           }
         }
@@ -184,7 +184,7 @@ const PassportLoginPlugin = makeExtendSchemaPlugin(build => ({
 
       async logout(_mutation, _args, context, _resolveInfo) {
         const { pgClient, logout } = context;
-        await pgClient.query("select edm.logout();");
+        await pgClient.query('select edm.logout();');
         await logout();
         return {
           success: true,

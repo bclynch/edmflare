@@ -11,6 +11,9 @@
       <div class="linkWrapper"><a [routerLink]="['/password-forgot']">Forgot your password?</a></div>
       <button mat-flat-button color="primary" type="submit">Login</button>
       <button mat-flat-button color="primary" (click)="github($event)">Github</button>
+      <button mat-flat-button color="primary" (click)="facebook($event)">Facebook</button>
+      <button mat-flat-button color="primary" (click)="google($event)">Google</button>
+      <button mat-flat-button color="primary" (click)="twitter($event)">Twitter</button>
       <div class="new">New to EDM Flare?
         <a [routerLink]="['/signup']" [queryParams]="{ redirect: redirect }">
           <button mat-button color="primary" class="createNewBtn">Create a New Account</button>

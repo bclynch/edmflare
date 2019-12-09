@@ -240,6 +240,48 @@ async function updateDotenv(answers) {
 # Client Secret:`
   );
 
+  add(
+    'FACEBOOK_KEY',
+    '1797724177192968',
+    `\
+# Client ID:`
+  );
+
+  add(
+    'FACEBOOK_SECRET',
+    '362254e55d1deed9aa659113e155ca38',
+    `\
+# Client Secret:`
+  );
+
+  add(
+    'TWITTER_KEY',
+    'iRZ7OzA6ajedoD3g6hWmsgsrv',
+    `\
+# Client ID:`
+  );
+
+  add(
+    'TWITTER_SECRET',
+    '7SEKHph3D34mAEaaVTEAr9aITOoSSiyXBRf9L4Hu0d3gHXFULn',
+    `\
+# Client Secret:`
+  );
+
+  add(
+    'GOOGLE_KEY',
+    '84190777595-3dm765eek0fv0am3ihvblgdi8euqd1fi.apps.googleusercontent.com',
+    `\
+# Client ID:`
+  );
+
+  add(
+    'GOOGLE_SECRET',
+    'yNdzrexnsIV_JLnSkWah5_nY',
+    `\
+# Client Secret:`
+  );
+
   const nodeVersion = parseInt(
     process.version.replace(/\..*$/, '').replace(/[^0-9]/g, ''),
     10

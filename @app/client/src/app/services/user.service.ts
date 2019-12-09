@@ -66,6 +66,9 @@ export class UserService {
         this.user = null;
         this.apollo.getClient().resetStore();
         this.router.navigateByUrl('/');
+        this.snackBar.open('Your have successfully logged out', 'Close', {
+          duration: 3000,
+        });
       }
     });
   }

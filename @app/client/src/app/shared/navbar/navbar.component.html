@@ -11,23 +11,22 @@
         <a class="logo" [routerLink]="['/']"><img src="assets/images/edm_flare_opt.svg" alt="EDM Flare Logo" /></a>
       </div>
       <div class="right">
-        <button class="menuBtn" mat-button [matMenuTriggerFor]="menu">
-          <mat-icon>person_outline</mat-icon>
-        </button>
-        <mat-menu #menu="matMenu" [overlapTrigger]="false" xPosition="before">
-          <div *ngIf="!signedIn">
-            <a [routerLink]="['/signup']" [queryParams]="{ redirect: router.url }"><button
-                mat-menu-item>Signup</button></a>
-            <a [routerLink]="['/login']" [queryParams]="{ redirect: router.url }"><button
-                mat-menu-item>Login</button></a>
-          </div>
-          <div *ngIf="signedIn">
-            <a [routerLink]="['/user/' + userService.user.username]"><button mat-menu-item>Feed</button></a>
-            <!-- <a [routerLink]="['/create-event']"><button mat-menu-item>Create Event</button></a> -->
-            <a [routerLink]="['/settings']"><button mat-menu-item>Account Settings</button></a>
-            <button mat-menu-item (click)="userService.logoutUser()">Log out</button>
-          </div>
-        </mat-menu>
+        <a [routerLink]="['/login']" [queryParams]="{ redirect: router.url }" *ngIf="!signedIn">
+          <button mat-button>Login</button>
+        </a>
+        <div *ngIf="signedIn">
+          <button class="menuBtn" mat-button [matMenuTriggerFor]="menu">
+            <mat-icon>person_outline</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu" [overlapTrigger]="false" xPosition="before">
+            <div *ngIf="signedIn">
+              <a [routerLink]="['/user/' + userService.user.username]"><button mat-menu-item>Feed</button></a>
+              <!-- <a [routerLink]="['/create-event']"><button mat-menu-item>Create Event</button></a> -->
+              <a [routerLink]="['/settings']"><button mat-menu-item>Account Settings</button></a>
+              <button mat-menu-item (click)="userService.logoutUser()">Log out</button>
+            </div>
+          </mat-menu>
+        </div>
       </div>
     </div>
   </div>

@@ -13,7 +13,7 @@
 // https://zellwk.com/blog/viewport-based-typography/
 // https://codepen.io/MadeByMike/pen/VvwqvW
 
-html { 
+html {
   font-size: calc(112.5% + 0.25vw) !important;
   background: var(--color-background);
 
@@ -28,16 +28,16 @@ html {
   h1 {
     font-size: 2em;
   }
-  
+
   h2 {font-size: 1.8em; margin: 1em 0;}
-  
+
   h3 {font-size: 1.6em; margin: 1em 0;}
-  
+
   h4 {
     font-size: 1.4em;
     margin: 1em 0;
   }
-  
+
   h5 {font-size: 1.2em; margin: 1em 0;}
 
   h6 {font-size: 1.05em; margin: 1em 0;}
@@ -63,8 +63,18 @@ html {
     background: var(--color-background);
   }
 }
+// fix input background for autofilled input fields
+form {
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+      -webkit-box-shadow: 0 0 0 30px var(--color-background) inset !important;
+      -webkit-text-fill-color: var(--color-font) !important;
+  }
+}
 @media (min-width: 1200px) {
-  html { 
+  html {
     // font-size: calc(112.5% + 0.3vw) !important;
 
     mat-icon {
@@ -96,7 +106,7 @@ html {
   }
 }
 @media (min-width: 2000px) {
-  html { 
+  html {
     font-size: calc(112.5% + 0.75vw) !important;
 
     mat-icon {
@@ -112,7 +122,7 @@ html {
   }
 }
 @media (min-width: 3000px) {
-  html { 
+  html {
     font-size: calc(112.5% + 1vw) !important;
 
     mat-icon {
@@ -222,7 +232,7 @@ app-events {
 
 // event page style to override the inner html style
 .infoContainer {
- 
+
   .description {
     img {
       max-width: 100% !important;

@@ -24,11 +24,22 @@
   - ~~Set up password forget~~
   - ~~Set up password reset~~
   - ~~Fix email to work with SES~~
-  - Set up fb login
-  - Set up google log in
-  - Set up twitter log in
+  - ~~Set up fb login~~
+  - ~~Set up google log in~~
+  - ~~Set up twitter log in~~
+  - Make sure deleting users and such doesn't fuck up the userid and id balance
   - ~~Fix local login~~
+  - Show user photo in login / logged in btn in nav
+  - Walk user through a newly registered page
+    - Show theme
+    - Show apps
+    - Setup fav locales
+    - Set up notifications
+  - Redo login / register page
+    - [Login ideas](https://www.google.com/search?q=login+page+ui&sxsrf=ACYBGNRwyIbk-rGIjGLwA7KrslkUQAdWng:1575822185751&source=lnms&tbm=isch&sa=X&ved=2ahUKEwja_fCMu6bmAhVsUN8KHTlFAvcQ_AUoAXoECAsQAw&biw=1341&bih=701&dpr=2)
+    - [Register ideas](https://www.google.com/search?q=register+page+ui&sxsrf=ACYBGNSR1JqV4HNMsIGRDUqu25wybh2G4Q:1575822255175&source=lnms&tbm=isch&sa=X&ved=2ahUKEwj1sv6tu6bmAhXxm-AKHftRCdsQ_AUoAXoECAsQAw&biw=1341&bih=701&dpr=2)
   - Bring back other functionality (scraping / emails / etc as required)
+- Migrating existing db to new one. Probably need some kind of script
 - Look at Docker for production
 
 ## Running Local Dev Currently
