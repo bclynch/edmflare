@@ -41,6 +41,7 @@ import { SelectDateComponent } from './select-date/select-date.component';
 import { EventCardAltComponent } from './event-card-alt/event-card-alt.component';
 import { SettingsWrapperComponent } from './settings-wrapper/settings-wrapper.component';
 import { GetAppComponent } from './get-app/get-app.component';
+import { SocialLoginsComponent } from './social-logins/social-logins.component';
 
 @NgModule({
   entryComponents: [
@@ -59,7 +60,8 @@ import { GetAppComponent } from './get-app/get-app.component';
     SelectDateComponent,
     EventCardAltComponent,
     SettingsWrapperComponent,
-    GetAppComponent
+    GetAppComponent,
+    SocialLoginsComponent
   ],
   imports: [
     CommonModule,
@@ -117,7 +119,8 @@ import { GetAppComponent } from './get-app/get-app.component';
     SelectDateComponent,
     EventCardAltComponent,
     SettingsWrapperComponent,
-    GetAppComponent
+    GetAppComponent,
+    SocialLoginsComponent
   ],
   providers: [
     {provide: OverlayContainer, useClass: FullscreenOverlayContainer}

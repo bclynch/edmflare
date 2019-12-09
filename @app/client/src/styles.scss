@@ -1,7 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
-@import './app/theme.scss';
-@import '~@ngx-share/button/themes/material/material-dark-theme';
-
+@import "./app/theme.scss";
+@import "~@ngx-share/button/themes/material/material-dark-theme";
 
 // global css4 vars
 :root {
@@ -29,18 +28,30 @@ html {
     font-size: 2em;
   }
 
-  h2 {font-size: 1.8em; margin: 1em 0;}
+  h2 {
+    font-size: 1.8em;
+    margin: 1em 0;
+  }
 
-  h3 {font-size: 1.6em; margin: 1em 0;}
+  h3 {
+    font-size: 1.6em;
+    margin: 1em 0;
+  }
 
   h4 {
     font-size: 1.4em;
     margin: 1em 0;
   }
 
-  h5 {font-size: 1.2em; margin: 1em 0;}
+  h5 {
+    font-size: 1.2em;
+    margin: 1em 0;
+  }
 
-  h6 {font-size: 1.05em; margin: 1em 0;}
+  h6 {
+    font-size: 1.05em;
+    margin: 1em 0;
+  }
 
   input,
   h1,
@@ -69,8 +80,8 @@ form {
   input:-webkit-autofill:hover,
   input:-webkit-autofill:focus,
   input:-webkit-autofill:active {
-      -webkit-box-shadow: 0 0 0 30px var(--color-background) inset !important;
-      -webkit-text-fill-color: var(--color-font) !important;
+    -webkit-box-shadow: 0 0 0 30px var(--color-background) inset !important;
+    -webkit-text-fill-color: var(--color-font) !important;
   }
 }
 @media (min-width: 1200px) {
@@ -140,19 +151,19 @@ form {
 
 .boldFont {
   font-weight: 500;
-  letter-spacing: .5px;
+  letter-spacing: 0.5px;
   text-transform: uppercase;
 }
 
 app-pagewrapper {
   position: fixed;
-  top:        0;
-  bottom:     0;
-  left:       0;
-  right:      0;
-  overflow:   scroll;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: scroll;
   -ms-overflow-style: none;
-  font-family: 'Helvetica Neue', 'RobotoLight', sans-serif;
+  font-family: "Helvetica Neue", "RobotoLight", sans-serif;
 }
 
 .wrapper {
@@ -232,7 +243,6 @@ app-events {
 
 // event page style to override the inner html style
 .infoContainer {
-
   .description {
     img {
       max-width: 100% !important;
@@ -251,19 +261,18 @@ share-button {
 .mat-menu-panel {
   max-width: 100% !important;
 
-
   .mat-menu-item {
     font-size: 1em;
     height: auto;
     line-height: normal;
-    padding: .15em 1em;
+    padding: 0.15em 1em;
   }
   @media (min-width: 1200px) {
     .mat-menu-item {
       font-size: 1.25em;
       height: auto;
       line-height: normal;
-      padding: .15em 1em;
+      padding: 0.15em 1em;
     }
   }
 }
@@ -274,7 +283,7 @@ share-button {
     .mat-tab-label {
       height: auto;
       font-size: 1.5em;
-      padding: .25em 1.5em;
+      padding: 0.25em 1.5em;
     }
   }
 }
@@ -303,12 +312,12 @@ agm-map {
 
       button {
         color: var(--color-font);
-        opacity: .85;
+        opacity: 0.85;
       }
       .si-content {
         height: 100%;
-        max-height: 100%!important;
-        max-width: 100%!important;
+        max-height: 100% !important;
+        max-width: 100% !important;
 
         > div {
           display: flex;

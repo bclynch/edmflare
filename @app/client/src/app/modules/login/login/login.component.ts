@@ -4,6 +4,7 @@ import { UserService } from 'src/app/services/user.service';
 import { SubscriptionLike } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppService } from 'src/app/services/app.service';
+import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-login',
@@ -19,6 +20,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   });
 
   paramsSubscription: SubscriptionLike;
+  faQuestionCircle = faQuestionCircle;
 
   constructor(
     private fb: FormBuilder,

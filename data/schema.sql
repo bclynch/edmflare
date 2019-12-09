@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.6.16
--- Dumped by pg_dump version 10.11
+-- Dumped from database version 11.4
+-- Dumped by pg_dump version 11.4
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -35,20 +35,6 @@ CREATE SCHEMA edm_hidden;
 --
 
 CREATE SCHEMA edm_private;
-
-
---
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
-
-
---
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
 --
@@ -1637,6 +1623,7 @@ COMMENT ON COLUMN edm.artist_to_event.event_id IS 'Ref to event.';
 --
 
 CREATE SEQUENCE edm.artist_to_event_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1721,6 +1708,7 @@ COMMENT ON COLUMN edm.city.country IS 'Region ref for country.';
 --
 
 CREATE SEQUENCE edm.city_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1820,6 +1808,7 @@ COMMENT ON COLUMN edm.follow_list.venue_id IS 'Ref to venue.';
 --
 
 CREATE SEQUENCE edm.follow_list_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1906,6 +1895,7 @@ COMMENT ON COLUMN edm.genre_to_artist.artist_id IS 'Ref to the artist.';
 --
 
 CREATE SEQUENCE edm.genre_to_artist_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1990,6 +1980,7 @@ COMMENT ON COLUMN edm.push_subscription.auth IS 'An authentication secret, which
 --
 
 CREATE SEQUENCE edm.push_subscription_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2117,6 +2108,7 @@ COMMENT ON COLUMN edm.user_authentications.details IS 'Additional profile detail
 --
 
 CREATE SEQUENCE edm.user_authentications_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2136,6 +2128,7 @@ ALTER SEQUENCE edm.user_authentications_id_seq OWNED BY edm.user_authentications
 --
 
 CREATE SEQUENCE edm.user_emails_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2155,6 +2148,7 @@ ALTER SEQUENCE edm.user_emails_id_seq OWNED BY edm.user_emails.id;
 --
 
 CREATE SEQUENCE edm.users_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2297,6 +2291,7 @@ COMMENT ON COLUMN edm.watch_list.event_id IS 'Ref to event.';
 --
 
 CREATE SEQUENCE edm.watch_list_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2363,6 +2358,7 @@ COMMENT ON COLUMN edm.watched_to_account.city_id IS 'Ref to city.';
 --
 
 CREATE SEQUENCE edm.watched_to_account_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2498,6 +2494,7 @@ CREATE TABLE public.migrations (
 --
 
 CREATE SEQUENCE public.migrations_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -3001,59 +2998,10 @@ CREATE INDEX user_authentications_user_id_idx ON edm.user_authentications USING 
 
 
 --
--- Name: artist _100_timestamps; Type: TRIGGER; Schema: edm; Owner: -
+-- Name: users _100_timestamps; Type: TRIGGER; Schema: edm; Owner: -
 --
 
-CREATE TRIGGER _100_timestamps BEFORE INSERT OR UPDATE ON edm.artist FOR EACH ROW EXECUTE PROCEDURE edm_private.tg__timestamps();
-
-
---
--- Name: city _100_timestamps; Type: TRIGGER; Schema: edm; Owner: -
---
-
-CREATE TRIGGER _100_timestamps BEFORE INSERT OR UPDATE ON edm.city FOR EACH ROW EXECUTE PROCEDURE edm_private.tg__timestamps();
-
-
---
--- Name: country _100_timestamps; Type: TRIGGER; Schema: edm; Owner: -
---
-
-CREATE TRIGGER _100_timestamps BEFORE INSERT OR UPDATE ON edm.country FOR EACH ROW EXECUTE PROCEDURE edm_private.tg__timestamps();
-
-
---
--- Name: event _100_timestamps; Type: TRIGGER; Schema: edm; Owner: -
---
-
-CREATE TRIGGER _100_timestamps BEFORE INSERT OR UPDATE ON edm.event FOR EACH ROW EXECUTE PROCEDURE edm_private.tg__timestamps();
-
-
---
--- Name: genre _100_timestamps; Type: TRIGGER; Schema: edm; Owner: -
---
-
-CREATE TRIGGER _100_timestamps BEFORE INSERT OR UPDATE ON edm.genre FOR EACH ROW EXECUTE PROCEDURE edm_private.tg__timestamps();
-
-
---
--- Name: push_subscription _100_timestamps; Type: TRIGGER; Schema: edm; Owner: -
---
-
-CREATE TRIGGER _100_timestamps BEFORE INSERT OR UPDATE ON edm.push_subscription FOR EACH ROW EXECUTE PROCEDURE edm_private.tg__timestamps();
-
-
---
--- Name: region _100_timestamps; Type: TRIGGER; Schema: edm; Owner: -
---
-
-CREATE TRIGGER _100_timestamps BEFORE INSERT OR UPDATE ON edm.region FOR EACH ROW EXECUTE PROCEDURE edm_private.tg__timestamps();
-
-
---
--- Name: user_authentications _100_timestamps; Type: TRIGGER; Schema: edm; Owner: -
---
-
-CREATE TRIGGER _100_timestamps BEFORE INSERT OR UPDATE ON edm.user_authentications FOR EACH ROW EXECUTE PROCEDURE edm_private.tg__timestamps();
+CREATE TRIGGER _100_timestamps BEFORE INSERT OR UPDATE ON edm.users FOR EACH ROW EXECUTE PROCEDURE edm_private.tg__timestamps();
 
 
 --
@@ -3064,10 +3012,38 @@ CREATE TRIGGER _100_timestamps BEFORE INSERT OR UPDATE ON edm.user_emails FOR EA
 
 
 --
--- Name: users _100_timestamps; Type: TRIGGER; Schema: edm; Owner: -
+-- Name: user_authentications _100_timestamps; Type: TRIGGER; Schema: edm; Owner: -
 --
 
-CREATE TRIGGER _100_timestamps BEFORE INSERT OR UPDATE ON edm.users FOR EACH ROW EXECUTE PROCEDURE edm_private.tg__timestamps();
+CREATE TRIGGER _100_timestamps BEFORE INSERT OR UPDATE ON edm.user_authentications FOR EACH ROW EXECUTE PROCEDURE edm_private.tg__timestamps();
+
+
+--
+-- Name: push_subscription _100_timestamps; Type: TRIGGER; Schema: edm; Owner: -
+--
+
+CREATE TRIGGER _100_timestamps BEFORE INSERT OR UPDATE ON edm.push_subscription FOR EACH ROW EXECUTE PROCEDURE edm_private.tg__timestamps();
+
+
+--
+-- Name: country _100_timestamps; Type: TRIGGER; Schema: edm; Owner: -
+--
+
+CREATE TRIGGER _100_timestamps BEFORE INSERT OR UPDATE ON edm.country FOR EACH ROW EXECUTE PROCEDURE edm_private.tg__timestamps();
+
+
+--
+-- Name: region _100_timestamps; Type: TRIGGER; Schema: edm; Owner: -
+--
+
+CREATE TRIGGER _100_timestamps BEFORE INSERT OR UPDATE ON edm.region FOR EACH ROW EXECUTE PROCEDURE edm_private.tg__timestamps();
+
+
+--
+-- Name: city _100_timestamps; Type: TRIGGER; Schema: edm; Owner: -
+--
+
+CREATE TRIGGER _100_timestamps BEFORE INSERT OR UPDATE ON edm.city FOR EACH ROW EXECUTE PROCEDURE edm_private.tg__timestamps();
 
 
 --
@@ -3075,6 +3051,27 @@ CREATE TRIGGER _100_timestamps BEFORE INSERT OR UPDATE ON edm.users FOR EACH ROW
 --
 
 CREATE TRIGGER _100_timestamps BEFORE INSERT OR UPDATE ON edm.venue FOR EACH ROW EXECUTE PROCEDURE edm_private.tg__timestamps();
+
+
+--
+-- Name: genre _100_timestamps; Type: TRIGGER; Schema: edm; Owner: -
+--
+
+CREATE TRIGGER _100_timestamps BEFORE INSERT OR UPDATE ON edm.genre FOR EACH ROW EXECUTE PROCEDURE edm_private.tg__timestamps();
+
+
+--
+-- Name: artist _100_timestamps; Type: TRIGGER; Schema: edm; Owner: -
+--
+
+CREATE TRIGGER _100_timestamps BEFORE INSERT OR UPDATE ON edm.artist FOR EACH ROW EXECUTE PROCEDURE edm_private.tg__timestamps();
+
+
+--
+-- Name: event _100_timestamps; Type: TRIGGER; Schema: edm; Owner: -
+--
+
+CREATE TRIGGER _100_timestamps BEFORE INSERT OR UPDATE ON edm.event FOR EACH ROW EXECUTE PROCEDURE edm_private.tg__timestamps();
 
 
 --
@@ -3099,17 +3096,17 @@ CREATE TRIGGER _500_gql_update AFTER UPDATE ON edm.users FOR EACH ROW EXECUTE PR
 
 
 --
--- Name: user_emails _500_insert_secrets; Type: TRIGGER; Schema: edm; Owner: -
---
-
-CREATE TRIGGER _500_insert_secrets AFTER INSERT ON edm.user_emails FOR EACH ROW EXECUTE PROCEDURE edm_private.tg_user_email_secrets__insert_with_user_email();
-
-
---
 -- Name: users _500_insert_secrets; Type: TRIGGER; Schema: edm; Owner: -
 --
 
 CREATE TRIGGER _500_insert_secrets AFTER INSERT ON edm.users FOR EACH ROW EXECUTE PROCEDURE edm_private.tg_user_secrets__insert_with_user();
+
+
+--
+-- Name: user_emails _500_insert_secrets; Type: TRIGGER; Schema: edm; Owner: -
+--
+
+CREATE TRIGGER _500_insert_secrets AFTER INSERT ON edm.user_emails FOR EACH ROW EXECUTE PROCEDURE edm_private.tg_user_email_secrets__insert_with_user_email();
 
 
 --
@@ -3376,17 +3373,17 @@ CREATE POLICY delete_follow_list ON edm.follow_list FOR DELETE USING ((user_id =
 
 
 --
--- Name: user_authentications delete_own; Type: POLICY; Schema: edm; Owner: -
---
-
-CREATE POLICY delete_own ON edm.user_authentications FOR DELETE USING ((user_id = edm.current_user_id()));
-
-
---
 -- Name: user_emails delete_own; Type: POLICY; Schema: edm; Owner: -
 --
 
 CREATE POLICY delete_own ON edm.user_emails FOR DELETE USING ((user_id = edm.current_user_id()));
+
+
+--
+-- Name: user_authentications delete_own; Type: POLICY; Schema: edm; Owner: -
+--
+
+CREATE POLICY delete_own ON edm.user_authentications FOR DELETE USING ((user_id = edm.current_user_id()));
 
 
 --
@@ -3581,17 +3578,17 @@ CREATE POLICY select_genre ON edm.genre FOR SELECT USING (true);
 
 
 --
--- Name: user_authentications select_own; Type: POLICY; Schema: edm; Owner: -
---
-
-CREATE POLICY select_own ON edm.user_authentications FOR SELECT USING ((user_id = edm.current_user_id()));
-
-
---
 -- Name: user_emails select_own; Type: POLICY; Schema: edm; Owner: -
 --
 
 CREATE POLICY select_own ON edm.user_emails FOR SELECT USING ((user_id = edm.current_user_id()));
+
+
+--
+-- Name: user_authentications select_own; Type: POLICY; Schema: edm; Owner: -
+--
+
+CREATE POLICY select_own ON edm.user_authentications FOR SELECT USING ((user_id = edm.current_user_id()));
 
 
 --
