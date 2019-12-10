@@ -1629,7 +1629,6 @@ export type BigFloat = any;
 
 export namespace AllLocations {
   export type Variables = {
-    currentDate: BigInt;
   }
 
   export type Query = {
@@ -1668,26 +1667,6 @@ export namespace AllLocations {
     id: number;
     
     name: Maybe<string>;
-    
-    venuesByCity: VenuesByCity;
-  } 
-
-  export type VenuesByCity = {
-    __typename?: "VenuesConnection";
-    
-    nodes: __Nodes[];
-  } 
-
-  export type __Nodes = {
-    __typename?: "Venue";
-    
-    eventsByVenue: EventsByVenue;
-  } 
-
-  export type EventsByVenue = {
-    __typename?: "EventsConnection";
-    
-    totalCount: number;
   } 
 }
 
@@ -2833,7 +2812,7 @@ import gql from 'graphql-tag';
     })
     export class AllLocationsGQL extends Apollo.Query<AllLocations.Query, AllLocations.Variables> {
         document: any = gql`
-    query allLocations($currentDate: BigInt!) {
+    query allLocations {
   regions {
     nodes {
       name
@@ -2843,13 +2822,6 @@ import gql from 'graphql-tag';
         nodes {
           id
           name
-          venuesByCity {
-            nodes {
-              eventsByVenue(filter: {startDate: {greaterThanOrEqualTo: $currentDate}}) {
-                totalCount
-              }
-            }
-          }
         }
       }
     }

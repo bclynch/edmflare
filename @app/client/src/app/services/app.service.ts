@@ -54,7 +54,7 @@ export class AppService {
 
   fetchAllLocations() {
     return new Promise((resolve, reject) => {
-      this.allLocationsGQL.fetch({ currentDate: moment().startOf('day').valueOf() }).subscribe(
+      this.allLocationsGQL.fetch().subscribe(
         ({ data }) => {
           // creating an array of strings with both cities + regions
           const locationsArr = [];

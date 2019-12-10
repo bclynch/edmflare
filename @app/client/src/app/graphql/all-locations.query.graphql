@@ -1,4 +1,4 @@
-query allLocations($currentDate: BigInt!) {
+query allLocations {
   regions {
     nodes {
       name,
@@ -7,20 +7,7 @@ query allLocations($currentDate: BigInt!) {
       citiesByRegion(orderBy: REGION_ASC) {
         nodes {
           id,
-          name,
-          venuesByCity {
-            nodes {
-              eventsByVenue(
-                filter: {
-                  startDate: {
-                    greaterThanOrEqualTo: $currentDate
-                  }
-                }
-              ) {
-                totalCount
-              }
-            }
-          }
+          name
         }
       }
     }

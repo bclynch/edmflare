@@ -4,6 +4,7 @@ import chalk from 'chalk';
 import { createServer } from 'http';
 import { makeApp, getShutdownActions } from './app';
 // import { scrapeEvents } from './scraping/scrape';
+// import migrateDB from './migration/migration';
 
 // @ts-ignore
 const packageJson = require('../../../package.json');
@@ -23,6 +24,7 @@ async function main() {
   // email.initEmailCronJob();
 
   // scrapeEvents();
+  // migrateDB();
 
   // And finally, we open the listen port
   const PORT = parseInt(process.env.PORT || '', 10) || 3000;
