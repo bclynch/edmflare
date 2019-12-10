@@ -40,6 +40,7 @@
 -   Migrating existing db to new one. Probably need some kind of script
 -   Fix up look of the emails that are going out to people. Mostly just changing color scheme and maybe add logo
 -   Look at Docker for production
+  - See about getting a proper CI going with the github workflow here
 
 ## Running Local Dev Currently
 
