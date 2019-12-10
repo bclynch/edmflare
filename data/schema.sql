@@ -1704,11 +1704,10 @@ COMMENT ON COLUMN edm.city.country IS 'Region ref for country.';
 
 
 --
--- Name: city_id_seq; Type: SEQUENCE; Schema: edm; Owner: -
+-- Name: city_sequence; Type: SEQUENCE; Schema: edm; Owner: -
 --
 
-CREATE SEQUENCE edm.city_id_seq
-    AS integer
+CREATE SEQUENCE edm.city_sequence
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1717,10 +1716,10 @@ CREATE SEQUENCE edm.city_id_seq
 
 
 --
--- Name: city_id_seq; Type: SEQUENCE OWNED BY; Schema: edm; Owner: -
+-- Name: city_sequence; Type: SEQUENCE OWNED BY; Schema: edm; Owner: -
 --
 
-ALTER SEQUENCE edm.city_id_seq OWNED BY edm.city.id;
+ALTER SEQUENCE edm.city_sequence OWNED BY edm.city.id;
 
 
 --
@@ -2520,7 +2519,7 @@ ALTER TABLE ONLY edm.artist_to_event ALTER COLUMN id SET DEFAULT nextval('edm.ar
 -- Name: city id; Type: DEFAULT; Schema: edm; Owner: -
 --
 
-ALTER TABLE ONLY edm.city ALTER COLUMN id SET DEFAULT nextval('edm.city_id_seq'::regclass);
+ALTER TABLE ONLY edm.city ALTER COLUMN id SET DEFAULT nextval('edm.city_sequence'::regclass);
 
 
 --
@@ -3854,10 +3853,10 @@ GRANT ALL ON TABLE edm.city TO edm_xyz_visitor;
 
 
 --
--- Name: SEQUENCE city_id_seq; Type: ACL; Schema: edm; Owner: -
+-- Name: SEQUENCE city_sequence; Type: ACL; Schema: edm; Owner: -
 --
 
-GRANT SELECT,USAGE ON SEQUENCE edm.city_id_seq TO edm_xyz_visitor;
+GRANT SELECT,USAGE ON SEQUENCE edm.city_sequence TO edm_xyz_visitor;
 
 
 --

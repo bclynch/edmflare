@@ -67,12 +67,6 @@ module.exports = {
     ],
     'class-methods-use-this': 0,
     'no-restricted-syntax': 0,
-    'no-param-reassign': [
-      'error',
-      {
-        props: false,
-      },
-    ],
 
     'import/no-extraneous-dependencies': 0,
 

@@ -876,14 +876,16 @@ function linkGenresToArtist(artists: { genres: string[]; name: string; }[]) {
     let sql = 'BEGIN; ';
 
     artists.forEach(({ genres, name }) => {
-      if (genres) genres.forEach((genre) => {
-        // both id and artist required so the sql statement doesn't fail
-        const sanitizedName = sanitize(name);
-        if (name && genre && dbArtistObj[sanitizedName]) {
-          sql += `INSERT INTO edm.genre_to_artist(genre_id, artist_id) VALUES ('${genre}', '${sanitizedName}'); `;
-          linksAdded += 1;
-        }
-      });
+      if (genres) {
+          genres.forEach((genre) => {
+          // both id and artist required so the sql statement doesn't fail
+          const sanitizedName = sanitize(name);
+          if (name && genre && dbArtistObj[sanitizedName]) {
+            sql += `INSERT INTO edm.genre_to_artist(genre_id, artist_id) VALUES ('${genre}', '${sanitizedName}'); `;
+            linksAdded += 1;
+          }
+        });
+      }
     });
 
     sql += 'COMMIT;'

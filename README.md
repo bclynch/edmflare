@@ -36,11 +36,18 @@
         -   Setup fav locales
         -   Set up notifications
     -   ~~Rework login / register page~~
-    -   Bring back other functionality (scraping / emails / etc as required)
+-   Bring back existing functionality on server with TS
+    - ~~Scraping~~
+    - Welcome Email
+    - Img uploading
+    - Push notifications
+    - ~~Utils~~
 -   Migrating existing db to new one. Probably need some kind of script
+    - ~~Create script and run locally~~
+    - ~~*UPDATE CITIES TABLE SO NEW ROWS HAVE UPDATED COUNTRY / REGION*~~
 -   Fix up look of the emails that are going out to people. Mostly just changing color scheme and maybe add logo
 -   Look at Docker for production
-  - See about getting a proper CI going with the github workflow here
+    - See about getting a proper CI going with the github workflow here
 
 ## Running Local Dev Currently
 
