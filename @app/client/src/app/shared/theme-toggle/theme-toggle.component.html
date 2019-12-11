@@ -1,0 +1,4 @@
+<button mat-button (click)="themeService.toggleTheme()" class="themeToggle">
+  <fa-icon [icon]="themeService.theme === 'light' ? moonIcon : sunIcon"></fa-icon>
+  <span>Toggle {{themeService.theme === 'light' ? 'Dark' : 'Light'}} Theme</span>
+</button>

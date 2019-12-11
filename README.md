@@ -31,10 +31,12 @@
     -   ~~Fix local login~~
     -   ~~Show user photo in login / logged in btn in nav~~
     -   Walk user through a newly registered page
-        -   Show theme
-        -   Show apps
+        -   ~~Show theme~~
+        -   ~~Show apps~~
         -   Setup fav locales
         -   Set up notifications
+        - Would be nice to have an option in the dropdown menu that sends you to the user setup page if it hasn't been "completed". This is handy since the social logins won't send user there. When completed turn boolean on user object so it's out of the menu
+        - Probably worthwhile to have an override on the prefs component to set the notification frequency to once a week by default on the setup page (not actually done until they opt in / change).
     -   ~~Rework login / register page~~
 -   Bring back existing functionality on server with TS
     - ~~Scraping~~

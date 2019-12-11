@@ -35,7 +35,7 @@
 
     .column {
       flex: 1;
-      
+
       &.use {
         display: none;
       }
@@ -83,18 +83,10 @@
       color: #aaa;
     }
   }
-  .themeToggle {
-    margin: 15px 0;
-    font-size: 18px;
-    color: #aaa;
-    span {
-      margin-left: 5px;
-    }
-  }
   @media (min-width: 768px) {
     .contentContainer {
       flex-direction: row;
-      
+
       .column {
 
         &.use {
@@ -105,7 +97,7 @@
 
           .linksContainer {
             display: block;
-  
+
             > div:nth-child(odd) {
               margin-right: 0;
             }
@@ -119,10 +111,10 @@
     .bottomContainer {
       display: flex;
       text-align: left;
-  
+
       .linksWrapper {
         justify-content: flex-start;
-  
+
         > a:after {
           content: "\2022";
           display: inline-block;

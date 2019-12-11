@@ -69,10 +69,10 @@ export class SignupComponent implements OnInit {
   ) {
     this.appService.modPageMeta('Sign Up', 'Sign up for an EDM Flare account to keep track of upcoming shows in your area');
 
-    // grabbing redirect url and parsing it for base and params
-    this.paramsSubscription = this.route.queryParams.subscribe((params) => {
-      this.redirect = params.redirect;
-    });
+    // // grabbing redirect url and parsing it for base and params
+    // this.paramsSubscription = this.route.queryParams.subscribe((params) => {
+    //   this.redirect = params.redirect;
+    // });
   }
 
   ngOnInit() {
@@ -81,13 +81,7 @@ export class SignupComponent implements OnInit {
   signup() {
     if (this.signupForm.valid) {
       this.userServive.registerUserAccount(this.signupForm.value).then(
-        () => {
-          if (this.redirect) {
-            this.router.navigateByUrl(this.redirect);
-          } else {
-            this.router.navigateByUrl('/');
-          }
-        },
+        () => this.router.navigateByUrl('/user-setup'),
         () => {}
       );
     }

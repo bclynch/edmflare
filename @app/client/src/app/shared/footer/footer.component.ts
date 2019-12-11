@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { faFacebook, faInstagram, faTwitter, faGooglePlay, faApple } from '@fortawesome/free-brands-svg-icons';
-import { faPaperPlane, faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
-import { ThemeService } from 'src/app/services/theme.service';
+import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-footer',
@@ -10,8 +9,6 @@ import { ThemeService } from 'src/app/services/theme.service';
 })
 export class FooterComponent {
   year = Date.now();
-  sunIcon = faSun;
-  moonIcon = faMoon;
 
   bottomLinks = [
     {
@@ -132,8 +129,6 @@ export class FooterComponent {
     },
   ];
 
-  constructor(
-    public themeService: ThemeService
-  ) { }
+  constructor() { }
 
 }
