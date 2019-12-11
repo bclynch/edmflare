@@ -20,7 +20,7 @@
     -   Fix createdAt filter for search queries
     -   ~~Figure out how to logout~~
     -   ~~Fix misc issues with refactored db~~
-    -   Next month util range is broken
+    -   ~~Next month util range is broken~~
     -   ~~Set up password forget~~
     -   ~~Set up password reset~~
     -   ~~Fix email to work with SES~~
@@ -35,21 +35,23 @@
         -   ~~Show apps~~
         -   Setup fav locales
         -   Set up notifications
-        - Would be nice to have an option in the dropdown menu that sends you to the user setup page if it hasn't been "completed". This is handy since the social logins won't send user there. When completed turn boolean on user object so it's out of the menu
+        - ~~Would be nice to have an option in the dropdown menu that sends you to the user setup page if it hasn't been "completed". This is handy since the social logins won't send user there. When completed turn boolean on user object so it's out of the menu~~
         - Probably worthwhile to have an override on the prefs component to set the notification frequency to once a week by default on the setup page (not actually done until they opt in / change).
     -   ~~Rework login / register page~~
 -   Bring back existing functionality on server with TS
     - ~~Scraping~~
     - Welcome Email
-    - Img uploading
+    - ~~Img uploading~~
     - Push notifications
     - ~~Utils~~
 -   Migrating existing db to new one. Probably need some kind of script
     - ~~Create script and run locally~~
     - ~~*UPDATE CITIES TABLE SO NEW ROWS HAVE UPDATED COUNTRY / REGION*~~
--   Fix up look of the emails that are going out to people. Mostly just changing color scheme and maybe add logo
+-   ~~Fix up look of the emails that are going out to people. Mostly just changing color scheme and maybe add logo~~
 -   Look at Docker for production
     - See about getting a proper CI going with the github workflow here
+- Look at getting scrape and daily email hooked up to our worker to offload them there
+- Inputs on location search look weird with text and placeholder
 
 ## Running Local Dev Currently
 

@@ -1310,6 +1310,8 @@ export interface UpdateUserInput {
 export interface UserPatch {
   /** Boolean yes or no for email notifications */
   emailNotification?: Maybe<boolean>;
+  /** Boolean that indicates whether user has successfully went through / submitted the user setup process. If not then they get an option in their nav dropdown to do so. */
+  isSetup?: Maybe<boolean>;
   /** Public-facing name (or pseudonym) of the user. */
   name?: Maybe<string>;
   /** Designates notification frequency */
@@ -1934,13 +1936,17 @@ export namespace CurrentUser {
     
     notificationFrequency: Frequency;
     
-    pushNotification: Maybe<boolean>;
+    pushNotification: boolean;
     
-    emailNotification: Maybe<boolean>;
+    emailNotification: boolean;
     
     profilePhoto: Maybe<string>;
     
     id: number;
+    
+    isSetup: boolean;
+    
+    isAdmin: boolean;
     
     watchLists: WatchLists;
     
@@ -2447,13 +2453,14 @@ export namespace SearchEventsByRegion {
   } 
 }
 
-export namespace UpdateAccount {
+export namespace UpdateUser {
   export type Variables = {
     userId: number;
     profilePhoto?: Maybe<string>;
     notificationFrequency?: Maybe<Frequency>;
     pushNotification?: Maybe<boolean>;
     emailNotification?: Maybe<boolean>;
+    isSetup?: Maybe<boolean>;
   }
 
   export type Mutation = {
@@ -2477,9 +2484,9 @@ export namespace UpdateAccount {
     
     profilePhoto: Maybe<string>;
     
-    pushNotification: Maybe<boolean>;
+    pushNotification: boolean;
     
-    emailNotification: Maybe<boolean>;
+    emailNotification: boolean;
     
     id: number;
     
@@ -2994,6 +3001,8 @@ import gql from 'graphql-tag';
     emailNotification
     profilePhoto
     id
+    isSetup
+    isAdmin
     watchLists {
       totalCount
     }
@@ -3321,10 +3330,10 @@ import gql from 'graphql-tag';
     @Injectable({
         providedIn: 'root'
     })
-    export class UpdateAccountGQL extends Apollo.Mutation<UpdateAccount.Mutation, UpdateAccount.Variables> {
+    export class UpdateUserGQL extends Apollo.Mutation<UpdateUser.Mutation, UpdateUser.Variables> {
         document: any = gql`
-    mutation updateAccount($userId: Int!, $profilePhoto: String, $notificationFrequency: Frequency, $pushNotification: Boolean, $emailNotification: Boolean) {
-  updateUser(input: {id: $userId, patch: {notificationFrequency: $notificationFrequency, profilePhoto: $profilePhoto, pushNotification: $pushNotification, emailNotification: $emailNotification}}) {
+    mutation updateUser($userId: Int!, $profilePhoto: String, $notificationFrequency: Frequency, $pushNotification: Boolean, $emailNotification: Boolean, $isSetup: Boolean) {
+  updateUser(input: {id: $userId, patch: {notificationFrequency: $notificationFrequency, profilePhoto: $profilePhoto, pushNotification: $pushNotification, emailNotification: $emailNotification, isSetup: $isSetup}}) {
     user {
       username
       notificationFrequency

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UpdateAccountGQL, Frequency, WatchedLocationByAccountGQL, DeleteWatchedByIdGQL, CreateWatchedToAccountGQL, DeletePushSubscriptionByIdGQL } from 'src/app/generated/graphql';
+import { UpdateUserGQL, Frequency, WatchedLocationByAccountGQL, DeleteWatchedByIdGQL, CreateWatchedToAccountGQL, DeletePushSubscriptionByIdGQL } from 'src/app/generated/graphql';
 import { UserService } from 'src/app/services/user.service';
 import { SubscriptionLike } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -32,7 +32,7 @@ export class NotificationPreferencesComponent implements OnInit {
 
   constructor(
     private appService: AppService,
-    private updateAccountGQL: UpdateAccountGQL,
+    private updateUserGQL: UpdateUserGQL,
     private userService: UserService,
     private watchedLocationByAccountGQL: WatchedLocationByAccountGQL,
     private snackBar: MatSnackBar,
@@ -68,7 +68,7 @@ export class NotificationPreferencesComponent implements OnInit {
 
   changeFrequency() {
     console.log(this.frequency);
-    this.updateAccountGQL.mutate({
+    this.updateUserGQL.mutate({
       userId: this.userService.user.id,
       notificationFrequency: this.frequency
     })
@@ -139,7 +139,7 @@ export class NotificationPreferencesComponent implements OnInit {
     if (this.pushNotification) {
       this.appService.subscribeToPushNotifications().then(
         () => {
-          this.updateAccountGQL.mutate({
+          this.updateUserGQL.mutate({
             userId: this.userService.user.id,
             pushNotification: this.pushNotification
           })
@@ -156,7 +156,7 @@ export class NotificationPreferencesComponent implements OnInit {
       this.deletePushSubscriptionByIdGQL.mutate({ id: this.userService.user.pushSubscriptionsByAccountId.nodes[0].id })
       .subscribe(
         () => {
-          this.updateAccountGQL.mutate({
+          this.updateUserGQL.mutate({
             userId: this.userService.user.id,
             pushNotification: this.pushNotification
           })
@@ -174,7 +174,7 @@ export class NotificationPreferencesComponent implements OnInit {
 
   toggleEmailNotifications() {
     console.log(this.emailNotification);
-    this.updateAccountGQL.mutate({
+    this.updateUserGQL.mutate({
       userId: this.userService.user.id,
       emailNotification: this.emailNotification
     })

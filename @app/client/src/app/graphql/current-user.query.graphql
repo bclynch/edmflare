@@ -6,6 +6,8 @@ query currentUser {
     emailNotification,
     profilePhoto,
     id,
+    isSetup,
+    isAdmin,
     watchLists {
       totalCount
     },

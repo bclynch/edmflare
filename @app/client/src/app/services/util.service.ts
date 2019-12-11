@@ -69,7 +69,7 @@ export class UtilService {
       case 'month':
         return { min: moment().startOf('day').valueOf(), max: moment().endOf('month').valueOf() };
       case 'nextMonth':
-        return { min: this.getMonthDateRange(moment().month() === 11 ? moment().year() + 1 : moment().year(), moment().month() + 1).start.valueOf(), max: this.getMonthDateRange(moment().month() === 11 ? moment().year() + 1 : moment().year(), moment().month() + 1).end.valueOf() };
+        return { min: moment().add(1, 'months').startOf('month').valueOf(), max: moment().add(1, 'months').endOf('month').valueOf() };
       // if they select their own range
       default:
         return { min: moment(filter, 'DD-MM-YYYY').startOf('day').valueOf(), max: moment(filter, 'DD-MM-YYYY').endOf('day').valueOf() };
@@ -110,17 +110,5 @@ export class UtilService {
         binary += String.fromCharCode( bytes[ i ] );
     }
     return window.btoa( binary );
-  }
-
-  private getMonthDateRange(year, month) {
-    // month in moment is 0 based, so 9 is actually october, subtract 1 to compensate
-    // array is 'year', 'month', 'day', etc
-    const startDate = moment([year, month]);
-
-    // Clone the value before .endOf()
-    const endDate = moment(startDate).endOf('month');
-
-    // make sure to call toDate() for plain JavaScript date type
-    return { start: startDate, end: endDate };
   }
 }
