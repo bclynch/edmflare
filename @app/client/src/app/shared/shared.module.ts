@@ -42,6 +42,8 @@ import { EventCardAltComponent } from './event-card-alt/event-card-alt.component
 import { SettingsWrapperComponent } from './settings-wrapper/settings-wrapper.component';
 import { GetAppComponent } from './get-app/get-app.component';
 import { SocialLoginsComponent } from './social-logins/social-logins.component';
+import { NotificationPreferencesComponent } from './notification-preferences/notification-preferences.component';
+import { ThemeToggleComponent } from './theme-toggle/theme-toggle.component';
 
 @NgModule({
   entryComponents: [
@@ -61,7 +63,9 @@ import { SocialLoginsComponent } from './social-logins/social-logins.component';
     EventCardAltComponent,
     SettingsWrapperComponent,
     GetAppComponent,
-    SocialLoginsComponent
+    SocialLoginsComponent,
+    NotificationPreferencesComponent,
+    ThemeToggleComponent
   ],
   imports: [
     CommonModule,
@@ -120,7 +124,9 @@ import { SocialLoginsComponent } from './social-logins/social-logins.component';
     EventCardAltComponent,
     SettingsWrapperComponent,
     GetAppComponent,
-    SocialLoginsComponent
+    SocialLoginsComponent,
+    NotificationPreferencesComponent,
+    ThemeToggleComponent
   ],
   providers: [
     {provide: OverlayContainer, useClass: FullscreenOverlayContainer}

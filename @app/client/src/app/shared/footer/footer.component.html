@@ -5,17 +5,13 @@
         <h4>Use EDM Flare</h4>
         <div class="linksContainer">
           <div *ngFor="let usageLink of usageLinks;">
-            <a 
-              [routerLink]="[usageLink.path]" 
-              [queryParams]="usageLink.queryParams"
-              *ngIf="usageLink.type === 'internal'"
-            ><span *ngIf="usageLink.icon"><fa-icon [icon]="usageLink.icon"></fa-icon></span> {{usageLink.label}}</a>
-            <a
-              *ngIf="usageLink.type === 'external'"
-              [href]="usageLink.path"
-              target="_blank" 
-              rel="nofollow"
-            ><fa-icon [icon]="usageLink.icon"></fa-icon> {{usageLink.label}}</a>
+            <a [routerLink]="[usageLink.path]" [queryParams]="usageLink.queryParams"
+              *ngIf="usageLink.type === 'internal'"><span *ngIf="usageLink.icon">
+                <fa-icon [icon]="usageLink.icon"></fa-icon>
+              </span> {{usageLink.label}}</a>
+            <a *ngIf="usageLink.type === 'external'" [href]="usageLink.path" target="_blank" rel="nofollow">
+              <fa-icon [icon]="usageLink.icon"></fa-icon> {{usageLink.label}}
+            </a>
           </div>
         </div>
       </div>
@@ -23,42 +19,33 @@
         <h4>Find Shows</h4>
         <div class="linksContainer">
           <div *ngFor="let locationLink of locationLinks;">
-            <a
-              [routerLink]="[locationLink.path]" 
-              [queryParams]="locationLink.queryParams"
-            >{{locationLink.label}}</a>
+            <a [routerLink]="[locationLink.path]" [queryParams]="locationLink.queryParams">{{locationLink.label}}</a>
           </div>
         </div>
       </div>
       <div class="column connect">
         <h4>Connect With Us</h4>
         <div class="linksContainer">
-          <div *ngFor="let connectLink of connectLinks;" >
-            <a
-              *ngIf="connectLink.type === 'internal'"
-              [routerLink]="[connectLink.path]" 
-              [queryParams]="connectLink.queryParams"
-            ><fa-icon [icon]="connectLink.icon"></fa-icon> {{connectLink.label}}</a>
-            <a
-              *ngIf="connectLink.type === 'external'"
-              [href]="connectLink.path"
-              target="_blank" 
-              rel="nofollow"
-            ><fa-icon [icon]="connectLink.icon"></fa-icon> {{connectLink.label}}</a>
+          <div *ngFor="let connectLink of connectLinks;">
+            <a *ngIf="connectLink.type === 'internal'" [routerLink]="[connectLink.path]"
+              [queryParams]="connectLink.queryParams">
+              <fa-icon [icon]="connectLink.icon"></fa-icon> {{connectLink.label}}
+            </a>
+            <a *ngIf="connectLink.type === 'external'" [href]="connectLink.path" target="_blank" rel="nofollow">
+              <fa-icon [icon]="connectLink.icon"></fa-icon> {{connectLink.label}}
+            </a>
           </div>
         </div>
-        <button mat-button (click)="themeService.toggleTheme()" class="themeToggle">
-          <fa-icon [icon]="themeService.theme === 'light' ? moonIcon : sunIcon"></fa-icon>
-          <span>Toggle {{themeService.theme === 'light' ? 'Dark' : 'Light'}} Theme</span>
-        </button>
+        <app-theme-toggle></app-theme-toggle>
       </div>
     </div>
     <div class="bottomContainer">
       <div class="copyright">©{{year | date:'y'}} EDM Flare</div>
       <div class="linksWrapper">
-        <a *ngFor="let link of bottomLinks;" class="link" [routerLink]="[link.path]" [fragment]="link.fragment">{{link.label}}</a>
+        <a *ngFor="let link of bottomLinks;" class="link" [routerLink]="[link.path]"
+          [fragment]="link.fragment">{{link.label}}</a>
       </div>
-        <!-- maybe in the future localization select -->
+      <!-- maybe in the future localization select -->
       <div class="spacer"></div>
     </div>
   </div>

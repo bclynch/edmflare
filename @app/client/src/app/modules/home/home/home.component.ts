@@ -36,23 +36,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   featuredEvents = [];
 
-  features = [
-    {
-      icon: faCompactDisc,
-      header: 'Discover New Artists',
-      content: 'It\'s impossible to stay up to date with all the new artists on the scene, but we can help. In addition to checking out upcoming shows see artist bios, social media, and music to see if they are the DJ you\'re looking for.'
-    },
-    {
-      icon: faUsers,
-      header: 'Find Community',
-      content: 'Got questions about a gig coming up? Leave a comment and get help from fellow EDM Flare users on event and venue pages with tips and answers to help make your show a smooth, memorable time.'
-    },
-    {
-      icon: faBell,
-      header: 'Get Updates On New Shows',
-      content: 'Get updates straight to your device about new shows coming to town. Whether you want an email once every few weeks or a notification to your phone every day, we\'ve got you covered. <a href="/signup">Sign up</a> to get started.'
-    },
-  ];
+  features = [];
 
   initSubscription: SubscriptionLike;
 
@@ -68,7 +52,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.appService.modPageMeta('Discover EDM events, information, and community', `EDM Flare is the most comprehensive and easy to use source for all things edm`);
 
     // queue up carousel
-    setInterval(() => this.activeSlide = this.activeSlide === this.carouselSlides.length - 1 ? 0 : this.activeSlide += 1, 10000 );
+    setInterval(() => {
+      const lastSlide = this.activeSlide === this.carouselSlides.length - 1;
+      this.activeSlide = lastSlide ? 0 : this.activeSlide += 1
+    }, 10000 );
 
     const location = this.cookieService.get('edm-location');
     if (location) {
@@ -82,6 +69,23 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.initSubscription = this.appService.appInited.subscribe(
       (inited) =>  {
         if (inited) {
+          this.features = [
+            {
+              icon: faCompactDisc,
+              header: 'Discover New Artists',
+              content: 'It\'s impossible to stay up to date with all the new artists on the scene, but we can help. In addition to checking out upcoming shows see artist bios, social media, and music to see if they are the DJ you\'re looking for.'
+            },
+            {
+              icon: faUsers,
+              header: 'Find Community',
+              content: 'Got questions about a gig coming up? Leave a comment and get help from fellow EDM Flare users on event and venue pages with tips and answers to help make your show a smooth, memorable time.'
+            },
+            {
+              icon: faBell,
+              header: 'Get Updates On New Shows',
+              content: `Get updates straight to your device about new shows coming to town. Whether you want an email once every few weeks or a notification to your phone every day, we\'ve got you covered. ${this.userService.user ? '' : '<a href="/signup">Sign up</a> to get started.'}`
+            }
+          ]
           // fetch featured
           const range = this.utilService.calculateDateRange('any');
           let queryParams: any = {
@@ -94,12 +98,12 @@ export class HomeComponent implements OnInit, OnDestroy {
           if (typeof this.appService.locationsObj[this.selectedLocation] === 'number') {
             queryParams = { ...queryParams, cityId: this.appService.locationsObj[this.selectedLocation] };
             this.searchEventsByCityGQL.fetch(queryParams).subscribe(
-              ({ data }) => this.featuredEvents = data.searchEventsByCity.nodes
+              ({ data }) => { this.featuredEvents = data.searchEventsByCity.nodes }
             );
           } else {
             queryParams = { ...queryParams, regionName: this.appService.locationsObj[this.selectedLocation] };
             this.searchEventsByRegionGQL.fetch(queryParams).subscribe(
-              ({ data }) => this.featuredEvents = data.searchEventsByRegion.nodes
+              ({ data }) => { this.featuredEvents = data.searchEventsByRegion.nodes }
             );
           }
         }
