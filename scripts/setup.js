@@ -282,6 +282,36 @@ async function updateDotenv(answers) {
 # Client Secret:`
   );
 
+  add(
+    'GOOGLE_PLACES_API',
+    'AIzaSyCqvrDs1YdOoXRFfMiSJXX1mRNotheTLEE',
+    `\
+# Google places key:`
+  );
+
+  // AWS KEYS
+
+  add(
+    'AWS_REGION',
+    'us-east-1',
+    `\
+# AWS Region:`
+  );
+
+  add(
+    'AWS_SECRET_ACCESS_KEY',
+    'zGWMc/j5LaF6XZ10+JrGI0sBAV3UNzGaRB08rNKh',
+    `\
+# AWS Secret:`
+  );
+
+  add(
+    'AWS_ACCESS_KEY_ID',
+    'AKIAI4DRWADQ6NP3TQFA',
+    `\
+# AWS Access Key:`
+  );
+
   const nodeVersion = parseInt(
     process.version.replace(/\..*$/, '').replace(/[^0-9]/g, ''),
     10

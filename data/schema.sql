@@ -229,9 +229,10 @@ CREATE TABLE edm.users (
     profile_photo text,
     is_admin boolean DEFAULT false NOT NULL,
     notification_frequency edm.frequency DEFAULT 'Never'::edm.frequency NOT NULL,
-    push_notification boolean DEFAULT false,
-    email_notification boolean DEFAULT false,
+    push_notification boolean DEFAULT false NOT NULL,
+    email_notification boolean DEFAULT false NOT NULL,
     is_verified boolean DEFAULT false NOT NULL,
+    is_setup boolean DEFAULT false NOT NULL,
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     CONSTRAINT users_profile_photo_check CHECK ((profile_photo ~ '^https?://[^/]+'::text)),
@@ -300,6 +301,20 @@ COMMENT ON COLUMN edm.users.push_notification IS 'Boolean yes or no for push not
 --
 
 COMMENT ON COLUMN edm.users.email_notification IS 'Boolean yes or no for email notifications';
+
+
+--
+-- Name: COLUMN users.is_verified; Type: COMMENT; Schema: edm; Owner: -
+--
+
+COMMENT ON COLUMN edm.users.is_verified IS 'Boolean that indicates whether user has verified their email or not';
+
+
+--
+-- Name: COLUMN users.is_setup; Type: COMMENT; Schema: edm; Owner: -
+--
+
+COMMENT ON COLUMN edm.users.is_setup IS 'Boolean that indicates whether user has successfully went through / submitted the user setup process. If not then they get an option in their nav dropdown to do so.';
 
 
 --
@@ -3801,6 +3816,13 @@ GRANT UPDATE(push_notification) ON TABLE edm.users TO edm_xyz_visitor;
 --
 
 GRANT UPDATE(email_notification) ON TABLE edm.users TO edm_xyz_visitor;
+
+
+--
+-- Name: COLUMN users.is_setup; Type: ACL; Schema: edm; Owner: -
+--
+
+GRANT UPDATE(is_setup) ON TABLE edm.users TO edm_xyz_visitor;
 
 
 --

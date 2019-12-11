@@ -5,21 +5,20 @@ const request = require('request').defaults({ encoding: null });
 
 // Access key and secret id being pulled from env vars and in my drive as backup
 aws.config.update({ region: process.env.AWS_REGION });
-const photoBucket = process.env.NODE_ENV === 'production' ? new aws.S3({params: {Bucket: 'edm-flare'}}) : new aws.S3({params: {Bucket: 'edm-flare-staging'}});
+const photoBucket = process.env.NODE_ENV === 'production' ? new aws.S3({ params: { Bucket: 'edm-flare' } }) : new aws.S3({ params: { Bucket: 'edm-flare-staging' } });
 
 ///////////////////////////////////////////////////////
 ///////////////////Save To S3
 ///////////////////////////////////////////////////////
 
-function uploadToS3(buffer: Buffer, destFileName: string, callback: any) {
+function uploadToS3(buffer: any, destFileName: string, callback: any) {
   return new Promise(() => {
-    photoBucket
-      .upload({
-          ACL: 'public-read',
-          Body: buffer,
-          Key: destFileName, // file name
-          ContentType: 'application/octet-stream' // force download if it's accessed as a top location
-      })
+    photoBucket.upload({
+      ACL: 'public-read',
+      Body: buffer.body,
+      Key: destFileName, // file name
+      ContentType: 'application/octet-stream' // force download if it's accessed as a top location
+    })
       // http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3/ManagedUpload.html#httpUploadProgress-event
       // .on('httpUploadProgress', function(evt) { console.log(evt); })
       // http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3/ManagedUpload.html#send-property

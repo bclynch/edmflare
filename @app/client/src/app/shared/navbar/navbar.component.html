@@ -1,14 +1,10 @@
-<div
-  class="navBarContainer"
-  [ngClass]="
+<div class="navBarContainer" [ngClass]="
     collapsibleNav
       ? utilService.scrollDirection === 'down'
         ? 'hidden'
         : null
       : null
-  "
-  id="navBar"
->
+  " id="navBar">
   <div class="navBarWrapper">
     <div class="barWrapper">
       <div class="backWrapper">
@@ -17,38 +13,25 @@
         </button>
       </div>
       <div class="logoWrapper">
-        <a class="logo" [routerLink]="['/']"
-          ><img src="assets/images/edm_flare_opt.svg" alt="EDM Flare Logo"
-        /></a>
+        <a class="logo" [routerLink]="['/']"><img src="assets/images/edm_flare_opt.svg" alt="EDM Flare Logo" /></a>
       </div>
       <div class="right">
-        <a
-          [routerLink]="['/login']"
-          [queryParams]="{ redirect: router.url }"
-          *ngIf="!signedIn"
-        >
+        <a [routerLink]="['/login']" [queryParams]="{ redirect: router.url }" *ngIf="!signedIn">
           <button mat-button>Login</button>
         </a>
         <div *ngIf="signedIn">
           <button class="menuBtn" mat-button [matMenuTriggerFor]="menu">
-            <mat-icon *ngIf="!userService.user.profilePhoto"
-              >person_outline</mat-icon
-            >
-            <img
-              [src]="userService.user.profilePhoto"
-              alt="User profile photo"
-              *ngIf="userService.user.profilePhoto"
-            />
+            <mat-icon *ngIf="!userService.user.profilePhoto">person_outline</mat-icon>
+            <img [src]="userService.user.profilePhoto" alt="User profile photo" *ngIf="userService.user.profilePhoto" />
           </button>
           <mat-menu #menu="matMenu" [overlapTrigger]="false" xPosition="before">
             <div *ngIf="signedIn">
-              <a [routerLink]="['/user/' + userService.user.username]"
-                ><button mat-menu-item>Feed</button></a
-              >
+              <a [routerLink]="['/user-setup']" *ngIf="!userService.user.isSetup">
+                <button mat-menu-item>Complete User Setup</button>
+              </a>
+              <a [routerLink]="['/user/' + userService.user.username]"><button mat-menu-item>Feed</button></a>
               <!-- <a [routerLink]="['/create-event']"><button mat-menu-item>Create Event</button></a> -->
-              <a [routerLink]="['/settings']"
-                ><button mat-menu-item>Account Settings</button></a
-              >
+              <a [routerLink]="['/settings']"><button mat-menu-item>Account Settings</button></a>
               <button mat-menu-item (click)="userService.logoutUser()">
                 Log out
               </button>

@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SubscriptionLike } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { UpdateAccountGQL } from 'src/app/generated/graphql';
+import { UpdateUserGQL } from 'src/app/generated/graphql';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserService } from 'src/app/services/user.service';
 
@@ -17,7 +17,7 @@ export class UnsubscribeComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private updateAccountGQL: UpdateAccountGQL,
+    private updateUserGQL: UpdateUserGQL,
     public snackBar: MatSnackBar,
     private userService: UserService
   ) {
@@ -35,7 +35,7 @@ export class UnsubscribeComponent implements OnInit, OnDestroy {
 
   unsubscribe() {
     if (this.userId) {
-      this.updateAccountGQL.mutate({
+      this.updateUserGQL.mutate({
         userId: this.userId,
         emailNotification: false
       })

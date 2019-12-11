@@ -1,4 +1,11 @@
-mutation updateAccount($userId: Int!, $profilePhoto: String, $notificationFrequency: Frequency, $pushNotification: Boolean, $emailNotification: Boolean) {
+mutation updateUser(
+  $userId: Int!,
+  $profilePhoto: String,
+  $notificationFrequency: Frequency,
+  $pushNotification: Boolean,
+  $emailNotification: Boolean,
+  $isSetup: Boolean
+) {
   updateUser (
     input: {
       id: $userId,
@@ -6,7 +13,8 @@ mutation updateAccount($userId: Int!, $profilePhoto: String, $notificationFreque
         notificationFrequency: $notificationFrequency,
         profilePhoto: $profilePhoto,
         pushNotification: $pushNotification,
-        emailNotification: $emailNotification
+        emailNotification: $emailNotification,
+        isSetup: $isSetup
       }
   	}
   ) {
