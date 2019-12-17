@@ -13,7 +13,7 @@ create table edm.users (
   name                       text,
   profile_photo              text check(profile_photo ~ '^https?://[^/]+'),
   is_admin                   boolean not null default false,
-  notification_frequency     edm.frequency not null default 'Never',
+  notification_frequency     edm.frequency not null default 'Once a week',
   push_notification          boolean not null default false,
   email_notification         boolean not null default false,
   is_verified                boolean not null default false,

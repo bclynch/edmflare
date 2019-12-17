@@ -1,8 +1,13 @@
 .formWrapper {
-  width: 100%;
   max-width: 500px;
 
   .mat-form-field {
     display: block;
+  }
+  mat-chip {
+    color: white !important;
+  }
+  p {
+    font-weight: bold;
   }
 }

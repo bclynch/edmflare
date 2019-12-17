@@ -123,9 +123,7 @@ export class NotificationPreferencesComponent implements OnInit {
     }
   }
 
-  removeLocation(e, id: number, index: number) {
-    e.preventDefault();
-
+  removeLocation(id: number, index: number) {
     this.deleteWatchedByIdGQL.mutate({ id })
       .subscribe(
         () => this.locations.splice(index, 1),

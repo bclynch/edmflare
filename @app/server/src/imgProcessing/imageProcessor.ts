@@ -1,11 +1,12 @@
-const aws = require('aws-sdk');
-const readline = require('readline');
+import aws from 'aws-sdk';
+import readline from 'readline';
 require('dotenv').config();
 const request = require('request').defaults({ encoding: null });
 
 // Access key and secret id being pulled from env vars and in my drive as backup
 aws.config.update({ region: process.env.AWS_REGION });
-const photoBucket = process.env.NODE_ENV === 'production' ? new aws.S3({ params: { Bucket: 'edm-flare' } }) : new aws.S3({ params: { Bucket: 'edm-flare-staging' } });
+const Bucket = process.env.NODE_ENV === 'production' ? 'edm-flare' : 'edm-flare-staging';
+const photoBucket = new aws.S3({ params: { Bucket } });
 
 ///////////////////////////////////////////////////////
 ///////////////////Save To S3
@@ -17,7 +18,8 @@ function uploadToS3(buffer: any, destFileName: string, callback: any) {
       ACL: 'public-read',
       Body: buffer.body,
       Key: destFileName, // file name
-      ContentType: 'application/octet-stream' // force download if it's accessed as a top location
+      ContentType: 'application/octet-stream', // force download if it's accessed as a top location
+      Bucket
     })
       // http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3/ManagedUpload.html#httpUploadProgress-event
       // .on('httpUploadProgress', function(evt) { console.log(evt); })
@@ -58,7 +60,7 @@ export default (images: { photo: any; name: string; }[], type: string, path: str
       const processedImages = [];
 
       for (const [index, x] of iterable.entries()) {
-        readline.clearLine(process.stdout);
+        readline.clearLine(process.stdout, 0);
         readline.cursorTo(process.stdout, 0);
         process.stdout.write(`Processing + uploading image ${index + 1} of ${iterable.length}`);
         processedImages.push(await action(x));

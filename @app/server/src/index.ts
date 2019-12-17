@@ -5,6 +5,7 @@ import { createServer } from 'http';
 import { makeApp, getShutdownActions } from './app';
 // import { scrapeEvents } from './scraping/scrape';
 // import migrateDB from './migration/migration';
+import db from './data/db';
 
 // @ts-ignore
 const packageJson = require('../../../package.json');
@@ -25,6 +26,27 @@ async function main() {
 
   // scrapeEvents();
   // migrateDB();
+
+  // test job creation via db call
+  // can hopefully create simple wrapper for this
+  const payload = {
+    test: 'This email thing works. Neat.',
+    email: 'boobs@aol.com'
+  }
+  const sql = `
+  SELECT graphile_worker.add_job(
+    'user__welcome_email',
+    json_build_object(
+      'test', '${payload.test}',
+      'email', '${payload.email}'
+    )
+  );
+  `;
+  console.log('SQL: ', sql);
+  // db.query(sql, (err: any, data: { rows: any }) => {
+  //   if (err) console.log(err);
+  //   console.log('DATA FROM JOB QUERY: ', data);
+  // });
 
   // And finally, we open the listen port
   const PORT = parseInt(process.env.PORT || '', 10) || 3000;

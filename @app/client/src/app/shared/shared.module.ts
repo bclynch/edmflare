@@ -22,6 +22,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatChipsModule } from '@angular/material/chips';
 import { ShareButtonsModule } from '@ngx-share/buttons';
 import { AgmCoreModule } from '@agm/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -86,6 +87,7 @@ import { ThemeToggleComponent } from './theme-toggle/theme-toggle.component';
     MatTabsModule,
     MatSidenavModule,
     MatCheckboxModule,
+    MatChipsModule,
     DirectivesModule,
     RouterModule,
     ReactiveFormsModule,
@@ -114,6 +116,7 @@ import { ThemeToggleComponent } from './theme-toggle/theme-toggle.component';
     MatTabsModule,
     MatSidenavModule,
     MatCheckboxModule,
+    MatChipsModule,
     PagewrapperComponent,
     FooterComponent,
     NavbarComponent,
