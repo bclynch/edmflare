@@ -29,20 +29,64 @@ async function main() {
 
   // test job creation via db call
   // can hopefully create simple wrapper for this
-  const payload = {
-    test: 'This email thing works. Neat.',
-    email: 'boobs@aol.com'
-  }
+  const shows = [
+    {
+      venue: 'Majestic Theatre Madison - Madison, WI',
+      event: 'Shallou,  Slow Magic',
+      startDate: 'April 5th, 2019',
+      id: 'L9AWv'
+    },
+    {
+      venue: 'The Annex at The Red Zone Madison - Madison, WI',
+      event: 'Barely Alive at The Annex',
+      startDate: 'April 20th, 2019',
+      id: 'pY7PX' },
+    {
+      venue: 'The Annex at The Red Zone Madison - Madison, WI',
+      event: 'DMVU at The Annex',
+      startDate: 'March 23rd, 2019',
+      id: 'ERKyg'
+    },
+    {
+      venue: 'Majestic Theatre Madison - Madison, WI',
+      event: 'Shallou,  Slow Magic',
+      startDate: 'April 5th, 2019',
+      id: 'L9AWv'
+    },
+    {
+      venue: 'The Annex at The Red Zone Madison - Madison, WI',
+      event: 'Barely Alive at The Annex',
+      startDate: 'April 20th, 2019',
+      id: 'pY7PX' },
+    {
+      venue: 'The Annex at The Red Zone Madison - Madison, WI',
+      event: 'DMVU at The Annex',
+      startDate: 'March 23rd, 2019',
+      id: 'ERKyg'
+    }
+  ];
   const sql = `
   SELECT graphile_worker.add_job(
-    'user__welcome_email',
+    'event_updates',
     json_build_object(
-      'test', '${payload.test}',
-      'email', '${payload.email}'
+      'shows', '${JSON.stringify(shows)}',
+      'email', 'coolio@aol.com'
     )
   );
   `;
-  console.log('SQL: ', sql);
+  // const payload = {
+  //   test: 'This email thing works. Neat.',
+  //   email: 'boobs@aol.com'
+  // }
+  // const sql = `
+  // SELECT graphile_worker.add_job(
+  //   'user__welcome_email',
+  //   json_build_object(
+  //     'test', '${payload.test}',
+  //     'email', '${payload.email}'
+  //   )
+  // );
+  // `;
   // db.query(sql, (err: any, data: { rows: any }) => {
   //   if (err) console.log(err);
   //   console.log('DATA FROM JOB QUERY: ', data);
