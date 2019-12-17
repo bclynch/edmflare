@@ -1,12 +1,13 @@
 <app-pagewrapper>
   <div class="setupContainer">
     <img class="logoImg" src="assets/icons/icon-192x192.png" alt="EDM Flare Logo" />
-    <h3>Let's get you set up to get the most out of EDM Flare</h3>
-    <h5>Setup Notifications</h5>
+    <h3>Setup</h3>
+    <h5>Notifications</h5>
     <app-notification-preferences-component></app-notification-preferences-component>
-    <h5>Choose a Theme</h5>
-    <app-theme-toggle></app-theme-toggle>
-    <h5>Ways To Use EDM Flare</h5>
+    <div class="themeWrapper">
+      <h5>Choose a Theme</h5>
+      <app-theme-toggle></app-theme-toggle>
+    </div>
     <app-get-app></app-get-app>
     <button mat-flat-button color="accent" (click)="completeSetup()" class="complete">Complete Setup
     </button>

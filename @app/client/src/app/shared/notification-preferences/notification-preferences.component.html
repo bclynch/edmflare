@@ -1,6 +1,6 @@
 <div class="formWrapper">
   <div class="frequencyContainer">
-    <h5>Frequency To Receive New Show Updates</h5>
+    <p>Frequency To Receive New Show Updates</p>
     <mat-form-field>
       <mat-select name="frequencyInput" [(ngModel)]="frequency" (selectionChange)="changeFrequency()">
         <mat-option *ngFor="let frequency of frequencies;" [value]="frequency.value">
@@ -16,17 +16,17 @@
   <div class="emailContainer" *ngIf="frequency !== 'NEVER'">
     <h5>Email Notifications</h5>
     <mat-checkbox [(ngModel)]="emailNotification" (change)="toggleEmailNotifications()">Receive email notifications
-      about newly added shows</mat-checkbox>
+    </mat-checkbox>
     <div class="locationsContainer" *ngIf="emailNotification">
-      <h6>Locations to Receive Email Updates For (up to 5)</h6>
-      <div class="locationsWrapper">
-        <div *ngFor="let location of locations; let i = index" class="locationRow">
-          <div>{{location.label}}</div>
-          <button mat-button (click)="removeLocation($event, location.id, i)" class="removeBtn">Remove</button>
-        </div>
-      </div>
-      <app-location-search placeholder="Search Location" autocomplete="off" (selected)="selectLocation($event)"
-        [value]="locationValue"></app-location-search>
+      <app-location-search placeholder="Search Location (up to 5)" autocomplete="off"
+        (selected)="selectLocation($event)" [value]="locationValue"></app-location-search>
+      <mat-chip-list aria-label="Location selection">
+        <mat-chip *ngFor="let location of locations; let i = index" [removable]="true"
+          (removed)="removeLocation(location.id, i)" color="accent" selected>
+          {{location.label}}
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+      </mat-chip-list>
     </div>
   </div>
 </div>

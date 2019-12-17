@@ -33,10 +33,9 @@
     -   Walk user through a newly registered page
         -   ~~Show theme~~
         -   ~~Show apps~~
-        -   Setup fav locales
+        -   ~~Setup fav locales~~
         -   Set up notifications
         - ~~Would be nice to have an option in the dropdown menu that sends you to the user setup page if it hasn't been "completed". This is handy since the social logins won't send user there. When completed turn boolean on user object so it's out of the menu~~
-        - Probably worthwhile to have an override on the prefs component to set the notification frequency to once a week by default on the setup page (not actually done until they opt in / change).
     -   ~~Rework login / register page~~
 -   Bring back existing functionality on server with TS
     - ~~Scraping~~
@@ -51,6 +50,8 @@
 -   Look at Docker for production
     - See about getting a proper CI going with the github workflow here
 - Look at getting scrape and daily email hooked up to our worker to offload them there
+  - Would need to reformat handlebar emails to the other thing
+  - [You can schedule jobs directly in the database, e.g. from a trigger or function, or by calling SQL from your application code.](https://github.com/graphile/worker#scheduling-jobs)
 - Inputs on location search look weird with text and placeholder
 
 ## Running Local Dev Currently
