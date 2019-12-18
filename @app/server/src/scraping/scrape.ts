@@ -13,7 +13,7 @@ import moment from 'moment';
 import uploadImages from '../imgProcessing/imageProcessor';
 import db from '../data/db';
 
-function initScrapeCronJob() {
+export function initScrapeCronJob() {
   // setup job to fire every night to scrape 3am EST (7am UTC server time)
   const job = new CronJob('00 00 07 * * *', () => scrapeEvents());
   job.start();
@@ -166,9 +166,21 @@ export function scrapeEvents() {
     }
 
     // send off an email of the info for the scrape
-    // email.emailScrapeResults(successfulCitiesScraped, dbScrapeErrors);
-    console.log(chalk.blue.bold(`Successfully updated DB with ${successfulCitiesScraped} cities scraped and ${citiesArr.length - successfulCitiesScraped} errors`));
-    console.timeEnd(chalk.cyan.bold('Total scrape time'));
+    const sql = `
+    SELECT graphile_worker.add_job(
+      'scrape_report',
+      json_build_object(
+        'dbErrors', '${JSON.stringify(dbScrapeErrors)}',
+        'numberErrors', '${Object.keys(dbScrapeErrors).length}'
+      )
+    );
+    `;
+
+    db.query(sql, (err: any) => {
+      if (err) console.log(err);
+      console.log(chalk.blue.bold(`Successfully updated DB with ${successfulCitiesScraped} cities scraped and ${citiesArr.length - successfulCitiesScraped} errors`));
+      console.timeEnd(chalk.cyan.bold('Total scrape time'));
+    });
   }
 
   mapSeries(citiesArr, scrapeCityPromise);

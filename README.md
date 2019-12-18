@@ -50,8 +50,11 @@
 -   Look at Docker for production
     - See about getting a proper CI going with the github workflow here
 - Look at getting scrape and daily email hooked up to our worker to offload them there
-  - Would need to reformat handlebar emails to the other thing
-  - [You can schedule jobs directly in the database, e.g. from a trigger or function, or by calling SQL from your application code.](https://github.com/graphile/worker#scheduling-jobs)
+  - ~~Would need to reformat handlebar emails to the other thing~~
+    - ~~Contact~~
+    - ~~Events update~~
+    - Scrape update needs a little TLC
+  - ~~[You can schedule jobs directly in the database, e.g. from a trigger or function, or by calling SQL from your application code.](https://github.com/graphile/worker#scheduling-jobs)~~
 - Inputs on location search look weird with text and placeholder
 
 ## Running Local Dev Currently

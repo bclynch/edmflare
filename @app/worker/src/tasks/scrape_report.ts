@@ -3,14 +3,14 @@ import moment from 'moment';
 import { SendEmailPayload } from './send_email';
 
 interface ScrapeReportEmailPayload {
-  dbErrors: object;
+  dbErrors: string;
+  numberErrors: number;
 }
 
 const task: Task = async (inPayload, { addJob }) => {
   const payload: ScrapeReportEmailPayload = inPayload as any;
-  const { dbErrors } = payload;
+  const { dbErrors, numberErrors } = payload;
 
-  const numberErrors = Object.keys(dbErrors).length;
   const sendEmailPayload: SendEmailPayload = {
     options: {
       to: 'bclynch7@gmail.com',
@@ -19,7 +19,7 @@ const task: Task = async (inPayload, { addJob }) => {
     },
     template: 'scrape_report.mjml',
     variables: {
-      errorLog: JSON.stringify(dbErrors),
+      errorLog: dbErrors,
       numberErrors
     }
   };
