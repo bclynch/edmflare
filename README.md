@@ -75,6 +75,10 @@ yarn worker dev
 yarn client start
 ```
 
+## Digital Ocean Login
+
+- `$ ssh edmflare@206.189.194.173`
+
 ## Features
 
 **Speedy development**: hot reloading, easy debugging,
@@ -249,3 +253,47 @@ currently have environment validation (PRs welcome!).
 ## Production build for local mode
 
 Use `yarn run build` to generate a production build of the project
+
+## AWS Setup
+- Email is only available from US East N. Virginia and US West Oregon so keep that in mind...
+
+### SES
+- $0.10 for every 1,000 emails you send or receive.
+- https://medium.com/viithiisys/node-mailer-with-amazon-ses-6fb18bea568e
+- Head over to SES in the AWS console https://console.aws.amazon.com/ses/home
+- Verify a new domain to be able to send emails from
+  - https://docs.aws.amazon.com/ses/latest/DeveloperGuide/verify-domain-procedure.html
+  - Enter the domain, click to select dkim, and get the network settings needed to add to the domain. Should be three cname and one txt
+- https://nodemailer.com/transports/ses/
+- If your account is still in the Amazon SES sandbox, you also must verify every recipient email address except for the recipients provided by the Amazon SES mailbox simulator.
+
+### RDS
+
+- Important reminders:
+    - Set the option for making the db public so you get an endpoint for it. Must be done on creation!
+    - Set inbound security group to be all traffic (something like 0.0.0.0) otherwise it hangs and doesn't work
+#### Basic Setup
+- Install AWS CLI `$ brew install awscli`
+- Launch a new RDS instance from AWS console
+- Run `$ aws rds describe-db-instances` to check on your db's info
+- Change the parameter group of your instance to force ssl. (set to one)
+#### Connect to Postgres GUI
+- http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ConnectToPostgreSQLInstance.html
+- Can right click on a db and select 'Execute SQL File'. Load up the schema then load up any data.
+- When running sql the first time to set up dbs and roles and such RDS does not allow `COMMENT ON EXTENSION`. If it exists anywhere in the sql needs to be removed.
+
+## Postgres Indexing
+- https://devcenter.heroku.com/articles/postgresql-indexes
+- When you are ready to apply an index on your production database, keep in mind that creating an index locks the table against writes. For big tables that can mean your site is down for hours. Fortunately Postgres allows you to CREATE INDEX CONCURRENTLY, which will take much longer to build, but does not require a lock that blocks writes. Ordinary CREATE INDEX commands require a lock that blocks writes but not reads.
+- Finally, **indexes will become fragmented and unoptimized after some time, especially if the rows in the table are often updated or deleted.** In those cases it may be required to perform a REINDEX leaving you with a balanced and optimized index. However be cautious about reindexing big indexes as write locks are obtained on the parent table. One strategy to achieve the same result on a live site is to build an index concurrently on the same table and columns but with a different name, and then dropping the original index and renaming the new one. This procedure, while much longer, won’t require any long running locks on the live tables.
+- Look more closely at the api calls we make regularly for where statements / joins and create indicies for those columns
+
+### Rules of thumb
+- Index every primary key. (postgres does this)
+- Index every foreign key.
+- Index every column used in a JOIN clause.
+- Index every column used in a WHERE clause.
+
+## Postgres Setup
+- Important note that I am using a newly created role, edm_super, in my db/index.js pg connection so it has super user connection on the server only. Otherwise my graphql server is set to my edm_adm role without super user and should respect the roles
+- No super users on AWS, but the rds_superuser role is a pre-defined Amazon RDS role similar to the PostgreSQL superuser role

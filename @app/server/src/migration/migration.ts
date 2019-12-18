@@ -2,7 +2,8 @@ import pg from 'pg';
 import chalk from 'chalk';
 import sanitize from '../utils/sanitize';
 
-// const existingRDSConfig = {
+// RDS configs
+// const existingDbConfig = {
 //   host: process.env.DATABASE_ADDRESS,
 //   port: 5432,
 //   user: process.env.NODE_DB_SUPER_USER,
@@ -10,7 +11,7 @@ import sanitize from '../utils/sanitize';
 //   database: process.env.DATABASE_NAME
 // };
 
-// const newRDSConfig = {
+// const newDbConfig = {
 //   host: process.env.DATABASE_ADDRESS,
 //   port: 5432,
 //   user: process.env.NODE_DB_SUPER_USER,
@@ -19,22 +20,22 @@ import sanitize from '../utils/sanitize';
 // };
 
 // testing local dbs
-const existingRDSConfig = {
+const existingDbConfig = {
   user: 'edm_super', // name of the user account
   database: 'edm', // name of the database
   max: 10, // max number of clients in the pool
   idleTimeoutMillis: 30000 // how long a client is allowed to remain idle before being closed
 };
 
-const newRDSConfig = {
+const newDbConfig = {
   user: 'edm_xyz', // name of the user account
   database: 'edm_xyz', // name of the database
   max: 10, // max number of clients in the pool
   idleTimeoutMillis: 30000 // how long a client is allowed to remain idle before being closed
 };
 
-const existingDB = new pg.Pool(existingRDSConfig);
-const newDB = new pg.Pool(newRDSConfig);
+const existingDB = new pg.Pool(existingDbConfig);
+const newDB = new pg.Pool(newDbConfig);
 
 const schema = 'edm';
 
