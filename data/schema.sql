@@ -16,6 +16,16 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
+-- manually added these in so they would run on the new db script for RDS
+-- normally are dont in the setup script locally. This will probably be overwritten...
+CREATE ROLE edm_authenticator WITH LOGIN PASSWORD '01481239a706ad342f7e6c5298bff8b3af2be9d0' NOINHERIT;
+CREATE ROLE edm_visitor;
+GRANT edm_visitor TO edm_authenticator;
+REVOKE ALL ON DATABASE edmflare FROM PUBLIC;
+GRANT CONNECT ON DATABASE edmflare TO edm;
+GRANT CONNECT ON DATABASE edmflare TO edm_authenticator;
+GRANT ALL ON DATABASE edmflare TO edm;
+
 --
 -- Name: edm; Type: SCHEMA; Schema: -; Owner: -
 --
@@ -48,7 +58,6 @@ CREATE EXTENSION IF NOT EXISTS citext WITH SCHEMA public;
 -- Name: EXTENSION citext; Type: COMMENT; Schema: -; Owner: -
 --
 
-COMMENT ON EXTENSION citext IS 'data type for case-insensitive character strings';
 
 
 --
@@ -62,7 +71,6 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
 -- Name: EXTENSION pgcrypto; Type: COMMENT; Schema: -; Owner: -
 --
 
-COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
 
 
 --
@@ -76,7 +84,6 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA public;
 -- Name: EXTENSION "uuid-ossp"; Type: COMMENT; Schema: -; Owner: -
 --
 
-COMMENT ON EXTENSION "uuid-ossp" IS 'generate universally unique identifiers (UUIDs)';
 
 
 --
@@ -3752,275 +3759,275 @@ ALTER TABLE edm_private.user_secrets ENABLE ROW LEVEL SECURITY;
 -- Name: SCHEMA edm; Type: ACL; Schema: -; Owner: -
 --
 
-GRANT USAGE ON SCHEMA edm TO edm_xyz_visitor;
+GRANT USAGE ON SCHEMA edm TO edm_visitor;
 
 
 --
 -- Name: SCHEMA edm_hidden; Type: ACL; Schema: -; Owner: -
 --
 
-GRANT USAGE ON SCHEMA edm_hidden TO edm_xyz_visitor;
+GRANT USAGE ON SCHEMA edm_hidden TO edm_visitor;
 
 
 --
 -- Name: FUNCTION change_password(old_password text, new_password text); Type: ACL; Schema: edm; Owner: -
 --
 
-GRANT ALL ON FUNCTION edm.change_password(old_password text, new_password text) TO edm_xyz_visitor;
+GRANT ALL ON FUNCTION edm.change_password(old_password text, new_password text) TO edm_visitor;
 
 
 --
 -- Name: TABLE users; Type: ACL; Schema: edm; Owner: -
 --
 
-GRANT SELECT ON TABLE edm.users TO edm_xyz_visitor;
+GRANT SELECT ON TABLE edm.users TO edm_visitor;
 
 
 --
 -- Name: COLUMN users.username; Type: ACL; Schema: edm; Owner: -
 --
 
-GRANT UPDATE(username) ON TABLE edm.users TO edm_xyz_visitor;
+GRANT UPDATE(username) ON TABLE edm.users TO edm_visitor;
 
 
 --
 -- Name: COLUMN users.name; Type: ACL; Schema: edm; Owner: -
 --
 
-GRANT UPDATE(name) ON TABLE edm.users TO edm_xyz_visitor;
+GRANT UPDATE(name) ON TABLE edm.users TO edm_visitor;
 
 
 --
 -- Name: COLUMN users.profile_photo; Type: ACL; Schema: edm; Owner: -
 --
 
-GRANT UPDATE(profile_photo) ON TABLE edm.users TO edm_xyz_visitor;
+GRANT UPDATE(profile_photo) ON TABLE edm.users TO edm_visitor;
 
 
 --
 -- Name: COLUMN users.notification_frequency; Type: ACL; Schema: edm; Owner: -
 --
 
-GRANT UPDATE(notification_frequency) ON TABLE edm.users TO edm_xyz_visitor;
+GRANT UPDATE(notification_frequency) ON TABLE edm.users TO edm_visitor;
 
 
 --
 -- Name: COLUMN users.push_notification; Type: ACL; Schema: edm; Owner: -
 --
 
-GRANT UPDATE(push_notification) ON TABLE edm.users TO edm_xyz_visitor;
+GRANT UPDATE(push_notification) ON TABLE edm.users TO edm_visitor;
 
 
 --
 -- Name: COLUMN users.email_notification; Type: ACL; Schema: edm; Owner: -
 --
 
-GRANT UPDATE(email_notification) ON TABLE edm.users TO edm_xyz_visitor;
+GRANT UPDATE(email_notification) ON TABLE edm.users TO edm_visitor;
 
 
 --
 -- Name: COLUMN users.is_setup; Type: ACL; Schema: edm; Owner: -
 --
 
-GRANT UPDATE(is_setup) ON TABLE edm.users TO edm_xyz_visitor;
+GRANT UPDATE(is_setup) ON TABLE edm.users TO edm_visitor;
 
 
 --
 -- Name: TABLE user_emails; Type: ACL; Schema: edm; Owner: -
 --
 
-GRANT SELECT,DELETE ON TABLE edm.user_emails TO edm_xyz_visitor;
+GRANT SELECT,DELETE ON TABLE edm.user_emails TO edm_visitor;
 
 
 --
 -- Name: COLUMN user_emails.email; Type: ACL; Schema: edm; Owner: -
 --
 
-GRANT INSERT(email) ON TABLE edm.user_emails TO edm_xyz_visitor;
+GRANT INSERT(email) ON TABLE edm.user_emails TO edm_visitor;
 
 
 --
 -- Name: TABLE event; Type: ACL; Schema: edm; Owner: -
 --
 
-GRANT ALL ON TABLE edm.event TO edm_xyz_visitor;
+GRANT ALL ON TABLE edm.event TO edm_visitor;
 
 
 --
 -- Name: TABLE artist; Type: ACL; Schema: edm; Owner: -
 --
 
-GRANT ALL ON TABLE edm.artist TO edm_xyz_visitor;
+GRANT ALL ON TABLE edm.artist TO edm_visitor;
 
 
 --
 -- Name: TABLE artist_to_event; Type: ACL; Schema: edm; Owner: -
 --
 
-GRANT ALL ON TABLE edm.artist_to_event TO edm_xyz_visitor;
+GRANT ALL ON TABLE edm.artist_to_event TO edm_visitor;
 
 
 --
 -- Name: SEQUENCE artist_to_event_id_seq; Type: ACL; Schema: edm; Owner: -
 --
 
-GRANT SELECT,USAGE ON SEQUENCE edm.artist_to_event_id_seq TO edm_xyz_visitor;
+GRANT SELECT,USAGE ON SEQUENCE edm.artist_to_event_id_seq TO edm_visitor;
 
 
 --
 -- Name: TABLE city; Type: ACL; Schema: edm; Owner: -
 --
 
-GRANT ALL ON TABLE edm.city TO edm_xyz_visitor;
+GRANT ALL ON TABLE edm.city TO edm_visitor;
 
 
 --
 -- Name: SEQUENCE city_sequence; Type: ACL; Schema: edm; Owner: -
 --
 
-GRANT SELECT,USAGE ON SEQUENCE edm.city_sequence TO edm_xyz_visitor;
+GRANT SELECT,USAGE ON SEQUENCE edm.city_sequence TO edm_visitor;
 
 
 --
 -- Name: TABLE country; Type: ACL; Schema: edm; Owner: -
 --
 
-GRANT ALL ON TABLE edm.country TO edm_xyz_visitor;
+GRANT ALL ON TABLE edm.country TO edm_visitor;
 
 
 --
 -- Name: TABLE follow_list; Type: ACL; Schema: edm; Owner: -
 --
 
-GRANT ALL ON TABLE edm.follow_list TO edm_xyz_visitor;
+GRANT ALL ON TABLE edm.follow_list TO edm_visitor;
 
 
 --
 -- Name: SEQUENCE follow_list_id_seq; Type: ACL; Schema: edm; Owner: -
 --
 
-GRANT SELECT,USAGE ON SEQUENCE edm.follow_list_id_seq TO edm_xyz_visitor;
+GRANT SELECT,USAGE ON SEQUENCE edm.follow_list_id_seq TO edm_visitor;
 
 
 --
 -- Name: TABLE genre; Type: ACL; Schema: edm; Owner: -
 --
 
-GRANT ALL ON TABLE edm.genre TO edm_xyz_visitor;
+GRANT ALL ON TABLE edm.genre TO edm_visitor;
 
 
 --
 -- Name: TABLE genre_to_artist; Type: ACL; Schema: edm; Owner: -
 --
 
-GRANT ALL ON TABLE edm.genre_to_artist TO edm_xyz_visitor;
+GRANT ALL ON TABLE edm.genre_to_artist TO edm_visitor;
 
 
 --
 -- Name: SEQUENCE genre_to_artist_id_seq; Type: ACL; Schema: edm; Owner: -
 --
 
-GRANT SELECT,USAGE ON SEQUENCE edm.genre_to_artist_id_seq TO edm_xyz_visitor;
+GRANT SELECT,USAGE ON SEQUENCE edm.genre_to_artist_id_seq TO edm_visitor;
 
 
 --
 -- Name: TABLE push_subscription; Type: ACL; Schema: edm; Owner: -
 --
 
-GRANT ALL ON TABLE edm.push_subscription TO edm_xyz_visitor;
+GRANT ALL ON TABLE edm.push_subscription TO edm_visitor;
 
 
 --
 -- Name: SEQUENCE push_subscription_id_seq; Type: ACL; Schema: edm; Owner: -
 --
 
-GRANT SELECT,USAGE ON SEQUENCE edm.push_subscription_id_seq TO edm_xyz_visitor;
+GRANT SELECT,USAGE ON SEQUENCE edm.push_subscription_id_seq TO edm_visitor;
 
 
 --
 -- Name: TABLE region; Type: ACL; Schema: edm; Owner: -
 --
 
-GRANT ALL ON TABLE edm.region TO edm_xyz_visitor;
+GRANT ALL ON TABLE edm.region TO edm_visitor;
 
 
 --
 -- Name: TABLE user_authentications; Type: ACL; Schema: edm; Owner: -
 --
 
-GRANT SELECT,DELETE ON TABLE edm.user_authentications TO edm_xyz_visitor;
+GRANT SELECT,DELETE ON TABLE edm.user_authentications TO edm_visitor;
 
 
 --
 -- Name: SEQUENCE user_authentications_id_seq; Type: ACL; Schema: edm; Owner: -
 --
 
-GRANT SELECT,USAGE ON SEQUENCE edm.user_authentications_id_seq TO edm_xyz_visitor;
+GRANT SELECT,USAGE ON SEQUENCE edm.user_authentications_id_seq TO edm_visitor;
 
 
 --
 -- Name: SEQUENCE user_emails_id_seq; Type: ACL; Schema: edm; Owner: -
 --
 
-GRANT SELECT,USAGE ON SEQUENCE edm.user_emails_id_seq TO edm_xyz_visitor;
+GRANT SELECT,USAGE ON SEQUENCE edm.user_emails_id_seq TO edm_visitor;
 
 
 --
 -- Name: SEQUENCE users_id_seq; Type: ACL; Schema: edm; Owner: -
 --
 
-GRANT SELECT,USAGE ON SEQUENCE edm.users_id_seq TO edm_xyz_visitor;
+GRANT SELECT,USAGE ON SEQUENCE edm.users_id_seq TO edm_visitor;
 
 
 --
 -- Name: TABLE venue; Type: ACL; Schema: edm; Owner: -
 --
 
-GRANT ALL ON TABLE edm.venue TO edm_xyz_visitor;
+GRANT ALL ON TABLE edm.venue TO edm_visitor;
 
 
 --
 -- Name: TABLE watch_list; Type: ACL; Schema: edm; Owner: -
 --
 
-GRANT ALL ON TABLE edm.watch_list TO edm_xyz_visitor;
+GRANT ALL ON TABLE edm.watch_list TO edm_visitor;
 
 
 --
 -- Name: SEQUENCE watch_list_id_seq; Type: ACL; Schema: edm; Owner: -
 --
 
-GRANT SELECT,USAGE ON SEQUENCE edm.watch_list_id_seq TO edm_xyz_visitor;
+GRANT SELECT,USAGE ON SEQUENCE edm.watch_list_id_seq TO edm_visitor;
 
 
 --
 -- Name: TABLE watched_to_account; Type: ACL; Schema: edm; Owner: -
 --
 
-GRANT ALL ON TABLE edm.watched_to_account TO edm_xyz_visitor;
+GRANT ALL ON TABLE edm.watched_to_account TO edm_visitor;
 
 
 --
 -- Name: SEQUENCE watched_to_account_id_seq; Type: ACL; Schema: edm; Owner: -
 --
 
-GRANT SELECT,USAGE ON SEQUENCE edm.watched_to_account_id_seq TO edm_xyz_visitor;
+GRANT SELECT,USAGE ON SEQUENCE edm.watched_to_account_id_seq TO edm_visitor;
 
 
 --
 -- Name: DEFAULT PRIVILEGES FOR SEQUENCES; Type: DEFAULT ACL; Schema: edm; Owner: -
 --
 
-ALTER DEFAULT PRIVILEGES FOR ROLE edm_xyz IN SCHEMA edm REVOKE ALL ON SEQUENCES  FROM edm_xyz;
-ALTER DEFAULT PRIVILEGES FOR ROLE edm_xyz IN SCHEMA edm GRANT SELECT,USAGE ON SEQUENCES  TO edm_xyz_visitor;
+ALTER DEFAULT PRIVILEGES FOR ROLE edm IN SCHEMA edm REVOKE ALL ON SEQUENCES  FROM edm;
+ALTER DEFAULT PRIVILEGES FOR ROLE edm IN SCHEMA edm GRANT SELECT,USAGE ON SEQUENCES  TO edm_visitor;
 
 
 --
 -- Name: DEFAULT PRIVILEGES FOR SEQUENCES; Type: DEFAULT ACL; Schema: edm_hidden; Owner: -
 --
 
-ALTER DEFAULT PRIVILEGES FOR ROLE edm_xyz IN SCHEMA edm_hidden REVOKE ALL ON SEQUENCES  FROM edm_xyz;
-ALTER DEFAULT PRIVILEGES FOR ROLE edm_xyz IN SCHEMA edm_hidden GRANT SELECT,USAGE ON SEQUENCES  TO edm_xyz_visitor;
+ALTER DEFAULT PRIVILEGES FOR ROLE edm IN SCHEMA edm_hidden REVOKE ALL ON SEQUENCES  FROM edm;
+ALTER DEFAULT PRIVILEGES FOR ROLE edm IN SCHEMA edm_hidden GRANT SELECT,USAGE ON SEQUENCES  TO edm_visitor;
 
 
 --
