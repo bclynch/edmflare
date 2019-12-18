@@ -96,6 +96,10 @@ export function getPostGraphileOptions({
 
     // Enable GraphiQL in development
     graphiql: isDev || !!process.env.ENABLE_GRAPHIQL,
+
+    // set routes to /api to follow how our nginx conf works
+    graphqlRoute: '/api/graphql',
+    graphiqlRoute: '/api/graphiql',
     // Use a fancier GraphiQL with `prettier` for formatting, and header editing.
     enhanceGraphiql: true,
     // Allow EXPLAIN in development (you can replace this with a callback function if you want more control)

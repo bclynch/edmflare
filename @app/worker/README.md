@@ -13,6 +13,12 @@ Examples of things you may want to run in a job queue:
 - resizing images
 - fetching data from potentially slow sources
 
+## Start with pm2
+
+```
+pm2 start npm --name "server" -- start
+```
+
 ## Graphile Worker
 
 Our job queue is [Graphile Worker](https://github.com/graphile/worker) which

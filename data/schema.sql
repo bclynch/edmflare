@@ -18,6 +18,7 @@ SET row_security = off;
 
 -- manually added these in so they would run on the new db script for RDS
 -- normally are dont in the setup script locally. This will probably be overwritten...
+-- needed to add graphile-worker schema too with yarn worker install-db-schema command
 CREATE ROLE edm_authenticator WITH LOGIN PASSWORD '01481239a706ad342f7e6c5298bff8b3af2be9d0' NOINHERIT;
 CREATE ROLE edm_visitor;
 GRANT edm_visitor TO edm_authenticator;

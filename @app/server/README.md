@@ -11,6 +11,12 @@ The server does not perform background tasks such as sending emails, that is the
 responsibility of the job queue, which can be found in
 [@app/worker](../worker/README.md).
 
+## Start with pm2
+
+```
+pm2 start npm --name "server" -- start
+```
+
 ## Entry point
 
 The entry point to the server is [src/index.ts](src/index.ts). This file sets up
