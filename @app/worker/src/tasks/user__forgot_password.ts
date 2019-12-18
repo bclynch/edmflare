@@ -21,7 +21,6 @@ interface UserForgotPasswordPayload {
 const task: Task = async (inPayload, { addJob, withPgClient }) => {
   const payload: UserForgotPasswordPayload = inPayload as any;
   const { id: userEmailId, email, token } = payload;
-  console.log('PAYLOAD: ', payload);
   const {
     rows: [user],
   } = await withPgClient(pgClient =>

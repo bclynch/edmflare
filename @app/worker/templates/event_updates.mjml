@@ -46,11 +46,18 @@
 
     <mj-section>
       <mj-column width="100%">
+        <mj-text mj-class="small-text" color="#777" padding-left="25px" padding-right="25px" padding-top="20px">
+          Want to change how you receive these emails?
+        </mj-text>
+        <mj-text mj-class="small-text" color="#777" padding-left="25px" padding-right="25px" padding-bottom="20px">
+          You can <a href="https://edmflare.com/settings/notification-preferences" target="_blank">update your preferences</a> or <a href="https://edmflare.com/unsubscribe?userId=[[userId]]" target="_blank">unsubscribe from this list</a>.
+        </mj-text>
         <mj-text mj-class="small-text" color="#777" padding-left="25px" padding-right="25px" padding-bottom="20px" padding-top="20px">
           [[legalText]]
         </mj-text>
       </mj-column>
     </mj-section>
+
 
   </mj-body>
 </mjml>

@@ -15,6 +15,7 @@ const task: Task = async (inPayload, { addJob }) => {
     event: string;
     startDate: string;
     id: string;
+    userId: number;
   }[] = JSON.parse(shows);
 
   // grab events to add to email subject
@@ -36,7 +37,8 @@ const task: Task = async (inPayload, { addJob }) => {
     },
     template: 'event_updates.mjml',
     variables: {
-      shows: parsedShows
+      shows: parsedShows,
+      userId: parsedShows[0].userId
     }
   };
   await addJob('send_email', sendEmailPayload);

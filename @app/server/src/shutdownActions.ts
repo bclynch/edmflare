@@ -46,16 +46,16 @@ export function makeShutdownActions(): ShutdownAction[] {
     Promise.all(promises).then(callbackOnce, callbackOnce);
   }
 
-  process.once("SIGINT", () => {
+  process.once('SIGINT', () => {
     // Ignore further SIGINT signals whilst we're processing
-    process.on("SIGINT", ignore);
+    process.on('SIGINT', ignore);
     gracefulShutdown(() => {
-      process.kill(process.pid, "SIGINT");
+      process.kill(process.pid, 'SIGINT');
       process.exit(1);
     });
   });
 
-  process.once("exit", () => {
+  process.once('exit', () => {
     callShutdownActions();
   });
 
