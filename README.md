@@ -12,6 +12,9 @@
 
 ## Todos
 
+- [Add Capacitor for app generation](https://blog.angular.io/announcing-the-capacitor-ngadd-schematic-732fd90f40fa) (try on a branch)
+- Domain issues with social logins (fuck)
+  - [Look at trying to have express serve the static app instead of nginx](https://itnext.io/express-server-for-an-angular-application-part-1-getting-started-2cd27de691bd)
 -   ~~Do db migration stuff with existing model~~
     -   ~~Trying to run setup script is not creating db in postgres. Template db
         exists, but is not in pgadmin~~

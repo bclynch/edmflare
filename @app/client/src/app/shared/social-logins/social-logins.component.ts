@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { faTwitter, faFacebook, faGoogle } from '@fortawesome/free-brands-svg-icons';
+import { ENV } from '../../../environments/environment';
 
 @Component({
   selector: 'app-social-logins',
@@ -37,6 +38,6 @@ export class SocialLoginsComponent implements OnInit {
 
   auth(e, service: string) {
     e.preventDefault();
-    window.location.href = `http://localhost:5000/auth/${service}`;
+    window.location.href = `/auth/${service}`;
   }
 }
