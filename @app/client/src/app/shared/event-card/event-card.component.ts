@@ -37,13 +37,17 @@ export class EventCardComponent implements OnInit {
 
   addWatch() {
     this.eventService.addWatch(this.id).then(
-      (id) => this.watchId = id
+      (id) => {
+        this.watchId = id;
+      }
     );
   }
 
   removeWatch() {
     this.eventService.removeWatch(this.watchId).then(
-      () => this.watchId = null
+      () => {
+        this.watchId = null;
+      }
     );
   }
 }

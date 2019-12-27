@@ -66,13 +66,17 @@ export class EventComponent implements OnInit {
 
   addWatch() {
     this.eventService.addWatch(this.event.id).then(
-      (id) => this.watchId = id
+      (id) => {
+        this.watchId = id;
+      }
     );
   }
 
   removeWatch() {
     this.eventService.removeWatch(this.watchId).then(
-      () => this.watchId = null
+      () => {
+        this.watchId = null;
+      }
     );
   }
 

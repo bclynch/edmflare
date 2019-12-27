@@ -9,10 +9,10 @@ const localConfig = {
 };
 
 const rdsConfig = {
-  host: process.env.DATABASE_ADDRESS,
+  host: process.env.DATABASE_HOST,
   port: 5432,
-  user: process.env.NODE_DB_SUPER_USER,
-  password: process.env.NODE_DB_SUPER_PASSWORD,
+  user: process.env.DATABASE_OWNER,
+  password: process.env.DATABASE_OWNER_PASSWORD,
   database: process.env.DATABASE_NAME
 }
 

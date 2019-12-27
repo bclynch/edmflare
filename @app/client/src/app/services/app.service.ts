@@ -7,7 +7,6 @@ import { ThemeService } from './theme.service';
 import { Title, Meta } from '@angular/platform-browser';
 import { SwPush } from '@angular/service-worker';
 import { UtilService } from './util.service';
-import * as moment from 'moment';
 
 @Injectable()
 export class AppService {
@@ -59,11 +58,11 @@ export class AppService {
           // creating an array of strings with both cities + regions
           const locationsArr = [];
           this.locationDirectory = data.regions.nodes;
-          for (const region of data.regions.nodes) {
-            this.locationsObj[region.name] = region.name;
-            locationsArr.push(region.name);
+          for (const { name, citiesByRegion } of data.regions.nodes) {
+            this.locationsObj[name] = name;
+            locationsArr.push(name);
 
-            for (const city of region.citiesByRegion.nodes) {
+            for (const city of citiesByRegion.nodes) {
               if (locationsArr.indexOf(city.name) === -1) {
                 locationsArr.push(city.name);
                 this.locationsObj[city.name] = city.id;

@@ -1,7 +1,8 @@
 const CronJob = require('cron').CronJob;
 import citiesArr from '../data/cities';
-import Hashids from 'hashids';
-const hashids = new Hashids('edmflare');
+// not using import for hashid because wants to populate the salt which we never did
+const Hashids = require('hashids');
+const hashids = new Hashids();
 import chalk from 'chalk';
 import readline from 'readline';
 import axios from 'axios';
@@ -582,11 +583,11 @@ function fetchDBEvents() {
     // fetch ids of events from present (start of day) into future and create array
     const sql = `SELECT id FROM edm.event WHERE start_date >= ${moment().startOf('day').valueOf()};`;
 
-    db.query(sql, (err: any, data: { rows: any }) => {
+    db.query(sql, (err: any, data: { rows: { id: string }[] }) => {
       if (err) reject(err);
-      data.rows.forEach((row: { id: number }) => {
+      data.rows.forEach(({ id }) => {
         // add event to our master obj to check against later if exists
-        dbEventObj[row.id] = {};
+        dbEventObj[id] = {};
       });
       if (data) resolve();
     });

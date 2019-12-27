@@ -56,24 +56,4 @@ export class LoginComponent implements OnInit, OnDestroy {
       () => {}
     );
   }
-
-  github(e) {
-    e.preventDefault();
-    window.location.href = 'http://localhost:5000/auth/github';
-  }
-
-  facebook(e) {
-    e.preventDefault();
-    window.location.href = 'http://localhost:5000/auth/facebook';
-  }
-
-  google(e) {
-    e.preventDefault();
-    window.location.href = 'http://localhost:5000/auth/google';
-  }
-
-  twitter(e) {
-    e.preventDefault();
-    window.location.href = 'http://localhost:5000/auth/twitter';
-  }
 }
