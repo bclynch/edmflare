@@ -227,7 +227,8 @@ let scrapeEventDetails = async (city: City) => {
           });
           // don't want the edm train default
           const artistImage = event.getAttribute('eventimg') !== 'img/artist/default.png?v=2' ? `https://edmtrain.s3.amazonaws.com/${event.getAttribute('eventimg')}` : null;
-          const venue = event.getAttribute('venue') + document.querySelector(`.eventContainer[eventid="${id}"] .eventLocation > span`)!.innerHTML.split('</span>')[1];
+          const venueSelector: any = document.querySelector(`.eventContainer[eventid="${id}"] .eventLocation > span`);
+          const venue = venueSelector.innerText;
           const eventUrl = document.querySelector(`.eventContainer[eventid="${id}"] .eventLink a`)!.getAttribute('href');
           const startTimeFigures = event.getAttribute('sorteddate').split('-');
           // subtract one from the months portion since it is zero index

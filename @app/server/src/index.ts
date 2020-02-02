@@ -5,6 +5,7 @@ import { createServer } from 'http';
 import { makeApp, getShutdownActions } from './app';
 // import { scrapeEvents, initScrapeCronJob } from './scraping/scrape';
 // import migrateDB from './migration/migration';
+// import venueFix from './migration/venueFix';
 // import db from './data/db';
 // import { sendNewEventsEmail, initEmailCronJob } from './emails/emails';
 
@@ -27,6 +28,7 @@ async function main() {
 
   // scrapeEvents();
   // migrateDB();
+  // venueFix();
 
 
   // initEmailCronJob();
