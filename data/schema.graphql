@@ -5380,7 +5380,7 @@ type User {
   createdAt: Datetime!
 
   """Boolean yes or no for email notifications"""
-  emailNotification: Boolean!
+  emailNotification: Boolean
 
   """Reads and enables pagination through a set of `Event`."""
   eventsByContributor(
@@ -5456,14 +5456,6 @@ type User {
 
   """If true, the user has elevated privileges."""
   isAdmin: Boolean!
-
-  """
-  Boolean that indicates whether user has successfully went through / submitted
-  the user setup process. If not then they get an option in their nav dropdown to do so.
-  """
-  isSetup: Boolean!
-
-  """Boolean that indicates whether user has verified their email or not"""
   isVerified: Boolean!
 
   """Public-facing name (or pseudonym) of the user."""
@@ -5476,7 +5468,7 @@ type User {
   profilePhoto: String
 
   """Boolean yes or no for push notifications"""
-  pushNotification: Boolean!
+  pushNotification: Boolean
 
   """Reads and enables pagination through a set of `PushSubscription`."""
   pushSubscriptions(
@@ -5819,12 +5811,6 @@ enum UserEmailsOrderBy {
 input UserPatch {
   """Boolean yes or no for email notifications"""
   emailNotification: Boolean
-
-  """
-  Boolean that indicates whether user has successfully went through / submitted
-  the user setup process. If not then they get an option in their nav dropdown to do so.
-  """
-  isSetup: Boolean
 
   """Public-facing name (or pseudonym) of the user."""
   name: String

@@ -7,12 +7,7 @@
       </mat-form-field>
       <div class="passwordWrapper">
         <mat-form-field>
-          <input
-            matInput
-            placeholder="Password"
-            type="password"
-            formControlName="password"
-          />
+          <input matInput placeholder="Password" type="password" formControlName="password" />
         </mat-form-field>
         <a [routerLink]="['/password-forgot']">
           <button mat-button matTooltip="Forgot your password?">
@@ -22,7 +17,7 @@
       </div>
       <div class="linkWrapper"></div>
       <button mat-flat-button color="accent" type="submit">Login</button>
-      <app-social-logins></app-social-logins>
+      <!-- <app-social-logins></app-social-logins> -->
       <div class="new">
         New to EDM Flare?
         <a [routerLink]="['/signup']" [queryParams]="{ redirect: redirect }">
