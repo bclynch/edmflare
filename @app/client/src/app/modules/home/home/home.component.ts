@@ -54,7 +54,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     // queue up carousel
     setInterval(() => {
       const lastSlide = this.activeSlide === this.carouselSlides.length - 1;
-      this.activeSlide = lastSlide ? 0 : this.activeSlide += 1
+      this.activeSlide = lastSlide ? 0 : this.activeSlide += 1;
     }, 10000 );
 
     const location = this.cookieService.get('edm-location');
@@ -62,7 +62,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.selectedLocation = location;
     } else {
       // default location for users
-      this.cookieService.set('edm-location', 'New York');
+      this.cookieService.set('edm-location', 'New York', null, null, null, false, 'Strict');
       this.selectedLocation = 'New York';
     }
 
@@ -85,7 +85,7 @@ export class HomeComponent implements OnInit, OnDestroy {
               header: 'Get Updates On New Shows',
               content: `Get updates straight to your device about new shows coming to town. Whether you want an email once every few weeks or a notification to your phone every day, we\'ve got you covered. ${this.userService.user ? '' : '<a href="/signup">Sign up</a> to get started.'}`
             }
-          ]
+          ];
           // fetch featured
           const range = this.utilService.calculateDateRange('any');
           let queryParams: any = {
@@ -98,12 +98,12 @@ export class HomeComponent implements OnInit, OnDestroy {
           if (typeof this.appService.locationsObj[this.selectedLocation] === 'number') {
             queryParams = { ...queryParams, cityId: this.appService.locationsObj[this.selectedLocation] };
             this.searchEventsByCityGQL.fetch(queryParams).subscribe(
-              ({ data }) => { this.featuredEvents = data.searchEventsByCity.nodes }
+              ({ data }) => { this.featuredEvents = data.searchEventsByCity.nodes; }
             );
           } else {
             queryParams = { ...queryParams, regionName: this.appService.locationsObj[this.selectedLocation] };
             this.searchEventsByRegionGQL.fetch(queryParams).subscribe(
-              ({ data }) => { this.featuredEvents = data.searchEventsByRegion.nodes }
+              ({ data }) => { this.featuredEvents = data.searchEventsByRegion.nodes; }
             );
           }
         }
@@ -122,7 +122,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     e.preventDefault();
 
     // add location to cookie for future
-    this.cookieService.set('edm-location', this.selectedLocation);
+    this.cookieService.set('edm-location', this.selectedLocation, null, null, null, false, 'Strict');
 
     this.routerService.navigateToPage('/events', { location: this.selectedLocation, dates: this.dateRange });
   }

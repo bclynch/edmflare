@@ -176,7 +176,7 @@ export class EventsComponent implements OnInit, OnDestroy {
     this.location = location;
 
     // add location to cookie for future
-    this.cookieService.set('edm-location', this.selectedLocation);
+    this.cookieService.set('edm-location', this.selectedLocation, null, null, null, false, 'Strict');
   }
 
   selectDate(date) {
