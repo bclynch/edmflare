@@ -12,6 +12,7 @@
 
 ## Todos
 
+- Share btns broken after ng 9. Look for [new version soon](https://github.com/MurhafSousli/ngx-sharebuttons/issues/429)
 - [Add Capacitor for app generation](https://blog.angular.io/announcing-the-capacitor-ngadd-schematic-732fd90f40fa) (try on a branch)
 - Domain issues with social logins (fuck)
   - [Look at trying to have express serve the static app instead of nginx](https://itnext.io/express-server-for-an-angular-application-part-1-getting-started-2cd27de691bd)
