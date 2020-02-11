@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { EventsComponent } from './events/events.component';
 import { Routes, RouterModule } from '@angular/router';
 import { SharedModule } from '../../shared/shared.module';
-import { ScrollDispatchModule } from '@angular/cdk/scrolling';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { GhostListComponent } from './events/ghost/ghost-list.component';
 
@@ -20,7 +20,7 @@ const routes: Routes = [
     CommonModule,
     RouterModule.forChild(routes),
     SharedModule,
-    ScrollDispatchModule,
+    ScrollingModule,
     ReactiveFormsModule,
     FormsModule
   ]

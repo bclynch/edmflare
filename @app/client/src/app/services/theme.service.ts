@@ -37,13 +37,13 @@ export class ThemeService {
   toggleDark() {
     this.setTheme(darkTheme);
     this.theme = 'dark';
-    this.cookieService.set('edm-theme', this.theme);
+    this.cookieService.set('edm-theme', this.theme, null, null, null, false, 'Strict');
   }
 
   toggleLight() {
     this.setTheme(lightTheme);
     this.theme = 'light';
-    this.cookieService.set('edm-theme', this.theme);
+    this.cookieService.set('edm-theme', this.theme, null, null, null, false, 'Strict');
   }
 
   toggleTheme() {
