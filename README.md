@@ -262,13 +262,14 @@ Use `yarn run build` to generate a production build of the project
 - Email is only available from US East N. Virginia and US West Oregon so keep that in mind...
 
 ### SES
+
+- *MUST LEAVE SANDBOX WHEN PROD READY OR EMAILS TO UNVERIFIED EMAILS BREAK*
+  - [Docs to leave sandbox](https://docs.aws.amazon.com/ses/latest/DeveloperGuide/request-production-access.html)
 - $0.10 for every 1,000 emails you send or receive.
 - https://medium.com/viithiisys/node-mailer-with-amazon-ses-6fb18bea568e
-- Head over to SES in the AWS console https://console.aws.amazon.com/ses/home
-- Verify a new domain to be able to send emails from
-  - https://docs.aws.amazon.com/ses/latest/DeveloperGuide/verify-domain-procedure.html
+- Head over to SES in the [AWS console](https://console.aws.amazon.com/ses/home)
+- [Verify a new domain](https://docs.aws.amazon.com/ses/latest/DeveloperGuide/verify-domain-procedure.html) to be able to send emails from
   - Enter the domain, click to select dkim, and get the network settings needed to add to the domain. Should be three cname and one txt
-- https://nodemailer.com/transports/ses/
 - If your account is still in the Amazon SES sandbox, you also must verify every recipient email address except for the recipients provided by the Amazon SES mailbox simulator.
 
 ### RDS
