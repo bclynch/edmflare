@@ -3,7 +3,6 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 import { AppModule } from './app/app.module';
 import { ENV } from './environments/environment';
-import './icons';
 
 if (ENV.production) {
   enableProdMode();

@@ -74,7 +74,7 @@ const venueFix = () => {
   fetchVenues().then(
     () => {
       queryEventsRows().then(
-        (rows) => {
+        () => {
           // loop over rows and slice off desired venue name for ea event
           // if it exists then just update the venue col to be correct for this event id
           // if not then create venue and then update event

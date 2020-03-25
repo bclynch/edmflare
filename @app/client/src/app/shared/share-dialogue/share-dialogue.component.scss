@@ -21,6 +21,13 @@
   }
   .shareContainer {
     margin-bottom: 3em;
+
+    button {
+      margin: 0 5px;
+    }
+    fa-icon {
+      color: white;
+    }
   }
   .urlContainer {
     display: flex;

@@ -11,8 +11,21 @@
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "es2015",
-    "typeRoots": ["node_modules/@types"],
-    "lib": ["es2018", "dom", "esnext.asynciterable"]
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2018",
+      "dom",
+      "esnext.asynciterable"
+    ]
   },
-  "exclude": ["src/test.ts", "**/*.spec.ts", "**/*.e2e-spec.ts"]
+  "angularCompilerOptions": {
+    "enableIvy": false
+  },
+  "exclude": [
+    "src/test.ts",
+    "**/*.spec.ts",
+    "**/*.e2e-spec.ts"
+  ]
 }

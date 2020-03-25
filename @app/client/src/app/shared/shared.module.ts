@@ -23,9 +23,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatChipsModule } from '@angular/material/chips';
-import { ShareButtonsModule } from '@ngx-share/buttons';
+import { ShareModule } from '@ngx-share/core';
 import { AgmCoreModule } from '@agm/core';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { OverlayContainer, FullscreenOverlayContainer } from '@angular/cdk/overlay';
 
 // components
@@ -45,6 +45,15 @@ import { GetAppComponent } from './get-app/get-app.component';
 import { SocialLoginsComponent } from './social-logins/social-logins.component';
 import { NotificationPreferencesComponent } from './notification-preferences/notification-preferences.component';
 import { ThemeToggleComponent } from './theme-toggle/theme-toggle.component';
+
+import { faFacebookF } from '@fortawesome/free-brands-svg-icons/faFacebookF';
+import { faTwitter } from '@fortawesome/free-brands-svg-icons/faTwitter';
+import { faRedditAlien } from '@fortawesome/free-brands-svg-icons/faRedditAlien';
+import { faWhatsapp } from '@fortawesome/free-brands-svg-icons/faWhatsapp';
+import { faFacebookMessenger } from '@fortawesome/free-brands-svg-icons/faFacebookMessenger';
+import { faTelegramPlane } from '@fortawesome/free-brands-svg-icons/faTelegramPlane';
+import { faCommentAlt } from '@fortawesome/free-solid-svg-icons/faCommentAlt';
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons/faEnvelope';
 
 @NgModule({
   entryComponents: [
@@ -92,7 +101,7 @@ import { ThemeToggleComponent } from './theme-toggle/theme-toggle.component';
     RouterModule,
     ReactiveFormsModule,
     FormsModule,
-    ShareButtonsModule,
+    ShareModule,
     AgmCoreModule.forRoot({
       apiKey: ENV.googleAPIKey,
     }),
@@ -135,4 +144,17 @@ import { ThemeToggleComponent } from './theme-toggle/theme-toggle.component';
     {provide: OverlayContainer, useClass: FullscreenOverlayContainer}
   ]
 })
-export class SharedModule { }
+export class SharedModule {
+  constructor(library: FaIconLibrary) {
+    library.addIcons(
+      faFacebookF,
+      faTwitter,
+      faRedditAlien,
+      faWhatsapp,
+      faFacebookMessenger,
+      faTelegramPlane,
+      faEnvelope,
+      faCommentAlt
+    );
+  }
+}
