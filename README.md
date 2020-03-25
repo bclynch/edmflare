@@ -12,7 +12,9 @@
 
 ## Todos
 
-- Share btns broken after ng 9. Look for [new version soon](https://github.com/MurhafSousli/ngx-sharebuttons/issues/429)
+- Something isn't playing nice with ivy so turned off for now. Would like it back on eventually! It is some package not ready I think, but which? Need to go through and check them.
+- Would like to get angular universal going?
+- ~~Share btns broken after ng 9. Look for [new version soon](https://github.com/MurhafSousli/ngx-sharebuttons/issues/429)~~
 - [Add Capacitor for app generation](https://blog.angular.io/announcing-the-capacitor-ngadd-schematic-732fd90f40fa) (try on a branch)
 - Domain issues with social logins (fuck)
   - [Look at trying to have express serve the static app instead of nginx](https://itnext.io/express-server-for-an-angular-application-part-1-getting-started-2cd27de691bd)
