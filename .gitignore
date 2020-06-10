@@ -7,3 +7,4 @@ dist
 /@app/e2e/cypress/videos
 .agignore
 *.tsbuildinfo
+**/scripts/setup.js
