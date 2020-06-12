@@ -5456,6 +5456,7 @@ type User {
 
   """If true, the user has elevated privileges."""
   isAdmin: Boolean!
+  isSetup: Boolean
   isVerified: Boolean!
 
   """Public-facing name (or pseudonym) of the user."""
@@ -5811,6 +5812,7 @@ enum UserEmailsOrderBy {
 input UserPatch {
   """Boolean yes or no for email notifications"""
   emailNotification: Boolean
+  isSetup: Boolean
 
   """Public-facing name (or pseudonym) of the user."""
   name: String

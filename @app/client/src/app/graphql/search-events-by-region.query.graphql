@@ -8,7 +8,7 @@ query searchEventsByRegion(
     $offset: Int
   ) {
   searchEventsByRegion(
-    query: $query, 
+    query: $query,
     regionName: $regionName,
   	filter: {
       startDate: {
@@ -34,6 +34,7 @@ query searchEventsByRegion(
       }
       artistToEvents(first: 1) {
         nodes {
+          id,
           artist {
             photo
           }

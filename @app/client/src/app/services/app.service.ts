@@ -71,7 +71,8 @@ export class AppService {
           }
           this.locations = locationsArr;
           resolve();
-        }
+        },
+        (err) => reject(err)
       );
     });
   }
@@ -101,7 +102,7 @@ export class AppService {
             auth: this.utilService.arrayBufferToBase64(sub.getKey('auth'))
           })
             .subscribe(
-              (result) => resolve(),
+              () => resolve(),
               err => reject(err)
             );
         })

@@ -6,45 +6,30 @@
     </a>
   </div>
   <div class="eventInfo">
-    <a [routerLink]="['/event/' + id]"><h3 class="eventName">{{name}}</h3></a>
+    <a [routerLink]="['/event/' + id]">
+      <h3 class="eventName">{{name}}</h3>
+    </a>
     <div class="eventDate">{{date | date: 'EEE, MMMM d'}}</div>
-    <div class="eventLocation">{{location}}</div>
+    <div class="eventLocation" [style.color]="location === 'Live Stream' ? 'red' : ''">{{location}}</div>
     <div class="eventOptions">
       <button mat-button matTooltip="Share">
         <mat-icon class="smallIcon" (click)="share()">share</mat-icon>
       </button>
-      <button 
-        *ngIf="watchId"
-        mat-button 
-        matTooltip="Remove from watched"
-        class="watched" 
-        (click)="removeWatch()"
-      >
+      <button *ngIf="watchId" mat-button matTooltip="Remove from watched" class="watched" (click)="removeWatch()">
         <mat-icon class="smallIcon">star</mat-icon>
       </button>
-      <button 
-        *ngIf="!watchId"
-        mat-button 
-        matTooltip="Add to watched" 
-        (click)="addWatch()"
-      >
+      <button *ngIf="!watchId" mat-button matTooltip="Add to watched" (click)="addWatch()">
         <mat-icon class="smallIcon">star_border</mat-icon>
       </button>
-      <!-- <button 
-        *ngIf="ticketProviderId" 
-        mat-button 
-        matTooltip="Buy Tickets" 
+      <!-- <button
+        *ngIf="ticketProviderId"
+        mat-button
+        matTooltip="Buy Tickets"
         (click)="eventService.eventbriteCheckout(ticketProviderId)"
       >
         <mat-icon class="smallIcon">loyalty</mat-icon>
       </button> -->
-      <a 
-        [href]="externalUrl" 
-        target="_blank" 
-        rel="nofollow"
-        *ngIf="externalUrl"
-        matTooltip="Go to Event Website"
-      >
+      <a [href]="externalUrl" target="_blank" rel="nofollow" *ngIf="externalUrl" matTooltip="Go to Event Website">
         <button mat-button>
           <fa-icon [icon]="faExternalLinkAlt"></fa-icon>
         </button>

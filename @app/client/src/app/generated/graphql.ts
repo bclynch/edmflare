@@ -1310,7 +1310,7 @@ export interface UpdateUserInput {
 export interface UserPatch {
   /** Boolean yes or no for email notifications */
   emailNotification?: Maybe<boolean>;
-  /** Boolean that indicates whether user has successfully went through / submitted the user setup process. If not then they get an option in their nav dropdown to do so. */
+  
   isSetup?: Maybe<boolean>;
   /** Public-facing name (or pseudonym) of the user. */
   name?: Maybe<string>;
@@ -1733,6 +1733,8 @@ export namespace ArtistByName {
   export type Nodes = {
     __typename?: "GenreToArtist";
     
+    id: number;
+    
     genreId: string;
   } 
 
@@ -1756,6 +1758,8 @@ export namespace ArtistByName {
 
   export type __Nodes = {
     __typename?: "ArtistToEvent";
+    
+    id: number;
     
     event: Maybe<Event>;
   } 
@@ -1936,15 +1940,15 @@ export namespace CurrentUser {
     
     notificationFrequency: Frequency;
     
-    pushNotification: boolean;
+    pushNotification: Maybe<boolean>;
     
-    emailNotification: boolean;
+    emailNotification: Maybe<boolean>;
     
     profilePhoto: Maybe<string>;
     
     id: number;
     
-    isSetup: boolean;
+    isSetup: Maybe<boolean>;
     
     isAdmin: boolean;
     
@@ -2081,6 +2085,8 @@ export namespace EventById {
   export type _Nodes = {
     __typename?: "ArtistToEvent";
     
+    id: number;
+    
     artist: Maybe<Artist>;
   } 
 
@@ -2106,6 +2112,94 @@ export namespace ForgotPassword {
     __typename?: "ForgotPasswordPayload";
     
     clientMutationId: Maybe<string>;
+  } 
+}
+
+export namespace LiveStreams {
+  export type Variables = {
+    userId: number;
+    greaterThan: BigInt;
+    lessThan: BigInt;
+    batchSize?: Maybe<number>;
+    offset?: Maybe<number>;
+  }
+
+  export type Query = {
+    __typename?: "Query";
+    
+    events: Maybe<Events>;
+  }
+
+  export type Events = {
+    __typename?: "EventsConnection";
+    
+    totalCount: number;
+    
+    nodes: Nodes[];
+  } 
+
+  export type Nodes = {
+    __typename?: "Event";
+    
+    id: string;
+    
+    name: Maybe<string>;
+    
+    startDate: BigInt;
+    
+    ticketproviderurl: Maybe<string>;
+    
+    ticketproviderid: Maybe<string>;
+    
+    venue: string;
+    
+    createdAt: Datetime;
+    
+    venueByVenue: Maybe<VenueByVenue>;
+    
+    artistToEvents: ArtistToEvents;
+    
+    watchLists: WatchLists;
+  } 
+
+  export type VenueByVenue = {
+    __typename?: "Venue";
+    
+    lat: Maybe<BigFloat>;
+    
+    lon: Maybe<BigFloat>;
+  } 
+
+  export type ArtistToEvents = {
+    __typename?: "ArtistToEventsConnection";
+    
+    nodes: _Nodes[];
+  } 
+
+  export type _Nodes = {
+    __typename?: "ArtistToEvent";
+    
+    id: number;
+    
+    artist: Maybe<Artist>;
+  } 
+
+  export type Artist = {
+    __typename?: "Artist";
+    
+    photo: Maybe<string>;
+  } 
+
+  export type WatchLists = {
+    __typename?: "WatchListsConnection";
+    
+    nodes: __Nodes[];
+  } 
+
+  export type __Nodes = {
+    __typename?: "WatchList";
+    
+    id: number;
   } 
 }
 
@@ -2343,6 +2437,8 @@ export namespace SearchEventsByCity {
   export type _Nodes = {
     __typename?: "ArtistToEvent";
     
+    id: number;
+    
     artist: Maybe<Artist>;
   } 
 
@@ -2431,6 +2527,8 @@ export namespace SearchEventsByRegion {
   export type _Nodes = {
     __typename?: "ArtistToEvent";
     
+    id: number;
+    
     artist: Maybe<Artist>;
   } 
 
@@ -2484,9 +2582,9 @@ export namespace UpdateUser {
     
     profilePhoto: Maybe<string>;
     
-    pushNotification: boolean;
+    pushNotification: Maybe<boolean>;
     
-    emailNotification: boolean;
+    emailNotification: Maybe<boolean>;
     
     id: number;
     
@@ -2515,6 +2613,8 @@ export namespace UserByUsername {
   export type UserByUsername = {
     __typename?: "User";
     
+    id: number;
+    
     username: string;
     
     profilePhoto: Maybe<string>;
@@ -2534,6 +2634,8 @@ export namespace UserByUsername {
 
   export type Nodes = {
     __typename?: "WatchList";
+    
+    id: number;
     
     event: Maybe<Event>;
   } 
@@ -2568,6 +2670,8 @@ export namespace UserByUsername {
 
   export type _Nodes = {
     __typename?: "ArtistToEvent";
+    
+    id: number;
     
     artist: Maybe<Artist>;
   } 
@@ -2705,6 +2809,8 @@ export namespace VenueByName {
   export type __Nodes = {
     __typename?: "ArtistToEvent";
     
+    id: number;
+    
     artist: Maybe<Artist>;
   } 
 
@@ -2732,10 +2838,10 @@ export namespace VerifyEmail {
     
     success: Maybe<boolean>;
     
-    query: Maybe<Query>;
+    query: Maybe<_Query>;
   } 
 
-  export type Query = {
+  export type _Query = {
     __typename?: "Query";
     
     currentUser: Maybe<CurrentUser>;
@@ -2864,6 +2970,7 @@ import gql from 'graphql-tag';
     homepage
     genreToArtists {
       nodes {
+        id
         genreId
       }
     }
@@ -2874,6 +2981,7 @@ import gql from 'graphql-tag';
     }
     artistToEvents {
       nodes {
+        id
         event {
           name
           venue
@@ -3080,6 +3188,7 @@ import gql from 'graphql-tag';
     }
     artistToEvents {
       nodes {
+        id
         artist {
           name
         }
@@ -3101,6 +3210,48 @@ import gql from 'graphql-tag';
     mutation forgotPassword($email: String!) {
   forgotPassword(input: {email: $email}) {
     clientMutationId
+  }
+}
+    
+      
+    
+  `;
+        
+    }
+    @Injectable({
+        providedIn: 'root'
+    })
+    export class LiveStreamsGQL extends Apollo.Query<LiveStreams.Query, LiveStreams.Variables> {
+        document: any = gql`
+    query liveStreams($userId: Int!, $greaterThan: BigInt!, $lessThan: BigInt!, $batchSize: Int, $offset: Int) {
+  events(condition: {venue: "Live Stream"}, filter: {startDate: {greaterThanOrEqualTo: $greaterThan, lessThanOrEqualTo: $lessThan}}, first: $batchSize, offset: $offset) {
+    totalCount
+    nodes {
+      id
+      name
+      startDate
+      ticketproviderurl
+      ticketproviderid
+      venue
+      createdAt
+      venueByVenue {
+        lat
+        lon
+      }
+      artistToEvents(first: 1) {
+        nodes {
+          id
+          artist {
+            photo
+          }
+        }
+      }
+      watchLists(filter: {userId: {equalTo: $userId}}) {
+        nodes {
+          id
+        }
+      }
+    }
   }
 }
     
@@ -3267,6 +3418,7 @@ import gql from 'graphql-tag';
       }
       artistToEvents(first: 1) {
         nodes {
+          id
           artist {
             photo
           }
@@ -3308,6 +3460,7 @@ import gql from 'graphql-tag';
       }
       artistToEvents(first: 1) {
         nodes {
+          id
           artist {
             photo
           }
@@ -3360,11 +3513,13 @@ import gql from 'graphql-tag';
         document: any = gql`
     query userByUsername($username: String!, $userId: Int!) {
   userByUsername(username: $username) {
+    id
     username
     profilePhoto
     watchLists {
       totalCount
       nodes {
+        id
         event {
           id
           name
@@ -3375,6 +3530,7 @@ import gql from 'graphql-tag';
           createdAt
           artistToEvents(first: 1) {
             nodes {
+              id
               artist {
                 photo
               }
@@ -3439,6 +3595,7 @@ import gql from 'graphql-tag';
         id
         artistToEvents(first: 1) {
           nodes {
+            id
             artist {
               photo
             }

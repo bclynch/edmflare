@@ -1,20 +1,20 @@
 <app-pagewrapper [hasBack]="false">
   <div class="homeContainer">
     <div class="wrapper">
+      <div class="callout">
+        <div>
+          Check individual event websites for up to date information on event date changes, postponements, and refund
+          information
+        </div>
+      </div>
       <div class="carousel">
         <div class="slide" *ngFor="let slide of carouselSlides; let i = index">
-          <div
-            class="slideImg"
-            [ngStyle]="{ 'background-image': 'url(' + slide.image + ')' }"
-            [style.opacity]="activeSlide === i ? 1 : 0"
-          ></div>
+          <div class="slideImg" [ngStyle]="{ 'background-image': 'url(' + slide.image + ')' }"
+            [style.opacity]="activeSlide === i ? 1 : 0"></div>
           <div class="slideCallout">
             <div class="calloutWrapper">
               <div>Discover</div>
-              <div
-                [ngClass]="activeSlide === i ? 'active' : ''"
-                class="boldFont tagline"
-              >
+              <div [ngClass]="activeSlide === i ? 'active' : ''" class="boldFont tagline">
                 {{ slide.tagline }}
               </div>
             </div>
@@ -31,23 +31,14 @@
               </a>
             </div>
             <div>
-              <app-location-search
-                placeholder="Location"
-                autocomplete="off"
-                (selected)="setLocation($event)"
-                [value]="selectedLocation"
-                color="white"
-              ></app-location-search>
+              <app-location-search placeholder="Location" autocomplete="off" (selected)="setLocation($event)"
+                [value]="selectedLocation" color="white"></app-location-search>
             </div>
           </div>
           <div class="section">
             <div class="label">On</div>
             <div>
-              <app-select-date
-                placeholder="Select a Date"
-                (date)="dateRange = $event"
-                value="any"
-              ></app-select-date>
+              <app-select-date placeholder="Select a Date" (date)="dateRange = $event" value="any"></app-select-date>
             </div>
           </div>
           <div class="section btnSection">
@@ -56,6 +47,11 @@
             </button>
           </div>
         </form>
+      </div>
+      <div class="liveStreamContainer">
+        <a [routerLink]="['/venue/' + 'Live Stream']">
+          <button mat-stroked-button color="accent">Check Out Live Streams</button>
+        </a>
       </div>
       <div class="featuresContainer">
         <div class="featureContainer" *ngFor="let feature of features">
@@ -67,31 +63,20 @@
       <div class="featuredContainer" *ngIf="featuredEvents.length">
         <h1>Featured Upcoming Shows</h1>
         <div class="featuredWrapper">
-          <app-event-card-alt
-            *ngFor="let event of featuredEvents; let i = index"
-            [name]="event.name"
-            [index]="i"
-            [location]="event.venue"
-            [date]="event.startDate"
-            [id]="event.id"
-            [externalUrl]="event.ticketproviderurl"
-            [ticketProviderId]="event.ticketproviderid"
-            [image]="event.artistToEvents.nodes[0]?.artist.photo"
-            [watchId]="
+          <app-event-card-alt *ngFor="let event of featuredEvents; let i = index" [name]="event.name" [index]="i"
+            [location]="event.venue" [date]="event.startDate" [id]="event.id" [externalUrl]="event.ticketproviderurl"
+            [ticketProviderId]="event.ticketproviderid" [image]="event.artistToEvents.nodes[0]?.artist.photo" [watchId]="
               event.watchLists.nodes.length && event.watchLists.nodes[0].id
-            "
-          ></app-event-card-alt>
+            "></app-event-card-alt>
         </div>
         <div class="moreWrapper">
-          <a
-            [routerLink]="['/events']"
-            [queryParams]="{ location: selectedLocation, dates: 'any' }"
-            class="more"
-            >See More Shows</a
-          >
+          <a [routerLink]="['/events']" [queryParams]="{ location: selectedLocation, dates: 'any' }" class="more">See
+            More Shows</a>
         </div>
       </div>
-      <div class="appsWrapper"><app-get-app></app-get-app></div>
+      <div class="appsWrapper">
+        <app-get-app></app-get-app>
+      </div>
     </div>
   </div>
 </app-pagewrapper>

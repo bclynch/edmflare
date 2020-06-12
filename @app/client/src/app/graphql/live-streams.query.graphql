@@ -1,16 +1,15 @@
-query searchEventsByCity(
-    $query: String!,
-    $cityId: Int!,
+query liveStreams(
     $userId: Int!,
     $greaterThan: BigInt!,
     $lessThan: BigInt!,
     $batchSize: Int,
     $offset: Int
   ) {
-  searchEventsByCity(
-    query: $query,
-    cityid: $cityId,
-  	filter: {
+  events(
+    condition: {
+      venue: "Live Stream"
+    },
+    filter: {
       startDate: {
         greaterThanOrEqualTo: $greaterThan,
         lessThanOrEqualTo: $lessThan

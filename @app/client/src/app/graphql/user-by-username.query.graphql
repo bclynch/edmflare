@@ -1,10 +1,12 @@
 query userByUsername($username: String!, $userId: Int!) {
   userByUsername(username: $username) {
+    id,
     username,
     profilePhoto,
     watchLists {
       totalCount,
       nodes {
+        id,
         event {
           id,
           name,
@@ -15,6 +17,7 @@ query userByUsername($username: String!, $userId: Int!) {
           createdAt,
           artistToEvents(first: 1) {
             nodes {
+              id,
               artist {
                 photo
               }

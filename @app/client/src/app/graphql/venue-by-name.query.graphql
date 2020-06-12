@@ -35,6 +35,7 @@ query venueByName($name: String!, $userId: Int!, $currentDate: BigInt!) {
         id,
         artistToEvents(first: 1) {
           nodes {
+            id,
             artist {
               photo
             }

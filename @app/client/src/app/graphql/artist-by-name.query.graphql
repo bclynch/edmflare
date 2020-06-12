@@ -13,10 +13,11 @@ query artistByName($name: String!, $userId: Int!) {
     soundcloudUrl,
     youtubeUsername,
     youtubeUrl,
-    spotifyUrl, 
+    spotifyUrl,
     homepage,
     genreToArtists {
       nodes {
+        id,
         genreId
       }
     },
@@ -33,6 +34,7 @@ query artistByName($name: String!, $userId: Int!) {
     },
     artistToEvents {
       nodes {
+        id,
         event {
           name,
           venue,

@@ -219,22 +219,27 @@ let scrapeEventDetails = async (city: City) => {
         const events: any = document.querySelectorAll('.eventContainer');
 
         for (const event of events) {
+          const eventTitle = event.getAttribute('titlestr');
           const id = +event.getAttribute('eventid');
-          const artists = event.getAttribute('titlestr').split(',').map((artist: string) => {
+          const artists = eventTitle.split(',').map((artist: string) => {
             // if there is a colon it means there is some tour / show name prepending this thing and we are removing that from the artist name
             if (artist.indexOf(':') !== -1) return artist.split(':')[1].trim();
             return artist.trim();
           });
           // don't want the edm train default
-          const artistImage = event.getAttribute('eventimg') !== 'img/artist/default.png?v=2' ? `https://edmtrain.s3.amazonaws.com/${event.getAttribute('eventimg')}` : null;
+          const artistImage = (event.getAttribute('eventimg') !== 'img/artist/default.png?v=2' && event.getAttribute('eventimg') !== 'img/logo/app-icon-square-web.svg')
+            ? `https://edmtrain.s3.amazonaws.com/${event.getAttribute('eventimg')}`
+            : null;
           const venueSelector: any = document.querySelector(`.eventContainer[eventid="${id}"] .eventLocation > span`);
           const venue = venueSelector.innerText;
           const eventUrl = document.querySelector(`.eventContainer[eventid="${id}"] .eventLink a`)!.getAttribute('href');
           const startTimeFigures = event.getAttribute('sorteddate').split('-');
           // subtract one from the months portion since it is zero index
           const startTime = new Date(+startTimeFigures[0], +startTimeFigures[1] - 1, +startTimeFigures[2]).getTime();
+          // if it's a live stream we want the full name of the event not just artists
+          const name = venue === 'Live Stream' ? eventTitle : undefined;
 
-          data.push({ id, artists, artistImage, venue, eventUrl, startTime });
+          data.push({ id, artists, artistImage, venue, eventUrl, startTime, name });
         }
 
         return data;

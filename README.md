@@ -12,7 +12,18 @@
 
 ## Todos
 
-- Something isn't playing nice with ivy so turned off for now. Would like it back on eventually! It is some package not ready I think, but which? Need to go through and check them.
+### Short term
+
+- Fix maps
+- ~~Turn on Ivy~~
+- ~~Add live streams to front page~~
+  - ~~Include some icon to indicate live stream~~
+- ~~Add a banner to top (maybe) that says to check ticket sites to make sure event is actually occurring~~
+- ~~Update dependencies~~
+- See if geocoding for venues is working?
+
+### Other
+
 - Would like to get angular universal going?
 - ~~Share btns broken after ng 9. Look for [new version soon](https://github.com/MurhafSousli/ngx-sharebuttons/issues/429)~~
 - [Add Capacitor for app generation](https://blog.angular.io/announcing-the-capacitor-ngadd-schematic-732fd90f40fa) (try on a branch)

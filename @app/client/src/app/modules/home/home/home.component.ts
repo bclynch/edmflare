@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RouterService } from '../../../services/router.service';
 import { CookieService } from 'ngx-cookie-service';
-import { SearchEventsByCityGQL, SearchEventsByRegionGQL } from '../../../generated/graphql';
+import { SearchEventsByCityGQL, SearchEventsByRegionGQL, LiveStreamsGQL } from '../../../generated/graphql';
 import { AppService } from '../../../services/app.service';
 import { UserService } from '../../../services/user.service';
 import { UtilService } from '../../../services/util.service';
@@ -47,7 +47,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     private searchEventsByRegionGQL: SearchEventsByRegionGQL,
     private appService: AppService,
     private userService: UserService,
-    private utilService: UtilService
+    private utilService: UtilService,
+    private liveStreamsGQL: LiveStreamsGQL
   ) {
     this.appService.modPageMeta('Discover EDM events, information, and community', `EDM Flare is the most comprehensive and easy to use source for all things edm`);
 
@@ -98,12 +99,18 @@ export class HomeComponent implements OnInit, OnDestroy {
           if (typeof this.appService.locationsObj[this.selectedLocation] === 'number') {
             queryParams = { ...queryParams, cityId: this.appService.locationsObj[this.selectedLocation] };
             this.searchEventsByCityGQL.fetch(queryParams).subscribe(
-              ({ data }) => { this.featuredEvents = data.searchEventsByCity.nodes; }
+              ({ data }) => {
+                const localEvents = data.searchEventsByCity.nodes;
+                this.fetchLiveStreams(localEvents, queryParams);
+              }
             );
           } else {
             queryParams = { ...queryParams, regionName: this.appService.locationsObj[this.selectedLocation] };
             this.searchEventsByRegionGQL.fetch(queryParams).subscribe(
-              ({ data }) => { this.featuredEvents = data.searchEventsByRegion.nodes; }
+              ({ data }) => {
+                const localEvents = data.searchEventsByRegion.nodes;
+                this.fetchLiveStreams(localEvents, queryParams);
+              }
             );
           }
         }
@@ -116,6 +123,16 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.initSubscription.unsubscribe();
+  }
+
+  fetchLiveStreams(localEvents, queryParams) {
+    this.liveStreamsGQL.fetch(queryParams).subscribe(
+      ({ data }) => {
+        const liveStreamEvents = data.events.nodes;
+        const allEvents = [ ...localEvents, ...liveStreamEvents ];
+        const sortedEvents = allEvents.sort((a, b) => a.startDate - b.startDate);
+        this.featuredEvents = sortedEvents.slice(0, 12);
+      });
   }
 
   searchShows(e) {

@@ -4,6 +4,15 @@
   justify-content: center;
   position: relative;
 
+  .callout {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 10px;
+    background: red;
+    color: white;
+    text-align: center;
+  }
   .carousel {
     height: 75vh;
     width: 100vw;
@@ -97,6 +106,20 @@
       }
     }
   }
+  .liveStreamContainer {
+    position: absolute;
+    top: calc(75vh + 175px);
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    button {
+      font-size: 24px;
+      border: solid;
+      padding: 5px 10px;
+    }
+  }
   .featuresContainer {
     display: flex;
     flex-direction: column;
@@ -183,6 +206,9 @@
           border-right: solid 1px white;
         }
       }
+    }
+    .liveStreamContainer {
+      top: calc(75vh + 150px);
     }
     .featuresContainer {
       justify-content: space-around;

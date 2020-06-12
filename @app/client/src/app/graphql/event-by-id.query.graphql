@@ -28,6 +28,7 @@ query eventById($eventId: String!, $userId: Int!) {
     },
     artistToEvents {
       nodes {
+        id,
         artist {
           name
         }
