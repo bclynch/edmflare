@@ -523,16 +523,16 @@ export interface GenreFilter {
 export interface ChangePasswordInput {
   /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
   clientMutationId?: Maybe<string>;
-  
+
   newPassword: string;
-  
+
   oldPassword: string;
 }
 /** All input for the `confirmAccountDeletion` mutation. */
 export interface ConfirmAccountDeletionInput {
   /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
   clientMutationId?: Maybe<string>;
-  
+
   token: string;
 }
 /** All input for the create `Artist` mutation. */
@@ -544,7 +544,7 @@ export interface CreateArtistInput {
 }
 /** An input for mutations affecting `Artist` */
 export interface ArtistInput {
-  
+
   createdAt?: Maybe<Datetime>;
   /** Description of the artist. */
   description?: Maybe<string>;
@@ -572,7 +572,7 @@ export interface ArtistInput {
   twitterUrl?: Maybe<string>;
   /** Twitter username of the artist. */
   twitterUsername?: Maybe<string>;
-  
+
   updatedAt?: Maybe<Datetime>;
   /** Youtube url of the artist. */
   youtubeUrl?: Maybe<string>;
@@ -606,7 +606,7 @@ export interface CreateCityInput {
 export interface CityInput {
   /** Region ref for country. */
   country?: Maybe<string>;
-  
+
   createdAt?: Maybe<Datetime>;
   /** Description of the genre. */
   description?: Maybe<string>;
@@ -618,7 +618,7 @@ export interface CityInput {
   photo?: Maybe<string>;
   /** Region ref for city. */
   region?: Maybe<string>;
-  
+
   updatedAt?: Maybe<Datetime>;
 }
 /** All input for the create `Country` mutation. */
@@ -632,11 +632,11 @@ export interface CreateCountryInput {
 export interface CountryInput {
   /** Primary key and code for country. */
   code: string;
-  
+
   createdAt?: Maybe<Datetime>;
   /** Name for country. */
   name?: Maybe<string>;
-  
+
   updatedAt?: Maybe<Datetime>;
 }
 /** All input for the create `Event` mutation. */
@@ -658,7 +658,7 @@ export interface EventInput {
   contributor?: Maybe<number>;
   /** Ref to country where event takes place. */
   country?: Maybe<string>;
-  
+
   createdAt?: Maybe<Datetime>;
   /** Description of event. */
   description?: Maybe<string>;
@@ -678,7 +678,7 @@ export interface EventInput {
   ticketproviderurl?: Maybe<string>;
   /** Type of event. */
   type?: Maybe<EventType>;
-  
+
   updatedAt?: Maybe<Datetime>;
   /** Ref to venue where event takes place. */
   venue: string;
@@ -710,13 +710,13 @@ export interface CreateGenreInput {
 }
 /** An input for mutations affecting `Genre` */
 export interface GenreInput {
-  
+
   createdAt?: Maybe<Datetime>;
-  
+
   description?: Maybe<string>;
   /** Primary key and name of genre. */
   name: string;
-  
+
   updatedAt?: Maybe<Datetime>;
 }
 /** All input for the create `GenreToArtist` mutation. */
@@ -746,7 +746,7 @@ export interface CreatePushSubscriptionInput {
 export interface PushSubscriptionInput {
   /** An authentication secret, which is one of the inputs of the message content encryption process. */
   auth: string;
-  
+
   createdAt?: Maybe<Datetime>;
   /** This contains a unique URL to a Firebase Cloud Messaging endpoint. This url is a public but unguessable endpoint to the Browser Push Service used by the application server to send push notifications to this subscription. */
   endpoint: string;
@@ -756,7 +756,7 @@ export interface PushSubscriptionInput {
   id?: Maybe<number>;
   /** An encryption key that our server will use to encrypt the message. */
   p256Dh: string;
-  
+
   updatedAt?: Maybe<Datetime>;
   /** Reference to the account this belongs to. */
   userId: number;
@@ -772,7 +772,7 @@ export interface CreateRegionInput {
 export interface RegionInput {
   /** Country ref region belongs to. */
   country?: Maybe<string>;
-  
+
   createdAt?: Maybe<Datetime>;
   /** Description of the region. */
   description?: Maybe<string>;
@@ -784,7 +784,7 @@ export interface RegionInput {
   name: string;
   /** Photo of the region. */
   photo?: Maybe<string>;
-  
+
   updatedAt?: Maybe<Datetime>;
 }
 /** All input for the create `UserEmail` mutation. */
@@ -812,7 +812,7 @@ export interface VenueInput {
   address?: Maybe<string>;
   /** Ref to city of venue. */
   city: number;
-  
+
   createdAt?: Maybe<Datetime>;
   /** Description of venue. */
   description?: Maybe<string>;
@@ -826,7 +826,7 @@ export interface VenueInput {
   name: string;
   /** Photo of venue. */
   photo?: Maybe<string>;
-  
+
   updatedAt?: Maybe<Datetime>;
 }
 /** All input for the create `WatchedToAccount` mutation. */
@@ -937,14 +937,14 @@ export interface DeleteRegionInput {
 export interface DeleteUserAuthenticationInput {
   /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
   clientMutationId?: Maybe<string>;
-  
+
   id: number;
 }
 /** All input for the `deleteUserEmail` mutation. */
 export interface DeleteUserEmailInput {
   /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
   clientMutationId?: Maybe<string>;
-  
+
   id: number;
 }
 /** All input for the `deleteVenue` mutation. */
@@ -972,34 +972,34 @@ export interface DeleteWatchListInput {
 export interface ForgotPasswordInput {
   /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
   clientMutationId?: Maybe<string>;
-  
+
   email: string;
 }
 
 export interface LoginInput {
-  
+
   password: string;
-  
+
   username: string;
 }
 /** All input for the `makeEmailPrimary` mutation. */
 export interface MakeEmailPrimaryInput {
   /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
   clientMutationId?: Maybe<string>;
-  
+
   emailId?: Maybe<number>;
 }
 
 export interface RegisterInput {
-  
+
   avatarUrl?: Maybe<string>;
-  
+
   email: string;
-  
+
   name?: Maybe<string>;
-  
+
   password: string;
-  
+
   username: string;
 }
 /** All input for the `requestAccountDeletion` mutation. */
@@ -1011,18 +1011,18 @@ export interface RequestAccountDeletionInput {
 export interface ResendEmailVerificationCodeInput {
   /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
   clientMutationId?: Maybe<string>;
-  
+
   emailId?: Maybe<number>;
 }
 /** All input for the `resetPassword` mutation. */
 export interface ResetPasswordInput {
   /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
   clientMutationId?: Maybe<string>;
-  
+
   newPassword: string;
-  
+
   resetToken: string;
-  
+
   userId: number;
 }
 /** All input for the `updateArtist` mutation. */
@@ -1036,7 +1036,7 @@ export interface UpdateArtistInput {
 }
 /** Represents an update to a `Artist`. Fields that are set will be updated. */
 export interface ArtistPatch {
-  
+
   createdAt?: Maybe<Datetime>;
   /** Description of the artist. */
   description?: Maybe<string>;
@@ -1064,7 +1064,7 @@ export interface ArtistPatch {
   twitterUrl?: Maybe<string>;
   /** Twitter username of the artist. */
   twitterUsername?: Maybe<string>;
-  
+
   updatedAt?: Maybe<Datetime>;
   /** Youtube url of the artist. */
   youtubeUrl?: Maybe<string>;
@@ -1102,7 +1102,7 @@ export interface UpdateCityInput {
 export interface CityPatch {
   /** Region ref for country. */
   country?: Maybe<string>;
-  
+
   createdAt?: Maybe<Datetime>;
   /** Description of the genre. */
   description?: Maybe<string>;
@@ -1114,7 +1114,7 @@ export interface CityPatch {
   photo?: Maybe<string>;
   /** Region ref for city. */
   region?: Maybe<string>;
-  
+
   updatedAt?: Maybe<Datetime>;
 }
 /** All input for the `updateCountry` mutation. */
@@ -1130,11 +1130,11 @@ export interface UpdateCountryInput {
 export interface CountryPatch {
   /** Primary key and code for country. */
   code?: Maybe<string>;
-  
+
   createdAt?: Maybe<Datetime>;
   /** Name for country. */
   name?: Maybe<string>;
-  
+
   updatedAt?: Maybe<Datetime>;
 }
 /** All input for the `updateEvent` mutation. */
@@ -1158,7 +1158,7 @@ export interface EventPatch {
   contributor?: Maybe<number>;
   /** Ref to country where event takes place. */
   country?: Maybe<string>;
-  
+
   createdAt?: Maybe<Datetime>;
   /** Description of event. */
   description?: Maybe<string>;
@@ -1178,7 +1178,7 @@ export interface EventPatch {
   ticketproviderurl?: Maybe<string>;
   /** Type of event. */
   type?: Maybe<EventType>;
-  
+
   updatedAt?: Maybe<Datetime>;
   /** Ref to venue where event takes place. */
   venue?: Maybe<string>;
@@ -1214,13 +1214,13 @@ export interface UpdateGenreInput {
 }
 /** Represents an update to a `Genre`. Fields that are set will be updated. */
 export interface GenrePatch {
-  
+
   createdAt?: Maybe<Datetime>;
-  
+
   description?: Maybe<string>;
   /** Primary key and name of genre. */
   name?: Maybe<string>;
-  
+
   updatedAt?: Maybe<Datetime>;
 }
 /** All input for the `updateGenreToArtist` mutation. */
@@ -1254,7 +1254,7 @@ export interface UpdatePushSubscriptionInput {
 export interface PushSubscriptionPatch {
   /** An authentication secret, which is one of the inputs of the message content encryption process. */
   auth?: Maybe<string>;
-  
+
   createdAt?: Maybe<Datetime>;
   /** This contains a unique URL to a Firebase Cloud Messaging endpoint. This url is a public but unguessable endpoint to the Browser Push Service used by the application server to send push notifications to this subscription. */
   endpoint?: Maybe<string>;
@@ -1264,7 +1264,7 @@ export interface PushSubscriptionPatch {
   id?: Maybe<number>;
   /** An encryption key that our server will use to encrypt the message. */
   p256Dh?: Maybe<string>;
-  
+
   updatedAt?: Maybe<Datetime>;
   /** Reference to the account this belongs to. */
   userId?: Maybe<number>;
@@ -1282,7 +1282,7 @@ export interface UpdateRegionInput {
 export interface RegionPatch {
   /** Country ref region belongs to. */
   country?: Maybe<string>;
-  
+
   createdAt?: Maybe<Datetime>;
   /** Description of the region. */
   description?: Maybe<string>;
@@ -1294,7 +1294,7 @@ export interface RegionPatch {
   name?: Maybe<string>;
   /** Photo of the region. */
   photo?: Maybe<string>;
-  
+
   updatedAt?: Maybe<Datetime>;
 }
 /** All input for the `updateUser` mutation. */
@@ -1310,7 +1310,7 @@ export interface UpdateUserInput {
 export interface UserPatch {
   /** Boolean yes or no for email notifications */
   emailNotification?: Maybe<boolean>;
-  
+
   isSetup?: Maybe<boolean>;
   /** Public-facing name (or pseudonym) of the user. */
   name?: Maybe<string>;
@@ -1338,7 +1338,7 @@ export interface VenuePatch {
   address?: Maybe<string>;
   /** Ref to city of venue. */
   city?: Maybe<number>;
-  
+
   createdAt?: Maybe<Datetime>;
   /** Description of venue. */
   description?: Maybe<string>;
@@ -1352,7 +1352,7 @@ export interface VenuePatch {
   name?: Maybe<string>;
   /** Photo of venue. */
   photo?: Maybe<string>;
-  
+
   updatedAt?: Maybe<Datetime>;
 }
 /** All input for the `updateWatchedToAccount` mutation. */
@@ -1397,9 +1397,9 @@ export interface WatchListPatch {
 export interface VerifyEmailInput {
   /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
   clientMutationId?: Maybe<string>;
-  
+
   token: string;
-  
+
   userEmailId: number;
 }
 /** Methods to use when ordering `ArtistToEvent`. */
@@ -1635,41 +1635,41 @@ export namespace AllLocations {
 
   export type Query = {
     __typename?: "Query";
-    
+
     regions: Maybe<Regions>;
   }
 
   export type Regions = {
     __typename?: "RegionsConnection";
-    
+
     nodes: Nodes[];
-  } 
+  }
 
   export type Nodes = {
     __typename?: "Region";
-    
+
     name: string;
-    
+
     lat: Maybe<BigFloat>;
-    
+
     lon: Maybe<BigFloat>;
-    
+
     citiesByRegion: CitiesByRegion;
-  } 
+  }
 
   export type CitiesByRegion = {
     __typename?: "CitiesConnection";
-    
+
     nodes: _Nodes[];
-  } 
+  }
 
   export type _Nodes = {
     __typename?: "City";
-    
+
     id: number;
-    
+
     name: Maybe<string>;
-  } 
+  }
 }
 
 export namespace ArtistByName {
@@ -1680,119 +1680,119 @@ export namespace ArtistByName {
 
   export type Query = {
     __typename?: "Query";
-    
+
     artist: Maybe<Artist>;
   }
 
   export type Artist = {
     __typename?: "Artist";
-    
+
     name: string;
-    
+
     description: Maybe<string>;
-    
+
     photo: Maybe<string>;
-    
+
     twitterUsername: Maybe<string>;
-    
+
     twitterUrl: Maybe<string>;
-    
+
     facebookUsername: Maybe<string>;
-    
+
     facebookUrl: Maybe<string>;
-    
+
     instagramUsername: Maybe<string>;
-    
+
     instagramUrl: Maybe<string>;
-    
+
     soundcloudUsername: Maybe<string>;
-    
+
     soundcloudUrl: Maybe<string>;
-    
+
     youtubeUsername: Maybe<string>;
-    
+
     youtubeUrl: Maybe<string>;
-    
+
     spotifyUrl: Maybe<string>;
-    
+
     homepage: Maybe<string>;
-    
+
     genreToArtists: GenreToArtists;
-    
+
     followLists: FollowLists;
-    
+
     artistToEvents: ArtistToEvents;
-  } 
+  }
 
   export type GenreToArtists = {
     __typename?: "GenreToArtistsConnection";
-    
+
     nodes: Nodes[];
-  } 
+  }
 
   export type Nodes = {
     __typename?: "GenreToArtist";
-    
+
     id: number;
-    
+
     genreId: string;
-  } 
+  }
 
   export type FollowLists = {
     __typename?: "FollowListsConnection";
-    
+
     nodes: _Nodes[];
-  } 
+  }
 
   export type _Nodes = {
     __typename?: "FollowList";
-    
+
     id: number;
-  } 
+  }
 
   export type ArtistToEvents = {
     __typename?: "ArtistToEventsConnection";
-    
+
     nodes: __Nodes[];
-  } 
+  }
 
   export type __Nodes = {
     __typename?: "ArtistToEvent";
-    
+
     id: number;
-    
+
     event: Maybe<Event>;
-  } 
+  }
 
   export type Event = {
     __typename?: "Event";
-    
+
     name: Maybe<string>;
-    
+
     venue: string;
-    
+
     startDate: BigInt;
-    
+
     id: string;
-    
+
     ticketproviderurl: Maybe<string>;
-    
+
     ticketproviderid: Maybe<string>;
-    
+
     watchLists: WatchLists;
-  } 
+  }
 
   export type WatchLists = {
     __typename?: "WatchListsConnection";
-    
+
     nodes: ___Nodes[];
-  } 
+  }
 
   export type ___Nodes = {
     __typename?: "WatchList";
-    
+
     id: number;
-  } 
+  }
 }
 
 export namespace ConfirmAccountDeletion {
@@ -1802,15 +1802,15 @@ export namespace ConfirmAccountDeletion {
 
   export type Mutation = {
     __typename?: "Mutation";
-    
+
     confirmAccountDeletion: Maybe<ConfirmAccountDeletion>;
   }
 
   export type ConfirmAccountDeletion = {
     __typename?: "ConfirmAccountDeletionPayload";
-    
+
     success: Maybe<boolean>;
-  } 
+  }
 }
 
 export namespace CreateFollowList {
@@ -1822,21 +1822,21 @@ export namespace CreateFollowList {
 
   export type Mutation = {
     __typename?: "Mutation";
-    
+
     createFollowList: Maybe<CreateFollowList>;
   }
 
   export type CreateFollowList = {
     __typename?: "CreateFollowListPayload";
-    
+
     followList: Maybe<FollowList>;
-  } 
+  }
 
   export type FollowList = {
     __typename?: "FollowList";
-    
+
     id: number;
-  } 
+  }
 }
 
 export namespace CreatePushSubscription {
@@ -1849,15 +1849,15 @@ export namespace CreatePushSubscription {
 
   export type Mutation = {
     __typename?: "Mutation";
-    
+
     createPushSubscription: Maybe<CreatePushSubscription>;
   }
 
   export type CreatePushSubscription = {
     __typename?: "CreatePushSubscriptionPayload";
-    
+
     clientMutationId: Maybe<string>;
-  } 
+  }
 }
 
 export namespace CreateWatchList {
@@ -1868,21 +1868,21 @@ export namespace CreateWatchList {
 
   export type Mutation = {
     __typename?: "Mutation";
-    
+
     createWatchList: Maybe<CreateWatchList>;
   }
 
   export type CreateWatchList = {
     __typename?: "CreateWatchListPayload";
-    
+
     watchList: Maybe<WatchList>;
-  } 
+  }
 
   export type WatchList = {
     __typename?: "WatchList";
-    
+
     id: number;
-  } 
+  }
 }
 
 export namespace CreateWatchedToAccount {
@@ -1894,33 +1894,33 @@ export namespace CreateWatchedToAccount {
 
   export type Mutation = {
     __typename?: "Mutation";
-    
+
     createWatchedToAccount: Maybe<CreateWatchedToAccount>;
   }
 
   export type CreateWatchedToAccount = {
     __typename?: "CreateWatchedToAccountPayload";
-    
+
     watchedToAccount: Maybe<WatchedToAccount>;
-  } 
+  }
 
   export type WatchedToAccount = {
     __typename?: "WatchedToAccount";
-    
+
     id: number;
-    
+
     region: Maybe<string>;
-    
+
     city: Maybe<City>;
-  } 
+  }
 
   export type City = {
     __typename?: "City";
-    
+
     id: number;
-    
+
     name: Maybe<string>;
-  } 
+  }
 }
 
 export namespace CurrentUser {
@@ -1929,51 +1929,51 @@ export namespace CurrentUser {
 
   export type Query = {
     __typename?: "Query";
-    
+
     currentUser: Maybe<CurrentUser>;
   }
 
   export type CurrentUser = {
     __typename?: "User";
-    
+
     username: string;
-    
+
     notificationFrequency: Frequency;
-    
+
     pushNotification: Maybe<boolean>;
-    
+
     emailNotification: Maybe<boolean>;
-    
+
     profilePhoto: Maybe<string>;
-    
+
     id: number;
-    
+
     isSetup: Maybe<boolean>;
-    
+
     isAdmin: boolean;
-    
+
     watchLists: WatchLists;
-    
+
     pushSubscriptions: PushSubscriptions;
-  } 
+  }
 
   export type WatchLists = {
     __typename?: "WatchListsConnection";
-    
+
     totalCount: number;
-  } 
+  }
 
   export type PushSubscriptions = {
     __typename?: "PushSubscriptionsConnection";
-    
+
     nodes: Nodes[];
-  } 
+  }
 
   export type Nodes = {
     __typename?: "PushSubscription";
-    
+
     id: number;
-  } 
+  }
 }
 
 export namespace DeletePushSubscriptionById {
@@ -1983,15 +1983,15 @@ export namespace DeletePushSubscriptionById {
 
   export type Mutation = {
     __typename?: "Mutation";
-    
+
     deletePushSubscription: Maybe<DeletePushSubscription>;
   }
 
   export type DeletePushSubscription = {
     __typename?: "DeletePushSubscriptionPayload";
-    
+
     clientMutationId: Maybe<string>;
-  } 
+  }
 }
 
 export namespace DeleteWatchedById {
@@ -2001,15 +2001,15 @@ export namespace DeleteWatchedById {
 
   export type Mutation = {
     __typename?: "Mutation";
-    
+
     deleteWatchedToAccount: Maybe<DeleteWatchedToAccount>;
   }
 
   export type DeleteWatchedToAccount = {
     __typename?: "DeleteWatchedToAccountPayload";
-    
+
     clientMutationId: Maybe<string>;
-  } 
+  }
 }
 
 export namespace EventById {
@@ -2020,81 +2020,81 @@ export namespace EventById {
 
   export type Query = {
     __typename?: "Query";
-    
+
     event: Maybe<Event>;
   }
 
   export type Event = {
     __typename?: "Event";
-    
+
     id: string;
-    
+
     name: Maybe<string>;
-    
+
     startDate: BigInt;
-    
+
     endDate: Maybe<BigInt>;
-    
+
     ticketproviderurl: Maybe<string>;
-    
+
     ticketproviderid: Maybe<string>;
-    
+
     description: Maybe<string>;
-    
+
     banner: Maybe<string>;
-    
+
     venueByVenue: Maybe<VenueByVenue>;
-    
+
     watchLists: WatchLists;
-    
+
     artistToEvents: ArtistToEvents;
-  } 
+  }
 
   export type VenueByVenue = {
     __typename?: "Venue";
-    
+
     name: string;
-    
+
     lat: Maybe<BigFloat>;
-    
+
     lon: Maybe<BigFloat>;
-    
+
     city: number;
-    
+
     address: Maybe<string>;
-  } 
+  }
 
   export type WatchLists = {
     __typename?: "WatchListsConnection";
-    
+
     nodes: Nodes[];
-  } 
+  }
 
   export type Nodes = {
     __typename?: "WatchList";
-    
+
     id: number;
-  } 
+  }
 
   export type ArtistToEvents = {
     __typename?: "ArtistToEventsConnection";
-    
+
     nodes: _Nodes[];
-  } 
+  }
 
   export type _Nodes = {
     __typename?: "ArtistToEvent";
-    
+
     id: number;
-    
+
     artist: Maybe<Artist>;
-  } 
+  }
 
   export type Artist = {
     __typename?: "Artist";
-    
+
     name: string;
-  } 
+  }
 }
 
 export namespace ForgotPassword {
@@ -2104,15 +2104,15 @@ export namespace ForgotPassword {
 
   export type Mutation = {
     __typename?: "Mutation";
-    
+
     forgotPassword: Maybe<ForgotPassword>;
   }
 
   export type ForgotPassword = {
     __typename?: "ForgotPasswordPayload";
-    
+
     clientMutationId: Maybe<string>;
-  } 
+  }
 }
 
 export namespace LiveStreams {
@@ -2126,81 +2126,81 @@ export namespace LiveStreams {
 
   export type Query = {
     __typename?: "Query";
-    
+
     events: Maybe<Events>;
   }
 
   export type Events = {
     __typename?: "EventsConnection";
-    
+
     totalCount: number;
-    
+
     nodes: Nodes[];
-  } 
+  }
 
   export type Nodes = {
     __typename?: "Event";
-    
+
     id: string;
-    
+
     name: Maybe<string>;
-    
+
     startDate: BigInt;
-    
+
     ticketproviderurl: Maybe<string>;
-    
+
     ticketproviderid: Maybe<string>;
-    
+
     venue: string;
-    
+
     createdAt: Datetime;
-    
+
     venueByVenue: Maybe<VenueByVenue>;
-    
+
     artistToEvents: ArtistToEvents;
-    
+
     watchLists: WatchLists;
-  } 
+  }
 
   export type VenueByVenue = {
     __typename?: "Venue";
-    
+
     lat: Maybe<BigFloat>;
-    
+
     lon: Maybe<BigFloat>;
-  } 
+  }
 
   export type ArtistToEvents = {
     __typename?: "ArtistToEventsConnection";
-    
+
     nodes: _Nodes[];
-  } 
+  }
 
   export type _Nodes = {
     __typename?: "ArtistToEvent";
-    
+
     id: number;
-    
+
     artist: Maybe<Artist>;
-  } 
+  }
 
   export type Artist = {
     __typename?: "Artist";
-    
+
     photo: Maybe<string>;
-  } 
+  }
 
   export type WatchLists = {
     __typename?: "WatchListsConnection";
-    
+
     nodes: __Nodes[];
-  } 
+  }
 
   export type __Nodes = {
     __typename?: "WatchList";
-    
+
     id: number;
-  } 
+  }
 }
 
 export namespace Login {
@@ -2211,25 +2211,25 @@ export namespace Login {
 
   export type Mutation = {
     __typename?: "Mutation";
-    
+
     login: Maybe<Login>;
   }
 
   export type Login = {
     __typename?: "LoginPayload";
-    
+
     user: User;
-  } 
+  }
 
   export type User = {
     __typename?: "User";
-    
+
     id: number;
-    
+
     username: string;
-    
+
     name: Maybe<string>;
-  } 
+  }
 }
 
 export namespace Logout {
@@ -2238,15 +2238,15 @@ export namespace Logout {
 
   export type Mutation = {
     __typename?: "Mutation";
-    
+
     logout: Maybe<Logout>;
   }
 
   export type Logout = {
     __typename?: "LogoutPayload";
-    
+
     success: Maybe<boolean>;
-  } 
+  }
 }
 
 export namespace Register {
@@ -2259,25 +2259,25 @@ export namespace Register {
 
   export type Mutation = {
     __typename?: "Mutation";
-    
+
     register: Maybe<Register>;
   }
 
   export type Register = {
     __typename?: "RegisterPayload";
-    
+
     user: User;
-  } 
+  }
 
   export type User = {
     __typename?: "User";
-    
+
     id: number;
-    
+
     username: string;
-    
+
     name: Maybe<string>;
-  } 
+  }
 }
 
 export namespace RemoveFollowlist {
@@ -2287,15 +2287,15 @@ export namespace RemoveFollowlist {
 
   export type Mutation = {
     __typename?: "Mutation";
-    
+
     deleteFollowList: Maybe<DeleteFollowList>;
   }
 
   export type DeleteFollowList = {
     __typename?: "DeleteFollowListPayload";
-    
+
     clientMutationId: Maybe<string>;
-  } 
+  }
 }
 
 export namespace RemoveWatchlist {
@@ -2305,15 +2305,15 @@ export namespace RemoveWatchlist {
 
   export type Mutation = {
     __typename?: "Mutation";
-    
+
     deleteWatchList: Maybe<DeleteWatchList>;
   }
 
   export type DeleteWatchList = {
     __typename?: "DeleteWatchListPayload";
-    
+
     clientMutationId: Maybe<string>;
-  } 
+  }
 }
 
 export namespace RequestAccountDeletion {
@@ -2322,15 +2322,15 @@ export namespace RequestAccountDeletion {
 
   export type Mutation = {
     __typename?: "Mutation";
-    
+
     requestAccountDeletion: Maybe<RequestAccountDeletion>;
   }
 
   export type RequestAccountDeletion = {
     __typename?: "RequestAccountDeletionPayload";
-    
+
     success: Maybe<boolean>;
-  } 
+  }
 }
 
 export namespace ResendEmailVerification {
@@ -2340,15 +2340,15 @@ export namespace ResendEmailVerification {
 
   export type Mutation = {
     __typename?: "Mutation";
-    
+
     resendEmailVerificationCode: Maybe<ResendEmailVerificationCode>;
   }
 
   export type ResendEmailVerificationCode = {
     __typename?: "ResendEmailVerificationCodePayload";
-    
+
     success: Maybe<boolean>;
-  } 
+  }
 }
 
 export namespace ResetPassword {
@@ -2360,15 +2360,15 @@ export namespace ResetPassword {
 
   export type Mutation = {
     __typename?: "Mutation";
-    
+
     resetPassword: Maybe<ResetPassword>;
   }
 
   export type ResetPassword = {
     __typename?: "ResetPasswordPayload";
-    
+
     success: Maybe<boolean>;
-  } 
+  }
 }
 
 export namespace SearchEventsByCity {
@@ -2384,81 +2384,81 @@ export namespace SearchEventsByCity {
 
   export type Query = {
     __typename?: "Query";
-    
+
     searchEventsByCity: SearchEventsByCity;
   }
 
   export type SearchEventsByCity = {
     __typename?: "EventsConnection";
-    
+
     totalCount: number;
-    
+
     nodes: Nodes[];
-  } 
+  }
 
   export type Nodes = {
     __typename?: "Event";
-    
+
     id: string;
-    
+
     name: Maybe<string>;
-    
+
     startDate: BigInt;
-    
+
     ticketproviderurl: Maybe<string>;
-    
+
     ticketproviderid: Maybe<string>;
-    
+
     venue: string;
-    
+
     createdAt: Datetime;
-    
+
     venueByVenue: Maybe<VenueByVenue>;
-    
+
     artistToEvents: ArtistToEvents;
-    
+
     watchLists: WatchLists;
-  } 
+  }
 
   export type VenueByVenue = {
     __typename?: "Venue";
-    
+
     lat: Maybe<BigFloat>;
-    
+
     lon: Maybe<BigFloat>;
-  } 
+  }
 
   export type ArtistToEvents = {
     __typename?: "ArtistToEventsConnection";
-    
+
     nodes: _Nodes[];
-  } 
+  }
 
   export type _Nodes = {
     __typename?: "ArtistToEvent";
-    
+
     id: number;
-    
+
     artist: Maybe<Artist>;
-  } 
+  }
 
   export type Artist = {
     __typename?: "Artist";
-    
+
     photo: Maybe<string>;
-  } 
+  }
 
   export type WatchLists = {
     __typename?: "WatchListsConnection";
-    
+
     nodes: __Nodes[];
-  } 
+  }
 
   export type __Nodes = {
     __typename?: "WatchList";
-    
+
     id: number;
-  } 
+  }
 }
 
 export namespace SearchEventsByRegion {
@@ -2474,81 +2474,81 @@ export namespace SearchEventsByRegion {
 
   export type Query = {
     __typename?: "Query";
-    
+
     searchEventsByRegion: SearchEventsByRegion;
   }
 
   export type SearchEventsByRegion = {
     __typename?: "EventsConnection";
-    
+
     totalCount: number;
-    
+
     nodes: Nodes[];
-  } 
+  }
 
   export type Nodes = {
     __typename?: "Event";
-    
+
     id: string;
-    
+
     name: Maybe<string>;
-    
+
     startDate: BigInt;
-    
+
     ticketproviderurl: Maybe<string>;
-    
+
     ticketproviderid: Maybe<string>;
-    
+
     venue: string;
-    
+
     createdAt: Datetime;
-    
+
     venueByVenue: Maybe<VenueByVenue>;
-    
+
     artistToEvents: ArtistToEvents;
-    
+
     watchLists: WatchLists;
-  } 
+  }
 
   export type VenueByVenue = {
     __typename?: "Venue";
-    
+
     lat: Maybe<BigFloat>;
-    
+
     lon: Maybe<BigFloat>;
-  } 
+  }
 
   export type ArtistToEvents = {
     __typename?: "ArtistToEventsConnection";
-    
+
     nodes: _Nodes[];
-  } 
+  }
 
   export type _Nodes = {
     __typename?: "ArtistToEvent";
-    
+
     id: number;
-    
+
     artist: Maybe<Artist>;
-  } 
+  }
 
   export type Artist = {
     __typename?: "Artist";
-    
+
     photo: Maybe<string>;
-  } 
+  }
 
   export type WatchLists = {
     __typename?: "WatchListsConnection";
-    
+
     nodes: __Nodes[];
-  } 
+  }
 
   export type __Nodes = {
     __typename?: "WatchList";
-    
+
     id: number;
-  } 
+  }
 }
 
 export namespace UpdateUser {
@@ -2563,39 +2563,39 @@ export namespace UpdateUser {
 
   export type Mutation = {
     __typename?: "Mutation";
-    
+
     updateUser: Maybe<UpdateUser>;
   }
 
   export type UpdateUser = {
     __typename?: "UpdateUserPayload";
-    
+
     user: Maybe<User>;
-  } 
+  }
 
   export type User = {
     __typename?: "User";
-    
+
     username: string;
-    
+
     notificationFrequency: Frequency;
-    
+
     profilePhoto: Maybe<string>;
-    
+
     pushNotification: Maybe<boolean>;
-    
+
     emailNotification: Maybe<boolean>;
-    
+
     id: number;
-    
+
     watchLists: WatchLists;
-  } 
+  }
 
   export type WatchLists = {
     __typename?: "WatchListsConnection";
-    
+
     totalCount: number;
-  } 
+  }
 }
 
 export namespace UserByUsername {
@@ -2606,127 +2606,127 @@ export namespace UserByUsername {
 
   export type Query = {
     __typename?: "Query";
-    
+
     userByUsername: Maybe<UserByUsername>;
   }
 
   export type UserByUsername = {
     __typename?: "User";
-    
+
     id: number;
-    
+
     username: string;
-    
+
     profilePhoto: Maybe<string>;
-    
+
     watchLists: WatchLists;
-    
+
     followLists: FollowLists;
-  } 
+  }
 
   export type WatchLists = {
     __typename?: "WatchListsConnection";
-    
+
     totalCount: number;
-    
+
     nodes: Nodes[];
-  } 
+  }
 
   export type Nodes = {
     __typename?: "WatchList";
-    
+
     id: number;
-    
+
     event: Maybe<Event>;
-  } 
+  }
 
   export type Event = {
     __typename?: "Event";
-    
+
     id: string;
-    
+
     name: Maybe<string>;
-    
+
     startDate: BigInt;
-    
+
     ticketproviderurl: Maybe<string>;
-    
+
     ticketproviderid: Maybe<string>;
-    
+
     venue: string;
-    
+
     createdAt: Datetime;
-    
+
     artistToEvents: ArtistToEvents;
-    
+
     watchLists: _WatchLists;
-  } 
+  }
 
   export type ArtistToEvents = {
     __typename?: "ArtistToEventsConnection";
-    
+
     nodes: _Nodes[];
-  } 
+  }
 
   export type _Nodes = {
     __typename?: "ArtistToEvent";
-    
+
     id: number;
-    
+
     artist: Maybe<Artist>;
-  } 
+  }
 
   export type Artist = {
     __typename?: "Artist";
-    
+
     photo: Maybe<string>;
-  } 
+  }
 
   export type _WatchLists = {
     __typename?: "WatchListsConnection";
-    
+
     nodes: __Nodes[];
-  } 
+  }
 
   export type __Nodes = {
     __typename?: "WatchList";
-    
+
     id: number;
-  } 
+  }
 
   export type FollowLists = {
     __typename?: "FollowListsConnection";
-    
+
     totalCount: number;
-    
+
     nodes: ___Nodes[];
-  } 
+  }
 
   export type ___Nodes = {
     __typename?: "FollowList";
-    
+
     id: number;
-    
+
     artist: Maybe<_Artist>;
-    
+
     venue: Maybe<Venue>;
-  } 
+  }
 
   export type _Artist = {
     __typename?: "Artist";
-    
+
     name: string;
-    
+
     photo: Maybe<string>;
-  } 
+  }
 
   export type Venue = {
     __typename?: "Venue";
-    
+
     name: string;
-    
+
     photo: Maybe<string>;
-  } 
+  }
 }
 
 export namespace VenueByName {
@@ -2738,87 +2738,87 @@ export namespace VenueByName {
 
   export type Query = {
     __typename?: "Query";
-    
+
     venue: Maybe<Venue>;
   }
 
   export type Venue = {
     __typename?: "Venue";
-    
+
     name: string;
-    
+
     description: Maybe<string>;
-    
+
     lat: Maybe<BigFloat>;
-    
+
     lon: Maybe<BigFloat>;
-    
+
     city: number;
-    
+
     address: Maybe<string>;
-    
+
     photo: Maybe<string>;
-    
+
     logo: Maybe<string>;
-    
+
     followLists: FollowLists;
-    
+
     eventsByVenue: EventsByVenue;
-  } 
+  }
 
   export type FollowLists = {
     __typename?: "FollowListsConnection";
-    
+
     nodes: Nodes[];
-  } 
+  }
 
   export type Nodes = {
     __typename?: "FollowList";
-    
+
     id: number;
-  } 
+  }
 
   export type EventsByVenue = {
     __typename?: "EventsConnection";
-    
+
     nodes: _Nodes[];
-  } 
+  }
 
   export type _Nodes = {
     __typename?: "Event";
-    
+
     name: Maybe<string>;
-    
+
     startDate: BigInt;
-    
+
     ticketproviderurl: Maybe<string>;
-    
+
     ticketproviderid: Maybe<string>;
-    
+
     id: string;
-    
+
     artistToEvents: ArtistToEvents;
-  } 
+  }
 
   export type ArtistToEvents = {
     __typename?: "ArtistToEventsConnection";
-    
+
     nodes: __Nodes[];
-  } 
+  }
 
   export type __Nodes = {
     __typename?: "ArtistToEvent";
-    
+
     id: number;
-    
+
     artist: Maybe<Artist>;
-  } 
+  }
 
   export type Artist = {
     __typename?: "Artist";
-    
+
     photo: Maybe<string>;
-  } 
+  }
 }
 
 export namespace VerifyEmail {
@@ -2829,31 +2829,31 @@ export namespace VerifyEmail {
 
   export type Mutation = {
     __typename?: "Mutation";
-    
+
     verifyEmail: Maybe<VerifyEmail>;
   }
 
   export type VerifyEmail = {
     __typename?: "VerifyEmailPayload";
-    
+
     success: Maybe<boolean>;
-    
+
     query: Maybe<_Query>;
-  } 
+  }
 
   export type _Query = {
     __typename?: "Query";
-    
+
     currentUser: Maybe<CurrentUser>;
-  } 
+  }
 
   export type CurrentUser = {
     __typename?: "User";
-    
+
     id: number;
-    
+
     isVerified: boolean;
-  } 
+  }
 }
 
 export namespace WatchedLocationByAccount {
@@ -2863,33 +2863,33 @@ export namespace WatchedLocationByAccount {
 
   export type Query = {
     __typename?: "Query";
-    
+
     watchedToAccounts: Maybe<WatchedToAccounts>;
   }
 
   export type WatchedToAccounts = {
     __typename?: "WatchedToAccountsConnection";
-    
+
     nodes: Nodes[];
-  } 
+  }
 
   export type Nodes = {
     __typename?: "WatchedToAccount";
-    
+
     id: number;
-    
+
     region: Maybe<string>;
-    
+
     city: Maybe<City>;
-  } 
+  }
 
   export type City = {
     __typename?: "City";
-    
+
     id: number;
-    
+
     name: Maybe<string>;
-  } 
+  }
 }
 
 
@@ -2940,11 +2940,11 @@ import gql from 'graphql-tag';
     }
   }
 }
-    
-      
-    
+
+
+
   `;
-        
+
     }
     @Injectable({
         providedIn: 'root'
@@ -2999,11 +2999,11 @@ import gql from 'graphql-tag';
     }
   }
 }
-    
-      
-    
+
+
+
   `;
-        
+
     }
     @Injectable({
         providedIn: 'root'
@@ -3015,11 +3015,11 @@ import gql from 'graphql-tag';
     success
   }
 }
-    
-      
-    
+
+
+
   `;
-        
+
     }
     @Injectable({
         providedIn: 'root'
@@ -3033,11 +3033,11 @@ import gql from 'graphql-tag';
     }
   }
 }
-    
-      
-    
+
+
+
   `;
-        
+
     }
     @Injectable({
         providedIn: 'root'
@@ -3049,11 +3049,11 @@ import gql from 'graphql-tag';
     clientMutationId
   }
 }
-    
-      
-    
+
+
+
   `;
-        
+
     }
     @Injectable({
         providedIn: 'root'
@@ -3067,11 +3067,11 @@ import gql from 'graphql-tag';
     }
   }
 }
-    
-      
-    
+
+
+
   `;
-        
+
     }
     @Injectable({
         providedIn: 'root'
@@ -3090,11 +3090,11 @@ import gql from 'graphql-tag';
     }
   }
 }
-    
-      
-    
+
+
+
   `;
-        
+
     }
     @Injectable({
         providedIn: 'root'
@@ -3121,11 +3121,11 @@ import gql from 'graphql-tag';
     }
   }
 }
-    
-      
-    
+
+
+
   `;
-        
+
     }
     @Injectable({
         providedIn: 'root'
@@ -3137,11 +3137,11 @@ import gql from 'graphql-tag';
     clientMutationId
   }
 }
-    
-      
-    
+
+
+
   `;
-        
+
     }
     @Injectable({
         providedIn: 'root'
@@ -3153,11 +3153,11 @@ import gql from 'graphql-tag';
     clientMutationId
   }
 }
-    
-      
-    
+
+
+
   `;
-        
+
     }
     @Injectable({
         providedIn: 'root'
@@ -3196,11 +3196,11 @@ import gql from 'graphql-tag';
     }
   }
 }
-    
-      
-    
+
+
+
   `;
-        
+
     }
     @Injectable({
         providedIn: 'root'
@@ -3212,11 +3212,11 @@ import gql from 'graphql-tag';
     clientMutationId
   }
 }
-    
-      
-    
+
+
+
   `;
-        
+
     }
     @Injectable({
         providedIn: 'root'
@@ -3254,11 +3254,11 @@ import gql from 'graphql-tag';
     }
   }
 }
-    
-      
-    
+
+
+
   `;
-        
+
     }
     @Injectable({
         providedIn: 'root'
@@ -3274,11 +3274,11 @@ import gql from 'graphql-tag';
     }
   }
 }
-    
-      
-    
+
+
+
   `;
-        
+
     }
     @Injectable({
         providedIn: 'root'
@@ -3290,11 +3290,11 @@ import gql from 'graphql-tag';
     success
   }
 }
-    
-      
-    
+
+
+
   `;
-        
+
     }
     @Injectable({
         providedIn: 'root'
@@ -3310,11 +3310,11 @@ import gql from 'graphql-tag';
     }
   }
 }
-    
-      
-    
+
+
+
   `;
-        
+
     }
     @Injectable({
         providedIn: 'root'
@@ -3326,11 +3326,11 @@ import gql from 'graphql-tag';
     clientMutationId
   }
 }
-    
-      
-    
+
+
+
   `;
-        
+
     }
     @Injectable({
         providedIn: 'root'
@@ -3342,11 +3342,11 @@ import gql from 'graphql-tag';
     clientMutationId
   }
 }
-    
-      
-    
+
+
+
   `;
-        
+
     }
     @Injectable({
         providedIn: 'root'
@@ -3358,11 +3358,11 @@ import gql from 'graphql-tag';
     success
   }
 }
-    
-      
-    
+
+
+
   `;
-        
+
     }
     @Injectable({
         providedIn: 'root'
@@ -3374,11 +3374,11 @@ import gql from 'graphql-tag';
     success
   }
 }
-    
-      
-    
+
+
+
   `;
-        
+
     }
     @Injectable({
         providedIn: 'root'
@@ -3390,11 +3390,11 @@ import gql from 'graphql-tag';
     success
   }
 }
-    
-      
-    
+
+
+
   `;
-        
+
     }
     @Injectable({
         providedIn: 'root'
@@ -3432,11 +3432,11 @@ import gql from 'graphql-tag';
     }
   }
 }
-    
-      
-    
+
+
+
   `;
-        
+
     }
     @Injectable({
         providedIn: 'root'
@@ -3474,11 +3474,11 @@ import gql from 'graphql-tag';
     }
   }
 }
-    
-      
-    
+
+
+
   `;
-        
+
     }
     @Injectable({
         providedIn: 'root'
@@ -3500,11 +3500,11 @@ import gql from 'graphql-tag';
     }
   }
 }
-    
-      
-    
+
+
+
   `;
-        
+
     }
     @Injectable({
         providedIn: 'root'
@@ -3560,11 +3560,11 @@ import gql from 'graphql-tag';
     }
   }
 }
-    
-      
-    
+
+
+
   `;
-        
+
     }
     @Injectable({
         providedIn: 'root'
@@ -3605,11 +3605,11 @@ import gql from 'graphql-tag';
     }
   }
 }
-    
-      
-    
+
+
+
   `;
-        
+
     }
     @Injectable({
         providedIn: 'root'
@@ -3627,11 +3627,11 @@ import gql from 'graphql-tag';
     }
   }
 }
-    
-      
-    
+
+
+
   `;
-        
+
     }
     @Injectable({
         providedIn: 'root'
@@ -3650,11 +3650,11 @@ import gql from 'graphql-tag';
     }
   }
 }
-    
-      
-    
+
+
+
   `;
-        
+
     }
 
 
