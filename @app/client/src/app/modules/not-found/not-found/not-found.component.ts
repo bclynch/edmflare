@@ -9,7 +9,7 @@ import { AppService } from 'src/app/services/app.service';
 export class NotFoundComponent implements OnInit {
 
   constructor(
-    private appService: AppService
+    public appService: AppService
   ) {
     this.appService.modPageMeta('Page Not Found', 'The url does not exist');
   }

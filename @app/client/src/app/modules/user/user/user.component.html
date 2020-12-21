@@ -2,9 +2,16 @@
   <div class="userContainer">
     <div class="wrapper">
       <div class="userWrapper" *ngIf="user">
-        <div *ngIf="user.profilePhoto" class="profile"
-          [ngStyle]="{ 'background-image': 'url(' + user.profilePhoto + ')'}"></div>
-        <div *ngIf="!user.profilePhoto" class="backupImg profile"></div>
+        <cl-image *ngIf="user.profilePhoto" crop="fit" [public-id]="user.profilePhoto" type="fetch" loading="lazy"
+          width="120" [attr.alt]="user.name + ' Profile Photo'">
+          <cl-placeholder type="blur"></cl-placeholder>
+          <cl-transformation quality="auto" fetch-format="auto"></cl-transformation>
+        </cl-image>
+        <cl-image *ngIf="!user.profilePhoto" crop="fit" [public-id]="appService.logoUrl" type="fetch" loading="lazy"
+          width="120" [attr.alt]="'EDM Flare Logo'" class="logoImg">
+          <cl-placeholder type="blur"></cl-placeholder>
+          <cl-transformation quality="auto" fetch-format="auto"></cl-transformation>
+        </cl-image>
         <h1>{{user.username}}</h1>
         <div class="trackingWrapper">
           <div>{{user.watchLists.totalCount}} Watching</div>
@@ -35,9 +42,16 @@
             <div class="followCardWrapper" *ngIf="follow.artist">
               <div class="imageWrapper">
                 <a [routerLink]="['/event/' + id]">
-                  <div *ngIf="follow.artist.photo" class="img"
-                    [ngStyle]="{ 'background-image': 'url(' + follow.artist.photo + ')'}"></div>
-                  <div *ngIf="!follow.artist.photo" class="backupImg img"></div>
+                  <cl-image *ngIf="follow.artist.photo" crop="fit" [public-id]="follow.artist.photo" type="fetch"
+                    loading="lazy" width="108" [attr.alt]="follow.artist.name + ' Profile'" class="img" radius="max">
+                    <cl-placeholder type="blur"></cl-placeholder>
+                    <cl-transformation quality="auto" fetch-format="auto"></cl-transformation>
+                  </cl-image>
+                  <cl-image *ngIf="!follow.artist.photo" crop="fit" [public-id]="appService.logoUrl" type="fetch"
+                    loading="lazy" width="108" [attr.alt]="'EDM Flare Logo'" class="img">
+                    <cl-placeholder type="blur"></cl-placeholder>
+                    <cl-transformation quality="auto" fetch-format="auto"></cl-transformation>
+                  </cl-image>
                 </a>
               </div>
               <a [routerLink]="['/artist/' + follow.artist.name]">
@@ -47,10 +61,13 @@
             <div class="followCardWrapper" *ngIf="follow.venue">
               <div class="imageWrapper">
                 <a [routerLink]="['/event/' + id]">
-                  <div *ngIf="follow.venue.photo" class="img venue"
-                    [ngStyle]="{ 'background-image': 'url(' + follow.venue.photo + ')'}"></div>
-                  <cl-image crop="fit" [public-id]="appService.logoUrl" type="fetch" loading="lazy" width="96"
-                    [attr.alt]="'EDM Flare Logo'" class="backupImg img" *ngIf="!follow.venue.photo">
+                  <cl-image *ngIf="follow.venue.photo" crop="fit" [public-id]="follow.venue.photo" type="fetch"
+                    loading="lazy" width="108" [attr.alt]="follow.artist.name + ' Profile'" class="img" radius="max">
+                    <cl-placeholder type="blur"></cl-placeholder>
+                    <cl-transformation quality="auto" fetch-format="auto"></cl-transformation>
+                  </cl-image>
+                  <cl-image *ngIf="!follow.venue.photo" crop="fit" [public-id]="appService.logoUrl" type="fetch"
+                    loading="lazy" width="108" [attr.alt]="'EDM Flare Logo'" class="backupImg img">
                     <cl-placeholder type="blur"></cl-placeholder>
                     <cl-transformation quality="auto" fetch-format="auto"></cl-transformation>
                   </cl-image>

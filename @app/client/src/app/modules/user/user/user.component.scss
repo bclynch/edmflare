@@ -10,14 +10,7 @@
     align-items: center;
 
     .profile {
-      height: 120px;
-      width: 120px;
-      background-size: cover;
-      border-radius: 50%;
 
-      &.backupImg {
-        background: purple;
-      }
     }
     .trackingWrapper {
       display: flex;
@@ -52,18 +45,7 @@
             margin-right: 15px;
 
             .img {
-              height: 75px;
-              width: 75px;
               cursor: pointer;
-              background-size: contain;
-              border-radius: 50%;
-
-              &.venue {
-                background-size: cover;
-              }
-            }
-            .backupImg {
-              border-radius: 0;
             }
           }
           a {

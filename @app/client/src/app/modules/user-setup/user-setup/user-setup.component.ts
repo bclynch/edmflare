@@ -12,7 +12,7 @@ import { UserService } from '../../../services/user.service';
 export class UserSetupComponent implements OnInit {
 
   constructor(
-    private appService: AppService,
+    public appService: AppService,
     private router: Router,
     private updateUserGQL: UpdateUserGQL,
     private userService: UserService

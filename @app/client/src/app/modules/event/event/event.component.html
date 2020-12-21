@@ -4,9 +4,19 @@
       <div class="header">
         <div class="topWrapper">
           <div class="bannerWrapper">
-            <div class="bannerImage" *ngIf="event?.banner"
-              [ngStyle]="{ 'background-image': 'url(' + event?.banner + ')'}"></div>
-            <div class="bannerImage backup" *ngIf="!event?.banner"></div>
+            <div class="bannerImage">
+              <cl-image *ngIf="event?.banner" crop="fill" [public-id]="event?.banner" type="fetch" loading="lazy"
+                height="300" width="1600" [attr.alt]="event?.name ? event.name : 'Event' + ' Image'">
+                <cl-placeholder type="blur"></cl-placeholder>
+                <cl-transformation quality="auto" fetch-format="auto"></cl-transformation>
+              </cl-image>
+              <cl-image *ngIf="!event?.banner" crop="fill"
+                [public-id]="'https://edm-flare.s3.amazonaws.com/backgrounds/background1.jpg'" type="fetch"
+                loading="lazy" height="300" [attr.alt]="event?.name ? event.name : 'Event' + ' Image'">
+                <cl-placeholder type="blur"></cl-placeholder>
+                <cl-transformation quality="auto" fetch-format="auto"></cl-transformation>
+              </cl-image>
+            </div>
             <div class="eventInfo">
               <h1>{{event?.name}}</h1>
               <a [routerLink]="['/venue/' + event?.venueByVenue.name]">{{event?.venueByVenue.name.split('-')[0]}}</a>
@@ -32,8 +42,8 @@
             </button>
           </div>
           <a [href]="event?.ticketproviderurl" target="_blank" rel="nofollow" *ngIf="event?.ticketproviderurl">
-            <button class="ticketBtn" mat-flat-button
-              color="accent">{{ event.venueByVenue.name === 'Live Stream' ? 'Stream' : 'Tickets' }}</button>
+            <button class="ticketBtn" mat-flat-button color="accent">{{ event.venueByVenue.name === 'Live Stream' ?
+              'Stream' : 'Tickets' }}</button>
           </a>
           <!-- <button
             class="ticketBtn"
@@ -48,8 +58,8 @@
           <div class="section">
             <h3 class="sectionHeader">Artists</h3>
             <a [routerLink]="['/artist/' + artist.artist.name]"
-              *ngFor="let artist of event.artistToEvents.nodes; let i = index;"
-              class="artist">{{artist.artist.name}}{{i + 1 < event.artistToEvents.nodes.length ? ',' : ''}}</a>
+              *ngFor="let artist of event.artistToEvents.nodes; let i = index;" class="artist">{{artist.artist.name}}{{i
+              + 1 < event.artistToEvents.nodes.length ? ',' : '' }}</a>
           </div>
           <div class="section">
             <h3 class="sectionHeader">Date And Time</h3>
@@ -60,7 +70,7 @@
             <h3 class="sectionHeader">Location</h3>
             <div>{{event.venueByVenue.name.split('-')[0]}}</div>
             <div>{{event.venueByVenue.address}}</div>
-            <a (click)="scrollTo('locationAnchor')">View Map</a>
+            <a *ngIf="event && event.venueByVenue.lat" (click)="scrollTo('locationAnchor')">View Map</a>
           </div>
         </div>
         <div class="description" *ngIf="event.description">

@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SubscriptionLike } from 'rxjs';
-import { AppService } from 'src/app/services/app.service';
+import { AppService } from '../../../services/app.service';
 import { UserByUsernameGQL } from 'src/app/generated/graphql';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UserService } from 'src/app/services/user.service';
+import { UserService } from '../../../services/user.service';
 
 @Component({
   selector: 'app-user',

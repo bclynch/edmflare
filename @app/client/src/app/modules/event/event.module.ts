@@ -13,6 +13,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { CloudinaryModule } from '@cloudinary/angular-5.x';
 
 const routes: Routes = [
   {
@@ -34,7 +35,8 @@ const routes: Routes = [
     MatDialogModule,
     MatSnackBarModule,
     MatButtonModule,
-    MatTooltipModule
+    MatTooltipModule,
+    CloudinaryModule
   ],
   providers: [
     {provide: OverlayContainer, useClass: FullscreenOverlayContainer},

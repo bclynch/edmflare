@@ -2,8 +2,15 @@
   <div class="venueContainer">
     <div class="wrapper">
       <div *ngIf="venue" class="header">
-        <div class="bannerImg" *ngIf="venue.photo" [ngStyle]="{ 'background-image': 'url(' + venue.photo + ')'}"></div>
-        <div class="bannerImg backup" *ngIf="!venue.photo"></div>
+        <div class="bannerImg">
+          <cl-image *ngIf="!venue.photo" crop="fill"
+            [public-id]="'https://edm-flare.s3.amazonaws.com/venues/Fox%20Theater%20Oakland%20-%20Oakland%2C%20CA/image.jpg'"
+            type="fetch" loading="lazy" height="250" width="1600" [attr.alt]="venue.name + ' Banner'" class="img">
+            <cl-placeholder type="blur"></cl-placeholder>
+            <cl-transformation quality="auto" fetch-format="auto"></cl-transformation>
+          </cl-image>
+          <div class="bannerImg backup" *ngIf="venue.photo"></div>
+        </div>
         <h1>{{venue?.name.split('-')[0]}}</h1>
         <div class="followContainer">
           <button mat-flat-button (click)="followVenue()" color="accent"

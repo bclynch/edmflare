@@ -7,6 +7,7 @@ import { VenueMapModule } from '../venue-map/venue-map.module';
 import { EventCardModule } from '../event-card/event-card.module';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
+import { CloudinaryModule } from '@cloudinary/angular-5.x';
 
 const routes: Routes = [
   {
@@ -24,7 +25,8 @@ const routes: Routes = [
     VenueMapModule,
     EventCardModule,
     MatSnackBarModule,
-    MatButtonModule
+    MatButtonModule,
+    CloudinaryModule
   ]
 })
 export class VenueModule { }

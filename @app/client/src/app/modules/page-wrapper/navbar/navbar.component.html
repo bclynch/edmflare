@@ -24,7 +24,11 @@
         <div *ngIf="signedIn">
           <button class="menuBtn" mat-button [matMenuTriggerFor]="menu">
             <mat-icon *ngIf="!userService.user.profilePhoto">person_outline</mat-icon>
-            <img [src]="userService.user.profilePhoto" alt="User profile photo" *ngIf="userService.user.profilePhoto" />
+            <cl-image *ngIf="userService.user.profilePhoto" crop="fit" [public-id]="userService.user.profilePhoto"
+              type="fetch" loading="lazy" width="50" radius="max" [attr.alt]="'User profile photo'" class="logoImg">
+              <cl-placeholder type="blur"></cl-placeholder>
+              <cl-transformation quality="auto" fetch-format="auto"></cl-transformation>
+            </cl-image>
           </button>
           <mat-menu #menu="matMenu" [overlapTrigger]="false" xPosition="before">
             <div *ngIf="signedIn">

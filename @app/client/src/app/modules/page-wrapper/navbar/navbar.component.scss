@@ -39,9 +39,9 @@
           color: var(--color-font);
           font-size: 0.85em;
 
-          img {
-            width: calc(var(--height-navbar) - 20px);
-            border-radius: 50%;
+          .logoImg {
+            display: flex;
+            align-items: center;
           }
         }
       }
