@@ -3,7 +3,8 @@ import { SubscriptionLike } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { UpdateUserGQL } from 'src/app/generated/graphql';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { UserService } from 'src/app/services/user.service';
+import { UserService } from '../../../services/user.service';
+import { AppService } from '../../../services/app.service';
 
 @Component({
   selector: 'app-unsubscribe',
@@ -19,7 +20,8 @@ export class UnsubscribeComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private updateUserGQL: UpdateUserGQL,
     public snackBar: MatSnackBar,
-    private userService: UserService
+    private userService: UserService,
+    public appService: AppService
   ) {
     this.paramsSubscription = this.route.queryParams.subscribe((params) => {
       this.userId = +params.accountId;

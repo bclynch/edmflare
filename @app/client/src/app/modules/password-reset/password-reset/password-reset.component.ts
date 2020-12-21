@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ResetPasswordGQL } from 'src/app/generated/graphql';
+import { AppService } from '../../../services/app.service';
 
 @Component({
   selector: 'app-password-reset',
@@ -37,7 +38,8 @@ export class PasswordResetComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private resetPasswordGQL: ResetPasswordGQL,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public appService: AppService
   ) {
     this.token = this.route.snapshot.queryParams.token;
     this.userId = +this.route.snapshot.queryParams['user_id'];

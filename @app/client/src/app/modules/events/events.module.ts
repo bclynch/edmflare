@@ -6,6 +6,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { GhostListComponent } from './events/ghost/ghost-list.component';
+import { CloudinaryModule } from '@cloudinary/angular-5.x';
 
 const routes: Routes = [
   {
@@ -22,7 +23,8 @@ const routes: Routes = [
     SharedModule,
     ScrollingModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    CloudinaryModule
   ]
 })
 export class EventsModule { }

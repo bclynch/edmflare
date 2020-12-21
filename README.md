@@ -19,6 +19,7 @@
 - Cloudinary
 - Work on reducing shared module
 - Fix maps
+- Remove extra imgs / ~~map styles~~
 - ~~Check sharebuttons new package (again -- sheesh)~~
 - Look at swapping out moment OR at least working on limiting the import
 - Fix scraping

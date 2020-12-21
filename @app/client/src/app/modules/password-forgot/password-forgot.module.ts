@@ -4,6 +4,7 @@ import { PasswordForgotComponent } from './password-forgot/password-forgot.compo
 import { Routes, RouterModule } from '@angular/router';
 import { SharedModule } from '../../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CloudinaryModule } from '@cloudinary/angular-5.x';
 
 const routes: Routes = [
   {
@@ -19,7 +20,8 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     SharedModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CloudinaryModule
   ]
 })
 export class PasswordForgotModule { }

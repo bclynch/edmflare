@@ -1,6 +1,10 @@
 <app-pagewrapper>
   <div class="logoWrapper">
-    <img class="logoImg" src="assets/icons/icon-192x192.png" alt="EDM Flare Logo" />
+    <cl-image crop="fit" [public-id]="appService.logoUrl" type="fetch" loading="lazy" width="192" alt="EDM Flare Logo"
+      class="logoImg">
+      <cl-placeholder type="blur"></cl-placeholder>
+      <cl-transformation quality="auto" fetch-format="auto"></cl-transformation>
+    </cl-image>
     <h1 class="title">This page doesn't exist. Head back home to keep using EDM Flare</h1>
     <a [routerLink]="['/']"><button mat-flat-button color="primary">Head Home</button></a>
   </div>

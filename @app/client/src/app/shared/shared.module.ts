@@ -27,6 +27,7 @@ import { ShareButtonsModule } from 'ngx-sharebuttons/buttons';
 import { AgmCoreModule } from '@agm/core';
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { OverlayContainer, FullscreenOverlayContainer } from '@angular/cdk/overlay';
+import { CloudinaryModule } from '@cloudinary/angular-5.x';
 
 // components
 import { PagewrapperComponent } from './pagewrapper/pagewrapper.component';
@@ -105,7 +106,8 @@ import { faEnvelope } from '@fortawesome/free-solid-svg-icons/faEnvelope';
     AgmCoreModule.forRoot({
       apiKey: ENV.googleAPIKey,
     }),
-    FontAwesomeModule
+    FontAwesomeModule,
+    CloudinaryModule
   ],
   exports: [
     MatButtonModule,

@@ -13,7 +13,9 @@
         </button>
       </div>
       <div class="logoWrapper">
-        <a class="logo" [routerLink]="['/']"><img src="assets/images/edm_flare_opt.svg" alt="EDM Flare Logo" /></a>
+        <a class="logo" [routerLink]="['/']">
+          <img src="assets/images/edm_flare_opt.svg" alt="EDM Flare Logo" loading="lazy" />
+        </a>
       </div>
       <div class="right">
         <a [routerLink]="['/login']" [queryParams]="{ redirect: router.url }" *ngIf="!signedIn">

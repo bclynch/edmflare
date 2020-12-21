@@ -19,6 +19,7 @@ export class AppService {
   locationDirectory = [];
 
   readonly VAPID_PUBLIC_KEY = 'BCcrOxeXijgM9gmGD8_lfxo-mC2qKL3XKwFgYyTtETro2aTTZLXpbB4LLM0uihjLBD-3loEzDB3vBDt5Vko-eiU';
+  readonly logoUrl = 'https://edm-flare.s3.amazonaws.com/logos/icon-512x512.png';
 
   constructor(
     private allLocationsGQL: AllLocationsGQL,
@@ -52,7 +53,7 @@ export class AppService {
   }
 
   fetchAllLocations() {
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       this.allLocationsGQL.fetch().subscribe(
         ({ data }) => {
           // creating an array of strings with both cities + regions
@@ -90,7 +91,7 @@ export class AppService {
   }
 
   subscribeToPushNotifications() {
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       this.swPush.requestSubscription({ serverPublicKey: this.VAPID_PUBLIC_KEY })
         .then((sub) => {
           console.log(sub);
@@ -112,7 +113,7 @@ export class AppService {
   }
 
   unsubscribeToPushNotifications() {
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       this.swPush.requestSubscription({ serverPublicKey: this.VAPID_PUBLIC_KEY })
         .then((sub) => {
           sub.unsubscribe().then(

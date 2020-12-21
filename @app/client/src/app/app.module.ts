@@ -12,6 +12,10 @@ import { ENV } from '../environments/environment';
 // Apollo
 import { GraphQLModule } from './graphql.module';
 
+// 3rd party modules
+import { CloudinaryModule, CloudinaryConfiguration } from '@cloudinary/angular-5.x';
+import * as Cloudinary from 'cloudinary-core';
+
 // Services
 import { CookieService } from 'ngx-cookie-service';
 import { RoleGuardService } from './services/roleGuard.service';
@@ -39,8 +43,9 @@ import { ThemeService } from './services/theme.service';
     BrowserAnimationsModule,
     SharedModule,
     HttpClientModule,
+    CloudinaryModule.forRoot(Cloudinary, { cloud_name: ENV.cloudinaryCloudName } as CloudinaryConfiguration),
     // enhancing the ngsw http://jakubcodes.pl/2018/06/13/enhancing-angular-ngsw/
-    ServiceWorkerModule.register('/sw-master.js', { enabled: ENV.production }),
+    ServiceWorkerModule.register('/sw-master.js', { enabled: ENV.production })
   ],
   providers: [
     RoleGuardService,

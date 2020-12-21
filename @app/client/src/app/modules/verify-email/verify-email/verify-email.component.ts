@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SubscriptionLike } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { VerifyEmailGQL } from 'src/app/generated/graphql';
+import { AppService } from '../../../services/app.service';
 
 @Component({
   selector: 'app-verify-email',
@@ -17,7 +18,8 @@ export class VerifyEmailComponent implements OnInit {
 
   constructor(
     private verifyEmailGQL: VerifyEmailGQL,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public appService: AppService
   ) {
     // grabbing token off url
     this.token = this.route.snapshot.queryParams.token;

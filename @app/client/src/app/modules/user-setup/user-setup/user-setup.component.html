@@ -1,6 +1,10 @@
 <app-pagewrapper>
   <div class="setupContainer">
-    <img class="logoImg" src="assets/icons/icon-192x192.png" alt="EDM Flare Logo" />
+    <cl-image crop="fit" [public-id]="appService.logoUrl" type="fetch" loading="lazy" width="192" alt="EDM Flare Logo"
+      class="logoImg">
+      <cl-placeholder type="blur"></cl-placeholder>
+      <cl-transformation quality="auto" fetch-format="auto"></cl-transformation>
+    </cl-image>
     <h3>Setup</h3>
     <h5>Notifications</h5>
     <app-notification-preferences-component></app-notification-preferences-component>
