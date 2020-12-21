@@ -3135,9 +3135,7 @@ type Mutation {
   ): ChangePasswordPayload
 
   """
-  If you're certain you want to delete your account, use
-  `requestAccountDeletion` to request an account deletion token, and then supply
-  the token through this mutation to complete account deletion.
+  If you're certain you want to delete your account, use `requestAccountDeletion` to request an account deletion token, and then supply the token through this mutation to complete account deletion.
   """
   confirmAccountDeletion(
     """
@@ -3379,8 +3377,7 @@ type Mutation {
   ): DeleteWatchListPayload
 
   """
-  If you've forgotten your password, give us one of your email addresses and
-  we'll send you a reset token. Note this only works if you have added an email address!
+  If you've forgotten your password, give us one of your email addresses and we'll send you a reset token. Note this only works if you have added an email address!
   """
   forgotPassword(
     """
@@ -3405,8 +3402,7 @@ type Mutation {
   logout: LogoutPayload
 
   """
-  Your primary email is where we'll notify of account events; other emails may
-  be used for discovery or login. Use this when you're changing your email address.
+  Your primary email is where we'll notify of account events; other emails may be used for discovery or login. Use this when you're changing your email address.
   """
   makeEmailPrimary(
     """
@@ -3434,9 +3430,7 @@ type Mutation {
   ): RequestAccountDeletionPayload
 
   """
-  If you didn't receive the verification code for this email, we can resend it.
-  We silently cap the rate of resends on the backend, so calls to this function
-  may not result in another email being sent if it has been called recently.
+  If you didn't receive the verification code for this email, we can resend it. We silently cap the rate of resends on the backend, so calls to this function may not result in another email being sent if it has been called recently.
   """
   resendEmailVerificationCode(
     """
@@ -3446,8 +3440,7 @@ type Mutation {
   ): ResendEmailVerificationCodePayload
 
   """
-  After triggering forgotPassword, you'll be sent a reset token. Combine this
-  with your user ID and a new password to reset your password.
+  After triggering forgotPassword, you'll be sent a reset token. Combine this with your user ID and a new password to reset your password.
   """
   resetPassword(
     """
@@ -3569,8 +3562,7 @@ type Mutation {
   ): UpdateWatchListPayload
 
   """
-  Once you have received a verification token for your email, you may call this
-  mutation with that token to make your email verified.
+  Once you have received a verification token for your email, you may call this mutation with that token to make your email verified.
   """
   verifyEmail(
     """
@@ -3604,15 +3596,12 @@ type PushSubscription {
   createdAt: Datetime!
 
   """
-  This contains a unique URL to a Firebase Cloud Messaging endpoint. This url is
-  a public but unguessable endpoint to the Browser Push Service used by the
-  application server to send push notifications to this subscription.
+  This contains a unique URL to a Firebase Cloud Messaging endpoint. This url is a public but unguessable endpoint to the Browser Push Service used by the application server to send push notifications to this subscription.
   """
   endpoint: String!
 
   """
-  This is useful in certain cases, for example, if a message might contain an
-  authentication code that expires after 1 minute.
+  This is useful in certain cases, for example, if a message might contain an authentication code that expires after 1 minute.
   """
   expirationTime: Datetime
 
@@ -3671,15 +3660,12 @@ input PushSubscriptionInput {
   createdAt: Datetime
 
   """
-  This contains a unique URL to a Firebase Cloud Messaging endpoint. This url is
-  a public but unguessable endpoint to the Browser Push Service used by the
-  application server to send push notifications to this subscription.
+  This contains a unique URL to a Firebase Cloud Messaging endpoint. This url is a public but unguessable endpoint to the Browser Push Service used by the application server to send push notifications to this subscription.
   """
   endpoint: String!
 
   """
-  This is useful in certain cases, for example, if a message might contain an
-  authentication code that expires after 1 minute.
+  This is useful in certain cases, for example, if a message might contain an authentication code that expires after 1 minute.
   """
   expirationTime: Datetime
 
@@ -3705,15 +3691,12 @@ input PushSubscriptionPatch {
   createdAt: Datetime
 
   """
-  This contains a unique URL to a Firebase Cloud Messaging endpoint. This url is
-  a public but unguessable endpoint to the Browser Push Service used by the
-  application server to send push notifications to this subscription.
+  This contains a unique URL to a Firebase Cloud Messaging endpoint. This url is a public but unguessable endpoint to the Browser Push Service used by the application server to send push notifications to this subscription.
   """
   endpoint: String
 
   """
-  This is useful in certain cases, for example, if a message might contain an
-  authentication code that expires after 1 minute.
+  This is useful in certain cases, for example, if a message might contain an authentication code that expires after 1 minute.
   """
   expirationTime: Datetime
 
@@ -4155,7 +4138,7 @@ type Query {
     """
     offset: Int
     query: String
-  ): EventsConnection!
+  ): EventsConnection
 
   """Returns events by region containing a given query term."""
   searchEventsByRegion(
@@ -4183,7 +4166,7 @@ type Query {
     offset: Int
     query: String
     regionName: String
-  ): EventsConnection!
+  ): EventsConnection
   user(id: Int!): User
   userAuthentication(id: Int!): UserAuthentication
   userByUsername(username: String!): User
@@ -4672,14 +4655,12 @@ input StringFilter {
   lessThanOrEqualTo: String
 
   """
-  Matches the specified pattern (case-sensitive). An underscore (_) matches any
-  single character; a percent sign (%) matches any sequence of zero or more characters.
+  Matches the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
   """
   like: String
 
   """
-  Matches the specified pattern (case-insensitive). An underscore (_) matches
-  any single character; a percent sign (%) matches any sequence of zero or more characters.
+  Matches the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
   """
   likeInsensitive: String
 
@@ -4705,16 +4686,12 @@ input StringFilter {
   notIncludesInsensitive: String
 
   """
-  Does not match the specified pattern (case-sensitive). An underscore (_)
-  matches any single character; a percent sign (%) matches any sequence of zero
-  or more characters.
+  Does not match the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
   """
   notLike: String
 
   """
-  Does not match the specified pattern (case-insensitive). An underscore (_)
-  matches any single character; a percent sign (%) matches any sequence of zero
-  or more characters.
+  Does not match the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
   """
   notLikeInsensitive: String
 
@@ -5714,8 +5691,7 @@ type UserEmail {
   isPrimary: Boolean!
 
   """
-  True if the user has is_verified their email address (by clicking the link in
-  the email we sent them, or logging in with a social login provider), false otherwise.
+  True if the user has is_verified their email address (by clicking the link in the email we sent them, or logging in with a social login provider), false otherwise.
   """
   isVerified: Boolean!
   updatedAt: Datetime!

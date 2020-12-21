@@ -44,7 +44,7 @@ const queryEventsRows = (): Promise<any> => {
 
 // grab venues to check if they exist later on
 const fetchVenues = (): Promise<any> => {
-  return new Promise<any>((resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
     const sql = `BEGIN;SELECT name FROM edm.venue;COMMIT;`;
     existingDB.query(sql, (err: any, data: { rows: any }) => {
       if (err) reject(err);

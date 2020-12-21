@@ -32,10 +32,10 @@ export class UtilService {
     this.infiniteActiveSubject.next(null);
   }
 
-  share(shareUrl: string) {
+  share(shareUrl: string, eventName: string) {
     const dialogRef = this.dialog.open(ShareDialogueComponent, {
       panelClass: 'sharedialog-panel',
-      data: { shareUrl }
+      data: { shareUrl, eventName }
     });
 
     // dialogRef.afterClosed().subscribe(result => {

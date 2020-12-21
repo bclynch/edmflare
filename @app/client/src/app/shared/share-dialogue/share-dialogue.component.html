@@ -6,9 +6,9 @@
   </div>
   <h3 class="header">Share With Friends</h3>
   <div class="shareContainer">
-    <button *ngFor="let btn of btns" mat-fab [shareButton]="btn" [style.backgroundColor]="share.prop[btn].color">
-      <fa-icon [icon]="share.prop[btn].icon" size="lg"></fa-icon>
-    </button>
+    <share-buttons [include]="btns"
+      [description]="'Check out this event' + (data.eventName ? ' from -- ' + data.eventName + ':' : ':')">
+    </share-buttons>
   </div>
   <div class="urlContainer">
     <div class="wrapper">

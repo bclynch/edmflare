@@ -14,12 +14,15 @@
 
 ### Short term
 
+- ~~Angular 11~~
+- ~~Update apollo~~
+- Cloudinary
+- Work on reducing shared module
 - Fix maps
-- ~~Turn on Ivy~~
-- ~~Add live streams to front page~~
-  - ~~Include some icon to indicate live stream~~
-- ~~Add a banner to top (maybe) that says to check ticket sites to make sure event is actually occurring~~
-- ~~Update dependencies~~
+- ~~Check sharebuttons new package (again -- sheesh)~~
+- Look at swapping out moment OR at least working on limiting the import
+- Fix scraping
+- Emails?
 - See if geocoding for venues is working?
 
 ### Other

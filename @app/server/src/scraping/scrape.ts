@@ -96,7 +96,7 @@ export function scrapeEvents() {
   successfulCitiesScraped = 0;
 
   const scrapeCityPromise = (city: City) => {
-    return new Promise((resolve) => {
+    return new Promise<void>((resolve) => {
       scrapeEventDetails(city).then((eventsDetails) => {
         console.log(chalk.magenta(`Successfully scraped ${eventsDetails.length} events`));
         // create unique id for each event
@@ -327,7 +327,7 @@ function compareIds(scrapedEvents: { id: string }[]) {
 
 function compareVenues(newEvents: Event[]) {
   console.log(chalk.yellow('Comparing venues vs existing...'));
-  return new Promise((resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
     fetchDBVenues().then(
       () => {
         let newVenues: string[] = [];
@@ -370,7 +370,7 @@ function compareVenues(newEvents: Event[]) {
 
 function compareArtists(newEvents: any) {
   console.log(chalk.yellow('Starting to check artists vs existing...'));
-  return new Promise((resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
     const batchSize = 35;
     fetchDBArtists().then(
       () => {
@@ -535,7 +535,7 @@ function compareArtists(newEvents: any) {
 
 function compareCities(venues: { city: string }[]) {
   console.log(chalk.yellow('Starting to compare cities...'));
-  return new Promise((resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
     const citiesToAdd: string[] = [];
     const newCitiesObj = {};
     venues.forEach((venue) => {
@@ -581,9 +581,11 @@ function compareCities(venues: { city: string }[]) {
 }
 
 function fetchDBEvents() {
-  return new Promise((resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
     // if we already have data no need to fetch again
-    if (Object.keys(dbEventObj).length) return resolve();
+    if (Object.keys(dbEventObj).length) {
+      return resolve();
+    }
 
     console.log(chalk.yellow('Fetching db events...'));
     // fetch ids of events from present (start of day) into future and create array
@@ -595,15 +597,19 @@ function fetchDBEvents() {
         // add event to our master obj to check against later if exists
         dbEventObj[id] = {};
       });
-      if (data) resolve();
+      if (data) {
+        resolve();
+      }
     });
   });
 }
 
 function fetchDBVenues() {
-  return new Promise((resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
     // if we already have data no need to fetch again
-    if (Object.keys(dbVenueObj).length) return resolve();
+    if (Object.keys(dbVenueObj).length) {
+      return resolve();
+    }
 
     console.log(chalk.yellow('Fetching db venues...'));
     // fetch names of venues
@@ -615,15 +621,19 @@ function fetchDBVenues() {
         // add sanitized venue to our master obj to check against later if exists
         dbVenueObj[sanitize(name)] = { city };
       });
-      if (data) resolve();
+      if (data) {
+        resolve();
+      }
     });
   });
 }
 
 function fetchDBArtists() {
-  return new Promise((resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
     // if we already have data no need to fetch again
-    if (Object.keys(dbArtistObj).length) return resolve();
+    if (Object.keys(dbArtistObj).length) {
+      return resolve();
+    }
 
     console.log(chalk.yellow('Fetching db artists...'));
     // fetch names of artists
@@ -635,35 +645,46 @@ function fetchDBArtists() {
         // add sanitized artist to our master obj to check against later if exists
         dbArtistObj[sanitize(name)] = {};
       });
-      if (data) resolve();
+      if (data) {
+        resolve();
+      }
     });
   });
 }
 
 function fetchDBCities() {
-  return new Promise((resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
     // if we already have data no need to fetch again
-    if (Object.keys(dbCitiesObj).length) resolve();
+    if (Object.keys(dbCitiesObj).length) {
+      resolve();
+    }
 
     console.log(chalk.yellow('Fetching db cities...'));
     // fetch names of cities
     const sql = 'SELECT id, name, region, country FROM edm.city;';
     db.query(sql, (err: any, data: { rows: any }) => {
-      if (err) reject(err);
-      data.rows.forEach(({ id, name, region, country }: { id: number; name: string; region: string; country: string; }) => {
+      if (err) {
+        reject(err);
+      }
+      data.rows.forEach((rowData: { id: number; name: string; region: string; country: string; }) => {
+        const { id, name } = rowData;
         // add city name to our master obj to check against later if exists with id
-        dbCitiesObj[name] = { id, region, country, name };
-        dbCitiesObj[id] = { id, region, country, name };
+        dbCitiesObj[name] = rowData;
+        dbCitiesObj[id] = rowData;
       });
-      if (data) resolve();
+      if (data) {
+        resolve();
+      }
     });
   });
 }
 
 function fetchDBGenres() {
-  return new Promise((resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
     // if we already have data no need to fetch again
-    if (Object.keys(dbGenreObj).length) return resolve();
+    if (Object.keys(dbGenreObj).length) {
+      return resolve();
+    }
 
     console.log(chalk.yellow('Fetching db genres...'));
     // fetch names of artists
@@ -675,7 +696,9 @@ function fetchDBGenres() {
         // add genre to our master obj to check against later if exists
         dbGenreObj[row.name] = {};
       });
-      if (data) resolve();
+      if (data) {
+        resolve();
+      }
     });
   });
 }
@@ -701,7 +724,7 @@ function fetchVenueImages(venues: Venue[]): Promise<Venue[]> {
 
 function createEvents(events: Event[]) {
   console.log(chalk.yellow('Creating events...'));
-  return new Promise((resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
     let sql = 'BEGIN; ';
 
     events.forEach((event) => {
@@ -890,7 +913,7 @@ function createGenres(genres: string[]): Promise<string> {
 
 function linkGenresToArtist(artists: { genres: string[]; name: string; }[]) {
   console.log(chalk.yellow('Linking genres to artists...'));
-  return new Promise((resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
     let linksAdded = 0;
     let sql = 'BEGIN; ';
 
@@ -921,7 +944,7 @@ function linkGenresToArtist(artists: { genres: string[]; name: string; }[]) {
 
 function processGenres(artists: { genres: string[]; name: string; }[]) {
   console.log(chalk.yellow('Processing genres for new artists'));
-  return new Promise((resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
     // fetch genres from db to check against
     fetchDBGenres().then(
       () => {
@@ -956,7 +979,7 @@ function processGenres(artists: { genres: string[]; name: string; }[]) {
 
 function linkArtistToEvent(events: { artists: string[]; id: number; }[]) {
   console.log(chalk.yellow('Linking artists to events...'));
-  return new Promise((resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
     let linksAdded = 0;
     let sql = 'BEGIN; ';
 
@@ -993,7 +1016,7 @@ function fetchVenueInformation(venues: string[]): Promise<Venue[]> {
     let completedVenueArr: Venue[] = [];
 
     venues.forEach((venue) => {
-      let promise = new Promise((resolve, reject) => {
+      let promise = new Promise<void>((resolve, reject) => {
         //formatting venue and city names
         const venueName = encodeURI(venue.split('-')[0].trim());
         const city = '+%20' + encodeURI(venue.split('-')[venue.split('-').length - 1].trim().split(',')[0]);

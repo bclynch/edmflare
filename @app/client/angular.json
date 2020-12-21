@@ -41,8 +41,7 @@
               "src/styles.scss",
               "../../node_modules/snazzy-info-window/dist/snazzy-info-window.css"
             ],
-            "scripts": [],
-            "es5BrowserSupport": true
+            "scripts": []
           },
           "configurations": {
             "production": {

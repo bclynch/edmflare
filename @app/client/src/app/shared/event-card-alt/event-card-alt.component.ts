@@ -33,7 +33,7 @@ export class EventCardAltComponent implements OnInit {
   }
 
   share() {
-    this.utilService.share(`${ENV.siteBaseURL}/event/${this.id}`);
+    this.utilService.share(`${ENV.siteBaseURL}/event/${this.id}`, this.name);
   }
 
   addWatch() {

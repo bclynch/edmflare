@@ -1,7 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ShareService } from '@ngx-share/core';
 
 @Component({
   selector: 'app-share-dialogue',
@@ -10,13 +9,12 @@ import { ShareService } from '@ngx-share/core';
 })
 export class ShareDialogueComponent implements OnInit {
 
-  btns = ['facebook','twitter', 'reddit', 'whatsapp','messenger','telegram','sms','email'];
+  btns = ['facebook', 'twitter', 'reddit', 'whatsapp', 'messenger', 'telegram', 'email'];
 
   constructor(
     public dialogRef: MatDialogRef<ShareDialogueComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { shareUrl: string },
-    private snackBar: MatSnackBar,
-    public share: ShareService
+    @Inject(MAT_DIALOG_DATA) public data: { shareUrl: string, eventName: string },
+    private snackBar: MatSnackBar
   ) { }
 
   ngOnInit() {

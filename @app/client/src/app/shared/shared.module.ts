@@ -23,7 +23,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatChipsModule } from '@angular/material/chips';
-import { ShareModule } from '@ngx-share/core';
+import { ShareButtonsModule } from 'ngx-sharebuttons/buttons';
 import { AgmCoreModule } from '@agm/core';
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { OverlayContainer, FullscreenOverlayContainer } from '@angular/cdk/overlay';
@@ -101,7 +101,7 @@ import { faEnvelope } from '@fortawesome/free-solid-svg-icons/faEnvelope';
     RouterModule,
     ReactiveFormsModule,
     FormsModule,
-    ShareModule,
+    ShareButtonsModule,
     AgmCoreModule.forRoot({
       apiKey: ENV.googleAPIKey,
     }),

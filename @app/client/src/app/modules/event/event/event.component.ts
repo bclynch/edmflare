@@ -58,7 +58,7 @@ export class EventComponent implements OnInit {
   }
 
   share() {
-    this.utilService.share(`${ENV.siteBaseURL}/event/${this.event.id}`);
+    this.utilService.share(`${ENV.siteBaseURL}/event/${this.event.id}`, this.event.name);
   }
 
   scrollTo(option: string): void {

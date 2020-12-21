@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
+import { Injectable } from '@angular/core';
 import { CurrentUserGQL, CreateFollowListGQL, RemoveFollowlistGQL, LogoutGQL, LoginGQL, RegisterGQL } from '../generated/graphql';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -26,7 +26,7 @@ export class UserService {
     this.signedIn = this.signedInSubject;
   }
 
-  fetchUser(): Promise<string> {
+  fetchUser(): Promise<void> {
     return new Promise((resolve) => {
       this.currentUserGQL.fetch().subscribe(
         ({ data }) => {

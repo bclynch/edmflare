@@ -1,10 +1,10 @@
+import { Apollo } from 'apollo-angular';
+import { InMemoryCache, ApolloLink } from '@apollo/client/core';
+import { HttpLink } from 'apollo-angular/http';
+import { onError } from '@apollo/client/link/error';
+import { setContext } from '@apollo/client/link/context';
 import { NgModule } from '@angular/core';
-import { ApolloModule, Apollo } from 'apollo-angular';
-import { InMemoryCache } from 'apollo-cache-inmemory';
-import { HttpLinkModule, HttpLink } from 'apollo-angular-link-http';
-import { ApolloLink } from 'apollo-link';
-import { onError } from 'apollo-link-error';
-import { setContext } from 'apollo-link-context';
+
 import { ENV } from '../environments/environment';
 import { HttpHeaders } from '@angular/common/http';
 
@@ -14,14 +14,7 @@ declare global {
   }
 }
 
-@NgModule({
-  exports: [
-    ApolloModule,
-  ],
-  imports: [
-    HttpLinkModule
-  ]
-})
+@NgModule({})
 export class GraphQLModule {
   constructor(
     apollo: Apollo,
@@ -39,9 +32,10 @@ export class GraphQLModule {
       })
     }));
     const moddedHttp = middleware.concat(http);
-    const cache = new InMemoryCache({
-      dataIdFromObject: o => o.id
-    });
+    // const cache = new InMemoryCache({
+    //   dataIdFromObject: o => o.id
+    // });
+    const cache = new InMemoryCache();
 
     const logoutOn401ErrorLink = onError(({ networkError }) => {
       if (networkError) { // && networkError.status === 401
@@ -65,20 +59,20 @@ export class GraphQLModule {
       csrfMiddlewareLink,
       moddedHttp
     ]);
-    const resolvers = {
-      Mutation: {
-        // eslint-disable-next-line no-shadow
-        updateNetworkStatus: (_, { isConnected }, { cache }) => {
-          cache.writeData({ data: { isConnected } });
-          return null;
-        },
-      },
-    };
+    // const resolvers = {
+    //   Mutation: {
+    //     // eslint-disable-next-line no-shadow
+    //     updateNetworkStatus: (_, { isConnected }, { cache }) => {
+    //       cache.writeData({ data: { isConnected } });
+    //       return null;
+    //     },
+    //   },
+    // };
 
     apollo.create({
       link,
       cache,
-      resolvers
+      // resolvers
     });
   }
 }
