@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
-import { ShareDialogueComponent } from '../shared/share-dialogue/share-dialogue.component';
+import { ShareDialogueComponent } from '../modules/share-dialogue/share-dialogue/share-dialogue.component';
 import { map } from 'rxjs/operators';
 import * as moment from 'moment';
 import { HttpClient } from '@angular/common/http';
@@ -19,7 +19,6 @@ export class UtilService {
   public infiniteActive: boolean;
 
   constructor(
-    public dialog: MatDialog,
     private http: HttpClient
   ) {
     this.infiniteActiveSubject = new BehaviorSubject(null);
@@ -30,17 +29,6 @@ export class UtilService {
   toggleInfiniteActive(state: boolean) {
     this.infiniteActive = state;
     this.infiniteActiveSubject.next(null);
-  }
-
-  share(shareUrl: string, eventName: string) {
-    const dialogRef = this.dialog.open(ShareDialogueComponent, {
-      panelClass: 'sharedialog-panel',
-      data: { shareUrl, eventName }
-    });
-
-    // dialogRef.afterClosed().subscribe(result => {
-    //   console.log(result);
-    // });
   }
 
   getJSON(path: string) {

@@ -2,8 +2,15 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HomeComponent } from './home/home.component';
 import { Routes, RouterModule } from '@angular/router';
-import { SharedModule } from '../../shared/shared.module';
+import { PageWrapperModule } from '../page-wrapper/page-wrapper.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { LocationSearchModule } from '../location-search/location-search.module';
+import { EventCardAltModule } from '../event-card-alt/event-card-alt.module';
+import { SelectDateModule } from '../select-date/select-date.module';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { GetAppModule } from '../get-app/get-app.module';
 
 const routes: Routes = [
   {
@@ -16,8 +23,15 @@ const routes: Routes = [
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
-    SharedModule,
-    FontAwesomeModule
+    PageWrapperModule,
+    FontAwesomeModule,
+    LocationSearchModule,
+    EventCardAltModule,
+    SelectDateModule,
+    MatIconModule,
+    MatButtonModule,
+    MatTooltipModule,
+    GetAppModule
   ],
   declarations: [HomeComponent]
 })

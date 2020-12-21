@@ -2,7 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserComponent } from './user/user.component';
 import { Routes, RouterModule } from '@angular/router';
-import { SharedModule } from '../../shared/shared.module';
+import { PageWrapperModule } from '../page-wrapper/page-wrapper.module';
+import { EventCardAltModule } from '../event-card-alt/event-card-alt.module';
 
 const routes: Routes = [
   {
@@ -16,7 +17,8 @@ const routes: Routes = [
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
-    SharedModule,
+    PageWrapperModule,
+    EventCardAltModule
   ]
 })
 export class UserModule { }

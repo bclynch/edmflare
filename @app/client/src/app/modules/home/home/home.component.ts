@@ -6,7 +6,9 @@ import { AppService } from '../../../services/app.service';
 import { UserService } from '../../../services/user.service';
 import { UtilService } from '../../../services/util.service';
 import { SubscriptionLike } from 'rxjs';
-import { faUsers, faBell, faCompactDisc } from '@fortawesome/free-solid-svg-icons';
+import { faUsers } from '@fortawesome/free-solid-svg-icons/faUsers';
+import { faBell } from '@fortawesome/free-solid-svg-icons/faBell';
+import { faCompactDisc } from '@fortawesome/free-solid-svg-icons/faCompactDisc';
 
 @Component({
   selector: 'app-home',

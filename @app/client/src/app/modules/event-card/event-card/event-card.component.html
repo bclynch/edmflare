@@ -1,0 +1,40 @@
+<div class="cardContainer" [ngClass]="[size, new ? 'newEvent' : '']">
+  <div class="imageWrapper">
+    <a [routerLink]="['/event/' + id]">
+      <div *ngIf="image" class="img" [ngStyle]="{ 'background-image': 'url(' + image + ')'}"></div>
+      <img *ngIf="!image" class="backupImg img" src="assets/icons/icon-96x96.png" alt="EDM Flare Logo" />
+    </a>
+  </div>
+  <div class="eventInfo">
+    <a [routerLink]="['/event/' + id]">
+      <h3 class="eventName">{{name}}</h3>
+    </a>
+    <div class="eventDate">{{date | date: 'EEE, MMMM d'}}</div>
+    <div class="eventLocation" [style.color]="location === 'Live Stream' ? 'red' : ''">{{location}}</div>
+    <div class="eventOptions">
+      <button mat-button matTooltip="Share">
+        <mat-icon class="smallIcon" (click)="share()">share</mat-icon>
+      </button>
+      <button *ngIf="watchId" mat-button matTooltip="Remove from watched" class="watched" (click)="removeWatch()">
+        <mat-icon class="smallIcon">star</mat-icon>
+      </button>
+      <button *ngIf="!watchId" mat-button matTooltip="Add to watched" (click)="addWatch()">
+        <mat-icon class="smallIcon">star_border</mat-icon>
+      </button>
+      <!-- <button
+        *ngIf="ticketProviderId"
+        mat-button
+        matTooltip="Buy Tickets"
+        (click)="eventbriteService.eventbriteCheckout(ticketProviderId)"
+      >
+        <mat-icon class="smallIcon">loyalty</mat-icon>
+      </button> -->
+      <a [href]="externalUrl" target="_blank" rel="nofollow" *ngIf="externalUrl" matTooltip="Go to Event Website">
+        <button mat-button>
+          <fa-icon [icon]="faExternalLinkAlt"></fa-icon>
+        </button>
+      </a>
+    </div>
+  </div>
+  <div matTooltip="Newly Added Event" class="tooltip"></div>
+</div>

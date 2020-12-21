@@ -2,9 +2,12 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserSetupComponent } from './user-setup/user-setup.component';
 import { Routes, RouterModule } from '@angular/router';
-import { SharedModule } from '../../shared/shared.module';
+import { PageWrapperModule } from '../page-wrapper/page-wrapper.module';
 import { AnonGuardService as AnonGuard } from '../../services/anonGuard.service';
 import { CloudinaryModule } from '@cloudinary/angular-5.x';
+import { NotificationPreferencesModule } from '../notification-preferences/notification-preferences.module';
+import { GetAppModule } from '../get-app/get-app.module';
+import { ThemeToggleModule } from '../theme-toggle/theme-toggle.module';
 
 const routes: Routes = [
   {
@@ -19,8 +22,11 @@ const routes: Routes = [
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
-    SharedModule,
-    CloudinaryModule
+    PageWrapperModule,
+    CloudinaryModule,
+    NotificationPreferencesModule,
+    GetAppModule,
+    ThemeToggleModule
   ]
 })
 export class UserSetupModule { }

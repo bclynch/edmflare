@@ -2,7 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ArtistComponent } from './artist/artist.component';
 import { Routes, RouterModule } from '@angular/router';
-import { SharedModule } from '../../shared/shared.module';
+import { PageWrapperModule } from '../page-wrapper/page-wrapper.module';
+import { EventCardModule } from '../event-card/event-card.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 const routes: Routes = [
@@ -17,8 +18,9 @@ const routes: Routes = [
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
-    SharedModule,
-    FontAwesomeModule
+    PageWrapperModule,
+    FontAwesomeModule,
+    EventCardModule
   ]
 })
 export class ArtistModule { }

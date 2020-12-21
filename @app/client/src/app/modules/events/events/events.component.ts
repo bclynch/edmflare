@@ -12,7 +12,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { trigger } from '@angular/animations';
-import { fadeOut } from 'src/app/shared/fade-animations';
+import { fadeOut } from '../fade-animations';
 
 class Event {
   id: string;

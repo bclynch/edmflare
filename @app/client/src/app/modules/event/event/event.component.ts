@@ -8,6 +8,9 @@ import { UserService } from '../../../services/user.service';
 import { SubscriptionLike } from 'rxjs';
 import { AppService } from '../../../services/app.service';
 import * as moment from 'moment';
+import { EventbriteService } from '../../eventbrite-checkout/eventbrite.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ShareDialogueComponent } from '../../share-dialogue/share-dialogue/share-dialogue.component';
 
 @Component({
   selector: 'app-event',
@@ -29,7 +32,9 @@ export class EventComponent implements OnInit {
     private eventByIdGQL: EventByIdGQL,
     private utilService: UtilService,
     private eventService: EventService,
+    private eventbriteService: EventbriteService,
     private userService: UserService,
+    public dialog: MatDialog,
     private appService: AppService
   ) {
     this.initSubscription = this.appService.appInited.subscribe(
@@ -58,7 +63,13 @@ export class EventComponent implements OnInit {
   }
 
   share() {
-    this.utilService.share(`${ENV.siteBaseURL}/event/${this.event.id}`, this.event.name);
+    this.dialog.open(ShareDialogueComponent, {
+      panelClass: 'sharedialog-panel',
+      data: {
+        shareUrl: `${ENV.siteBaseURL}/event/${this.event.id}`,
+        eventName: this.event.name
+      }
+    });
   }
 
   scrollTo(option: string): void {
@@ -83,7 +94,7 @@ export class EventComponent implements OnInit {
 
   buyTickets() {
     if (this.event.ticketproviderid) {
-      this.eventService.eventbriteCheckout(this.event.ticketproviderid);
+      this.eventbriteService.eventbriteCheckout(this.event.ticketproviderid);
     } else {
       window.open(this.event.ticketproviderurl, '_blank');
     }

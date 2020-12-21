@@ -2,8 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UnsubscribeComponent } from './unsubscribe/unsubscribe.component';
 import { Routes, RouterModule } from '@angular/router';
-import { SharedModule } from '../../shared/shared.module';
+import { PageWrapperModule } from '../page-wrapper/page-wrapper.module';
 import { CloudinaryModule } from '@cloudinary/angular-5.x';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 const routes: Routes = [
   {
@@ -17,8 +18,9 @@ const routes: Routes = [
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
-    SharedModule,
-    CloudinaryModule
+  PageWrapperModule,
+    CloudinaryModule,
+    MatSnackBarModule
   ]
 })
 export class UnsubscribeModule { }

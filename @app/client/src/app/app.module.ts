@@ -6,7 +6,6 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { SharedModule } from 'src/app/shared/shared.module';
 import { ENV } from '../environments/environment';
 
 // Apollo
@@ -15,6 +14,7 @@ import { GraphQLModule } from './graphql.module';
 // 3rd party modules
 import { CloudinaryModule, CloudinaryConfiguration } from '@cloudinary/angular-5.x';
 import * as Cloudinary from 'cloudinary-core';
+import { AgmCoreModule } from '@agm/core';
 
 // Services
 import { CookieService } from 'ngx-cookie-service';
@@ -41,9 +41,11 @@ import { ThemeService } from './services/theme.service';
     AppRoutingModule,
     GraphQLModule,
     BrowserAnimationsModule,
-    SharedModule,
     HttpClientModule,
     CloudinaryModule.forRoot(Cloudinary, { cloud_name: ENV.cloudinaryCloudName } as CloudinaryConfiguration),
+    AgmCoreModule.forRoot({
+      apiKey: ENV.googleAPIKey
+    }),
     // enhancing the ngsw http://jakubcodes.pl/2018/06/13/enhancing-angular-ngsw/
     ServiceWorkerModule.register('/sw-master.js', { enabled: ENV.production })
   ],

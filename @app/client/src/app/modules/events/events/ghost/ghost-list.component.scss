@@ -1,12 +1,12 @@
-@import '../../../../shared/ghost-animation.scss';
-@import '../../../../shared/event-card/event-card.component.scss';
+@import './ghost-animation.scss';
+@import '../../../../modules/event-card/event-card/event-card.component.scss';
 
 :host {
   position: absolute;
-  display: block;  
+  display: block;
   overflow: hidden;
   z-index: 9999;
-  top: calc(var(--height-navbar) + 6vh);   
+  top: calc(var(--height-navbar) + 6vh);
   width: 100%;
   -webkit-mask-image: -webkit-gradient(linear, left 50%, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)))
 }
@@ -16,18 +16,18 @@
   margin-bottom: -6px;
 
   .imageWrapper {
-    background-color: #ddd; 
+    background-color: #ddd;
     border: solid 2px rgb(212, 212, 212);
-    border-radius: 50%;  
+    border-radius: 50%;
     //@include animate-ghost-avatar;
     // background: url(assets/silohuette.svg);
-    background-size: 50px 50px; 
+    background-size: 50px 50px;
     height: 100px;
     width: 100px;
   }
 
-  .lines { 
-     
+  .lines {
+
     .ghostLine {
       height: 24px;
       background-color: #ccc;
@@ -48,14 +48,14 @@
       &.ghostLine {
         width: 85%;
         height: 1.5em;
-      } 
+      }
     }
     button {
       height: 1.5em;
       cursor: default;
       background: #ddd;
       margin: 0 10px;
-    }  
+    }
   }
 }
 .ghost_item:hover {
@@ -72,8 +72,8 @@
     box-sizing: border-box;
     margin-left: 50vw;
 
-    .lines { 
-      
+    .lines {
+
       .ghostLine {
 
         &.eventDate {
@@ -87,7 +87,7 @@
       h3 {
         &.ghostLine {
           width: 50%;
-        } 
+        }
       }
     }
   }

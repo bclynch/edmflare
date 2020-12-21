@@ -1,0 +1,23 @@
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { SelectDateComponent } from './select-date/select-date.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
+
+@NgModule({
+  declarations: [
+    SelectDateComponent
+  ],
+  imports: [
+    CommonModule,
+    MatDatepickerModule,
+    MatInputModule,
+    FormsModule,
+    MatSelectModule
+  ],
+  exports: [SelectDateComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+})
+export class SelectDateModule { }

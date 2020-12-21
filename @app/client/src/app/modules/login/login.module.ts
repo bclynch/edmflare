@@ -2,10 +2,11 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoginComponent } from './login/login.component';
 import { Routes, RouterModule } from '@angular/router';
-import { SharedModule } from '../../shared/shared.module';
+import { PageWrapperModule } from '../page-wrapper/page-wrapper.module';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { LoginGuardService as LoginGuard } from '../../services/loginGuard.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { SocialLoginsModule } from '../social-logins/social-logins.module';
 
 const routes: Routes = [
   {
@@ -20,10 +21,11 @@ const routes: Routes = [
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
-    SharedModule,
+    PageWrapperModule,
     ReactiveFormsModule,
     FormsModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    SocialLoginsModule
   ]
 })
 export class LoginModule { }

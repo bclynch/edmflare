@@ -1,8 +1,5 @@
-import { Injectable, Injector } from '@angular/core';
-import { OverlayRef, Overlay } from '@angular/cdk/overlay';
-import { ComponentPortal, PortalInjector } from '@angular/cdk/portal';
-import { EventbriteCheckoutComponent } from '../shared/eventbrite-checkout/eventbrite-checkout.component';
-import { CONTAINER_DATA } from '../shared/eventbrite-checkout/eventbrite-overlay.token';
+import { Injectable } from '@angular/core';
+import { OverlayRef } from '@angular/cdk/overlay';
 import { CreateWatchListGQL, RemoveWatchlistGQL } from '../generated/graphql';
 import { UserService } from './user.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -13,32 +10,14 @@ export class EventService {
   overlayRef: OverlayRef;
 
   constructor(
-    private overlay: Overlay,
-    private injector: Injector,
     private createWatchListGQL: CreateWatchListGQL,
     private removeWatchListGQL: RemoveWatchlistGQL,
     private userService: UserService,
     private snackBar: MatSnackBar
-  ) {
-
-  }
-
-  eventbriteCheckout(eventId: number) {
-    this.overlayRef = this.overlay.create();
-    const eventbritePortal = new ComponentPortal(EventbriteCheckoutComponent, null, this.createInjector({
-      eventId
-    }));
-    this.overlayRef.attach(eventbritePortal);
-  }
-
-  private createInjector(dataToPass): PortalInjector {
-    const injectorTokens = new WeakMap();
-    injectorTokens.set(CONTAINER_DATA, dataToPass);
-    return new PortalInjector(this.injector, injectorTokens);
-  }
+  ) { }
 
   addWatch(eventId): Promise<number> {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       if (this.userService.user) {
         this.createWatchListGQL.mutate({ userId: this.userService.user.id, eventId }).subscribe(
           ({ data }) => resolve(data.createWatchList.watchList.id)
@@ -53,7 +32,7 @@ export class EventService {
   }
 
   removeWatch(watchListId) {
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve) => {
       this.removeWatchListGQL.mutate({ watchListId }).subscribe(
         () => resolve()
       );

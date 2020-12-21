@@ -1,8 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ArtistByNameGQL } from '../../../generated/graphql';
-import { faTwitter, faFacebook, faInstagram, faSoundcloud, faYoutube, faSpotify, IconDefinition } from '@fortawesome/free-brands-svg-icons';
-import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { faTwitter } from '@fortawesome/free-brands-svg-icons/faTwitter';
+import { faFacebook } from '@fortawesome/free-brands-svg-icons/faFacebook';
+import { faInstagram } from '@fortawesome/free-brands-svg-icons/faInstagram';
+import { faSoundcloud } from '@fortawesome/free-brands-svg-icons/faSoundcloud';
+import { faYoutube } from '@fortawesome/free-brands-svg-icons/faYoutube';
+import { faSpotify } from '@fortawesome/free-brands-svg-icons/faSpotify';
+import { faHome } from '@fortawesome/free-solid-svg-icons/faHome';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { UserService } from '../../../services/user.service';
 import { SubscriptionLike } from 'rxjs';
@@ -18,7 +23,7 @@ export class ArtistComponent implements OnInit, OnDestroy {
 
   artist;
   events;
-  socialOptions: { url: string, icon: IconDefinition }[];
+  socialOptions: { url: string, icon }[];
   soundcloudUrl: SafeResourceUrl;
 
   initSubscription: SubscriptionLike;
