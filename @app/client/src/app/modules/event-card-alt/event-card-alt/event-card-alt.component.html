@@ -1,8 +1,25 @@
 <div class="cardContainer">
   <a [routerLink]="['/event/' + id]">
-    <div class="imageWrapper" [ngStyle]="{ 'background-image': 'url(' + backgroundImg + ')'}">
-      <div *ngIf="image" class="img" [ngStyle]="{ 'background-image': 'url(' + image + ')'}"></div>
-      <img *ngIf="!image" class="backupImg img" src="assets/icons/icon-96x96.png" alt="EDM Flare Logo" />
+    <div class="imageWrapper">
+      <div class="bannerWrapper">
+        <cl-image crop="fit" [public-id]="backgroundImg" type="fetch" loading="lazy" width="auto" height="200"
+          [attr.alt]="'Event Card Background'">
+          <cl-placeholder type="blur"></cl-placeholder>
+          <cl-transformation quality="auto" fetch-format="auto"></cl-transformation>
+        </cl-image>
+      </div>
+      <div class="overlay">
+        <cl-image *ngIf="image" crop="fit" [public-id]="image" type="fetch" loading="lazy" width="108" radius="max"
+          [attr.alt]="name + ' Event'">
+          <cl-placeholder type="blur"></cl-placeholder>
+          <cl-transformation quality="auto" fetch-format="auto"></cl-transformation>
+        </cl-image>
+        <cl-image *ngIf="!image" crop="fit" [public-id]="appService.logoUrl" type="fetch" loading="lazy" width="108"
+          [attr.alt]="'EDM Flare Logo'">
+          <cl-placeholder type="blur"></cl-placeholder>
+          <cl-transformation quality="auto" fetch-format="auto"></cl-transformation>
+        </cl-image>
+      </div>
     </div>
   </a>
   <div class="eventInfo">

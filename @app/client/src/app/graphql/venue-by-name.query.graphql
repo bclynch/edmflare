@@ -33,6 +33,17 @@ query venueByName($name: String!, $userId: Int!, $currentDate: BigInt!) {
         ticketproviderurl,
         ticketproviderid,
         id,
+        watchLists(
+          filter: {
+            userId: {
+              equalTo: $userId
+            }
+          }
+        ) {
+          nodes {
+            id
+          }
+        },
         artistToEvents(first: 1) {
           nodes {
             id,

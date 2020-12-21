@@ -6,6 +6,7 @@ import { PageWrapperModule } from '../page-wrapper/page-wrapper.module';
 import { AnonGuardService as AnonGuard } from '../../services/anonGuard.service';
 import { SettingsWrapperModule } from '../settings-wrapper/settings-wrapper.module';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatButtonModule } from '@angular/material/button';
 
 const routes: Routes = [
   {
@@ -22,7 +23,8 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     PageWrapperModule,
     SettingsWrapperModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatButtonModule
   ]
 })
 export class CloseAccountModule { }

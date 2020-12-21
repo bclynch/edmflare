@@ -5,6 +5,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { PageWrapperModule } from '../page-wrapper/page-wrapper.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CloudinaryModule } from '@cloudinary/angular-5.x';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 
 const routes: Routes = [
   {
@@ -21,7 +23,9 @@ const routes: Routes = [
     PageWrapperModule,
     FormsModule,
     ReactiveFormsModule,
-    CloudinaryModule
+    CloudinaryModule,
+    MatInputModule,
+    MatButtonModule
   ]
 })
 export class PasswordForgotModule { }

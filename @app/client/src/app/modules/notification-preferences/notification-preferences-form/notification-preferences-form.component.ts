@@ -51,7 +51,6 @@ export class NotificationPreferencesFormComponent implements OnInit {
             userId: this.userService.user.id
           }).subscribe(
             ({ data }) => {
-              console.log(data.watchedToAccounts.nodes);
               // this.locations = data.allWatchedToAccounts.nodes;
               this.locations = data.watchedToAccounts.nodes.map(({ region, id, city }) => {
                 return region ? { id, label: region, locationId: region } : { id, label: city.name, locationId: city.id };
@@ -67,14 +66,12 @@ export class NotificationPreferencesFormComponent implements OnInit {
   }
 
   changeFrequency() {
-    console.log(this.frequency);
     this.updateUserGQL.mutate({
       userId: this.userService.user.id,
       notificationFrequency: this.frequency
     })
     .subscribe(
-      (result) => {
-        console.log(result);
+      () => {
         if (this.frequency !== 'NEVER' && !this.locations.length) {
           this.snackBar.open('Select at least one location to get email updates!', 'Close', {
             duration: 5000,
@@ -101,7 +98,6 @@ export class NotificationPreferencesFormComponent implements OnInit {
         duration: 5000,
       });
     } else {
-      console.log(location);
       // save to account
       this.createWatchedToAccountGQL.mutate({
         userId: this.userService.user.id,
@@ -110,7 +106,6 @@ export class NotificationPreferencesFormComponent implements OnInit {
       })
         .subscribe(
           ({ data }) => {
-            console.log(data.createWatchedToAccount.watchedToAccount);
             // add to local arr
             this.locations.push({ id: data.createWatchedToAccount.watchedToAccount.id, label: location, locationId });
             // onchange only fires if the binding changes so putting rand number
@@ -132,7 +127,6 @@ export class NotificationPreferencesFormComponent implements OnInit {
   }
 
   togglePushNotifications() {
-    console.log(this.pushNotification);
     // if it's true we make sure the user selects it and creates subscription before adding updated pushnotification prop to db
     if (this.pushNotification) {
       this.appService.subscribeToPushNotifications().then(

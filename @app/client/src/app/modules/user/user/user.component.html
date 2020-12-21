@@ -2,7 +2,8 @@
   <div class="userContainer">
     <div class="wrapper">
       <div class="userWrapper" *ngIf="user">
-        <div *ngIf="user.profilePhoto" class="profile" [ngStyle]="{ 'background-image': 'url(' + user.profilePhoto + ')'}"></div>
+        <div *ngIf="user.profilePhoto" class="profile"
+          [ngStyle]="{ 'background-image': 'url(' + user.profilePhoto + ')'}"></div>
         <div *ngIf="!user.profilePhoto" class="backupImg profile"></div>
         <h1>{{user.username}}</h1>
         <div class="trackingWrapper">
@@ -17,18 +18,11 @@
         </div>
         <h2>Watched Events</h2>
         <div class="watchingWrapper">
-          <app-event-card-alt
-            *ngFor="let event of user?.watchLists.nodes; let i = index;"
-            [name]="event.event.name"
-            [index]="i"
-            [location]="event.event.venue"
-            [date]="event.event.startDate"
-            [id]="event.event.id"
-            [externalUrl]="event.event.ticketproviderurl"
-            [ticketProviderId]="event.event.ticketproviderid"
+          <app-event-card-alt *ngFor="let event of user?.watchLists.nodes; let i = index;" [name]="event.event.name"
+            [index]="i" [location]="event.event.venue" [date]="event.event.startDate" [id]="event.event.id"
+            [externalUrl]="event.event.ticketproviderurl" [ticketProviderId]="event.event.ticketproviderid"
             [image]="event.event.artistToEvents.nodes[0].artist.photo"
-            [watchId]="event.event.watchLists.nodes.length && event.event.watchLists.nodes[0].id"
-          ></app-event-card-alt>
+            [watchId]="event.event.watchLists.nodes.length && event.event.watchLists.nodes[0].id"></app-event-card-alt>
         </div>
       </div>
       <div class="followingContainer" *ngIf="user?.followLists.totalCount">
@@ -41,20 +35,30 @@
             <div class="followCardWrapper" *ngIf="follow.artist">
               <div class="imageWrapper">
                 <a [routerLink]="['/event/' + id]">
-                  <div *ngIf="follow.artist.photo" class="img" [ngStyle]="{ 'background-image': 'url(' + follow.artist.photo + ')'}"></div>
+                  <div *ngIf="follow.artist.photo" class="img"
+                    [ngStyle]="{ 'background-image': 'url(' + follow.artist.photo + ')'}"></div>
                   <div *ngIf="!follow.artist.photo" class="backupImg img"></div>
                 </a>
               </div>
-              <a [routerLink]="['/artist/' + follow.artist.name]"><h3>{{follow.artist.name}}</h3></a>
+              <a [routerLink]="['/artist/' + follow.artist.name]">
+                <h3>{{follow.artist.name}}</h3>
+              </a>
             </div>
             <div class="followCardWrapper" *ngIf="follow.venue">
               <div class="imageWrapper">
                 <a [routerLink]="['/event/' + id]">
-                  <div *ngIf="follow.venue.photo" class="img venue" [ngStyle]="{ 'background-image': 'url(' + follow.venue.photo + ')'}"></div>
-                  <img *ngIf="!follow.venue.photo" class="backupImg img" src="assets/icons/icon-96x96.png" alt="EDM Flare Logo" />
+                  <div *ngIf="follow.venue.photo" class="img venue"
+                    [ngStyle]="{ 'background-image': 'url(' + follow.venue.photo + ')'}"></div>
+                  <cl-image crop="fit" [public-id]="appService.logoUrl" type="fetch" loading="lazy" width="96"
+                    [attr.alt]="'EDM Flare Logo'" class="backupImg img" *ngIf="!follow.venue.photo">
+                    <cl-placeholder type="blur"></cl-placeholder>
+                    <cl-transformation quality="auto" fetch-format="auto"></cl-transformation>
+                  </cl-image>
                 </a>
               </div>
-              <a [routerLink]="['/venue/' + follow.venue.name]"><h3>{{follow.venue.name}}</h3></a>
+              <a [routerLink]="['/venue/' + follow.venue.name]">
+                <h3>{{follow.venue.name}}</h3>
+              </a>
             </div>
           </div>
         </div>

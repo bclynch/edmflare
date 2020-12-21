@@ -180,7 +180,6 @@ export class EventsComponent implements OnInit, OnDestroy {
   }
 
   selectDate(date) {
-    console.log(date);
     this.dateRange = date;
   }
 
@@ -190,7 +189,6 @@ export class EventsComponent implements OnInit, OnDestroy {
     this.eventsObservable.next(this.events);
     this.ghosts = new Array(4);       // Mock Ghost items
 
-    console.log(this.selectedLocation);
     // add query params to address and also kicks off search events in the router subscription
     this.routerService.navigateToPage(
       '/events',

@@ -5,6 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { PageWrapperModule } from '../page-wrapper/page-wrapper.module';
 import { CloudinaryModule } from '@cloudinary/angular-5.x';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatButtonModule } from '@angular/material/button';
 
 const routes: Routes = [
   {
@@ -18,9 +19,10 @@ const routes: Routes = [
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
-  PageWrapperModule,
+    PageWrapperModule,
     CloudinaryModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatButtonModule
   ]
 })
 export class UnsubscribeModule { }

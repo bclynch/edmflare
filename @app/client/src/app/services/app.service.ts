@@ -94,7 +94,6 @@ export class AppService {
     return new Promise<void>((resolve, reject) => {
       this.swPush.requestSubscription({ serverPublicKey: this.VAPID_PUBLIC_KEY })
         .then((sub) => {
-          console.log(sub);
           // save sub to the db
           this.createPushSubscriptionGQL.mutate({
             userId: this.userService.user.id,

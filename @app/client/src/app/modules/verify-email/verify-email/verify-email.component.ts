@@ -15,6 +15,7 @@ export class VerifyEmailComponent implements OnInit {
   token: string;
   id: number;
   isVerified = false;
+  isFailed = false;
 
   constructor(
     private verifyEmailGQL: VerifyEmailGQL,
@@ -34,6 +35,7 @@ export class VerifyEmailComponent implements OnInit {
         }
       }, err => {
         console.log('err', err);
+        this.isFailed = true;
       }
     );
   }

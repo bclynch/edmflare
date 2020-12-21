@@ -4,6 +4,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { Routes, RouterModule } from '@angular/router';
 import { PageWrapperModule } from '../page-wrapper/page-wrapper.module';
 import { CloudinaryModule } from '@cloudinary/angular-5.x';
+import { MatButtonModule } from '@angular/material/button';
 
 const routes: Routes = [
   {
@@ -17,7 +18,8 @@ const routes: Routes = [
     CommonModule,
     RouterModule.forChild(routes),
     PageWrapperModule,
-    CloudinaryModule
+    CloudinaryModule,
+    MatButtonModule
   ],
   declarations: [NotFoundComponent]
 })

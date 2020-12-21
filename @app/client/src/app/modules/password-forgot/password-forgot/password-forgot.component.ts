@@ -39,14 +39,12 @@ export class PasswordForgotComponent implements OnInit {
   }
 
   sendReset() {
-    console.log('this.forgotForm.value.email', this.forgotForm.value.email);
-    console.log('VALID', this.forgotForm.valid);
     if (this.forgotForm.valid) {
       this.forgotPasswordGQL.mutate({ email: this.forgotForm.value.email }).subscribe(
         () => {
           this.emailSent = true;
         }
-      )
+      );
     }
   }
 }

@@ -6,10 +6,13 @@ import { PageWrapperModule } from '../page-wrapper/page-wrapper.module';
 import { DisqusModule } from 'ngx-disqus';
 import { OverlayContainer, FullscreenOverlayContainer } from '@angular/cdk/overlay';
 import { VenueMapModule } from '../venue-map/venue-map.module';
-import { MatIconModule } from '@angular/material/icon';
 import { EventbriteService } from '../eventbrite-checkout/eventbrite.service';
 import { ShareDialogueModule } from '../share-dialogue/share-dialogue.module';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 const routes: Routes = [
   {
@@ -28,7 +31,10 @@ const routes: Routes = [
     VenueMapModule,
     MatIconModule,
     ShareDialogueModule,
-    MatDialogModule
+    MatDialogModule,
+    MatSnackBarModule,
+    MatButtonModule,
+    MatTooltipModule
   ],
   providers: [
     {provide: OverlayContainer, useClass: FullscreenOverlayContainer},

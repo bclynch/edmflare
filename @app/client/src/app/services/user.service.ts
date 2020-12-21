@@ -2,7 +2,6 @@ import { Apollo } from 'apollo-angular';
 import { Injectable } from '@angular/core';
 import { CurrentUserGQL, CreateFollowListGQL, RemoveFollowlistGQL, LogoutGQL, LoginGQL, RegisterGQL } from '../generated/graphql';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 
 @Injectable()
@@ -18,7 +17,6 @@ export class UserService {
     private currentUserGQL: CurrentUserGQL,
     private createFollowListGQL: CreateFollowListGQL,
     private removeFollowlistGQL: RemoveFollowlistGQL,
-    private snackBar: MatSnackBar,
     private logoutGQL: LogoutGQL,
     private router: Router,
   ) {
@@ -30,7 +28,6 @@ export class UserService {
     return new Promise((resolve) => {
       this.currentUserGQL.fetch().subscribe(
         ({ data }) => {
-          console.log(data);
           if (data && data.currentUser) {
             this.user = data.currentUser;
             this.signedInSubject.next(true);
@@ -48,7 +45,7 @@ export class UserService {
         this.signedInSubject.next(true);
         this.user = data.login.user;
         // reset apollo cache and refetch queries
-        this.apollo.getClient().resetStore();
+        this.apollo.client.resetStore();
         resolve();
       }, (error) => {
         console.log('there was an error sending the query', error);
@@ -58,18 +55,20 @@ export class UserService {
     });
   }
 
-  logoutUser(): void {
-    this.logoutGQL.mutate().subscribe(({ data }) => {
-      if (data.logout.success) {
-        // reset apollo cache and refetch queries
-        this.signedInSubject.next(false);
-        this.user = null;
-        this.apollo.getClient().resetStore();
-        this.router.navigateByUrl('/');
-        this.snackBar.open('Your have successfully logged out', 'Close', {
-          duration: 3000,
-        });
-      }
+  logoutUser() {
+    return new Promise<string>((resolve, reject) => {
+      this.logoutGQL.mutate().subscribe(({ data }) => {
+        if (data.logout.success) {
+          // reset apollo cache and refetch queries
+          this.signedInSubject.next(false);
+          this.user = null;
+          this.apollo.client.resetStore();
+          this.router.navigateByUrl('/');
+          resolve('Your have successfully logged out');
+        } else {
+          reject();
+        }
+      });
     });
   }
 
@@ -101,22 +100,16 @@ export class UserService {
     });
   }
 
-  follow(artistId: string, venueId: string, name: string): Promise<number> {
-    return new Promise<number>((resolve) => {
+  follow(artistId: string, venueId: string, name: string) {
+    return new Promise<{ data: number; message: string; }>((resolve) => {
       if (this.user) {
         this.createFollowListGQL.mutate({ userId: this.user.id, artistId, venueId }).subscribe(
           ({ data }) => {
-            this.snackBar.open(`You are now following ${name}`, 'Close', {
-              duration: 3000,
-            });
-            resolve(data.createFollowList.followList.id);
+            resolve({ data: data.createFollowList.followList.id, message: `You are now following ${name}` });
           }
         );
       } else {
-        this.snackBar.open('Login to your account to add to watch list', 'Close', {
-          duration: 3000,
-        });
-        resolve(null);
+        resolve({ data: null, message: 'Login to your account to add to follow list' });
       }
     });
   }

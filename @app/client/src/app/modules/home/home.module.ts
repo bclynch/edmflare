@@ -11,6 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { GetAppModule } from '../get-app/get-app.module';
+import { CloudinaryModule } from '@cloudinary/angular-5.x';
 
 const routes: Routes = [
   {
@@ -31,7 +32,8 @@ const routes: Routes = [
     MatIconModule,
     MatButtonModule,
     MatTooltipModule,
-    GetAppModule
+    GetAppModule,
+    CloudinaryModule
   ],
   declarations: [HomeComponent]
 })

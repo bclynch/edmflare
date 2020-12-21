@@ -5,6 +5,7 @@ import { UserService } from 'src/app/services/user.service';
 import { SubscriptionLike } from 'rxjs';
 import { AppService } from 'src/app/services/app.service';
 import * as moment from 'moment';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-venue',
@@ -21,7 +22,8 @@ export class VenueComponent implements OnInit, OnDestroy {
     private venueByNameGQL: VenueByNameGQL,
     private activatedRoute: ActivatedRoute,
     private userService: UserService,
-    private appService: AppService
+    private appService: AppService,
+    private snackBar: MatSnackBar
   ) {
     const venue = this.activatedRoute.snapshot.paramMap.get('venueName');
     this.appService.modPageMeta(`${venue} Venue Information`, `Check out upcoming shows, maps, and information for venue ${venue}`);
@@ -52,7 +54,12 @@ export class VenueComponent implements OnInit, OnDestroy {
 
   followVenue() {
     this.userService.follow(null, this.venue.name, this.venue.name).then(
-      (followId) => this.venue.followLists.nodes = [{ id: followId }]
+      ({ data: id, message }) => {
+        this.snackBar.open(message, 'Close', {
+          duration: 3000,
+        });
+        this.venue.followLists.nodes = [{ id }];
+      }
     );
   }
 

@@ -12,16 +12,20 @@
 
 ## Todos
 
-### Short term
+### Optimizations
 
 - ~~Angular 11~~
 - ~~Update apollo~~
 - Cloudinary
-- Work on reducing shared module
+- ~~Work on reducing shared module~~
 - Fix maps
+- Password check on registration didn't work
+- User setup not working
 - Remove extra imgs / ~~map styles~~
 - ~~Check sharebuttons new package (again -- sheesh)~~
 - Look at swapping out moment OR at least working on limiting the import
+- Look at lazy loading elements farther down page (i.e. event cards on home page)
+- Look at cookie issue connect.sid
 - Fix scraping
 - Emails?
 - See if geocoding for venues is working?

@@ -14,7 +14,7 @@
       </div>
       <div class="logoWrapper">
         <a class="logo" [routerLink]="['/']">
-          <img src="assets/images/edm_flare_opt.svg" alt="EDM Flare Logo" loading="lazy" />
+          <img src="assets/images/edm_flare_opt.svg" [attr.alt]="'EDM Flare Logo'" loading="lazy" />
         </a>
       </div>
       <div class="right">
@@ -34,7 +34,7 @@
               <a [routerLink]="['/user/' + userService.user.username]"><button mat-menu-item>Feed</button></a>
               <!-- <a [routerLink]="['/create-event']"><button mat-menu-item>Create Event</button></a> -->
               <a [routerLink]="['/settings']"><button mat-menu-item>Account Settings</button></a>
-              <button mat-menu-item (click)="userService.logoutUser()">
+              <button mat-menu-item (click)="logout()">
                 Log out
               </button>
             </div>

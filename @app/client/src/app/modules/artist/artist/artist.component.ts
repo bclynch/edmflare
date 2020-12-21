@@ -13,6 +13,7 @@ import { UserService } from '../../../services/user.service';
 import { SubscriptionLike } from 'rxjs';
 import { AppService } from '../../../services/app.service';
 import * as moment from 'moment';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-artist',
@@ -33,7 +34,8 @@ export class ArtistComponent implements OnInit, OnDestroy {
     private artistByNameGQL: ArtistByNameGQL,
     private sanitizer: DomSanitizer,
     private userService: UserService,
-    private appService: AppService
+    private appService: AppService,
+    private snackBar: MatSnackBar
   ) {
     const artist = this.activatedRoute.snapshot.paramMap.get('artistName');
     this.appService.modPageMeta(`${artist} Artist Information`, `Check out artist discography, upcoming shows, and social media information for ${artist}`);
@@ -80,7 +82,14 @@ export class ArtistComponent implements OnInit, OnDestroy {
 
   followArtist() {
     this.userService.follow(this.artist.name, null, this.artist.name).then(
-      (followId) => this.artist.followLists.nodes = [{ id: followId }]
+      ({ data: id, message }) => {
+        if (id) {
+          this.artist.followLists.nodes = [{ id }];
+        }
+        this.snackBar.open(message, 'Close', {
+          duration: 3000,
+        });
+      }
     );
   }
 

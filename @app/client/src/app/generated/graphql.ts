@@ -2478,11 +2478,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   /** Enter your old password and a new password to change your password. */
   changePassword?: Maybe<ChangePasswordPayload>;
-  /**
-   * If you're certain you want to delete your account, use
-   * `requestAccountDeletion` to request an account deletion token, and then supply
-   * the token through this mutation to complete account deletion.
-   */
+  /** If you're certain you want to delete your account, use `requestAccountDeletion` to request an account deletion token, and then supply the token through this mutation to complete account deletion. */
   confirmAccountDeletion?: Maybe<ConfirmAccountDeletionPayload>;
   /** Creates a single `Artist`. */
   createArtist?: Maybe<CreateArtistPayload>;
@@ -2542,34 +2538,21 @@ export type Mutation = {
   deleteWatchedToAccount?: Maybe<DeleteWatchedToAccountPayload>;
   /** Deletes a single `WatchList` using a unique key. */
   deleteWatchList?: Maybe<DeleteWatchListPayload>;
-  /**
-   * If you've forgotten your password, give us one of your email addresses and
-   * we'll send you a reset token. Note this only works if you have added an email address!
-   */
+  /** If you've forgotten your password, give us one of your email addresses and we'll send you a reset token. Note this only works if you have added an email address! */
   forgotPassword?: Maybe<ForgotPasswordPayload>;
   /** Use this mutation to log in to your account; this login uses sessions so you do not need to take further action. */
   login?: Maybe<LoginPayload>;
   /** Use this mutation to logout from your account. Don't forget to clear the client state! */
   logout?: Maybe<LogoutPayload>;
-  /**
-   * Your primary email is where we'll notify of account events; other emails may
-   * be used for discovery or login. Use this when you're changing your email address.
-   */
+  /** Your primary email is where we'll notify of account events; other emails may be used for discovery or login. Use this when you're changing your email address. */
   makeEmailPrimary?: Maybe<MakeEmailPrimaryPayload>;
   /** Use this mutation to create an account on our system. This may only be used if you are logged out. */
   register?: Maybe<RegisterPayload>;
   /** Begin the account deletion flow by requesting the confirmation email */
   requestAccountDeletion?: Maybe<RequestAccountDeletionPayload>;
-  /**
-   * If you didn't receive the verification code for this email, we can resend it.
-   * We silently cap the rate of resends on the backend, so calls to this function
-   * may not result in another email being sent if it has been called recently.
-   */
+  /** If you didn't receive the verification code for this email, we can resend it. We silently cap the rate of resends on the backend, so calls to this function may not result in another email being sent if it has been called recently. */
   resendEmailVerificationCode?: Maybe<ResendEmailVerificationCodePayload>;
-  /**
-   * After triggering forgotPassword, you'll be sent a reset token. Combine this
-   * with your user ID and a new password to reset your password.
-   */
+  /** After triggering forgotPassword, you'll be sent a reset token. Combine this with your user ID and a new password to reset your password. */
   resetPassword?: Maybe<ResetPasswordPayload>;
   /** Updates a single `Artist` using a unique key and a patch. */
   updateArtist?: Maybe<UpdateArtistPayload>;
@@ -2599,10 +2582,7 @@ export type Mutation = {
   updateWatchedToAccount?: Maybe<UpdateWatchedToAccountPayload>;
   /** Updates a single `WatchList` using a unique key and a patch. */
   updateWatchList?: Maybe<UpdateWatchListPayload>;
-  /**
-   * Once you have received a verification token for your email, you may call this
-   * mutation with that token to make your email verified.
-   */
+  /** Once you have received a verification token for your email, you may call this mutation with that token to make your email verified. */
   verifyEmail?: Maybe<VerifyEmailPayload>;
 };
 
@@ -2943,16 +2923,9 @@ export type PushSubscription = {
   /** An authentication secret, which is one of the inputs of the message content encryption process. */
   auth: Scalars['String'];
   createdAt: Scalars['Datetime'];
-  /**
-   * This contains a unique URL to a Firebase Cloud Messaging endpoint. This url is
-   * a public but unguessable endpoint to the Browser Push Service used by the
-   * application server to send push notifications to this subscription.
-   */
+  /** This contains a unique URL to a Firebase Cloud Messaging endpoint. This url is a public but unguessable endpoint to the Browser Push Service used by the application server to send push notifications to this subscription. */
   endpoint: Scalars['String'];
-  /**
-   * This is useful in certain cases, for example, if a message might contain an
-   * authentication code that expires after 1 minute.
-   */
+  /** This is useful in certain cases, for example, if a message might contain an authentication code that expires after 1 minute. */
   expirationTime?: Maybe<Scalars['Datetime']>;
   /** Unique identifier for the push subscription. */
   id: Scalars['Int'];
@@ -2995,16 +2968,9 @@ export type PushSubscriptionInput = {
   /** An authentication secret, which is one of the inputs of the message content encryption process. */
   auth: Scalars['String'];
   createdAt?: Maybe<Scalars['Datetime']>;
-  /**
-   * This contains a unique URL to a Firebase Cloud Messaging endpoint. This url is
-   * a public but unguessable endpoint to the Browser Push Service used by the
-   * application server to send push notifications to this subscription.
-   */
+  /** This contains a unique URL to a Firebase Cloud Messaging endpoint. This url is a public but unguessable endpoint to the Browser Push Service used by the application server to send push notifications to this subscription. */
   endpoint: Scalars['String'];
-  /**
-   * This is useful in certain cases, for example, if a message might contain an
-   * authentication code that expires after 1 minute.
-   */
+  /** This is useful in certain cases, for example, if a message might contain an authentication code that expires after 1 minute. */
   expirationTime?: Maybe<Scalars['Datetime']>;
   /** Unique identifier for the push subscription. */
   id?: Maybe<Scalars['Int']>;
@@ -3020,16 +2986,9 @@ export type PushSubscriptionPatch = {
   /** An authentication secret, which is one of the inputs of the message content encryption process. */
   auth?: Maybe<Scalars['String']>;
   createdAt?: Maybe<Scalars['Datetime']>;
-  /**
-   * This contains a unique URL to a Firebase Cloud Messaging endpoint. This url is
-   * a public but unguessable endpoint to the Browser Push Service used by the
-   * application server to send push notifications to this subscription.
-   */
+  /** This contains a unique URL to a Firebase Cloud Messaging endpoint. This url is a public but unguessable endpoint to the Browser Push Service used by the application server to send push notifications to this subscription. */
   endpoint?: Maybe<Scalars['String']>;
-  /**
-   * This is useful in certain cases, for example, if a message might contain an
-   * authentication code that expires after 1 minute.
-   */
+  /** This is useful in certain cases, for example, if a message might contain an authentication code that expires after 1 minute. */
   expirationTime?: Maybe<Scalars['Datetime']>;
   /** Unique identifier for the push subscription. */
   id?: Maybe<Scalars['Int']>;
@@ -3114,9 +3073,9 @@ export type Query = {
   /** Reads and enables pagination through a set of `Region`. */
   regions?: Maybe<RegionsConnection>;
   /** Returns events by city containing a given query term. */
-  searchEventsByCity: EventsConnection;
+  searchEventsByCity?: Maybe<EventsConnection>;
   /** Returns events by region containing a given query term. */
-  searchEventsByRegion: EventsConnection;
+  searchEventsByRegion?: Maybe<EventsConnection>;
   user?: Maybe<User>;
   userAuthentication?: Maybe<UserAuthentication>;
   userByUsername?: Maybe<User>;
@@ -3695,15 +3654,9 @@ export type StringFilter = {
   lessThan?: Maybe<Scalars['String']>;
   /** Less than or equal to the specified value. */
   lessThanOrEqualTo?: Maybe<Scalars['String']>;
-  /**
-   * Matches the specified pattern (case-sensitive). An underscore (_) matches any
-   * single character; a percent sign (%) matches any sequence of zero or more characters.
-   */
+  /** Matches the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
   like?: Maybe<Scalars['String']>;
-  /**
-   * Matches the specified pattern (case-insensitive). An underscore (_) matches
-   * any single character; a percent sign (%) matches any sequence of zero or more characters.
-   */
+  /** Matches the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
   likeInsensitive?: Maybe<Scalars['String']>;
   /** Equal to the specified value, treating null like an ordinary value. */
   notDistinctFrom?: Maybe<Scalars['String']>;
@@ -3719,17 +3672,9 @@ export type StringFilter = {
   notIncludes?: Maybe<Scalars['String']>;
   /** Does not contain the specified string (case-insensitive). */
   notIncludesInsensitive?: Maybe<Scalars['String']>;
-  /**
-   * Does not match the specified pattern (case-sensitive). An underscore (_)
-   * matches any single character; a percent sign (%) matches any sequence of zero
-   * or more characters.
-   */
+  /** Does not match the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
   notLike?: Maybe<Scalars['String']>;
-  /**
-   * Does not match the specified pattern (case-insensitive). An underscore (_)
-   * matches any single character; a percent sign (%) matches any sequence of zero
-   * or more characters.
-   */
+  /** Does not match the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
   notLikeInsensitive?: Maybe<Scalars['String']>;
   /** Does not match the specified pattern using the SQL standard's definition of a regular expression. */
   notSimilarTo?: Maybe<Scalars['String']>;
@@ -4479,10 +4424,7 @@ export type UserEmail = {
   email: Scalars['String'];
   id: Scalars['Int'];
   isPrimary: Scalars['Boolean'];
-  /**
-   * True if the user has is_verified their email address (by clicking the link in
-   * the email we sent them, or logging in with a social login provider), false otherwise.
-   */
+  /** True if the user has is_verified their email address (by clicking the link in the email we sent them, or logging in with a social login provider), false otherwise. */
   isVerified: Scalars['Boolean'];
   updatedAt: Scalars['Datetime'];
   /** Reads a single `User` that is related to this `UserEmail`. */
@@ -5404,7 +5346,7 @@ export type SearchEventsByCityQueryVariables = Exact<{
 
 export type SearchEventsByCityQuery = (
   { __typename?: 'Query' }
-  & { searchEventsByCity: (
+  & { searchEventsByCity?: Maybe<(
     { __typename?: 'EventsConnection' }
     & Pick<EventsConnection, 'totalCount'>
     & { nodes: Array<(
@@ -5431,7 +5373,7 @@ export type SearchEventsByCityQuery = (
         )> }
       ) }
     )> }
-  ) }
+  )> }
 );
 
 export type SearchEventsByRegionQueryVariables = Exact<{
@@ -5447,7 +5389,7 @@ export type SearchEventsByRegionQueryVariables = Exact<{
 
 export type SearchEventsByRegionQuery = (
   { __typename?: 'Query' }
-  & { searchEventsByRegion: (
+  & { searchEventsByRegion?: Maybe<(
     { __typename?: 'EventsConnection' }
     & Pick<EventsConnection, 'totalCount'>
     & { nodes: Array<(
@@ -5474,7 +5416,7 @@ export type SearchEventsByRegionQuery = (
         )> }
       ) }
     )> }
-  ) }
+  )> }
 );
 
 export type UpdateUserMutationVariables = Exact<{
@@ -5582,7 +5524,13 @@ export type VenueByNameQuery = (
       & { nodes: Array<(
         { __typename?: 'Event' }
         & Pick<Event, 'name' | 'startDate' | 'ticketproviderurl' | 'ticketproviderid' | 'id'>
-        & { artistToEvents: (
+        & { watchLists: (
+          { __typename?: 'WatchListsConnection' }
+          & { nodes: Array<(
+            { __typename?: 'WatchList' }
+            & Pick<WatchList, 'id'>
+          )> }
+        ), artistToEvents: (
           { __typename?: 'ArtistToEventsConnection' }
           & { nodes: Array<(
             { __typename?: 'ArtistToEvent' }
@@ -6315,6 +6263,11 @@ export const VenueByNameDocument = gql`
         ticketproviderurl
         ticketproviderid
         id
+        watchLists(filter: {userId: {equalTo: $userId}}) {
+          nodes {
+            id
+          }
+        }
         artistToEvents(first: 1) {
           nodes {
             id

@@ -78,7 +78,6 @@
       }
       .followCard:hover {
         box-shadow: 0 4px 15px 0 rgba(40,44,53,.06), 0 2px 2px 0 rgba(40,44,53,.08);
-        background-color: #fff;
         border-radius: 4px;
       }
     }
@@ -94,7 +93,7 @@
   }
   @media (min-width: 768px) {
     .userWrapper {
-  
+
       .profile {
         height: 200px;
         width: 200px;
@@ -114,7 +113,7 @@
   }
   @media (min-width: 1024px) {
     .watchingContainer {
-     
+
       .watchingWrapper {
         app-event-card-alt {
           width: 33.33%;

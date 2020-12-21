@@ -8,6 +8,7 @@ import { CloudinaryModule } from '@cloudinary/angular-5.x';
 import { NotificationPreferencesModule } from '../notification-preferences/notification-preferences.module';
 import { GetAppModule } from '../get-app/get-app.module';
 import { ThemeToggleModule } from '../theme-toggle/theme-toggle.module';
+import { MatButtonModule } from '@angular/material/button';
 
 const routes: Routes = [
   {
@@ -26,7 +27,8 @@ const routes: Routes = [
     CloudinaryModule,
     NotificationPreferencesModule,
     GetAppModule,
-    ThemeToggleModule
+    ThemeToggleModule,
+    MatButtonModule
   ]
 })
 export class UserSetupModule { }

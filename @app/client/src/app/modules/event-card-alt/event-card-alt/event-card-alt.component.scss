@@ -3,20 +3,25 @@
   position: relative;
 
   .imageWrapper {
-    height: 10em;
+    height: 200px;
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
+    overflow: hidden;
 
-    .img {
-      height: 5em;
-      width: 5em;
-      cursor: pointer;
-      background-size: contain;
-      border-radius: 50%;
+    .bannerWrapper {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+
+      ::ng-deep img {
+        width: 100%;
+      }
     }
-    .backupImg {
-      border-radius: 0;
+    .overlay {
+      position: relative;
     }
   }
   .eventInfo {

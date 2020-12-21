@@ -6,6 +6,7 @@ import { PageWrapperModule } from '../page-wrapper/page-wrapper.module';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 import { AgmCoreModule } from '@agm/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatButtonModule } from '@angular/material/button';
 
 const routes: Routes = [
   {
@@ -22,7 +23,8 @@ const routes: Routes = [
     PageWrapperModule,
     AgmCoreModule,
     AgmSnazzyInfoWindowModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatButtonModule
   ]
 })
 export class MapModule { }

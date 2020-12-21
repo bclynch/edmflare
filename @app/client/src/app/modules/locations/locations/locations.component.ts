@@ -20,7 +20,6 @@ export class LocationsComponent implements OnInit, OnDestroy {
       (inited) =>  {
         if (inited) {
           this.locations = this.appService.locationDirectory;
-          console.log(this.locations);
         }
       }
     );

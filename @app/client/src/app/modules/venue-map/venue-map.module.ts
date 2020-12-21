@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { VenueMapComponent } from './venue-map/venue-map.component';
 import { AgmCoreModule } from '@agm/core';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -11,7 +12,8 @@ import { MatIconModule } from '@angular/material/icon';
   imports: [
     CommonModule,
     AgmCoreModule,
-    MatIconModule
+    MatIconModule,
+    MatButtonModule
   ],
   exports: [VenueMapComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

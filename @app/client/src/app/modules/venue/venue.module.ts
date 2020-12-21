@@ -5,6 +5,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { PageWrapperModule } from '../page-wrapper/page-wrapper.module';
 import { VenueMapModule } from '../venue-map/venue-map.module';
 import { EventCardModule } from '../event-card/event-card.module';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatButtonModule } from '@angular/material/button';
 
 const routes: Routes = [
   {
@@ -20,7 +22,9 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     PageWrapperModule,
     VenueMapModule,
-    EventCardModule
+    EventCardModule,
+    MatSnackBarModule,
+    MatButtonModule
   ]
 })
 export class VenueModule { }

@@ -10,8 +10,11 @@ import { CloudinaryModule } from '@cloudinary/angular-5.x';
 import { LocationSearchModule } from '../location-search/location-search.module';
 import { EventCardModule } from '../event-card/event-card.module';
 import { SelectDateModule } from '../select-date/select-date.module';
-import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatInputModule } from '@angular/material/input';
 
 const routes: Routes = [
   {
@@ -34,7 +37,10 @@ const routes: Routes = [
     EventCardModule,
     SelectDateModule,
     MatIconModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatButtonModule,
+    MatTooltipModule,
+    MatInputModule
   ]
 })
 export class EventsModule { }

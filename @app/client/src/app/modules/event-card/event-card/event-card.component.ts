@@ -2,8 +2,10 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ENV } from '../../../../environments/environment';
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons/faExternalLinkAlt';
 import { EventService } from '../../../services/event.service';
+import { AppService } from '../../../services/app.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ShareDialogueComponent } from '../../share-dialogue/share-dialogue/share-dialogue.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-event-card',
@@ -26,7 +28,9 @@ export class EventCardComponent implements OnInit {
 
   constructor(
     private dialog: MatDialog,
-    private eventService: EventService
+    private eventService: EventService,
+    private snackBar: MatSnackBar,
+    public appService: AppService
   ) { }
 
   ngOnInit() {
@@ -43,9 +47,14 @@ export class EventCardComponent implements OnInit {
   }
 
   addWatch() {
-    this.eventService.addWatch(this.id).then(
-      (id) => {
-        this.watchId = id;
+    this.eventService.addWatch(this.id, this.name).then(
+      ({ data: id, message }) => {
+        if (id) {
+          this.watchId = id;
+        }
+        this.snackBar.open(message, 'Close', {
+          duration: 3000,
+        });
       }
     );
   }

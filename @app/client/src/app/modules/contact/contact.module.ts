@@ -6,6 +6,8 @@ import { PageWrapperModule } from '../page-wrapper/page-wrapper.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
 
 const routes: Routes = [
   {
@@ -23,7 +25,9 @@ const routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     MatSelectModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatButtonModule,
+    MatInputModule
   ]
 })
 export class ContactModule { }

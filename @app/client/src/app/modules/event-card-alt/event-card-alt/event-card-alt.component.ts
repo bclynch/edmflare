@@ -1,9 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ENV } from '../../../../environments/environment';
 import { EventService } from '../../../services/event.service';
+import { AppService } from '../../../services/app.service';
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons/faExternalLinkAlt';
 import { MatDialog } from '@angular/material/dialog';
 import { ShareDialogueComponent } from '../../share-dialogue/share-dialogue/share-dialogue.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-event-card-alt',
@@ -26,11 +28,13 @@ export class EventCardAltComponent implements OnInit {
 
   constructor(
     private dialog: MatDialog,
-    private eventService: EventService
+    private eventService: EventService,
+    private snackBar: MatSnackBar,
+    public appService: AppService
   ) { }
 
   ngOnInit() {
-    this.backgroundImg = `assets/backgrounds/background${(this.index % 4) + 1}.jpg`;
+    this.backgroundImg = `https://edm-flare.s3.amazonaws.com/backgrounds/background${(this.index % 4) + 1}.jpg`;
   }
 
   share() {
@@ -44,9 +48,14 @@ export class EventCardAltComponent implements OnInit {
   }
 
   addWatch() {
-    this.eventService.addWatch(this.id).then(
-      (id) => {
-        this.watchId = id;
+    this.eventService.addWatch(this.id, this.name).then(
+      ({ data: id, message }) => {
+        if (id) {
+          this.watchId = id;
+        }
+        this.snackBar.open(message, 'Close', {
+          duration: 3000,
+        });
       }
     );
   }

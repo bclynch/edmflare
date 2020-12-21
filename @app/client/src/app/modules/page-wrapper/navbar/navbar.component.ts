@@ -3,6 +3,7 @@ import { UtilService } from '../../../services/util.service';
 import { UserService } from '../../../services/user.service';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-navbar',
@@ -14,16 +15,24 @@ export class NavbarComponent {
   @Input() hasBack: boolean;
 
   signedIn = false;
-  abc = 'assets/images/edm_flare.png';
 
   constructor(
     public utilService: UtilService,
     private userService: UserService,
     public location: Location,
-    public router: Router
+    public router: Router,
+    private snackBar: MatSnackBar
   ) {
     this.userService.signedIn.subscribe((signedIn) => {
       this.signedIn = signedIn;
+    });
+  }
+
+  logout() {
+    this.userService.logoutUser().then((message) => {
+      this.snackBar.open(message, 'Close', {
+        duration: 3000,
+      });
     });
   }
 }

@@ -11,6 +11,7 @@ import * as moment from 'moment';
 import { EventbriteService } from '../../eventbrite-checkout/eventbrite.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ShareDialogueComponent } from '../../share-dialogue/share-dialogue/share-dialogue.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-event',
@@ -18,7 +19,6 @@ import { ShareDialogueComponent } from '../../share-dialogue/share-dialogue/shar
   styleUrls: ['./event.component.scss']
 })
 export class EventComponent implements OnInit {
-
   event;
   disqusId: string;
   calendarLink: string;
@@ -35,7 +35,8 @@ export class EventComponent implements OnInit {
     private eventbriteService: EventbriteService,
     private userService: UserService,
     public dialog: MatDialog,
-    private appService: AppService
+    private appService: AppService,
+    private snackBar: MatSnackBar
   ) {
     this.initSubscription = this.appService.appInited.subscribe(
       (inited) =>  {
@@ -44,14 +45,17 @@ export class EventComponent implements OnInit {
             eventId: this.activatedRoute.snapshot.paramMap.get('eventId'),
             userId: this.userService.user ? this.userService.user.id : 0,
           }).subscribe(
-            ({ data }) => {
-              this.event = data.event;
-              console.log('data.event', data.event);
-              this.appService.modPageMeta(`${this.event.name.trim()} Event Information - ${this.event.venueByVenue.name.split('-')[0].trim()}`, `Check out artist, venue, and ticket information for ${this.event.name.trim()} at ${this.event.venueByVenue.name.split('-')[0].trim()} on ${moment(+this.event.startDate).format('MMMM Do, YYYY')}`);
-              this.disqusId = `event/${this.event.id}`;
+            ({ data: { event = {} } = {}}) => {
+              this.event = event;
+              const { name, id, venueByVenue: { name: venueName, address } = {}, startDate, watchLists } = event;
+              const processedStartDate = +startDate;
+              const processedVenueName = venueName.split('-')[0].trim();
+              this.appService.modPageMeta(`${name.trim()} Event Information - ${processedVenueName}`, `Check out artist, venue, and ticket information for ${name.trim()} at ${processedVenueName} on ${moment(processedStartDate).format('MMMM Do, YYYY')}`);
+              this.disqusId = `event/${id}`;
               // generate add to calendar link
-              this.calendarLink = this.utilService.addToCalendar(this.event.name, `${ENV.siteBaseURL}/event/${this.event.id}`, this.event.venueByVenue.address, (new Date(+this.event.startDate)).toISOString().replace(/-|:|\.\d\d\d/g, ''));
-              this.watchId = this.event.watchLists.nodes[0] ? this.event.watchLists.nodes[0].id : null;
+              this.calendarLink = this.utilService.addToCalendar(name, `${ENV.siteBaseURL}/event/${id}`, address, (new Date(processedStartDate)).toISOString().replace(/-|:|\.\d\d\d/g, ''));
+              const watchEvent = watchLists.nodes[0];
+              this.watchId = watchEvent ? watchEvent.id : null;
             }
           );
         }
@@ -77,9 +81,14 @@ export class EventComponent implements OnInit {
   }
 
   addWatch() {
-    this.eventService.addWatch(this.event.id).then(
-      (id) => {
-        this.watchId = id;
+    this.eventService.addWatch(this.event.id, this.event.name).then(
+      ({ data: id, message }) => {
+        if (id) {
+          this.watchId = id;
+        }
+        this.snackBar.open(message, 'Close', {
+          duration: 3000,
+        });
       }
     );
   }

@@ -11,6 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { RouterModule } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     MatIconModule,
     MatMenuModule,
     RouterModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    MatSnackBarModule
   ],
   exports: [PagewrapperComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

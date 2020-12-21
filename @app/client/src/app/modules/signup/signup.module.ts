@@ -6,6 +6,8 @@ import { PageWrapperModule } from '../page-wrapper/page-wrapper.module';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { LoginGuardService as LoginGuard } from '../../services/loginGuard.service';
 import { SocialLoginsModule } from '../social-logins/social-logins.module';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 
 const routes: Routes = [
   {
@@ -23,7 +25,9 @@ const routes: Routes = [
     PageWrapperModule,
     ReactiveFormsModule,
     FormsModule,
-    SocialLoginsModule
+    SocialLoginsModule,
+    MatInputModule,
+    MatButtonModule
   ]
 })
 export class SignupModule { }

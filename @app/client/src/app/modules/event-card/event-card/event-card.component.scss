@@ -7,16 +7,6 @@
 
   .imageWrapper {
 
-    .img {
-      height: 5em;
-      width: 5em;
-      cursor: pointer;
-      background-size: contain;
-      border-radius: 50%;
-    }
-    .backupImg {
-      border-radius: 0;
-    }
   }
   .eventInfo {
     display: flex;
@@ -114,11 +104,11 @@
 .newEvent::before {
   border-width: 1em;
   border-right-color: var(--color-accent);
-  border-top-color: var(--color-accent);; 
+  border-top-color: var(--color-accent);;
 }
 
 .newEvent::after {
   border-width: 1em;
   border-right-color: var(--color-accent);;
-  border-top-color: var(--color-accent);; 
+  border-top-color: var(--color-accent);;
 }

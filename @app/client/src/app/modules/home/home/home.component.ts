@@ -22,15 +22,15 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   carouselSlides = [
     {
-      image: 'assets/images/splash1.jpg',
+      image: 'https://edm-flare.s3.amazonaws.com/splash/splash1.jpg',
       tagline: 'The Next Rager'
     },
     {
-      image: 'assets/images/splash2.jpg',
+      image: 'https://edm-flare.s3.amazonaws.com/splash/splash2.jpg',
       tagline: 'Your New Favorite Artist'
     },
     {
-      image: 'assets/images/splash3.jpg',
+      image: 'https://edm-flare.s3.amazonaws.com/splash/splash3.jpg',
       tagline: 'Your Local Community'
     }
   ];
@@ -147,7 +147,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   setLocation(location: string) {
-    console.log(location);
     this.selectedLocation = location;
   }
 }

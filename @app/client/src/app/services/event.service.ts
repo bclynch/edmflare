@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { CreateWatchListGQL, RemoveWatchlistGQL } from '../generated/graphql';
 import { UserService } from './user.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable()
 export class EventService {
@@ -12,21 +11,17 @@ export class EventService {
   constructor(
     private createWatchListGQL: CreateWatchListGQL,
     private removeWatchListGQL: RemoveWatchlistGQL,
-    private userService: UserService,
-    private snackBar: MatSnackBar
+    private userService: UserService
   ) { }
 
-  addWatch(eventId): Promise<number> {
-    return new Promise((resolve) => {
+  addWatch(eventId: string, name: string) {
+    return new Promise<{ data: number; message: string; }>((resolve) => {
       if (this.userService.user) {
         this.createWatchListGQL.mutate({ userId: this.userService.user.id, eventId }).subscribe(
-          ({ data }) => resolve(data.createWatchList.watchList.id)
+          ({ data }) => resolve({ data: data.createWatchList.watchList.id, message: `You are now following ${name}` })
         );
       } else {
-        this.snackBar.open('Login to your account to add to watch list', 'Close', {
-          duration: 3000,
-        });
-        resolve(null);
+        resolve({ data: null, message: 'Login to your account to add to watch list' });
       }
     });
   }

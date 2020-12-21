@@ -7,6 +7,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AnonGuardService as AnonGuard } from '../../services/anonGuard.service';
 import { SettingsWrapperModule } from '../settings-wrapper/settings-wrapper.module';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
 
 const routes: Routes = [
   {
@@ -25,7 +27,9 @@ const routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     SettingsWrapperModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatButtonModule,
+    MatInputModule
   ]
 })
 export class PasswordModule { }

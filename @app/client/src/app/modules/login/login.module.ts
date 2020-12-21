@@ -7,6 +7,9 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { LoginGuardService as LoginGuard } from '../../services/loginGuard.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SocialLoginsModule } from '../social-logins/social-logins.module';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 const routes: Routes = [
   {
@@ -25,7 +28,10 @@ const routes: Routes = [
     ReactiveFormsModule,
     FormsModule,
     FontAwesomeModule,
-    SocialLoginsModule
+    SocialLoginsModule,
+    MatInputModule,
+    MatButtonModule,
+    MatTooltipModule
   ]
 })
 export class LoginModule { }
