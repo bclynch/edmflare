@@ -6,7 +6,8 @@ create type edm.event_type as enum (
   'ticketmaster',
   'seetickets',
   'etix',
-  'other'
+  'other',
+  'livestream'
 );
 
 create table edm.event (

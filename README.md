@@ -28,8 +28,17 @@
 - ~~Get some larger libs out of services being parsed at the start / look at services not on app.module~~
 - Need to fix the static backgrounds on cards / events. Too compressed
 - Look at cookie issue connect.sid
-- Fix scraping
+- ~~Fix scraping~~
+  - In good shape. Artist description might be broken
 - Emails?
+- Work on some url seo perhaps? Event page anyway
+- Universal angular?
+  - Faster first paint
+  - SEO for search egines
+  - Social media crawlers***
+  - Virtual scroll is crap on events. Images jacked up and kind of janky
+  - [Guide](https://blog.angular-university.io/angular-universal/)
+- Docker would be nice / maybe interesting
 - See if geocoding for venues is working?
 
 ### Other

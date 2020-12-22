@@ -34,6 +34,7 @@
     "@types/puppeteer": "^5.4.2",
     "@types/redis": "^2.8.14",
     "aws-sdk": "^2.814.0",
+    "axios": "0.21.1",
     "chalk": "^4.1.0",
     "compression": "^1.7.2",
     "connect-pg-simple": "^6.0.0",

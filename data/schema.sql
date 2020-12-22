@@ -97,7 +97,8 @@ CREATE TYPE edm.event_type AS ENUM (
     'ticketmaster',
     'seetickets',
     'etix',
-    'other'
+    'other',
+    'livestream'
 );
 
 

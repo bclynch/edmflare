@@ -214,30 +214,45 @@ let scrapeEventDetails = async (city: City) => {
       await page.waitForSelector('.filterIcon');
 
       const data = await page.evaluate(() => {
-
+        const LIVESTREAM = 'Live Stream';
         let data = []; // Create an empty array that will store our data
         const events: any = document.querySelectorAll('.eventContainer');
 
         for (const event of events) {
           const eventTitle = event.getAttribute('titlestr');
           const id = +event.getAttribute('eventid');
+          const venueAttr = event.getAttribute('venue');
           const artists = eventTitle.split(',').map((artist: string) => {
             // if there is a colon it means there is some tour / show name prepending this thing and we are removing that from the artist name
-            if (artist.indexOf(':') !== -1) return artist.split(':')[1].trim();
+            if (artist.indexOf(':') !== -1) {
+              return artist.split(':')[1].trim();
+            }
             return artist.trim();
           });
+          const eventImage = event.getAttribute('eventimg');
           // don't want the edm train default
-          const artistImage = (event.getAttribute('eventimg') !== 'img/artist/default.png?v=2' && event.getAttribute('eventimg') !== 'img/logo/app-icon-square-web.svg')
-            ? `https://edmtrain.s3.amazonaws.com/${event.getAttribute('eventimg')}`
+          const artistImage = (eventImage !== 'img/artist/default.png?v=2' && eventImage !== 'img/logo/app-icon-square-web.svg' && eventImage !== 'img/logo/icon-square-black-web.svg')
+            ? `https://edmtrain.s3.amazonaws.com/${eventImage}`
             : null;
-          const venueSelector: any = document.querySelector(`.eventContainer[eventid="${id}"] .eventLocation > span`);
-          const venue = venueSelector.innerText;
-          const eventUrl = document.querySelector(`.eventContainer[eventid="${id}"] .eventLink a`)!.getAttribute('href');
+
+          let venue;
+          if (venueAttr === LIVESTREAM) {
+            venue = LIVESTREAM;
+          } else {
+            const venueSelector: any = document.querySelector(`.eventContainer[eventid="${id}"] .eventSubTitle > span`);
+            venue = venueSelector && venueSelector.innerText;
+          }
+
+          // This looks like it changed. Need to identify what we are trying to have...
+          const eventUrlSelector = document.querySelector(`.eventContainer[eventid="${id}"] .eventIconsContainer .shareBtn`);
+          const shareUrl = eventUrlSelector && eventUrlSelector.getAttribute('shareUrl');
+          const eventUrl = `${shareUrl && decodeURIComponent(shareUrl)}&tickets` || '';
+
           const startTimeFigures = event.getAttribute('sorteddate').split('-');
           // subtract one from the months portion since it is zero index
           const startTime = new Date(+startTimeFigures[0], +startTimeFigures[1] - 1, +startTimeFigures[2]).getTime();
           // if it's a live stream we want the full name of the event not just artists
-          const name = venue === 'Live Stream' ? eventTitle : undefined;
+          const name = venue === LIVESTREAM ? eventTitle : undefined;
 
           data.push({ id, artists, artistImage, venue, eventUrl, startTime, name });
         }
@@ -262,19 +277,26 @@ function checkEventbrite(newEvents: any) {
     const abc = (event: { id: string; }) => {
       return new Promise((resolve) => {
         axios.get(`https://edmtrain.com/get-event-detail?id=${hashids.decode(event.id)}`).then(
-          (resp) => {
-            let object = JSON.parse(resp.data.data.eventDetailContent);
+          ({ data: { data } = {} }) => {
+            let object = JSON.parse(data.eventDetailContent);
             if (object) {
-              const { id, name: { text }, description: { html }, start, end, logo } = object;
+              const {
+                id: ticketProviderId,
+                name: { text: name },
+                description: { html: description = null },
+                start: { local: startTime },
+                end: { local: endTime },
+                logo
+              } = object;
               // if there's a change add the pertinent new data
               let moddedEvent = {
                 ...event,
-                ticketProviderId: id,
-                name: text,
-                description: html || null,
-                startTime: new Date(start.local).getTime(),
-                endTime: new Date(end.local).getTime(),
-                banner: logo ? logo.original.url : null
+                ticketProviderId,
+                name,
+                description,
+                startTime: new Date(startTime).getTime(),
+                endTime: new Date(endTime).getTime(),
+                banner: (logo && logo.original) ? logo.original.url : null
               };
               resolve(moddedEvent);
             } else {
@@ -1054,6 +1076,7 @@ let scrapeEventUrls = async (events: Event[]) => {
 
   const abc = (page: Page, event: Event) => {
     return new Promise((resolve) => {
+      const { id, eventUrl, venue } = event;
       // would like to set up some error handling to keep the script running
       // need to make sure we don't create an event listener on every loop...
       // or remove the listener
@@ -1063,11 +1086,11 @@ let scrapeEventUrls = async (events: Event[]) => {
       page.on('pageerror', listener);
 
       function listener(text: any) {
-        console.log('EVENT ID ERROR URL: ', event.id);
+        console.log('EVENT ID ERROR URL: ', id);
         console.log('ERROR ON PAGE: ', text);
       }
 
-      page.goto(event.eventUrl, { timeout: 0 });
+      page.goto(eventUrl, { timeout: 0 });
 
       const timeout = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -1085,8 +1108,10 @@ let scrapeEventUrls = async (events: Event[]) => {
             event.ticketProviderUrl = url.split('?')[0];
           }
           // check event type
-          if (url.indexOf('ticketfly') !== -1) {
-            event.type = 'ticketfly'
+          if (venue === 'Live Stream') {
+            event.type = 'livestream';
+          } else if (url.indexOf('ticketfly') !== -1) {
+            event.type = 'ticketfly';
           } else if (url.indexOf('eventbrite') !== -1) {
             event.type = 'eventbrite';
           } else if (url.indexOf('ticketmaster') !== -1) {

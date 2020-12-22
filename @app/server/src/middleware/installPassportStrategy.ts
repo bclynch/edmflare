@@ -39,14 +39,17 @@ const setReturnTo: RequestHandler = (req, _res, next) => {
   }
   const returnTo =
     (req.query && req.query.next && String(req.query.next)) ||
+    // @ts-ignore
     req.session.returnTo;
   if (
     returnTo &&
     returnTo[0] === '/' &&
     !returnTo.match(BLOCKED_REDIRECT_PATHS)
   ) {
+    // @ts-ignore
     req.session.returnTo = returnTo;
   } else {
+    // @ts-ignore
     delete req.session.returnTo;
   }
   next();

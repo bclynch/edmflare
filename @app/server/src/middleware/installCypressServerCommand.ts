@@ -50,6 +50,7 @@ export default (app: Express) => {
       }
 
       const command = String(rawCommand);
+      // @ts-ignore
       const payload = rawPayload ? JSON.parse(rawPayload) : {};
 
       // Now run the actual command:

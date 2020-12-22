@@ -2606,6 +2606,7 @@ enum EventsOrderBy {
 enum EventType {
   ETIX
   EVENTBRITE
+  LIVESTREAM
   OTHER
   SEETICKETS
   TICKETFLY

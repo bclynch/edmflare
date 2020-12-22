@@ -2058,6 +2058,7 @@ export enum EventsOrderBy {
 export enum EventType {
   Etix = 'ETIX',
   Eventbrite = 'EVENTBRITE',
+  Livestream = 'LIVESTREAM',
   Other = 'OTHER',
   Seetickets = 'SEETICKETS',
   Ticketfly = 'TICKETFLY',
@@ -5610,7 +5611,7 @@ export const AllLocationsDocument = gql`
   })
   export class AllLocationsGQL extends Apollo.Query<AllLocationsQuery, AllLocationsQueryVariables> {
     document = AllLocationsDocument;
-    
+
   }
 export const ArtistByNameDocument = gql`
     query artistByName($name: String!, $userId: Int!) {
@@ -5668,7 +5669,7 @@ export const ArtistByNameDocument = gql`
   })
   export class ArtistByNameGQL extends Apollo.Query<ArtistByNameQuery, ArtistByNameQueryVariables> {
     document = ArtistByNameDocument;
-    
+
   }
 export const ConfirmAccountDeletionDocument = gql`
     mutation confirmAccountDeletion($token: String!) {
@@ -5683,7 +5684,7 @@ export const ConfirmAccountDeletionDocument = gql`
   })
   export class ConfirmAccountDeletionGQL extends Apollo.Mutation<ConfirmAccountDeletionMutation, ConfirmAccountDeletionMutationVariables> {
     document = ConfirmAccountDeletionDocument;
-    
+
   }
 export const CreateFollowListDocument = gql`
     mutation createFollowList($userId: Int!, $artistId: String, $venueId: String) {
@@ -5702,7 +5703,7 @@ export const CreateFollowListDocument = gql`
   })
   export class CreateFollowListGQL extends Apollo.Mutation<CreateFollowListMutation, CreateFollowListMutationVariables> {
     document = CreateFollowListDocument;
-    
+
   }
 export const CreatePushSubscriptionDocument = gql`
     mutation createPushSubscription($userId: Int!, $endpoint: String!, $p256Dh: String!, $auth: String!) {
@@ -5719,7 +5720,7 @@ export const CreatePushSubscriptionDocument = gql`
   })
   export class CreatePushSubscriptionGQL extends Apollo.Mutation<CreatePushSubscriptionMutation, CreatePushSubscriptionMutationVariables> {
     document = CreatePushSubscriptionDocument;
-    
+
   }
 export const CreateWatchListDocument = gql`
     mutation createWatchList($userId: Int!, $eventId: String!) {
@@ -5736,7 +5737,7 @@ export const CreateWatchListDocument = gql`
   })
   export class CreateWatchListGQL extends Apollo.Mutation<CreateWatchListMutation, CreateWatchListMutationVariables> {
     document = CreateWatchListDocument;
-    
+
   }
 export const CreateWatchedToAccountDocument = gql`
     mutation createWatchedToAccount($userId: Int!, $region: String, $cityId: Int) {
@@ -5760,7 +5761,7 @@ export const CreateWatchedToAccountDocument = gql`
   })
   export class CreateWatchedToAccountGQL extends Apollo.Mutation<CreateWatchedToAccountMutation, CreateWatchedToAccountMutationVariables> {
     document = CreateWatchedToAccountDocument;
-    
+
   }
 export const CurrentUserDocument = gql`
     query currentUser {
@@ -5790,7 +5791,7 @@ export const CurrentUserDocument = gql`
   })
   export class CurrentUserGQL extends Apollo.Query<CurrentUserQuery, CurrentUserQueryVariables> {
     document = CurrentUserDocument;
-    
+
   }
 export const DeletePushSubscriptionByIdDocument = gql`
     mutation deletePushSubscriptionById($id: Int!) {
@@ -5805,7 +5806,7 @@ export const DeletePushSubscriptionByIdDocument = gql`
   })
   export class DeletePushSubscriptionByIdGQL extends Apollo.Mutation<DeletePushSubscriptionByIdMutation, DeletePushSubscriptionByIdMutationVariables> {
     document = DeletePushSubscriptionByIdDocument;
-    
+
   }
 export const DeleteWatchedByIdDocument = gql`
     mutation deleteWatchedById($id: Int!) {
@@ -5820,7 +5821,7 @@ export const DeleteWatchedByIdDocument = gql`
   })
   export class DeleteWatchedByIdGQL extends Apollo.Mutation<DeleteWatchedByIdMutation, DeleteWatchedByIdMutationVariables> {
     document = DeleteWatchedByIdDocument;
-    
+
   }
 export const EventByIdDocument = gql`
     query eventById($eventId: String!, $userId: Int!) {
@@ -5862,7 +5863,7 @@ export const EventByIdDocument = gql`
   })
   export class EventByIdGQL extends Apollo.Query<EventByIdQuery, EventByIdQueryVariables> {
     document = EventByIdDocument;
-    
+
   }
 export const ForgotPasswordDocument = gql`
     mutation forgotPassword($email: String!) {
@@ -5877,7 +5878,7 @@ export const ForgotPasswordDocument = gql`
   })
   export class ForgotPasswordGQL extends Apollo.Mutation<ForgotPasswordMutation, ForgotPasswordMutationVariables> {
     document = ForgotPasswordDocument;
-    
+
   }
 export const LiveStreamsDocument = gql`
     query liveStreams($userId: Int!, $greaterThan: BigInt!, $lessThan: BigInt!, $batchSize: Int, $offset: Int) {
@@ -5923,7 +5924,7 @@ export const LiveStreamsDocument = gql`
   })
   export class LiveStreamsGQL extends Apollo.Query<LiveStreamsQuery, LiveStreamsQueryVariables> {
     document = LiveStreamsDocument;
-    
+
   }
 export const LoginDocument = gql`
     mutation login($username: String!, $password: String!) {
@@ -5942,7 +5943,7 @@ export const LoginDocument = gql`
   })
   export class LoginGQL extends Apollo.Mutation<LoginMutation, LoginMutationVariables> {
     document = LoginDocument;
-    
+
   }
 export const LogoutDocument = gql`
     mutation logout {
@@ -5957,7 +5958,7 @@ export const LogoutDocument = gql`
   })
   export class LogoutGQL extends Apollo.Mutation<LogoutMutation, LogoutMutationVariables> {
     document = LogoutDocument;
-    
+
   }
 export const RegisterDocument = gql`
     mutation register($username: String!, $password: String!, $email: String!, $name: String) {
@@ -5978,7 +5979,7 @@ export const RegisterDocument = gql`
   })
   export class RegisterGQL extends Apollo.Mutation<RegisterMutation, RegisterMutationVariables> {
     document = RegisterDocument;
-    
+
   }
 export const RemoveFollowlistDocument = gql`
     mutation removeFollowlist($followListId: Int!) {
@@ -5993,7 +5994,7 @@ export const RemoveFollowlistDocument = gql`
   })
   export class RemoveFollowlistGQL extends Apollo.Mutation<RemoveFollowlistMutation, RemoveFollowlistMutationVariables> {
     document = RemoveFollowlistDocument;
-    
+
   }
 export const RemoveWatchlistDocument = gql`
     mutation removeWatchlist($watchListId: Int!) {
@@ -6008,7 +6009,7 @@ export const RemoveWatchlistDocument = gql`
   })
   export class RemoveWatchlistGQL extends Apollo.Mutation<RemoveWatchlistMutation, RemoveWatchlistMutationVariables> {
     document = RemoveWatchlistDocument;
-    
+
   }
 export const RequestAccountDeletionDocument = gql`
     mutation requestAccountDeletion {
@@ -6023,7 +6024,7 @@ export const RequestAccountDeletionDocument = gql`
   })
   export class RequestAccountDeletionGQL extends Apollo.Mutation<RequestAccountDeletionMutation, RequestAccountDeletionMutationVariables> {
     document = RequestAccountDeletionDocument;
-    
+
   }
 export const ResendEmailVerificationDocument = gql`
     mutation resendEmailVerification($emailId: Int!) {
@@ -6038,7 +6039,7 @@ export const ResendEmailVerificationDocument = gql`
   })
   export class ResendEmailVerificationGQL extends Apollo.Mutation<ResendEmailVerificationMutation, ResendEmailVerificationMutationVariables> {
     document = ResendEmailVerificationDocument;
-    
+
   }
 export const ResetPasswordDocument = gql`
     mutation resetPassword($userId: Int!, $token: String!, $password: String!) {
@@ -6055,7 +6056,7 @@ export const ResetPasswordDocument = gql`
   })
   export class ResetPasswordGQL extends Apollo.Mutation<ResetPasswordMutation, ResetPasswordMutationVariables> {
     document = ResetPasswordDocument;
-    
+
   }
 export const SearchEventsByCityDocument = gql`
     query searchEventsByCity($query: String!, $cityId: Int!, $userId: Int!, $greaterThan: BigInt!, $lessThan: BigInt!, $batchSize: Int, $offset: Int) {
@@ -6102,7 +6103,7 @@ export const SearchEventsByCityDocument = gql`
   })
   export class SearchEventsByCityGQL extends Apollo.Query<SearchEventsByCityQuery, SearchEventsByCityQueryVariables> {
     document = SearchEventsByCityDocument;
-    
+
   }
 export const SearchEventsByRegionDocument = gql`
     query searchEventsByRegion($query: String!, $regionName: String!, $userId: Int!, $greaterThan: BigInt!, $lessThan: BigInt!, $batchSize: Int, $offset: Int) {
@@ -6149,7 +6150,7 @@ export const SearchEventsByRegionDocument = gql`
   })
   export class SearchEventsByRegionGQL extends Apollo.Query<SearchEventsByRegionQuery, SearchEventsByRegionQueryVariables> {
     document = SearchEventsByRegionDocument;
-    
+
   }
 export const UpdateUserDocument = gql`
     mutation updateUser($userId: Int!, $profilePhoto: String, $notificationFrequency: Frequency, $pushNotification: Boolean, $emailNotification: Boolean, $isSetup: Boolean) {
@@ -6176,7 +6177,7 @@ export const UpdateUserDocument = gql`
   })
   export class UpdateUserGQL extends Apollo.Mutation<UpdateUserMutation, UpdateUserMutationVariables> {
     document = UpdateUserDocument;
-    
+
   }
 export const UserByUsernameDocument = gql`
     query userByUsername($username: String!, $userId: Int!) {
@@ -6235,7 +6236,7 @@ export const UserByUsernameDocument = gql`
   })
   export class UserByUsernameGQL extends Apollo.Query<UserByUsernameQuery, UserByUsernameQueryVariables> {
     document = UserByUsernameDocument;
-    
+
   }
 export const VenueByNameDocument = gql`
     query venueByName($name: String!, $userId: Int!, $currentDate: BigInt!) {
@@ -6287,7 +6288,7 @@ export const VenueByNameDocument = gql`
   })
   export class VenueByNameGQL extends Apollo.Query<VenueByNameQuery, VenueByNameQueryVariables> {
     document = VenueByNameDocument;
-    
+
   }
 export const VerifyEmailDocument = gql`
     mutation verifyEmail($id: Int!, $token: String!) {
@@ -6308,7 +6309,7 @@ export const VerifyEmailDocument = gql`
   })
   export class VerifyEmailGQL extends Apollo.Mutation<VerifyEmailMutation, VerifyEmailMutationVariables> {
     document = VerifyEmailDocument;
-    
+
   }
 export const WatchedLocationByAccountDocument = gql`
     query watchedLocationByAccount($userId: Int!) {
@@ -6330,5 +6331,5 @@ export const WatchedLocationByAccountDocument = gql`
   })
   export class WatchedLocationByAccountGQL extends Apollo.Query<WatchedLocationByAccountQuery, WatchedLocationByAccountQueryVariables> {
     document = WatchedLocationByAccountDocument;
-    
+
   }
