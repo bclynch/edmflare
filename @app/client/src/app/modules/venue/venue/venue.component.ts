@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { SubscriptionLike } from 'rxjs';
 import { AppService } from 'src/app/services/app.service';
-import * as moment from 'moment';
+import startOfDay from 'date-fns/start_of_day';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -33,7 +33,7 @@ export class VenueComponent implements OnInit, OnDestroy {
           this.venueByNameGQL.fetch({
             name: venue,
             userId: this.userService.user ? this.userService.user.id : 0,
-            currentDate: moment().startOf('day').valueOf()
+            currentDate: startOfDay(new Date()).valueOf()
           }).subscribe(
             ({ data }) => {
               this.venue = data.venue;

@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
 import { ENV } from '../../environments/environment';
 import { map, catchError } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
@@ -11,7 +10,6 @@ declare let ga: Function;
 export class LocationService {
 
   constructor(
-    private router: Router,
     private http: HttpClient
   ) {
 

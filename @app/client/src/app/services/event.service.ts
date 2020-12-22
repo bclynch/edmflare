@@ -1,13 +1,9 @@
 import { Injectable } from '@angular/core';
-import { OverlayRef } from '@angular/cdk/overlay';
 import { CreateWatchListGQL, RemoveWatchlistGQL } from '../generated/graphql';
 import { UserService } from './user.service';
 
 @Injectable()
 export class EventService {
-
-  overlayRef: OverlayRef;
-
   constructor(
     private createWatchListGQL: CreateWatchListGQL,
     private removeWatchListGQL: RemoveWatchlistGQL,

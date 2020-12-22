@@ -297,3 +297,11 @@ Run `ng e2e` to execute the end-to-end tests via
 - Select "Resize page to drawing or selection"
 - File > Save As Copy...
 - Select Optimized SVG as the format if you want to use it on the web
+
+## App Optimization
+
+- [Good advice](https://christianlydemann.com/the-complete-guide-to-angular-load-time-optimization/)
+- Can use lighthouse for iterative improvements to initial paint / load / parse.
+- Also webpack bundle optimizer to check out what is contributing to bundle
+  - Generate file --> `npm run build -- --prod --named-chunks --stats-json`
+  - Look at it --> `webpack-bundle-analyzer dist/edmflare/stats.json`

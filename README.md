@@ -16,15 +16,17 @@
 
 - ~~Angular 11~~
 - ~~Update apollo~~
-- Cloudinary
+- ~~Cloudinary~~
 - ~~Work on reducing shared module~~
-- Fix maps
+- ~~Fix maps~~
 - Password check on registration didn't work
 - User setup not working
-- Remove extra imgs / ~~map styles~~
+- ~~Remove extra imgs / map styles~~
 - ~~Check sharebuttons new package (again -- sheesh)~~
-- Look at swapping out moment OR at least working on limiting the import
+- ~~Look at swapping out moment OR at least working on limiting the import~~
 - Look at lazy loading elements farther down page (i.e. event cards on home page)
+- ~~Get some larger libs out of services being parsed at the start / look at services not on app.module~~
+- Need to fix the static backgrounds on cards / events. Too compressed
 - Look at cookie issue connect.sid
 - Fix scraping
 - Emails?

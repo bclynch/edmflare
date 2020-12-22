@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, OnChanges } from '@angular/core';
-import * as moment from 'moment';
+import format from 'date-fns/format';
 
 @Component({
   selector: 'app-select-date',
@@ -56,7 +56,7 @@ export class SelectDateComponent implements OnInit, OnChanges {
   ngOnChanges(change) {
     if (change.value && change.value.currentValue && change.value.currentValue.includes('-')) {
       this.value = 'pick';
-      this.pickedDate = moment(change.value.currentValue, 'DD-MM-YYYY');
+      this.pickedDate = format(this.pickedDate, 'dd-MM-yyyy');
     }
   }
 
@@ -67,7 +67,7 @@ export class SelectDateComponent implements OnInit, OnChanges {
   dateSelected() {
     if (this.pickedDate && this.pickedDate !== 'Pick a Date') {
       this.dateSelect.close();
-      this.selection(moment(this.pickedDate).format('DD-MM-YYYY'));
+      this.selection(format(this.pickedDate, 'dd-MM-yyyy'));
     }
   }
 }

@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, ViewChild } from
 import { RouterService } from 'src/app/services/router.service';
 import { SearchEventsByCityGQL, SearchEventsByRegionGQL } from 'src/app/generated/graphql';
 import { BehaviorSubject, SubscriptionLike } from 'rxjs';
-import { UtilService } from 'src/app/services/util.service';
+import { DatesService } from 'src/app/services/dates.service';
 import { UserService } from 'src/app/services/user.service';
 import { AppService } from 'src/app/services/app.service';
 import { FormControl } from '@angular/forms';
@@ -63,7 +63,7 @@ export class EventsComponent implements OnInit, OnDestroy {
     private routerService: RouterService,
     private searchEventsByCityGQL: SearchEventsByCityGQL,
     private searchEventsbyRegionGQL: SearchEventsByRegionGQL,
-    private utilService: UtilService,
+    private datesService: DatesService,
     private userService: UserService,
     private appService: AppService,
     private eventService: EventService,
@@ -113,7 +113,7 @@ export class EventsComponent implements OnInit, OnDestroy {
   }
 
   searchEvents() {
-    const range = this.utilService.calculateDateRange(this.dateRange);
+    const range = this.datesService.calculateDateRange(this.dateRange);
     // if location does not exist then make empty arr
     if (!this.appService.locationsObj[this.selectedLocation]) {
       this.eventsObservable.next([]);

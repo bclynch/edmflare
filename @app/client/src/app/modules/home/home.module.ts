@@ -12,6 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { GetAppModule } from '../get-app/get-app.module';
 import { CloudinaryModule } from '@cloudinary/angular-5.x';
+import { DatesService } from '../../services/dates.service';
 
 const routes: Routes = [
   {
@@ -35,6 +36,9 @@ const routes: Routes = [
     GetAppModule,
     CloudinaryModule
   ],
-  declarations: [HomeComponent]
+  declarations: [HomeComponent],
+  providers: [
+    DatesService
+  ]
 })
 export class HomeModule { }

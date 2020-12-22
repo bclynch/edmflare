@@ -7,7 +7,7 @@ import { EventService } from '../../../services/event.service';
 import { UserService } from '../../../services/user.service';
 import { SubscriptionLike } from 'rxjs';
 import { AppService } from '../../../services/app.service';
-import * as moment from 'moment';
+import format from 'date-fns/format';
 import { EventbriteService } from '../../eventbrite-checkout/eventbrite.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ShareDialogueComponent } from '../../share-dialogue/share-dialogue/share-dialogue.component';
@@ -50,7 +50,7 @@ export class EventComponent implements OnInit {
               const { name, id, venueByVenue: { name: venueName, address } = {}, startDate, watchLists } = event;
               const processedStartDate = +startDate;
               const processedVenueName = venueName.split('-')[0].trim();
-              this.appService.modPageMeta(`${name.trim()} Event Information - ${processedVenueName}`, `Check out artist, venue, and ticket information for ${name.trim()} at ${processedVenueName} on ${moment(processedStartDate).format('MMMM Do, YYYY')}`);
+              this.appService.modPageMeta(`${name.trim()} Event Information - ${processedVenueName}`, `Check out artist, venue, and ticket information for ${name.trim()} at ${processedVenueName} on ${format(processedStartDate, 'MMMM do, yyyy')}`);
               this.disqusId = `event/${id}`;
               // generate add to calendar link
               this.calendarLink = this.utilService.addToCalendar(name, `${ENV.siteBaseURL}/event/${id}`, address, (new Date(processedStartDate)).toISOString().replace(/-|:|\.\d\d\d/g, ''));

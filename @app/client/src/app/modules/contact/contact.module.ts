@@ -8,6 +8,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
+import { EmailService } from '../../services/email.service';
 
 const routes: Routes = [
   {
@@ -28,6 +29,9 @@ const routes: Routes = [
     MatSnackBarModule,
     MatButtonModule,
     MatInputModule
+  ],
+  providers: [
+    EmailService
   ]
 })
 export class ContactModule { }

@@ -4,7 +4,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { SearchEventsByCityGQL, SearchEventsByRegionGQL, LiveStreamsGQL } from '../../../generated/graphql';
 import { AppService } from '../../../services/app.service';
 import { UserService } from '../../../services/user.service';
-import { UtilService } from '../../../services/util.service';
+import { DatesService } from '../../../services/dates.service';
 import { SubscriptionLike } from 'rxjs';
 import { faUsers } from '@fortawesome/free-solid-svg-icons/faUsers';
 import { faBell } from '@fortawesome/free-solid-svg-icons/faBell';
@@ -49,7 +49,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     private searchEventsByRegionGQL: SearchEventsByRegionGQL,
     private appService: AppService,
     private userService: UserService,
-    private utilService: UtilService,
+    private datesService: DatesService,
     private liveStreamsGQL: LiveStreamsGQL
   ) {
     this.appService.modPageMeta('Discover EDM events, information, and community', `EDM Flare is the most comprehensive and easy to use source for all things edm`);
@@ -90,7 +90,7 @@ export class HomeComponent implements OnInit, OnDestroy {
             }
           ];
           // fetch featured
-          const range = this.utilService.calculateDateRange('any');
+          const range = this.datesService.calculateDateRange('any');
           let queryParams: any = {
             query: '',
             userId: this.userService.user ? this.userService.user.id : 0,

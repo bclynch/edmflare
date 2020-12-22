@@ -27,9 +27,7 @@ import { RouterService } from './services/router.service';
 import { AppService } from './services/app.service';
 import { DISQUS_SHORTNAME } from 'ngx-disqus';
 import { AnalyticsService } from './services/analytics.service';
-import { LocationService } from './services/location.service';
 import { UserService } from './services/user.service';
-import { EmailService } from './services/email.service';
 import { ThemeService } from './services/theme.service';
 
 @NgModule({
@@ -59,9 +57,7 @@ import { ThemeService } from './services/theme.service';
     CookieService,
     AppService,
     AnalyticsService,
-    LocationService,
     UserService,
-    EmailService,
     ThemeService,
     { provide: DISQUS_SHORTNAME, useValue: ENV.disqusShortname }
   ],

@@ -12,7 +12,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { UserService } from '../../../services/user.service';
 import { SubscriptionLike } from 'rxjs';
 import { AppService } from '../../../services/app.service';
-import * as moment from 'moment';
+import startOfDay from 'date-fns/start_of_day';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -45,12 +45,13 @@ export class ArtistComponent implements OnInit, OnDestroy {
           this.artistByNameGQL.fetch({
             name: artist,
             userId: this.userService.user ? this.userService.user.id : 0,
-            // currentDate: moment().startOf('day').valueOf()
+            // currentDate: startOfDay(new Date()).valueOf()
           }).subscribe(
             ({ data }) => {
               this.artist = data.artist;
+              console.log('this.artist', this.artist);
               // this is annoying, but cannot really use sql to get this correctly because junction table so front end filter / sort
-              this.events = this.artist.artistToEvents.nodes.map((event) => event.event).filter((e) => e.startDate > moment().startOf('day').valueOf()).sort((a, b) => (a.startDate - b.startDate));
+              this.events = this.artist.artistToEvents.nodes.map(({ event }) => event).filter(({ startDate }) => startDate > startOfDay(new Date()).valueOf()).sort((a, b) => (a.startDate - b.startDate));
               this.socialOptions = this.generateSocialOptions();
               // generate iframe url for soundcloud widget
               if (this.artist.soundcloudUsername) this.soundcloudUrl = this.sanitizer.bypassSecurityTrustResourceUrl(`https://w.soundcloud.com/player/?url=https://soundcloud.com/${this.artist.soundcloudUsername}&amp;auto_play=false&amp;buying=false&amp;liking=false&amp;download=false&amp;sharing=false&amp;show_artwork=true&amp;show_comments=false&amp;show_playcount=false&amp;show_user=true&amp;hide_related=false&amp;visual=true&amp;start_track=0&amp;callback=true`);
@@ -70,13 +71,14 @@ export class ArtistComponent implements OnInit, OnDestroy {
 
   generateSocialOptions() {
     const socialOptions = [];
-    if (this.artist.instagramUrl) socialOptions.push({ url: this.artist.instagramUrl, icon: faInstagram });
-    if (this.artist.soundcloudUrl) socialOptions.push({ url: this.artist.soundcloudUrl, icon: faSoundcloud });
-    if (this.artist.spotifyUrl) socialOptions.push({ url: this.artist.spotifyUrl, icon: faSpotify });
-    if (this.artist.facebookUrl) socialOptions.push({ url: this.artist.facebookUrl, icon: faFacebook });
-    if (this.artist.twitterUrl) socialOptions.push({ url: this.artist.twitterUrl, icon: faTwitter });
-    if (this.artist.youtubeUrl) socialOptions.push({ url: this.artist.youtubeUrl, icon: faYoutube });
-    if (this.artist.homepage) socialOptions.push({ url: this.artist.homepage, icon: faHome });
+    const { instagramUrl, soundcloudUrl, spotifyUrl, facebookUrl, twitterUrl, youtubeUrl, homepage } = this.artist;
+    if (instagramUrl) socialOptions.push({ url: instagramUrl, icon: faInstagram });
+    if (soundcloudUrl) socialOptions.push({ url: soundcloudUrl, icon: faSoundcloud });
+    if (spotifyUrl) socialOptions.push({ url: spotifyUrl, icon: faSpotify });
+    if (facebookUrl) socialOptions.push({ url: facebookUrl, icon: faFacebook });
+    if (twitterUrl) socialOptions.push({ url: twitterUrl, icon: faTwitter });
+    if (youtubeUrl) socialOptions.push({ url: youtubeUrl, icon: faYoutube });
+    if (homepage) socialOptions.push({ url: homepage, icon: faHome });
     return socialOptions;
   }
 

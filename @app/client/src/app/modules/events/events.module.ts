@@ -15,6 +15,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatInputModule } from '@angular/material/input';
+import { DatesService } from '../../services/dates.service';
 
 const routes: Routes = [
   {
@@ -41,6 +42,9 @@ const routes: Routes = [
     MatButtonModule,
     MatTooltipModule,
     MatInputModule
+  ],
+  providers: [
+    DatesService
   ]
 })
 export class EventsModule { }
