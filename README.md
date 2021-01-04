@@ -32,6 +32,8 @@
   - In good shape. Artist description might be broken
 - Emails?
 - Work on some url seo perhaps? Event page anyway
+- ~~Work on virtual scroll~~
+- Lazy load hero banner carousel on home page
 - Universal angular?
   - Faster first paint
   - SEO for search egines

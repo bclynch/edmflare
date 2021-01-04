@@ -58,7 +58,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     setInterval(() => {
       const lastSlide = this.activeSlide === this.carouselSlides.length - 1;
       this.activeSlide = lastSlide ? 0 : this.activeSlide += 1;
-    }, 10000 );
+    }, 10000);
 
     const location = this.cookieService.get('edm-location');
     if (location) {

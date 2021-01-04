@@ -32,7 +32,7 @@
     </div>
     <div *ngIf="!location">Select a city to search for shows in to get started</div>
     <!-- item size is number of pixels in height for ea item -->
-    <cdk-virtual-scroll-viewport class="eventsWrapper" itemSize="135" [ngClass]="collapsed ? 'collapsed' : ''"
+    <cdk-virtual-scroll-viewport class="eventsWrapper" itemSize="192" [ngClass]="collapsed ? 'collapsed' : ''"
       (scrolledIndexChange)="nextBatch()">
       <app-event-card *cdkVirtualFor="let event of eventsObservable | async" [name]="event.name"
         [location]="event.venue" [date]="event.startDate" [id]="event.id" [externalUrl]="event.ticketproviderurl"

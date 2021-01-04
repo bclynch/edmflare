@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
-import startOfDay from 'date-fns/start_of_day';
-import endOfDay from 'date-fns/end_of_day';
-import startOfWeek from 'date-fns/start_of_week';
-import endOfWeek from 'date-fns/end_of_week';
-import startOfMonth from 'date-fns/start_of_month';
-import endOfMonth from 'date-fns/end_of_month';
-import addDays from 'date-fns/add_days';
-import subDays from 'date-fns/sub_days';
-import addWeeks from 'date-fns/add_weeks';
-import addMonths from 'date-fns/add_months';
+import startOfDay from 'date-fns/startOfDay';
+import endOfDay from 'date-fns/endOfDay';
+import startOfWeek from 'date-fns/startOfWeek';
+import endOfWeek from 'date-fns/endOfWeek';
+import startOfMonth from 'date-fns/startOfMonth';
+import endOfMonth from 'date-fns/endOfMonth';
+import addDays from 'date-fns/addDays';
+import subDays from 'date-fns/subDays';
+import addWeeks from 'date-fns/addWeeks';
+import addMonths from 'date-fns/addMonths';
 import parse from 'date-fns/parse';
 
 @Injectable()

@@ -16,7 +16,7 @@ Examples of things you may want to run in a job queue:
 ## Start with pm2
 
 ```
-pm2 start npm --name "server" -- start
+pm2 start npm --name "worker" -- start
 ```
 
 ## Graphile Worker

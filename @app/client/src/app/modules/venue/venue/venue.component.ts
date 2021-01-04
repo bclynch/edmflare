@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { SubscriptionLike } from 'rxjs';
 import { AppService } from 'src/app/services/app.service';
-import startOfDay from 'date-fns/start_of_day';
+import startOfDay from 'date-fns/startOfDay';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
