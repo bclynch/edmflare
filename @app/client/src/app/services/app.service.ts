@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { AllLocationsGQL, CreatePushSubscriptionGQL } from '../generated/graphql';
 import { BehaviorSubject, Observable} from 'rxjs';
 import { AnalyticsService } from './analytics.service';
@@ -7,11 +7,14 @@ import { ThemeService } from './theme.service';
 import { Title, Meta } from '@angular/platform-browser';
 import { SwPush } from '@angular/service-worker';
 import { UtilService } from './util.service';
+import { isPlatformBrowser } from '@angular/common';
+import { GlobalObjectService } from './globalObject.service';
 
 @Injectable()
 export class AppService {
   public appInited: Observable<any>;
   private _subject: BehaviorSubject<any>;
+  locationRef;
 
   // used in location search component
   locations: string[] = [];
@@ -30,10 +33,13 @@ export class AppService {
     private swPush: SwPush,
     private createPushSubscriptionGQL: CreatePushSubscriptionGQL,
     private utilService: UtilService,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private globalObjectService: GlobalObjectService,
+    @Inject(PLATFORM_ID) private platformId: object
   ) {
     this._subject = new BehaviorSubject<boolean>(false);
     this.appInited = this._subject;
+    this.locationRef = this.globalObjectService.getLocation();
 
     // init tracking
     this.analyticsService.trackViews();
@@ -79,13 +85,17 @@ export class AppService {
   }
 
   modPageMeta(title: string, description: string) {
+    // TODO figure this out SSR. Probably not need this at all anymore
+    const href = isPlatformBrowser(this.platformId)
+      ? this.locationRef.href
+      : '';
     this.meta.removeTag('name="description"');
     this.titleService.setTitle(`${title} | EDM Flare`);
     this.meta.addTag({ name: 'description', content: `${description}. Discover upcoming edm shows where you live and get in touch with the local community.`});
-    this.meta.addTag({ name: 'og:url', content: window.location.href });
+    this.meta.addTag({ name: 'og:url', content: href });
     this.meta.addTag({ name: 'og:title', content: `${title} | EDM Flare`});
     this.meta.addTag({ name: 'og:description', content: `${description}. Discover upcoming edm shows where you live and get in touch with the local community.`});
-    this.meta.addTag({ name: 'twitter:url', content: window.location.href });
+    this.meta.addTag({ name: 'twitter:url', content: href });
     this.meta.addTag({ name: 'twitter:title', content: `${title} | EDM Flare`});
     this.meta.addTag({ name: 'twitter:description', content: `${description}. Discover upcoming edm shows where you live and get in touch with the local community.`});
   }

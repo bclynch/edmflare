@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { faTwitter } from '@fortawesome/free-brands-svg-icons/faTwitter';
 import { faFacebook } from '@fortawesome/free-brands-svg-icons/faFacebook';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons/faGoogle';
+import { isPlatformBrowser } from '@angular/common';
+import { GlobalObjectService } from '../../../services/globalObject.service';
 
 @Component({
   selector: 'app-social-logins',
@@ -10,6 +12,7 @@ import { faGoogle } from '@fortawesome/free-brands-svg-icons/faGoogle';
 })
 
 export class SocialLoginsComponent implements OnInit {
+  windowRef;
 
   buttons = [
     {
@@ -32,13 +35,20 @@ export class SocialLoginsComponent implements OnInit {
     }
   ];
 
-  constructor() { }
+  constructor(
+    private globalObjectService: GlobalObjectService,
+    @Inject(PLATFORM_ID) private platformId: object
+  ) {
+    this.windowRef = this.globalObjectService.getWindow();
+  }
 
   ngOnInit() {
   }
 
   auth(e, service: string) {
     e.preventDefault();
-    window.location.href = `/auth/${service}`;
+    if (isPlatformBrowser(this.platformId)) {
+      this.windowRef.location.href = `/auth/${service}`;
+    }
   }
 }

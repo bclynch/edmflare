@@ -8,9 +8,11 @@ if (ENV.production) {
   enableProdMode();
 }
 
-platformBrowserDynamic().bootstrapModule(AppModule).then(() => {
+document.addEventListener('DOMContentLoaded', () => {
+  platformBrowserDynamic().bootstrapModule(AppModule).then(() => {
   // workaround for issue https://github.com/angular/angular-cli/issues/13351
   if ('serviceWorker' in navigator && ENV.production) {
     navigator.serviceWorker.register('/ngsw-worker.js');
   }
 }).catch(err => console.log(err));
+});

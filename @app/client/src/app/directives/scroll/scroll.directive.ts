@@ -1,19 +1,26 @@
-import { Directive, NgZone, OnInit, OnDestroy } from '@angular/core';
-
+import { Directive, NgZone, OnInit, OnDestroy, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { UtilService } from '../../services/util.service';
+import { GlobalObjectService } from '../../services/globalObject.service';
 
 @Directive({ selector: '[appScroll]' })
 export class ScrollDirective implements OnInit, OnDestroy {
+  windowRef;
 
   private eventOptions: boolean|{capture?: boolean, passive?: boolean};
-  private priorScrollValue = window.pageYOffset || document.documentElement.scrollTop;
+  private priorScrollValue;
   scrollDirection: 'up' | 'down' = null;
 
   constructor(
     private ngZone: NgZone,
-    private utilService: UtilService
+    private utilService: UtilService,
+    private globalObjectService: GlobalObjectService,
+    @Inject(PLATFORM_ID) private platformId: object
   ) {
-
+    this.windowRef = this.globalObjectService.getWindow();
+    this.priorScrollValue = isPlatformBrowser(this.platformId)
+      ? this.windowRef.pageYOffset || this.windowRef.document.documentElement.scrollTop
+      : 0;
   }
 
   ngOnInit() {
@@ -25,7 +32,9 @@ export class ScrollDirective implements OnInit, OnDestroy {
           supportsPassive = true;
         }
       });
-      window.addEventListener('test', null, opts);
+      if (isPlatformBrowser(this.platformId)) {
+        this.windowRef.addEventListener('test', null, opts);
+      }
     } catch (e) {}
 
     if (supportsPassive) {
@@ -38,12 +47,16 @@ export class ScrollDirective implements OnInit, OnDestroy {
     }
 
     this.ngZone.runOutsideAngular(() => {
-      window.addEventListener('scroll', this.scroll, <any>this.eventOptions);
+      if (isPlatformBrowser(this.platformId)) {
+        this.windowRef.addEventListener('scroll', this.scroll, <any>this.eventOptions);
+      }
     });
   }
 
   ngOnDestroy() {
-    window.removeEventListener('scroll', this.scroll, <any>this.eventOptions);
+    if (isPlatformBrowser(this.platformId)) {
+      this.windowRef.removeEventListener('scroll', this.scroll, <any>this.eventOptions);
+    }
   }
 
   scroll = (e): void => {

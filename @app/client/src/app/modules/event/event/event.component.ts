@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EventByIdGQL } from '../../../generated/graphql';
 import { UtilService } from '../../../services/util.service';
@@ -12,6 +12,8 @@ import { EventbriteService } from '../../eventbrite-checkout/eventbrite.service'
 import { MatDialog } from '@angular/material/dialog';
 import { ShareDialogueComponent } from '../../share-dialogue/share-dialogue/share-dialogue.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { isPlatformBrowser } from '@angular/common';
+import { GlobalObjectService } from '../../../services/globalObject.service';
 
 @Component({
   selector: 'app-event',
@@ -24,6 +26,7 @@ export class EventComponent implements OnInit {
   calendarLink: string;
   watchId;
   loadComments = false;
+  windowRef;
 
   initSubscription: SubscriptionLike;
 
@@ -36,8 +39,11 @@ export class EventComponent implements OnInit {
     private userService: UserService,
     public dialog: MatDialog,
     private appService: AppService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private globalObjectService: GlobalObjectService,
+    @Inject(PLATFORM_ID) private platformId: object
   ) {
+    this.windowRef = this.globalObjectService.getWindow();
     this.initSubscription = this.appService.appInited.subscribe(
       (inited) =>  {
         if (inited) {
@@ -105,7 +111,9 @@ export class EventComponent implements OnInit {
     if (this.event.ticketproviderid) {
       this.eventbriteService.eventbriteCheckout(this.event.ticketproviderid);
     } else {
-      window.open(this.event.ticketproviderurl, '_blank');
+      if (isPlatformBrowser(this.platformId)) {
+        this.windowRef.open(this.event.ticketproviderurl, '_blank');
+      }
     }
   }
 }

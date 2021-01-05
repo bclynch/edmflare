@@ -14,7 +14,7 @@
       </div>
       <div class="logoWrapper">
         <a class="logo" [routerLink]="['/']">
-          <img src="assets/images/edm_flare_opt.svg" [attr.alt]="'EDM Flare Logo'" loading="lazy" />
+          <img src="assets/images/edm_flare_opt.svg" [attr.alt]="'EDM Flare Logo'" />
         </a>
       </div>
       <div class="right">
@@ -25,7 +25,7 @@
           <button class="menuBtn" mat-button [matMenuTriggerFor]="menu">
             <mat-icon *ngIf="!userService.user.profilePhoto">person_outline</mat-icon>
             <cl-image *ngIf="userService.user.profilePhoto" crop="fit" [public-id]="userService.user.profilePhoto"
-              type="fetch" loading="lazy" width="50" radius="max" [attr.alt]="'User profile photo'" class="logoImg">
+              type="fetch" width="50" radius="max" [attr.alt]="'User profile photo'" class="logoImg">
               <cl-placeholder type="blur"></cl-placeholder>
               <cl-transformation quality="auto" fetch-format="auto"></cl-transformation>
             </cl-image>

@@ -1,5 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
+import { isPlatformBrowser } from '@angular/common';
+import { GlobalObjectService } from './globalObject.service';
 
 const darkTheme = {
   'color-primary': 'black',
@@ -20,17 +22,26 @@ const lightTheme = {
 @Injectable({ providedIn: 'root' })
 export class ThemeService {
   theme = 'light';
+  windowRef;
 
   constructor(
-    private cookieService: CookieService
-  ) {}
+    private cookieService: CookieService,
+    private globalObjectService: GlobalObjectService,
+    @Inject(PLATFORM_ID) private platformId: object
+  ) {
+    this.windowRef = this.globalObjectService.getWindow();
+  }
 
   getUserTheme() {
     const cookieTheme = this.cookieService.get('edm-theme');
     if (cookieTheme) {
       cookieTheme === 'dark' ? this.toggleDark() : this.toggleLight();
     } else {
-      window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? this.toggleDark() : this.toggleLight();
+      if (isPlatformBrowser(this.platformId)) {
+        this.windowRef.matchMedia && this.windowRef.matchMedia('(prefers-color-scheme: dark)').matches
+          ? this.toggleDark()
+          : this.toggleLight();
+      }
     }
   }
 

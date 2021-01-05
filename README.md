@@ -33,8 +33,17 @@
 - Emails?
 - Work on some url seo perhaps? Event page anyway
 - ~~Work on virtual scroll~~
+  - Should set fixed height on overall for both mobile + desktop
+  - Imgs still being odd flipping around
 - Lazy load hero banner carousel on home page
 - Universal angular?
+  - State transfer
+  - ~~Basic SSR on local dev with demo server~~
+  - How does styles work?? Can import all the style sheets to styles.scss, but is that normal?
+    - Need to figure out theme too since cannot add to document via app.service
+  - ~~Fix window instances~~
+  - Home module is messed up. Perhaps cloudinary issue
+  - [Cloudinary lazy broken](https://github.com/cloudinary/cloudinary_angular/issues/299). Maybe don't need for SSR?
   - Faster first paint
   - SEO for search egines
   - Social media crawlers***
@@ -116,6 +125,7 @@ yarn client start
 ## Digital Ocean Login
 
 - `$ ssh edmflare@206.189.194.173`
+  - Update ubuntu packages every now and then with `sudo apt-get update && sudo apt-get dist-upgrade`
 
 ## Features
 

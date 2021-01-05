@@ -29,13 +29,14 @@ import { DISQUS_SHORTNAME } from 'ngx-disqus';
 import { AnalyticsService } from './services/analytics.service';
 import { UserService } from './services/user.service';
 import { ThemeService } from './services/theme.service';
+import { GlobalObjectService } from './services/globalObject.service';
 
 @NgModule({
   declarations: [
     AppComponent,
   ],
   imports: [
-    BrowserModule,
+    BrowserModule.withServerTransition({ appId: 'serverApp' }),
     AppRoutingModule,
     GraphQLModule,
     BrowserAnimationsModule,
@@ -59,6 +60,7 @@ import { ThemeService } from './services/theme.service';
     AnalyticsService,
     UserService,
     ThemeService,
+    GlobalObjectService,
     { provide: DISQUS_SHORTNAME, useValue: ENV.disqusShortname }
   ],
   bootstrap: [AppComponent]
