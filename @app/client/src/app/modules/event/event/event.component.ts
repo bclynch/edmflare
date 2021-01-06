@@ -14,6 +14,8 @@ import { ShareDialogueComponent } from '../../share-dialogue/share-dialogue/shar
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { isPlatformBrowser } from '@angular/common';
 import { GlobalObjectService } from '../../../services/globalObject.service';
+import { makeStateKey, TransferState } from '@angular/platform-browser';
+import { isPlatformServer } from '@angular/common';
 
 @Component({
   selector: 'app-event',
@@ -41,35 +43,52 @@ export class EventComponent implements OnInit {
     private appService: AppService,
     private snackBar: MatSnackBar,
     private globalObjectService: GlobalObjectService,
-    @Inject(PLATFORM_ID) private platformId: object
+    @Inject(PLATFORM_ID) private platformId: object,
+    private transferState: TransferState
   ) {
     this.windowRef = this.globalObjectService.getWindow();
+    const eventId = this.activatedRoute.snapshot.paramMap.get('eventId');
+    const EVENT_KEY = makeStateKey(`event-${eventId}`);
+
     this.initSubscription = this.appService.appInited.subscribe(
       (inited) =>  {
         if (inited) {
-          this.eventByIdGQL.fetch({
-            eventId: this.activatedRoute.snapshot.paramMap.get('eventId'),
-            userId: this.userService.user ? this.userService.user.id : 0,
-          }).subscribe(
-            ({ data: { event = {} } = {}}) => {
-              this.event = event;
-              const { name, id, venueByVenue: { name: venueName, address } = {}, startDate, watchLists } = event;
-              const processedStartDate = +startDate;
-              const processedVenueName = venueName.split('-')[0].trim();
-              this.appService.modPageMeta(`${name.trim()} Event Information - ${processedVenueName}`, `Check out artist, venue, and ticket information for ${name.trim()} at ${processedVenueName} on ${format(processedStartDate, 'MMMM do, yyyy')}`);
-              this.disqusId = `event/${id}`;
-              // generate add to calendar link
-              this.calendarLink = this.utilService.addToCalendar(name, `${ENV.siteBaseURL}/event/${id}`, address, (new Date(processedStartDate)).toISOString().replace(/-|:|\.\d\d\d/g, ''));
-              const watchEvent = watchLists.nodes[0];
-              this.watchId = watchEvent ? watchEvent.id : null;
-            }
-          );
+          if (this.transferState.hasKey(EVENT_KEY)) {
+            const eventData = this.transferState.get(EVENT_KEY, null);
+            this.transferState.remove(EVENT_KEY);
+            this.event = eventData;
+            this.finishProcessing(eventData);
+          } else {
+            this.eventByIdGQL.fetch({
+              eventId,
+              userId: this.userService.user ? this.userService.user.id : 0,
+            }).subscribe(
+              ({ data: { event = {} } = {}}) => {
+                this.event = event;
+                if (isPlatformServer(this.platformId)) {
+                  this.transferState.set(EVENT_KEY, event);
+                }
+                this.finishProcessing(event);
+              }
+            );
+          }
         }
       }
     );
   }
 
   ngOnInit() {
+  }
+
+  finishProcessing(event) {
+    const { name, id, venueByVenue: { name: venueName = '', address = '' } = {}, startDate, watchLists } = event;
+    const processedStartDate = +startDate;
+    const processedVenueName = venueName.split('-')[0].trim();
+    this.appService.modPageMeta(`${name.trim()} Event Information - ${processedVenueName}`, `Check out artist, venue, and ticket information for ${name.trim()} at ${processedVenueName} on ${format(processedStartDate, 'MMMM do, yyyy')}`);
+    // generate add to calendar link
+    this.calendarLink = this.utilService.addToCalendar(name, `${ENV.siteBaseURL}/event/${id}`, address, (new Date(processedStartDate)).toISOString().replace(/-|:|\.\d\d\d/g, ''));
+    const watchEvent = watchLists.nodes[0];
+    this.watchId = watchEvent ? watchEvent.id : null;
   }
 
   share() {
