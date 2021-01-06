@@ -9,6 +9,8 @@ import { SwPush } from '@angular/service-worker';
 import { UtilService } from './util.service';
 import { isPlatformBrowser } from '@angular/common';
 import { GlobalObjectService } from './globalObject.service';
+import { makeStateKey, TransferState } from '@angular/platform-browser';
+import { isPlatformServer } from '@angular/common';
 
 @Injectable()
 export class AppService {
@@ -35,7 +37,8 @@ export class AppService {
     private utilService: UtilService,
     private themeService: ThemeService,
     private globalObjectService: GlobalObjectService,
-    @Inject(PLATFORM_ID) private platformId: object
+    @Inject(PLATFORM_ID) private platformId: object,
+    private transferState: TransferState
   ) {
     this._subject = new BehaviorSubject<boolean>(false);
     this.appInited = this._subject;
@@ -52,7 +55,9 @@ export class AppService {
     this.userService.fetchUser().then(
       () => {
         this.fetchAllLocations().then(
-          () => this._subject.next(true)
+          () => {
+            this._subject.next(true);
+          }
         );
       }
     );
@@ -60,28 +65,43 @@ export class AppService {
 
   fetchAllLocations() {
     return new Promise<void>((resolve, reject) => {
-      this.allLocationsGQL.fetch().subscribe(
-        ({ data }) => {
-          // creating an array of strings with both cities + regions
-          const locationsArr = [];
-          this.locationDirectory = data.regions.nodes;
-          for (const { name, citiesByRegion } of data.regions.nodes) {
-            this.locationsObj[name] = name;
-            locationsArr.push(name);
-
-            for (const city of citiesByRegion.nodes) {
-              if (locationsArr.indexOf(city.name) === -1) {
-                locationsArr.push(city.name);
-                this.locationsObj[city.name] = city.id;
-              }
+      const LOCATIONS_KEY = makeStateKey('app-locations');
+      if (this.transferState.hasKey(LOCATIONS_KEY)) {
+        const regions = this.transferState.get(LOCATIONS_KEY, null);
+        this.transferState.remove(LOCATIONS_KEY);
+        this.processLocations(regions);
+        resolve();
+      } else {
+        this.allLocationsGQL.fetch().subscribe(
+          ({ data: { regions } = {} }) => {
+            if (isPlatformServer(this.platformId)) {
+              this.transferState.set(LOCATIONS_KEY, regions);
             }
-          }
-          this.locations = locationsArr;
-          resolve();
-        },
-        (err) => reject(err)
-      );
+            this.processLocations(regions);
+            resolve();
+          },
+          (err) => reject(err)
+        );
+      }
     });
+  }
+
+  processLocations(regions) {
+    // creating an array of strings with both cities + regions
+    const locationsArr = [];
+    this.locationDirectory = regions.nodes;
+    for (const { name, citiesByRegion } of regions.nodes) {
+      this.locationsObj[name] = name;
+      locationsArr.push(name);
+
+      for (const city of citiesByRegion.nodes) {
+        if (locationsArr.indexOf(city.name) === -1) {
+          locationsArr.push(city.name);
+          this.locationsObj[city.name] = city.id;
+        }
+      }
+    }
+    this.locations = locationsArr;
   }
 
   modPageMeta(title: string, description: string) {

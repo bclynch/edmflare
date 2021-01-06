@@ -14,8 +14,13 @@
       line-height: 4em;
       padding: 0 2em;
 
+      > span {
+        height: 50px;
+      }
       fa-icon {
-        font-size: 3em !important;
+        font-size: 32px !important;
+        width: 32px;
+        display: inline-block;
       }
     }
   }

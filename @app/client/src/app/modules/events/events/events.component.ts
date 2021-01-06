@@ -82,7 +82,7 @@ export class EventsComponent implements OnInit, OnDestroy {
             this.location = location || this.cookieService.get('edm-location');
             this.dateRange = dates || (params.new ? null : 'any');
             // if there is a date range in the query we didn't create it. Not using new filter then
-            this.recentFilter = dates ? null : params.new ? params.new : null;
+            this.recentFilter = (!dates && params.new) || null;
             if (this.recentFilter) {
               // notification to user these are recent shows
               this.snackBar.open('New Shows Added Since Last Time', 'Close');

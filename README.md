@@ -40,7 +40,7 @@
   - State transfer
   - ~~Basic SSR on local dev with demo server~~
   - How does styles work?? Can import all the style sheets to styles.scss, but is that normal?
-    - Need to figure out theme too since cannot add to document via app.service
+    - Tough to find out user pref on light vs dark. Can use this [article](https://hangindev.com/blog/avoid-flash-of-default-theme-an-implementation-of-dark-mode-in-react-app) perhaps?
   - ~~Fix window instances~~
   - Home module is messed up. Perhaps cloudinary issue
   - [Cloudinary lazy broken](https://github.com/cloudinary/cloudinary_angular/issues/299). Maybe don't need for SSR?

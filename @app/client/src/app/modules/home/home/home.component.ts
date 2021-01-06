@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID } from '@angular/core';
 import { RouterService } from '../../../services/router.service';
 import { CookieService } from 'ngx-cookie-service';
 import { SearchEventsByCityGQL, SearchEventsByRegionGQL, LiveStreamsGQL } from '../../../generated/graphql';
@@ -9,6 +9,7 @@ import { SubscriptionLike } from 'rxjs';
 import { faUsers } from '@fortawesome/free-solid-svg-icons/faUsers';
 import { faBell } from '@fortawesome/free-solid-svg-icons/faBell';
 import { faCompactDisc } from '@fortawesome/free-solid-svg-icons/faCompactDisc';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-home',
@@ -50,15 +51,20 @@ export class HomeComponent implements OnInit, OnDestroy {
     private appService: AppService,
     private userService: UserService,
     private datesService: DatesService,
-    private liveStreamsGQL: LiveStreamsGQL
+    private liveStreamsGQL: LiveStreamsGQL,
+    @Inject(PLATFORM_ID) private platformId: object
   ) {
     this.appService.modPageMeta('Discover EDM events, information, and community', `EDM Flare is the most comprehensive and easy to use source for all things edm`);
 
     // queue up carousel
-    setInterval(() => {
-      const lastSlide = this.activeSlide === this.carouselSlides.length - 1;
-      this.activeSlide = lastSlide ? 0 : this.activeSlide += 1;
-    }, 10000);
+    if (isPlatformBrowser(this.platformId)) {
+      setInterval(() => {
+        const lastSlide = this.activeSlide === this.carouselSlides.length - 1;
+        this.activeSlide = lastSlide ? 0 : this.activeSlide += 1;
+      }, 10000);
+    } else {
+      this.activeSlide = 0;
+    }
 
     const location = this.cookieService.get('edm-location');
     if (location) {
@@ -124,7 +130,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.initSubscription.unsubscribe();
+    if (this.initSubscription) {
+      this.initSubscription.unsubscribe();
+    }
   }
 
   fetchLiveStreams(localEvents, queryParams) {
