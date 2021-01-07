@@ -221,6 +221,11 @@
 Run `$ ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app
 will automatically reload if you change any of the source files.
 
+## SSR
+
+- To run SSR locally for development use --> `yarn dev:ssr`
+- On the server to update / run the thing (NOT SURE BUT TRY) first run `yarn build:ssr` then use pm2 to spin up `yarn serve:ssr`.
+
 ### Testing PWA Features / Prod Build
 
 - Make sure http server is installed globally
