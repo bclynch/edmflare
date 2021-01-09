@@ -3,7 +3,7 @@
 import chalk from 'chalk';
 import { createServer } from 'http';
 import { makeApp, getShutdownActions } from './app';
-// import { scrapeEvents, initScrapeCronJob } from './scraping/scrape';
+import { initScrapeCronJob } from './scraping/scrape';
 // import migrateDB from './migration/migration';
 // import venueFix from './migration/venueFix';
 // import db from './data/db';
@@ -23,7 +23,7 @@ async function main() {
   httpServer.addListener('request', app);
 
   // set up cron job for scraping shows + sending new event emails
-  // initScrapeCronJob();
+  initScrapeCronJob();
   // email.initEmailCronJob();
 
   // scrapeEvents();
