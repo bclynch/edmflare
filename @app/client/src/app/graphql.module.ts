@@ -3,10 +3,11 @@ import { InMemoryCache, ApolloLink } from '@apollo/client/core';
 import { HttpLink } from 'apollo-angular/http';
 import { onError } from '@apollo/client/link/error';
 import { setContext } from '@apollo/client/link/context';
-import { NgModule } from '@angular/core';
-
+import { NgModule, Inject, PLATFORM_ID } from '@angular/core';
 import { ENV } from '../environments/environment';
 import { HttpHeaders } from '@angular/common/http';
+import { isPlatformBrowser } from '@angular/common';
+import { GlobalObjectService } from './services/globalObject.service';
 
 declare global {
   interface Window {
@@ -16,11 +17,15 @@ declare global {
 
 @NgModule({})
 export class GraphQLModule {
+  windowRef;
+
   constructor(
     apollo: Apollo,
-    httpLink: HttpLink
+    httpLink: HttpLink,
+    private globalObjectService: GlobalObjectService,
+    @Inject(PLATFORM_ID) private platformId: object
   ) {
-
+    this.windowRef = this.globalObjectService.getWindow();
     const http = httpLink.create({ uri: ENV.apolloBaseURL, withCredentials: true, method: 'POST' });
     const middleware = setContext(() => ({
       headers: new HttpHeaders({
@@ -44,10 +49,10 @@ export class GraphQLModule {
       }
     });
     const csrfMiddlewareLink = new ApolloLink((operation, forward) => {
-      if (typeof window.CSRF_TOKEN === 'string') {
+      if (isPlatformBrowser(this.platformId) && typeof this.windowRef.CSRF_TOKEN === 'string') {
         operation.setContext({
           headers: {
-            'X-Token': window.CSRF_TOKEN,
+            'X-Token': this.windowRef.CSRF_TOKEN,
           },
         });
       }

@@ -1,8 +1,16 @@
 import { Apollo } from 'apollo-angular';
-import { Injectable } from '@angular/core';
-import { CurrentUserGQL, CreateFollowListGQL, RemoveFollowlistGQL, LogoutGQL, LoginGQL, RegisterGQL } from '../generated/graphql';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import {
+  CurrentUserGQL,
+  CreateFollowListGQL,
+  RemoveFollowlistGQL,
+  LogoutGQL,
+  LoginGQL,
+  RegisterGQL
+} from '../generated/graphql';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
+import { isPlatformServer } from '@angular/common';
 
 @Injectable()
 export class UserService {
@@ -19,6 +27,7 @@ export class UserService {
     private removeFollowlistGQL: RemoveFollowlistGQL,
     private logoutGQL: LogoutGQL,
     private router: Router,
+    @Inject(PLATFORM_ID) private platformId: object
   ) {
     this.signedInSubject = new BehaviorSubject<boolean>(false);
     this.signedIn = this.signedInSubject;
@@ -26,10 +35,17 @@ export class UserService {
 
   fetchUser(): Promise<void> {
     return new Promise((resolve) => {
+      // we don't really care about user info on the server and don't have access to the cookie anyway
+      // so if serverside then we can just resolve
+      // wondering if this will mess up the app init...
+      if (isPlatformServer(this.platformId)) {
+        resolve();
+      }
+
       this.currentUserGQL.fetch().subscribe(
-        ({ data }) => {
-          if (data && data.currentUser) {
-            this.user = data.currentUser;
+        ({ data: { currentUser } = {} }) => {
+          if (currentUser) {
+            this.user = currentUser;
             this.signedInSubject.next(true);
           }
           resolve();

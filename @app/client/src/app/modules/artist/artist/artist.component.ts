@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ArtistByNameGQL } from '../../../generated/graphql';
 import { faTwitter } from '@fortawesome/free-brands-svg-icons/faTwitter';
@@ -14,6 +14,8 @@ import { SubscriptionLike } from 'rxjs';
 import { AppService } from '../../../services/app.service';
 import startOfDay from 'date-fns/startOfDay';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { makeStateKey, TransferState } from '@angular/platform-browser';
+import { isPlatformServer } from '@angular/common';
 
 @Component({
   selector: 'app-artist',
@@ -35,28 +37,41 @@ export class ArtistComponent implements OnInit, OnDestroy {
     private sanitizer: DomSanitizer,
     private userService: UserService,
     private appService: AppService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    @Inject(PLATFORM_ID) private platformId,
+    private transferState: TransferState
   ) {
     const artist = this.activatedRoute.snapshot.paramMap.get('artistName');
     this.appService.modPageMeta(`${artist} Artist Information`, `Check out artist discography, upcoming shows, and social media information for ${artist}`);
+
+    const ARTIST_KEY = makeStateKey(`artist-${artist}`);
+
     this.initSubscription = this.appService.appInited.subscribe(
       (inited) =>  {
         if (inited) {
-          this.artistByNameGQL.fetch({
-            name: artist,
-            userId: this.userService.user ? this.userService.user.id : 0,
-            // currentDate: startOfDay(new Date()).valueOf()
-          }).subscribe(
-            ({ data }) => {
-              this.artist = data.artist;
-              console.log('this.artist', this.artist);
-              // this is annoying, but cannot really use sql to get this correctly because junction table so front end filter / sort
-              this.events = this.artist.artistToEvents.nodes.map(({ event }) => event).filter(({ startDate }) => startDate > startOfDay(new Date()).valueOf()).sort((a, b) => (a.startDate - b.startDate));
-              this.socialOptions = this.generateSocialOptions();
-              // generate iframe url for soundcloud widget
-              if (this.artist.soundcloudUsername) this.soundcloudUrl = this.sanitizer.bypassSecurityTrustResourceUrl(`https://w.soundcloud.com/player/?url=https://soundcloud.com/${this.artist.soundcloudUsername}&amp;auto_play=false&amp;buying=false&amp;liking=false&amp;download=false&amp;sharing=false&amp;show_artwork=true&amp;show_comments=false&amp;show_playcount=false&amp;show_user=true&amp;hide_related=false&amp;visual=true&amp;start_track=0&amp;callback=true`);
-            }
-          );
+          if (this.transferState.hasKey(ARTIST_KEY)) {
+            const artistData = this.transferState.get(ARTIST_KEY, null);
+            this.transferState.remove(ARTIST_KEY);
+            this.artist = artistData;
+            console.log('cached artist data', artistData);
+            this.finishProcessing();
+          } else {
+            this.artistByNameGQL.fetch({
+              name: artist,
+              userId: this.userService.user ? this.userService.user.id : 0,
+              // currentDate: startOfDay(new Date()).valueOf()
+            }).subscribe(
+              ({ data: { artist: artistData } = {} }) => {
+                this.artist = artistData;
+
+                if (isPlatformServer(this.platformId)) {
+                  this.transferState.set(ARTIST_KEY, artistData);
+                }
+                console.log('new artist data', artistData);
+                this.finishProcessing();
+              }
+            );
+          }
         }
       }
     );
@@ -67,6 +82,19 @@ export class ArtistComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.initSubscription.unsubscribe();
+  }
+
+  finishProcessing() {
+    // this is annoying, but cannot really use sql to get this correctly because junction table so front end filter / sort
+    this.events = this.artist.artistToEvents.nodes
+      .map(({ event }) => event)
+      .filter(({ startDate }) => startDate > startOfDay(new Date()).valueOf())
+      .sort((a, b) => (a.startDate - b.startDate));
+    this.socialOptions = this.generateSocialOptions();
+    // generate iframe url for soundcloud widget
+    if (this.artist.soundcloudUsername) {
+      this.soundcloudUrl = this.sanitizer.bypassSecurityTrustResourceUrl(`https://w.soundcloud.com/player/?url=https://soundcloud.com/${this.artist.soundcloudUsername}&amp;auto_play=false&amp;buying=false&amp;liking=false&amp;download=false&amp;sharing=false&amp;show_artwork=true&amp;show_comments=false&amp;show_playcount=false&amp;show_user=true&amp;hide_related=false&amp;visual=true&amp;start_track=0&amp;callback=true`);
+    }
   }
 
   generateSocialOptions() {

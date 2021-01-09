@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { AppService } from './services/app.service';
+import { GlobalObjectService } from './services/globalObject.service';
 import { SwUpdate } from '@angular/service-worker';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -8,12 +10,16 @@ import { SwUpdate } from '@angular/service-worker';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
+  locationRef;
 
   constructor(
     private appService: AppService,
-    private swUpdate: SwUpdate
+    private swUpdate: SwUpdate,
+    private globalObjectService: GlobalObjectService,
+    @Inject(PLATFORM_ID) private platformId: object
   ) {
     this.appService.appInit();
+    this.locationRef = this.globalObjectService.getLocation();
   }
 
   ngOnInit() {
@@ -21,7 +27,9 @@ export class AppComponent implements OnInit {
     if (this.swUpdate.isEnabled) {
       this.swUpdate.available.subscribe(() => {
         if (confirm('New version available. Load New Version?')) {
-          window.location.reload();
+          if (isPlatformBrowser(this.platformId)) {
+            this.locationRef.reload();
+          }
         }
       });
     }

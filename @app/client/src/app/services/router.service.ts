@@ -37,7 +37,7 @@ export class RouterService implements OnDestroy {
   ngOnDestroy() {
     this.paramsSubscription.unsubscribe();
     this.fragmentSubscription.unsubscribe();
-    this.eventsSubscription.unsubscribe();
+    // this.eventsSubscription.unsubscribe();
   }
 
   grabBaseRoute(url: string): string {

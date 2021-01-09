@@ -211,7 +211,7 @@ let scrapeEventDetails = async (city: City) => {
       await page.reload();
 
       // wait for results to load
-      await page.waitForSelector('.filterIcon');
+      await page.waitForSelector('.eventContainer');
 
       const data = await page.evaluate(() => {
         const LIVESTREAM = 'Live Stream';
@@ -768,6 +768,10 @@ function createEvents(events: Event[]) {
       // snag city off venue obj
       const { city } = dbVenueObj[sanitizedVenue];
 
+      const eventName = name ? "'" + sanitize(name) + "'" : "'" + artists.map((artist) => (sanitize(artist))).join(', ') + "'";
+      // trims event in case reaching 512 char count limit
+      const trimmedEvent = eventName.substring(0, 511);
+
       if (event) {
         sql += `\
         INSERT INTO edm.event(id, venue, city, region, country, name, description, type, start_date, end_date, ticketProviderId, ticketProviderUrl, banner, approved)\
@@ -777,7 +781,7 @@ function createEvents(events: Event[]) {
         '${dbCitiesObj[city].id}',\
         ${dbCitiesObj[city].region ? "'" + dbCitiesObj[city].region + "'" : null},\
         ${dbCitiesObj[city].country ? "'" + dbCitiesObj[city].country + "'" : null},\
-        ${name ? "'" + sanitize(name) + "'" : "'" + artists.map((artist) => (sanitize(artist))).join(', ') + "'"},\
+        ${trimmedEvent},\
         ${description ? "'" + sanitize(description) + "'" : null},\
         ${type ? "'" + type + "'" : null},\
         ${startTime},\

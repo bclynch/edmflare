@@ -14,7 +14,11 @@
     "gql:build:codegen": "graphql-codegen --config codegen.yml",
     "gql:build:tsc": "tsc",
     "gql:watch:codegen": "yarn gql:build:codegen --watch",
-    "gql:watch:tsc": "yarn gql:build:tsc --watch"
+    "gql:watch:tsc": "yarn gql:build:tsc --watch",
+    "dev:ssr": "ng run edmflare:serve-ssr",
+    "serve:ssr": "node dist/server/main.js",
+    "build:ssr": "ng build --prod && ng run edmflare:server:production",
+    "prerender": "ng run edmflare:prerender"
   },
   "private": true,
   "dependencies": {
@@ -31,6 +35,7 @@
     "@angular/material": "^11.0.3",
     "@angular/platform-browser": "^11.0.5",
     "@angular/platform-browser-dynamic": "^11.0.5",
+    "@angular/platform-server": "^11.0.5",
     "@angular/pwa": "^0.900.1",
     "@angular/router": "^11.0.5",
     "@angular/service-worker": "^11.0.5",
@@ -40,6 +45,7 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.18",
     "@fortawesome/free-brands-svg-icons": "^5.8.2",
     "@fortawesome/free-solid-svg-icons": "^5.8.2",
+    "@nguniversal/express-engine": "^11.0.0",
     "@types/date-fns": "^2.6.0",
     "angulartics2": "^10.0.0",
     "apollo-angular": "^2.1.0",
@@ -66,6 +72,7 @@
     "@graphql-codegen/typescript": "^1.9.1",
     "@graphql-codegen/typescript-apollo-angular": "^1.12.2",
     "@graphql-codegen/typescript-operations": "^1.9.1",
+    "@nguniversal/builders": "^11.0.0",
     "@types/jasmine": "~3.5.3",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "~14.14.14",
@@ -87,7 +94,8 @@
       "@agm",
       "@agm/**",
       "@angular",
-      "@angular/**"
+      "@angular/**",
+      "@types/node"
     ]
   }
 }

@@ -33,11 +33,24 @@
 - Emails?
 - Work on some url seo perhaps? Event page anyway
 - ~~Work on virtual scroll~~
+  - Should set fixed height on overall for both mobile + desktop
+  - Imgs still being odd flipping around
 - Lazy load hero banner carousel on home page
-- Universal angular?
+- Need some better error handling on routes that don't exist. i.e. artist page that returns no data should throw 404
+- Would be nice to make all our slugs lower case as is normal. Currently it is case sensitive so different spelling being scraped are creating different db values for artists. Would be nice to merge them eventully too
+- Universal angular? -- It works!! 🥳🎉
+  - State transfer -- in progress
+  - ~~Basic SSR on local dev with demo server~~
+  - How does styles work?? Can import all the style sheets to styles.scss, but is that normal?
+    - Tough to find out user pref on light vs dark. Can use this [article](https://hangindev.com/blog/avoid-flash-of-default-theme-an-implementation-of-dark-mode-in-react-app) perhaps?
+  - ~~Fix window instances~~
+  - ~~Home module is messed up. Perhaps cloudinary issue~~
+  - [Cloudinary lazy broken](https://github.com/cloudinary/cloudinary_angular/issues/299). Maybe don't need for SSR?
   - Faster first paint
+  - Flash issue on Firefox
   - SEO for search egines
   - Social media crawlers***
+    - Try and centralize it in the app service and can remove from the static index.html
   - Virtual scroll is crap on events. Images jacked up and kind of janky
   - [Guide](https://blog.angular-university.io/angular-universal/)
 - Docker would be nice / maybe interesting
@@ -116,6 +129,7 @@ yarn client start
 ## Digital Ocean Login
 
 - `$ ssh edmflare@206.189.194.173`
+  - Update ubuntu packages every now and then with `sudo apt-get update && sudo apt-get dist-upgrade`
 
 ## Features
 

@@ -106,8 +106,9 @@ const routes: Routes = [
   { path: '**', loadChildren: () => import('./modules/not-found/not-found.module').then(m => m.NotFoundModule) }
 ];
 
+// initialNavigation prop needed for proper SSR
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
+  imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy', initialNavigation: 'enabled' })],
   exports: [RouterModule]
 })
 export class AppRoutingModule {}

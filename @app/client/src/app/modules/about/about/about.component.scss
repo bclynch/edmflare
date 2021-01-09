@@ -10,6 +10,10 @@
   }
   .logoWrapper {
     margin-top: 35px;
+
+    ::ng-deep img {
+      width: 96px;
+    }
   }
   section {
     max-width: 800px;

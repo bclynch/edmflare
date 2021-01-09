@@ -1,4 +1,12 @@
-import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  OnDestroy,
+  ViewChild,
+  Inject,
+  PLATFORM_ID
+} from '@angular/core';
 import { RouterService } from 'src/app/services/router.service';
 import { SearchEventsByCityGQL, SearchEventsByRegionGQL } from 'src/app/generated/graphql';
 import { BehaviorSubject, SubscriptionLike } from 'rxjs';
@@ -13,6 +21,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { trigger } from '@angular/animations';
 import { fadeOut } from '../fade-animations';
+import { isPlatformBrowser } from '@angular/common';
 
 class Event {
   id: string;
@@ -69,7 +78,8 @@ export class EventsComponent implements OnInit, OnDestroy {
     private eventService: EventService,
     private cookieService: CookieService,
     private route: ActivatedRoute,
-    public snackBar: MatSnackBar
+    public snackBar: MatSnackBar,
+    @Inject(PLATFORM_ID) private platformId
   ) {
     this.ghosts = new Array(4);       // Mock Ghost items
     this.initSubscription = this.appService.appInited.subscribe(
@@ -77,27 +87,11 @@ export class EventsComponent implements OnInit, OnDestroy {
         if (inited) {
           // if params change need to fire off a new search
           this.paramsSubscription = this.route.queryParams.subscribe((params) => {
-            const { location, dates, query } = params;
-            // grab location off cookie if not in url
-            this.location = location || this.cookieService.get('edm-location');
-            this.dateRange = dates || (params.new ? null : 'any');
-            // if there is a date range in the query we didn't create it. Not using new filter then
-            this.recentFilter = dates ? null : params.new ? params.new : null;
-            if (this.recentFilter) {
-              // notification to user these are recent shows
-              this.snackBar.open('New Shows Added Since Last Time', 'Close');
-            }
-            this.searchQueryControl.setValue(query || '');
-            this.selectedLocation = this.location;
-            this.appService.modPageMeta(`${this.selectedLocation} EDM Shows`, `Listing of upcoming edm events in ${this.selectedLocation}`);
-
-            // reset events arr
-            this.events = [];
-            this.offset = 0;
-            this.searchEvents();
+            this.paramChangeHandler(params);
           });
           if (this.location) {
-            this.changeUrlPath();
+            // console.log('changing location');
+            // this.changeUrlPath();
           }
         }
       }
@@ -110,6 +104,27 @@ export class EventsComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.initSubscription.unsubscribe();
     this.paramsSubscription.unsubscribe();
+  }
+
+  paramChangeHandler(params) {
+    const { location, dates, query } = params;
+    // grab location off cookie if not in url
+    this.location = location || this.cookieService.get('edm-location');
+    this.dateRange = dates || (params.new ? null : 'any');
+    // if there is a date range in the query we didn't create it. Not using new filter then
+    this.recentFilter = (!dates && params.new) || null;
+    if (this.recentFilter) {
+      // notification to user these are recent shows
+      this.snackBar.open('New Shows Added Since Last Time', 'Close');
+    }
+    this.searchQueryControl.setValue(query || '');
+    this.selectedLocation = this.location;
+    this.appService.modPageMeta(`${this.selectedLocation} EDM Shows`, `Listing of upcoming edm events in ${this.selectedLocation}`);
+
+    // reset events arr
+    this.events = [];
+    this.offset = 0;
+    this.searchEvents();
   }
 
   searchEvents() {
@@ -129,12 +144,13 @@ export class EventsComponent implements OnInit, OnDestroy {
       };
       const processData = (data, type) => {
         let totalCount, events;
+        const { searchEventsByCity, searchEventsByRegion } = data;
         if (type === 'city') {
-          totalCount = data.searchEventsByCity.totalCount;
-          events = data.searchEventsByCity.nodes;
+          totalCount = searchEventsByCity.totalCount;
+          events = searchEventsByCity.nodes;
         } else {
-          totalCount = data.searchEventsByRegion.totalCount;
-          events = data.searchEventsByRegion.nodes;
+          totalCount = searchEventsByRegion.totalCount;
+          events = searchEventsByRegion.nodes;
         }
         this.ghosts = [];
         this.totalEvents = totalCount;
@@ -144,17 +160,25 @@ export class EventsComponent implements OnInit, OnDestroy {
         this.eventsInited = true;
         this.collapsed = true;
       };
-      // checking whether need to search cities or regions
-      if (typeof this.appService.locationsObj[this.selectedLocation] === 'number') {
-        queryParams = { ...queryParams, cityId: this.appService.locationsObj[this.selectedLocation] };
-        this.searchEventsByCityGQL.fetch(queryParams).subscribe(
-          ({ data }) => processData(data, 'city')
-        );
-      } else {
-        queryParams = { ...queryParams, regionName: this.appService.locationsObj[this.selectedLocation] };
-        this.searchEventsbyRegionGQL.fetch(queryParams).subscribe(
-          ({ data }) => processData(data, 'region')
-        );
+
+      // having trouble rendering this SSR so let's just do it client for now
+      if (isPlatformBrowser(this.platformId)) {
+        // checking whether need to search cities or regions
+        if (typeof this.appService.locationsObj[this.selectedLocation] === 'number') {
+          queryParams = { ...queryParams, cityId: this.appService.locationsObj[this.selectedLocation] };
+          this.searchEventsByCityGQL.fetch(queryParams).subscribe(
+            ({ data }) => {
+              processData(data, 'city');
+            }
+          );
+        } else {
+          queryParams = { ...queryParams, regionName: this.appService.locationsObj[this.selectedLocation] };
+          this.searchEventsbyRegionGQL.fetch(queryParams).subscribe(
+            ({ data }) => {
+              processData(data, 'region');
+            }
+          );
+        }
       }
     }
   }
@@ -185,9 +209,9 @@ export class EventsComponent implements OnInit, OnDestroy {
 
   changeUrlPath() {
     this.eventsInited = false;
-    this.events = [];
-    this.eventsObservable.next(this.events);
-    this.ghosts = new Array(4);       // Mock Ghost items
+    // this.events = [];
+    // this.eventsObservable.next(this.events);
+    // this.ghosts = new Array(4);       // Mock Ghost items
 
     // add query params to address and also kicks off search events in the router subscription
     this.routerService.navigateToPage(
@@ -202,7 +226,9 @@ export class EventsComponent implements OnInit, OnDestroy {
   }
 
   nextBatch() {
-    if (this.offset + this.batchSize >= this.totalEvents || this.fetchingBatch) return;
+    if (this.offset + this.batchSize >= this.totalEvents || this.fetchingBatch) {
+      return;
+    }
 
     const end = this.viewport.getRenderedRange().end;
     const total = this.viewport.getDataLength();

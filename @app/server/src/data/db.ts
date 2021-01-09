@@ -1,4 +1,4 @@
-import pg from 'pg';
+const Pool = require('pg-pool');
 require('dotenv').config();
 
 const localConfig = {
@@ -16,7 +16,7 @@ const rdsConfig = {
   database: process.env.DATABASE_NAME
 }
 
-const pool = process.env.NODE_ENV === 'production' ? new pg.Pool(rdsConfig) : new pg.Pool(localConfig);
+const pool = process.env.NODE_ENV === 'production' ? new Pool(rdsConfig) : new Pool(localConfig);
 
 export default {
   query: (sql: string, params?: any, callback?: any) => {

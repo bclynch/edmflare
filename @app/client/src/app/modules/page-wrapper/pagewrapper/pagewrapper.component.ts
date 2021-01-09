@@ -3,8 +3,8 @@ import { UtilService } from '../../../services/util.service';
 
 @Component({
   selector: 'app-pagewrapper',
-  templateUrl: './pageWrapper.component.html',
-  styleUrls: ['./pageWrapper.component.scss']
+  templateUrl: './pagewrapper.component.html',
+  styleUrls: ['./pagewrapper.component.scss']
 })
 export class PagewrapperComponent {
   @Input() displayNavLogo = true;

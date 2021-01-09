@@ -9,8 +9,8 @@
       </div>
       <div class="carousel">
         <div class="slide" *ngFor="let slide of carouselSlides; let i = index">
-          <div class="slideImg" [style.opacity]="activeSlide === i ? 1 : 0">
-            <cl-image crop="fit" [public-id]="slide.image" type="fetch" loading="lazy" width="auto" responsive
+          <div class="slideImg" *ngIf="activeSlide === i">
+            <cl-image crop="fit" [public-id]="slide.image" type="fetch" width="auto" responsive
               [attr.alt]="'Carousel Image ' + i">
               <cl-placeholder type="blur"></cl-placeholder>
               <cl-transformation quality="auto" fetch-format="auto"></cl-transformation>

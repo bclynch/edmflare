@@ -221,6 +221,69 @@
 Run `$ ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app
 will automatically reload if you change any of the source files.
 
+## SSR
+
+- To run SSR locally for development use --> `yarn dev:ssr`
+- On the server to update / run the thing (NOT SURE BUT TRY) first run `yarn build:ssr` then use pm2 to spin up `yarn serve:ssr`.
+
+### nginx Setup
+- Sooo for setup purposes need some nginx changes.
+  - nginx configuration file at `/etc/nginx/sites-available`
+  - I think we need to change the `root` value from that random location we have been uploading things to, to our dist/browser location in the client package.
+    - Old root value --> `root /var/www/edmflare.com/html`
+    - New root value --> `root /home/edmflare/edmflare/@app/client/dist/browser `
+  - [Change `/` passthrough route](https://stackoverflow.com/questions/55276510/angular-universal-how-to-move-to-production)
+  ```
+  server {
+    root /home/edmflare/edmflare/@app/client/dist/browser;
+    index index.html index.htm index.nginx-debian.html;
+
+    server_name edmflare.com www.edmflare.com;
+
+    client_max_body_size 50M;
+
+    location /api/ {
+      client_max_body_size 50M;
+      proxy_pass http://localhost:5000/api/;
+      proxy_http_version 1.1;
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection 'upgrade';
+      proxy_set_header Host $host;
+      proxy_cache_bypass $http_upgrade;
+    }
+
+    location /auth {
+        proxy_pass http://127.0.0.1:5000/auth;
+    }
+
+
+    location / {
+      index index.html;
+      #Tries static files, otherwise transfers the request to the nodejs server
+      try_files $uri  @universal;
+    }
+
+    location @universal {
+      proxy_pass http://localhost:4200;
+      proxy_http_version 1.1;
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection 'upgrade';
+      proxy_set_header Host $host;
+      proxy_cache_bypass $http_upgrade;
+    }
+  ```
+
+### Updating Project
+
+- Pull down latest from github
+- Run `yarn` as required on the root
+- Build server with following from root --> `yarn client build:ssr`
+  - Builds browser files then server files
+  - **Runs out of memory doing this? Might need to ssh it instead**
+- Set a pm2 instance of the angular express server
+  - From client dir --> `pm2 start npm --name "ssr" -- run serve:ssr`
+  - If existing --> `pm2 restart ssr`
+
 ### Testing PWA Features / Prod Build
 
 - Make sure http server is installed globally
