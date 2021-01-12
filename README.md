@@ -12,18 +12,20 @@
 
 ## Todos
 
+### MVP
+
+- ~~External links not scraping properly...~~
+- ~~Fix problems with edmtrain logo being used as default + reverse ones that made it through~~
+- Email working again would be great
+- Work on some url seo perhaps? Event page anyway
+- Social SSR things
+- Need some better error handling on routes that don't exist. i.e. artist page that returns no data should throw 404
+- Docker + CI pipeline?!?
+
 ### Optimizations
 
-- ~~Angular 11~~
-- ~~Update apollo~~
-- ~~Cloudinary~~
-- ~~Work on reducing shared module~~
-- ~~Fix maps~~
 - Password check on registration didn't work
 - User setup not working
-- ~~Remove extra imgs / map styles~~
-- ~~Check sharebuttons new package (again -- sheesh)~~
-- ~~Look at swapping out moment OR at least working on limiting the import~~
 - Look at lazy loading elements farther down page (i.e. event cards on home page)
 - ~~Get some larger libs out of services being parsed at the start / look at services not on app.module~~
 - Need to fix the static backgrounds on cards / events. Too compressed
@@ -31,12 +33,10 @@
 - ~~Fix scraping~~
   - In good shape. Artist description might be broken
 - Emails?
-- Work on some url seo perhaps? Event page anyway
 - ~~Work on virtual scroll~~
   - Should set fixed height on overall for both mobile + desktop
   - Imgs still being odd flipping around
 - Lazy load hero banner carousel on home page
-- Need some better error handling on routes that don't exist. i.e. artist page that returns no data should throw 404
 - Would be nice to make all our slugs lower case as is normal. Currently it is case sensitive so different spelling being scraped are creating different db values for artists. Would be nice to merge them eventully too
 - Universal angular? -- It works!! 🥳🎉
   - State transfer -- in progress
@@ -53,7 +53,6 @@
     - Try and centralize it in the app service and can remove from the static index.html
   - Virtual scroll is crap on events. Images jacked up and kind of janky
   - [Guide](https://blog.angular-university.io/angular-universal/)
-- Docker would be nice / maybe interesting
 - See if geocoding for venues is working?
 
 ### Other

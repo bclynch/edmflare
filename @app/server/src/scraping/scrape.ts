@@ -6,7 +6,7 @@ const hashids = new Hashids();
 import chalk from 'chalk';
 import readline from 'readline';
 import axios from 'axios';
-import puppeteer, { Page } from 'puppeteer';
+import puppeteer from 'puppeteer';
 import createNestedArr from '../utils/createNestedArr';
 import asyncForEach from '../utils/asyncForEach';
 import sanitize from '../utils/sanitize';
@@ -211,58 +211,70 @@ let scrapeEventDetails = async (city: City) => {
       await page.reload();
 
       // wait for results to load
-      await page.waitForSelector('.eventContainer');
+      const hasResults = await page.waitForSelector('.eventContainer').catch(async (e) => {
+        console.log('error on event container selector', e);
+        return false;
+      });
 
-      const data = await page.evaluate(() => {
-        const LIVESTREAM = 'Live Stream';
-        let data = []; // Create an empty array that will store our data
-        const events: any = document.querySelectorAll('.eventContainer');
+      if (hasResults) {
+        const data = await page.evaluate(() => {
+          const LIVESTREAM = 'Live Stream';
+          let data = []; // Create an empty array that will store our data
+          const events: any = document.querySelectorAll('.eventContainer');
 
-        for (const event of events) {
-          const eventTitle = event.getAttribute('titlestr');
-          const id = +event.getAttribute('eventid');
-          const venueAttr = event.getAttribute('venue');
-          const artists = eventTitle.split(',').map((artist: string) => {
-            // if there is a colon it means there is some tour / show name prepending this thing and we are removing that from the artist name
-            if (artist.indexOf(':') !== -1) {
-              return artist.split(':')[1].trim();
+          for (const event of events) {
+            const eventTitle = event.getAttribute('titlestr');
+            const id = +event.getAttribute('eventid');
+            const venueAttr = event.getAttribute('venue');
+            const artists = eventTitle.split(',').map((artist: string) => {
+              // if there is a colon it means there is some tour / show name prepending this thing and we are removing that from the artist name
+              if (artist.indexOf(':') !== -1) {
+                return artist.split(':')[1].trim();
+              }
+              return artist.trim();
+            });
+            const eventImage = event.getAttribute('eventimg');
+            // don't want the edm train default
+            const edmtrainUrls = [
+              'img/artist/default.png?v=2',
+              'img/logo/app-icon-square-web.svg',
+              'img/logo/icon-square-black-web.svg',
+              'img/logo/icon-square-transparent-bg-web.svg'
+            ];
+            const isDefault = edmtrainUrls.indexOf(eventImage) !== -1;
+            const artistImage = !isDefault
+              ? `https://edmtrain.s3.amazonaws.com/${eventImage}`
+              : null;
+
+            let venue;
+            if (venueAttr === LIVESTREAM) {
+              venue = LIVESTREAM;
+            } else {
+              const venueSelector: any = document.querySelector(`.eventContainer[eventid="${id}"] .eventSubTitle > span`);
+              venue = venueSelector && venueSelector.innerText;
             }
-            return artist.trim();
-          });
-          const eventImage = event.getAttribute('eventimg');
-          // don't want the edm train default
-          const artistImage = (eventImage !== 'img/artist/default.png?v=2' && eventImage !== 'img/logo/app-icon-square-web.svg' && eventImage !== 'img/logo/icon-square-black-web.svg')
-            ? `https://edmtrain.s3.amazonaws.com/${eventImage}`
-            : null;
 
-          let venue;
-          if (venueAttr === LIVESTREAM) {
-            venue = LIVESTREAM;
-          } else {
-            const venueSelector: any = document.querySelector(`.eventContainer[eventid="${id}"] .eventSubTitle > span`);
-            venue = venueSelector && venueSelector.innerText;
+            // This looks like it changed. Need to identify what we are trying to have...
+            const eventUrlSelector = document.querySelector(`.eventContainer[eventid="${id}"] .eventIconsContainer .shareBtn`);
+            const shareUrl = eventUrlSelector && eventUrlSelector.getAttribute('shareUrl');
+            const eventUrl = `${shareUrl && decodeURIComponent(shareUrl)}&get=tickets` || '';
+
+            const startTimeFigures = event.getAttribute('sorteddate').split('-');
+            // subtract one from the months portion since it is zero index
+            const startTime = new Date(+startTimeFigures[0], +startTimeFigures[1] - 1, +startTimeFigures[2]).getTime();
+            // if it's a live stream we want the full name of the event not just artists
+            const name = venue === LIVESTREAM ? eventTitle : undefined;
+
+            data.push({ id, artists, artistImage, venue, eventUrl, startTime, name });
           }
 
-          // This looks like it changed. Need to identify what we are trying to have...
-          const eventUrlSelector = document.querySelector(`.eventContainer[eventid="${id}"] .eventIconsContainer .shareBtn`);
-          const shareUrl = eventUrlSelector && eventUrlSelector.getAttribute('shareUrl');
-          const eventUrl = `${shareUrl && decodeURIComponent(shareUrl)}&tickets` || '';
-
-          const startTimeFigures = event.getAttribute('sorteddate').split('-');
-          // subtract one from the months portion since it is zero index
-          const startTime = new Date(+startTimeFigures[0], +startTimeFigures[1] - 1, +startTimeFigures[2]).getTime();
-          // if it's a live stream we want the full name of the event not just artists
-          const name = venue === LIVESTREAM ? eventTitle : undefined;
-
-          data.push({ id, artists, artistImage, venue, eventUrl, startTime, name });
-        }
-
-        return data;
-      });
-      scrapeData.push(data);
+          return data;
+        });
+        scrapeData.push(data);
+      }
 
       await browser.close();
-      return scrapeData
+      return scrapeData;
     });
     return [].concat.apply([], scrapeData);
   }
@@ -1076,11 +1088,13 @@ let scrapeEventUrls = async (events: Event[]) => {
   if (!events.length) return events;
 
   const browser = await puppeteer.launch();
-  const page = await browser.newPage();
 
-  const abc = (page: Page, event: Event) => {
-    return new Promise((resolve) => {
+  const abc = (event: Event) => {
+    return new Promise(async (resolve) => {
       const { id, eventUrl, venue } = event;
+
+      const page: any = await browser.newPage()
+
       // would like to set up some error handling to keep the script running
       // need to make sure we don't create an event listener on every loop...
       // or remove the listener
@@ -1094,18 +1108,19 @@ let scrapeEventUrls = async (events: Event[]) => {
         console.log('ERROR ON PAGE: ', text);
       }
 
-      page.goto(eventUrl, { timeout: 0 });
+      await page.goto(eventUrl, { timeout: 0 }).catch((e: any) => {
+        console.log('hello I\'m being caught goto broken', e);
+      });
 
       const timeout = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
       async function recursion() {
-
         // wait 2 seconds to load up again
         await timeout(2000);
         const url = page.url();
         if (url && url !== 'about:blank') {
-          if (url.indexOf('seetickets') !== -1) {
-            // See tickets requires the params so not stripping
+          if (url.indexOf('seetickets') !== -1 || url.indexOf('youtube') !== -1) {
+            // See tickets / youtube requires the params so not stripping
             event.ticketProviderUrl = url;
           } else {
             // stripping affiliate params
@@ -1140,6 +1155,7 @@ let scrapeEventUrls = async (events: Event[]) => {
       // remove event listener
       page.removeListener('pageerror', listener);
       page.removeListener('error', listener);
+      await page.close();
     });
   }
 
@@ -1150,7 +1166,7 @@ let scrapeEventUrls = async (events: Event[]) => {
       readline.clearLine(process.stdout, 0);
       readline.cursorTo(process.stdout, 0);
       process.stdout.write(`Scraping event url ${index + 1} of ${iterable.length}`);
-      const processedEvent = await action(page, x);
+      const processedEvent = await action(x);
       if (processedEvent) {
         processedEvents.push(processedEvent);
       }
