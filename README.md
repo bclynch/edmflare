@@ -22,6 +22,48 @@
 - Need some better error handling on routes that don't exist. i.e. artist page that returns no data should throw 404
 - Docker + CI pipeline?!?
 
+## Mobile Apps
+
+- Capacitor works with Angular universal + material 🤔
+- Spike: Deployment -- Fastlane or App Flow with CI/CD docker
+
+### Running things
+
+- Make sure a build is done on the client (could be with yarn dev:ssr)
+- Copy the files to the mobile apps --> `npx cap copy`
+- Open up in the native IDEs --> `npx cap open <ios|android>`
+
+### Networking
+
+- It works!!! 🎉
+
+#### iOS
+
+- On the server need to have a localhost Access-Control-Allow-Methods --> `res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');`
+- Normal localhost url works --> http://localhost:5000
+
+#### Android
+
+- For Android add the following to android/app/src/main/AndroidManifest.xml
+```
+<application
+        android:usesCleartextTraffic="true"
+        ...
+</application>
+```
+- On the server need to have a localhost Access-Control-Allow-Origin --> `res.header('Access-Control-Allow-Origin', 'http://localhost');`
+- The address is not localhost, but rather `http://<computer-ipadress>:<port>` or currently `http://192.168.0.165:5000`
+
+### iOS
+
+#### Debugging
+- To debug go to safari --> develop menu --> simulator dropdown then select dev tools to open
+
+### Android
+
+#### Debugging
+- To debug with chrome dev tools go to chrome://inspect/#devices in Chrome and inspect the emulator
+
 ### Optimizations
 
 - Password check on registration didn't work
