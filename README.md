@@ -27,11 +27,43 @@
 - Capacitor works with Angular universal + material 🤔
 - Spike: Deployment -- Fastlane or App Flow with CI/CD docker
 
+### Todos
+
+- ~~Make sure login / cookies working~~
+  - ~~Working on iOS persisting across builds~~
+  - ~~Login works on android~~, but seems like not persisted?
+- Use my current location not working native
+  - ~~Using capacitor get location~~
+  - ~~Web + android works~~
+  - ios the fn fails to return anything
+- ~~Get Access-Control-Allow-Origin headers working. Currently breaks CORS on web with extra ones~~
+- ~~Need to refactor client envs a little since server base url is different between ios and android~~
+- ~~Swap in native share module~~
+- ~~Check maps works~~
+- ~~Might be worth making a device service using Capacitor.platform for usage around the app~~
+- ~~Splash Screen~~
+- ~~App Icon~~
+- Push notifications
+
 ### Running things
 
 - Make sure a build is done on the client (could be with yarn dev:ssr)
 - Copy the files to the mobile apps --> `npx cap copy`
 - Open up in the native IDEs --> `npx cap open <ios|android>`
+
+### Configuration
+
+#### Splash Screen
+
+  - Used [this](https://pgicons.abiro.com/) for basic splash
+  - Needed this [site](https://apetools.webprofusion.com/#/tools/imagegorilla) to generate proper 2732x2732 img bleh
+  - Can be helpful to follow [this](https://www.joshmorony.com/adding-icons-splash-screens-launch-images-to-capacitor-projects/) on where / how to swap assets. In the ide is handy
+  - Need to close emulator / delete app and rebuild for splash to show on ios
+
+#### App Icon
+
+  - Need to start with 1024px png
+  - Generate sizes [here](https://resizeappicon.com/). Has enough for all ios. Android will create it's own with the directions listed in above article.
 
 ### Networking
 
@@ -40,6 +72,7 @@
 #### iOS
 
 - On the server need to have a localhost Access-Control-Allow-Methods --> `res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');`
+- On the server need to have a localhost Access-Control-Allow-Origin --> `res.header('Access-Control-Allow-Origin', 'capacitor://localhost');`
 - Normal localhost url works --> http://localhost:5000
 
 #### Android

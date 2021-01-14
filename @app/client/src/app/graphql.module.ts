@@ -8,6 +8,7 @@ import { ENV } from '../environments/environment';
 import { HttpHeaders } from '@angular/common/http';
 import { isPlatformBrowser } from '@angular/common';
 import { GlobalObjectService } from './services/globalObject.service';
+import { DeviceService, DeviceType } from './services/device.service';
 
 declare global {
   interface Window {
@@ -23,10 +24,16 @@ export class GraphQLModule {
     apollo: Apollo,
     httpLink: HttpLink,
     private globalObjectService: GlobalObjectService,
-    @Inject(PLATFORM_ID) private platformId: object
+    @Inject(PLATFORM_ID) private platformId: object,
+    private deviceService: DeviceService
   ) {
     this.windowRef = this.globalObjectService.getWindow();
-    const http = httpLink.create({ uri: ENV.apolloBaseURL, withCredentials: true, method: 'POST' });
+    const endpoint = `${this.deviceService.device === DeviceType.ANDROID ? ENV.androidAddress : ENV.address}${ENV.serverPort ? `:${ENV.serverPort}` : ''}`;
+    const http = httpLink.create({
+      uri: `${endpoint}${ENV.apolloBaseURL}`,
+      withCredentials: true,
+      method: 'POST'
+    });
     const middleware = setContext(() => ({
       headers: new HttpHeaders({
         // 'Access-Control-Allow-Origin': 'http://localhost:4200',

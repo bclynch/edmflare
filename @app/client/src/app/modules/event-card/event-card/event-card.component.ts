@@ -3,9 +3,8 @@ import { ENV } from '../../../../environments/environment';
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons/faExternalLinkAlt';
 import { EventService } from '../../../services/event.service';
 import { AppService } from '../../../services/app.service';
-import { MatDialog } from '@angular/material/dialog';
-import { ShareDialogueComponent } from '../../share-dialogue/share-dialogue/share-dialogue.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ShareService } from '../../../services/share.service';
 
 @Component({
   selector: 'app-event-card',
@@ -27,23 +26,21 @@ export class EventCardComponent implements OnInit {
   faExternalLinkAlt = faExternalLinkAlt;
 
   constructor(
-    private dialog: MatDialog,
     private eventService: EventService,
     private snackBar: MatSnackBar,
-    public appService: AppService
+    public appService: AppService,
+    private shareService: ShareService
   ) { }
 
   ngOnInit() {
   }
 
   share() {
-    this.dialog.open(ShareDialogueComponent, {
-      panelClass: 'sharedialog-panel',
-      data: {
-        shareUrl: `${ENV.siteBaseURL}/event/${this.id}`,
-        eventName: this.name
-      }
-    });
+    const data = {
+      shareUrl: `${ENV.siteBaseURL}/event/${this.id}`,
+      eventName: this.name
+    };
+    this.shareService.share(data);
   }
 
   addWatch() {
