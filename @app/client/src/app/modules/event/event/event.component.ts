@@ -9,13 +9,12 @@ import { SubscriptionLike } from 'rxjs';
 import { AppService } from '../../../services/app.service';
 import format from 'date-fns/format';
 import { EventbriteService } from '../../eventbrite-checkout/eventbrite.service';
-import { MatDialog } from '@angular/material/dialog';
-import { ShareDialogueComponent } from '../../share-dialogue/share-dialogue/share-dialogue.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { isPlatformBrowser } from '@angular/common';
 import { GlobalObjectService } from '../../../services/globalObject.service';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
 import { isPlatformServer } from '@angular/common';
+import { ShareService } from '../../../services/share.service';
 
 @Component({
   selector: 'app-event',
@@ -39,12 +38,12 @@ export class EventComponent implements OnInit {
     private eventService: EventService,
     private eventbriteService: EventbriteService,
     private userService: UserService,
-    public dialog: MatDialog,
     private appService: AppService,
     private snackBar: MatSnackBar,
     private globalObjectService: GlobalObjectService,
     @Inject(PLATFORM_ID) private platformId: object,
-    private transferState: TransferState
+    private transferState: TransferState,
+    private shareService: ShareService
   ) {
     this.windowRef = this.globalObjectService.getWindow();
     const eventId = this.activatedRoute.snapshot.paramMap.get('eventId');
@@ -92,13 +91,11 @@ export class EventComponent implements OnInit {
   }
 
   share() {
-    this.dialog.open(ShareDialogueComponent, {
-      panelClass: 'sharedialog-panel',
-      data: {
-        shareUrl: `${ENV.siteBaseURL}/event/${this.event.id}`,
-        eventName: this.event.name
-      }
-    });
+    const data = {
+      shareUrl: `${ENV.siteBaseURL}/event/${this.event.id}`,
+      eventName: this.event.name
+    };
+    this.shareService.share(data);
   }
 
   scrollTo(option: string): void {

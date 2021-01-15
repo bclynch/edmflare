@@ -5,7 +5,7 @@
   justify-content: center;
 
   mat-tab-group {
-    max-height: calc(100vh - var(--height-navbar) - 2em);
+    max-height: calc(100vh - var(--height-combined-navbar) - 2em);
     width: calc(100% - 1.25em);
     max-width: 800px;
     margin-top: 1.5em;

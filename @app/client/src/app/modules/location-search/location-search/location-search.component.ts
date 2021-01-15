@@ -69,30 +69,28 @@ export class LocationSearchComponent implements OnInit, OnDestroy, OnChanges {
     if (e.detail) this.myControl.reset();
   }
 
-  selectOption() {
+  async selectOption() {
     if (this.myControl.value === '📍 Use my current location') {
       this.myControl.setValue('Finding Location...');
-      navigator.geolocation.getCurrentPosition(
-        (data) => {
-          let closestRegion;
-          let closestDistance = 100000;
-          // identify which region is closest to user
-          this.appService.locationDirectory.forEach(({ lat, lon, name }) => {
-            const distance = this.calculateDistance({ lat, lon }, { lat: data.coords.latitude, lon: data.coords.longitude });
-            // if region is closer than current one replace above vars
-            if (distance < closestDistance) {
-              closestRegion = name;
-              closestDistance = distance;
-            }
-          });
-          this.myControl.setValue(closestRegion);
-          this.selected.emit(this.myControl.value);
-        },
-        (err) => {
-          console.log(err);
-          this.myControl.setValue('');
-        }
-      );
+      try {
+        const { latitude, longitude } = await this.locationService.getCurrentPosition();
+        let closestRegion;
+        let closestDistance = 100000;
+        // identify which region is closest to user
+        this.appService.locationDirectory.forEach(({ lat, lon, name }) => {
+          const distance = this.calculateDistance({ lat, lon }, { lat: latitude, lon: longitude });
+          // if region is closer than current one replace above vars
+          if (distance < closestDistance) {
+            closestRegion = name;
+            closestDistance = distance;
+          }
+        });
+        this.myControl.setValue(closestRegion);
+        this.selected.emit(this.myControl.value);
+      } catch (e) {
+        console.log('error', e);
+        this.myControl.setValue('');
+      }
     } else {
       this.selected.emit(this.myControl.value);
     }

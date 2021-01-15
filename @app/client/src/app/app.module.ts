@@ -31,6 +31,7 @@ import { AnalyticsService } from './services/analytics.service';
 import { UserService } from './services/user.service';
 import { ThemeService } from './services/theme.service';
 import { GlobalObjectService } from './services/globalObject.service';
+import { DeviceService } from './services/device.service';
 
 @NgModule({
   declarations: [
@@ -63,6 +64,7 @@ import { GlobalObjectService } from './services/globalObject.service';
     UserService,
     ThemeService,
     GlobalObjectService,
+    DeviceService,
     { provide: DISQUS_SHORTNAME, useValue: ENV.disqusShortname }
   ],
   bootstrap: [AppComponent]

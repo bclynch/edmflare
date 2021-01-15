@@ -14,6 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CloudinaryModule } from '@cloudinary/angular-5.x';
+import { ShareService } from '../../services/share.service';
 
 const routes: Routes = [
   {
@@ -40,7 +41,8 @@ const routes: Routes = [
   ],
   providers: [
     {provide: OverlayContainer, useClass: FullscreenOverlayContainer},
-    EventbriteService
+    EventbriteService,
+    ShareService
   ]
 })
 export class EventModule { }

@@ -22,6 +22,87 @@
 - Need some better error handling on routes that don't exist. i.e. artist page that returns no data should throw 404
 - Docker + CI pipeline?!?
 
+## Mobile Apps
+
+- Capacitor works with Angular universal + material 🤔
+- SPIKE: Deployment -- Fastlane or App Flow with CI/CD docker. How about with multiple apps (if ever went down custom site path)??
+  - Perhaps [App Center](https://appcenter.ms/) could prove useful for building
+    - [More](https://www.kevinboosten.dev/release-your-ionic-and-capacitor-app-via-appcenter)
+    - [And more](https://medium.com/@arielhernandezmusa/building-ionic-capacitor-on-appcenter-fe0105bb02d1)
+  - [App Flow](https://ionicframework.com/appflow) from Ionic
+  - [Bitrise](https://www.bitrise.io/)
+
+### Todos
+
+- ~~Make sure login / cookies working~~
+  - ~~Working on iOS persisting across builds~~
+  - ~~Login works on android~~, but seems like not persisted?
+- Use my current location not working native
+  - ~~Using capacitor get location~~
+  - ~~Web + android works~~
+  - ios the fn fails to return anything --> [Info](https://github.com/ionic-team/capacitor/issues/3789)
+- ~~Get Access-Control-Allow-Origin headers working. Currently breaks CORS on web with extra ones~~
+- ~~Need to refactor client envs a little since server base url is different between ios and android~~
+- ~~Swap in native share module~~
+- ~~Check maps works~~
+- ~~Might be worth making a device service using Capacitor.platform for usage around the app~~
+- ~~Splash Screen~~
+- ~~App Icon~~
+- Push notifications
+- ~~Safe area styling~~
+
+### Running things
+
+- Make sure a build is done on the client (could be with yarn dev:ssr)
+- Copy the files to the mobile apps --> `npx cap copy`
+- Open up in the native IDEs --> `npx cap open <ios|android>`
+
+### Configuration
+
+#### Splash Screen
+
+  - Used [this](https://pgicons.abiro.com/) for basic splash
+  - Needed this [site](https://apetools.webprofusion.com/#/tools/imagegorilla) to generate proper 2732x2732 img bleh
+  - Can be helpful to follow [this](https://www.joshmorony.com/adding-icons-splash-screens-launch-images-to-capacitor-projects/) on where / how to swap assets. In the ide is handy
+  - Need to close emulator / delete app and rebuild for splash to show on ios
+
+#### App Icon
+
+  - Need to start with 1024px png
+  - Generate sizes [here](https://resizeappicon.com/). Has enough for all ios. Android will create it's own with the directions listed in above article.
+
+### Networking
+
+- It works!!! 🎉
+
+#### iOS
+
+- On the server need to have a localhost Access-Control-Allow-Methods --> `res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');`
+- On the server need to have a localhost Access-Control-Allow-Origin --> `res.header('Access-Control-Allow-Origin', 'capacitor://localhost');`
+- Normal localhost url works --> http://localhost:5000
+
+#### Android
+
+- For Android add the following to android/app/src/main/AndroidManifest.xml
+```
+<application
+        android:usesCleartextTraffic="true"
+        ...
+</application>
+```
+- On the server need to have a localhost Access-Control-Allow-Origin --> `res.header('Access-Control-Allow-Origin', 'http://localhost');`
+- The address is not localhost, but rather `http://<computer-ipadress>:<port>` or currently `http://192.168.0.165:5000`
+
+### iOS
+
+#### Debugging
+- To debug go to safari --> develop menu --> simulator dropdown then select dev tools to open
+
+### Android
+
+#### Debugging
+- To debug with chrome dev tools go to chrome://inspect/#devices in Chrome and inspect the emulator
+
 ### Optimizations
 
 - Password check on registration didn't work

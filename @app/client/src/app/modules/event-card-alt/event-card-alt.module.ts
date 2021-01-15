@@ -9,6 +9,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ShareDialogueModule } from '../share-dialogue/share-dialogue.module';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CloudinaryModule } from '@cloudinary/angular-5.x';
+import { ShareService } from '../../services/share.service';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { CloudinaryModule } from '@cloudinary/angular-5.x';
     MatSnackBarModule,
     CloudinaryModule
   ],
+  providers: [ShareService],
   exports: [EventCardAltComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

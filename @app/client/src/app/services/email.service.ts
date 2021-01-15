@@ -3,18 +3,21 @@ import { ENV } from '../../environments/environment';
 import { throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { DeviceService, DeviceType } from './device.service';
 
 @Injectable()
 export class EmailService {
+  endpoint;
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private deviceService: DeviceService
   ) {
-
+    this.endpoint = `${this.deviceService.device === DeviceType.ANDROID ? ENV.androidAddress : ENV.address}${ENV.serverPort ? `:${ENV.serverPort}` : ''}`;
   }
 
   sendResetEmail(email: string, pw: string) {
-    return this.http.post(`${ENV.apiBaseURL}/mailing/reset`, { email, pw })
+    return this.http.post(`${this.endpoint}${ENV.apiBaseURL}/mailing/reset`, { email, pw })
       .pipe(map(
         response => (response)
       )

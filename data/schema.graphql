@@ -4620,6 +4620,11 @@ input StringFilter {
   """
   distinctFrom: String
 
+  """
+  Not equal to the specified value, treating null like an ordinary value (case-insensitive).
+  """
+  distinctFromInsensitive: String
+
   """Ends with the specified string (case-sensitive)."""
   endsWith: String
 
@@ -4629,11 +4634,20 @@ input StringFilter {
   """Equal to the specified value."""
   equalTo: String
 
+  """Equal to the specified value (case-insensitive)."""
+  equalToInsensitive: String
+
   """Greater than the specified value."""
   greaterThan: String
 
+  """Greater than the specified value (case-insensitive)."""
+  greaterThanInsensitive: String
+
   """Greater than or equal to the specified value."""
   greaterThanOrEqualTo: String
+
+  """Greater than or equal to the specified value (case-insensitive)."""
+  greaterThanOrEqualToInsensitive: String
 
   """Included in the specified list."""
   in: [String!]
@@ -4644,6 +4658,9 @@ input StringFilter {
   """Contains the specified string (case-insensitive)."""
   includesInsensitive: String
 
+  """Included in the specified list (case-insensitive)."""
+  inInsensitive: [String!]
+
   """
   Is null (if `true` is specified) or is not null (if `false` is specified).
   """
@@ -4652,8 +4669,14 @@ input StringFilter {
   """Less than the specified value."""
   lessThan: String
 
+  """Less than the specified value (case-insensitive)."""
+  lessThanInsensitive: String
+
   """Less than or equal to the specified value."""
   lessThanOrEqualTo: String
+
+  """Less than or equal to the specified value (case-insensitive)."""
+  lessThanOrEqualToInsensitive: String
 
   """
   Matches the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
@@ -4668,6 +4691,11 @@ input StringFilter {
   """Equal to the specified value, treating null like an ordinary value."""
   notDistinctFrom: String
 
+  """
+  Equal to the specified value, treating null like an ordinary value (case-insensitive).
+  """
+  notDistinctFromInsensitive: String
+
   """Does not end with the specified string (case-sensitive)."""
   notEndsWith: String
 
@@ -4677,6 +4705,9 @@ input StringFilter {
   """Not equal to the specified value."""
   notEqualTo: String
 
+  """Not equal to the specified value (case-insensitive)."""
+  notEqualToInsensitive: String
+
   """Not included in the specified list."""
   notIn: [String!]
 
@@ -4685,6 +4716,9 @@ input StringFilter {
 
   """Does not contain the specified string (case-insensitive)."""
   notIncludesInsensitive: String
+
+  """Not included in the specified list (case-insensitive)."""
+  notInInsensitive: [String!]
 
   """
   Does not match the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
@@ -4696,21 +4730,11 @@ input StringFilter {
   """
   notLikeInsensitive: String
 
-  """
-  Does not match the specified pattern using the SQL standard's definition of a regular expression.
-  """
-  notSimilarTo: String
-
   """Does not start with the specified string (case-sensitive)."""
   notStartsWith: String
 
   """Does not start with the specified string (case-insensitive)."""
   notStartsWithInsensitive: String
-
-  """
-  Matches the specified pattern using the SQL standard's definition of a regular expression.
-  """
-  similarTo: String
 
   """Starts with the specified string (case-sensitive)."""
   startsWith: String

@@ -4,16 +4,16 @@
   top: 0;
   z-index: 9999;
   width: 100vw;
-  height: var(--height-navbar);
+  height: var(--height-combined-navbar);
   transition: all 0.3s ease-in-out;
   overflow: hidden;
 
   &.hidden {
-    transform: translateY(calc(var(--height-navbar) * -1));
+    transform: translateY(calc((var(--height-combined-navbar) + env(safe-area-inset-top))* -1));
   }
   .navBarWrapper {
     width: 100%;
-    height: calc(var(--height-navbar) - 1px); // -1 px for the border to show
+    height: calc(var(--height-combined-navbar) - 1px); // -1 px for the border to show
     position: absolute;
     top: 0;
     // border-bottom: solid 1px var(--color-border);
@@ -23,19 +23,20 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      height: var(--height-navbar);
+      height: 65px;
+      padding-top: env(safe-area-inset-top);
 
       .backWrapper {
         min-width: 64px; // to cover if it isn't there but keep nav balanced
 
         button {
-          height: var(--height-navbar);
+          height: var(--height-combined-navbar);
           padding: 0;
         }
       }
       .right {
         button {
-          height: var(--height-navbar);
+          height: var(--height-combined-navbar);
           color: var(--color-font);
           font-size: 0.85em;
 

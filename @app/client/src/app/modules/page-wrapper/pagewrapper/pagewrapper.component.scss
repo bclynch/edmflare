@@ -5,7 +5,7 @@
   width: 100%;
   min-height: 100vh;
   position: relative;
-  margin-top: var(--height-navbar);
+  margin-top: calc(env(safe-area-inset-top) + var(--height-navbar));
   background: var(--color-background);
 
   &.noMargin {

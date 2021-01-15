@@ -9,9 +9,9 @@
     height: 6vh;
     width: 100vw;
     position: relative;
-    top: var(--height-navbar);
+    top: var(--height-combined-navbar);
     background: var(--color-primary);
-    
+
     > div,
     mat-icon {
       color: white;
@@ -23,7 +23,7 @@
     box-sizing: border-box;
     z-index: 999;
     position: fixed;
-    top: calc(var(--height-navbar) + 6vh);
+    top: calc(var(--height-combined-navbar) + 6vh);
     left: 0;
     height: 50vh;
 
@@ -42,7 +42,7 @@
 
       .searchWrapper {
         flex: 1;
-        
+
         .dateWrapper {
           font-size: .75em;
         }
@@ -82,7 +82,7 @@
     }
   }
   .eventsWrapper {
-    height: calc(100vh - var(--height-navbar) - 200px - 6vh);
+    height: calc(100vh - calc(var(--height-combined-navbar) + 6vh) - 200px - 6vh);
     width: 100vw;
     position: absolute;
     top: 200px;
@@ -91,9 +91,9 @@
     transition: .3s;
 
     &.collapsed {
-      height: calc(100vh - var(--height-navbar) - 6vh);
+      height: calc(100vh - calc(var(--height-combined-navbar) + 6vh) - 6vh);
       margin-top: 0;
-      top: calc(var(--height-navbar) + 6vh);
+      top: calc(var(--height-combined-navbar) + 6vh);
     }
     .eventFallback {
       margin-top: 5%;
@@ -117,7 +117,7 @@
     .searchContainer {
       width: 50vw;
       padding: 1.5em;
-      top: var(--height-navbar);
+      top: var(--height-combined-navbar);
 
       &.collapsed {
         form {
@@ -125,7 +125,7 @@
         }
       }
       form {
-  
+
         .searchWrapper {
           font-size: 1.5em;
 
@@ -136,14 +136,14 @@
       }
     }
     .eventsWrapper {
-      height: calc(100vh - var(--height-navbar));
+      height: calc(100vh - var(--height-combined-navbar));
       width: 100vw;
       top: 0;
       z-index: 1;
 
       &.collapsed {
-        height: calc(100vh - var(--height-navbar));
-        top: calc(var(--height-navbar));
+        height: calc(100vh - var(--height-combined-navbar));
+        top: var(--height-combined-navbar);
       }
       .eventFallback {
         width: 50vw;

@@ -3,6 +3,7 @@ import { ENV } from '../../environments/environment';
 import { map, catchError } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Geolocation } from '@capacitor/geolocation';
 
 declare let ga: Function;
 
@@ -13,6 +14,11 @@ export class LocationService {
     private http: HttpClient
   ) {
 
+  }
+
+  async getCurrentPosition() {
+    const { coords } = await Geolocation.getCurrentPosition();
+    return coords;
   }
 
   reverseGeocodeCoords(lat: number, lon: number) {

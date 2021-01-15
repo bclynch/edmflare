@@ -1,0 +1,13 @@
+{
+	"appId": "com.edmflare.app",
+	"appName": "edmflare",
+	"bundledWebRuntime": false,
+	"npmClient": "yarn",
+	"webDir": "dist/browser",
+	"plugins": {
+		"SplashScreen": {
+			"launchShowDuration": 0
+		}
+	},
+	"cordova": {}
+}

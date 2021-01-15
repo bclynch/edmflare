@@ -1,5 +1,5 @@
 .unsubscribeContainer {
-  min-height: calc(100vh - var(--height-navbar));
+  min-height: calc(100vh - var(--height-combined-navbar));
   width: 100vw;
   display: flex;
   flex-direction: column;
