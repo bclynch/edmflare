@@ -26,6 +26,9 @@
 
 - Capacitor works with Angular universal + material 🤔
 - Spike: Deployment -- Fastlane or App Flow with CI/CD docker
+  - Perhaps [App Center](https://appcenter.ms/) could prove useful for building
+  - [App Flow](https://ionicframework.com/appflow) from Ionic
+  - [Bitrise](https://www.bitrise.io/)
 
 ### Todos
 
@@ -35,7 +38,7 @@
 - Use my current location not working native
   - ~~Using capacitor get location~~
   - ~~Web + android works~~
-  - ios the fn fails to return anything
+  - ios the fn fails to return anything --> [Check out these requirements](https://capacitorjs.com/docs/v3/apis/geolocation)
 - ~~Get Access-Control-Allow-Origin headers working. Currently breaks CORS on web with extra ones~~
 - ~~Need to refactor client envs a little since server base url is different between ios and android~~
 - ~~Swap in native share module~~
@@ -44,6 +47,7 @@
 - ~~Splash Screen~~
 - ~~App Icon~~
 - Push notifications
+- Safe area styling
 
 ### Running things
 

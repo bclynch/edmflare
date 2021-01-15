@@ -3,8 +3,7 @@ import { ENV } from '../../environments/environment';
 import { map, catchError } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Plugins } from '@capacitor/core';
-const { Geolocation } = Plugins;
+import { Geolocation } from '@capacitor/geolocation';
 
 declare let ga: Function;
 

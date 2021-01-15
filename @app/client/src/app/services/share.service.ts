@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { DeviceService, DeviceType } from './device.service';
 import { ShareDialogueComponent } from '../modules/share-dialogue/share-dialogue/share-dialogue.component';
 import { MatDialog } from '@angular/material/dialog';
-import { Plugins } from '@capacitor/core';
-const { Share } = Plugins;
+import { Share } from '@capacitor/share';
 
 @Injectable()
 export class ShareService {
