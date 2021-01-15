@@ -22,7 +22,7 @@ const lightTheme = {
 @Injectable({ providedIn: 'root' })
 export class ThemeService {
   private renderer: Renderer2;
-  theme = 'light';
+  theme = 'dark';
   windowRef;
 
   constructor(

@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { DeviceService, DeviceType } from '../../../services/device.service';
 import { UtilService } from '../../../services/util.service';
 
 @Component({
@@ -14,11 +15,15 @@ export class PagewrapperComponent {
   @Input() hasBack = true;
   @Input() noMargin = false;
 
+  isWeb;
+
   constructor(
-    private utilService: UtilService
+    private utilService: UtilService,
+    private deviceService: DeviceService
   ) {
     // want nav always there on page init to start
     this.utilService.scrollDirection = 'up';
+    this.isWeb = this.deviceService.device === DeviceType.WEB;
   }
 
 }

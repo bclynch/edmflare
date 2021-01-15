@@ -25,8 +25,10 @@
 ## Mobile Apps
 
 - Capacitor works with Angular universal + material 🤔
-- Spike: Deployment -- Fastlane or App Flow with CI/CD docker
+- SPIKE: Deployment -- Fastlane or App Flow with CI/CD docker. How about with multiple apps (if ever went down custom site path)??
   - Perhaps [App Center](https://appcenter.ms/) could prove useful for building
+    - [More](https://www.kevinboosten.dev/release-your-ionic-and-capacitor-app-via-appcenter)
+    - [And more](https://medium.com/@arielhernandezmusa/building-ionic-capacitor-on-appcenter-fe0105bb02d1)
   - [App Flow](https://ionicframework.com/appflow) from Ionic
   - [Bitrise](https://www.bitrise.io/)
 
@@ -38,7 +40,7 @@
 - Use my current location not working native
   - ~~Using capacitor get location~~
   - ~~Web + android works~~
-  - ios the fn fails to return anything --> [Check out these requirements](https://capacitorjs.com/docs/v3/apis/geolocation)
+  - ios the fn fails to return anything --> [Info](https://github.com/ionic-team/capacitor/issues/3789)
 - ~~Get Access-Control-Allow-Origin headers working. Currently breaks CORS on web with extra ones~~
 - ~~Need to refactor client envs a little since server base url is different between ios and android~~
 - ~~Swap in native share module~~
@@ -47,7 +49,7 @@
 - ~~Splash Screen~~
 - ~~App Icon~~
 - Push notifications
-- Safe area styling
+- ~~Safe area styling~~
 
 ### Running things
 
