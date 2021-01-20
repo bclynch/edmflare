@@ -38,7 +38,7 @@
 
 - ~~Make sure login / cookies working~~
   - ~~Working on iOS persisting across builds~~
-  - ~~Login works on android~~, but seems like not persisted?
+  - ~~Login works on android, but seems like [not persisted](https://github.com/ionic-team/capacitor/issues/3012#issuecomment-636017770)?~~
 - Use my current location not working native
   - ~~Using capacitor get location~~
   - ~~Web + android works~~
@@ -94,6 +94,7 @@
 ```
 - On the server need to have a localhost Access-Control-Allow-Origin --> `res.header('Access-Control-Allow-Origin', 'http://localhost');`
 - The address is not localhost, but rather `http://<computer-ipadress>:<port>` or currently `http://192.168.0.165:5000`
+- For cookie persistence [read this](https://github.com/ionic-team/capacitor/issues/3012#issuecomment-636017770)
 
 ### iOS
 
