@@ -7,7 +7,6 @@
 -   [Prerequisites](#prerequisites)
 -   [Getting Started](#getting-started)
 -   [Running](#running)
--   [Docker development](#docker-development-1)
 -   [Production build](#production-build-for-local-mode)
 
 ## Todos
@@ -17,10 +16,12 @@
 - ~~External links not scraping properly...~~
 - ~~Fix problems with edmtrain logo being used as default + reverse ones that made it through~~
 - Email working again would be great
-- Work on some url seo perhaps? Event page anyway
+- ~~Work on some url seo perhaps? Event page anyway~~
+  - For future projects look at something like eventbrite for a good seo example. Used slug desc / title + an id on the end to keep it flat. If only id then redirects to add description.
 - Social SSR things
 - Need some better error handling on routes that don't exist. i.e. artist page that returns no data should throw 404
-- [Animations](https://stackoverflow.com/questions/40413133/angular-2-throwing-error-outlet-is-not-activated) on route changes for mobile
+  - Not sure how to deal with this when no artist value... How do we 404 w/o wiping out the url?
+- ~~[Animations](https://stackoverflow.com/questions/40413133/angular-2-throwing-error-outlet-is-not-activated) on route changes for mobile~~
 - Docker + CI pipeline?!? Bleh
 
 ## Mobile Apps
@@ -212,28 +213,6 @@ yarn client start
 - `$ ssh edmflare@206.189.194.173`
   - Update ubuntu packages every now and then with `sudo apt-get update && sudo apt-get dist-upgrade`
 
-## Features
-
-**Speedy development**: hot reloading, easy debugging,
-[job queue](/TECHNICAL_DECISIONS.md#job-queue) and server middleware ready to
-use; not to mention deep integration with VSCode should you use that editor:
-plugin recommendations, preconfigured settings, ESLint integration and debugging
-profiles
-
-**Batteries included**: full user system and OAuth, jest and
-[Cypress end-to-end](/TECHNICAL_DECISIONS.md#cypress-e2e-tests) testing,
-security, email templating and transport, pre-configured linting and code
-formatting, deployment instructions, and more
-
-**Type safety**: pre-configured type checking, strongly typed throughout with
-TypeScript
-
-**Best practices**: Angular, GraphQL, PostGraphile, Node, jest and Cypress best
-practices
-
-See [TECHNICAL_DECISIONS.md](TECHNICAL_DECISIONS.md) for a more detailed list of
-features included and the technical decisions behind them.
-
 ## Prerequisites
 
 You can either work with this project locally (directly on your machine) or use
@@ -262,18 +241,6 @@ Requires:
 
 This software has been developed under Mac and Linux, and should work in a
 `bash` environment.
-
-### Docker development
-
-Requires:
-
--   [`docker`](https://docs.docker.com/install/)
--   [`docker-compose`](https://docs.docker.com/compose/install/)
--   Ensure you've allocated Docker **at least** 4GB of RAM; significantly more
-    recommended
-    -   (Development only, production is much more efficient)
-
-Has been tested on Windows and Linux (Ubuntu 18.04LTS).
 
 ## Getting started
 
@@ -341,47 +308,6 @@ To shut everything down:
 | Local mode | OR  | Docker mode                    |
 | ---------- | :-: | ------------------------------ |
 | Ctrl-c     | or  | `export UID; yarn docker down` |
-
-## Docker development
-
-Be sure to read [docker/README.md](docker/README.md).
-
-## Building the production docker image
-
-To build the production image, use `docker build` as shown below. You should
-supply the `ROOT_URL` build variable (which will be baked into the client code,
-so cannot be changed as envvars); if you don't then the defaults will apply
-(which likely will not be suitable).
-
-To build the worker, pass `TARGET="worker"` instead of the default
-`TARGET="server"`.
-
-```sh
-docker build \
-  --file production.Dockerfile \
-  --build-arg ROOT_URL="http://localhost:5000" \
-  --build-arg TARGET="server" \
-  .
-```
-
-When you run the image you must pass it the relevant environmental variables,
-for example:
-
-```sh
-docker run --rm -it --init -p 5000:5000 \
-  -e GRAPHILE_LICENSE="$GRAPHILE_LICENSE" \
-  -e SECRET="$SECRET" \
-  -e JWT_SECRET="$JWT_SECRET" \
-  -e DATABASE_VISITOR="$DATABASE_VISITOR" \
-  -e DATABASE_URL="$DATABASE_URL" \
-  -e AUTH_DATABASE_URL="$AUTH_DATABASE_URL" \
-  -e GITHUB_KEY="$GITHUB_KEY" \
-  -e GITHUB_SECRET="$GITHUB_SECRET" \
-  docker-image-id-here
-```
-
-Currently if you miss required envvars weird things will happen; we don't
-currently have environment validation (PRs welcome!).
 
 ## Production build for local mode
 

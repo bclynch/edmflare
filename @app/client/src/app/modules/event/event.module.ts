@@ -18,8 +18,12 @@ import { ShareService } from '../../services/share.service';
 
 const routes: Routes = [
   {
-    path: ':eventId',
+    path: ':eventId/:title',
     component: EventComponent
+  },
+  {
+    path: ':eventId',
+    redirectTo: ":eventId/",
   }
 ];
 

@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { EventByIdGQL } from '../../../generated/graphql';
 import { UtilService } from '../../../services/util.service';
 import { ENV } from '../../../../environments/environment';
@@ -43,10 +43,12 @@ export class EventComponent implements OnInit {
     private globalObjectService: GlobalObjectService,
     @Inject(PLATFORM_ID) private platformId: object,
     private transferState: TransferState,
-    private shareService: ShareService
+    private shareService: ShareService,
+    private router: Router
   ) {
     this.windowRef = this.globalObjectService.getWindow();
     const eventId = this.activatedRoute.snapshot.paramMap.get('eventId');
+    const title = this.activatedRoute.snapshot.paramMap.get('title');
     const EVENT_KEY = makeStateKey(`event-${eventId}`);
 
     this.initSubscription = this.appService.appInited.subscribe(
@@ -56,6 +58,7 @@ export class EventComponent implements OnInit {
             const eventData = this.transferState.get(EVENT_KEY, null);
             this.transferState.remove(EVENT_KEY);
             this.event = eventData;
+            this.redirect(title, eventId);
             this.finishProcessing(eventData);
           } else {
             this.eventByIdGQL.fetch({
@@ -64,6 +67,7 @@ export class EventComponent implements OnInit {
             }).subscribe(
               ({ data: { event = {} } = {}}) => {
                 this.event = event;
+                this.redirect(title, eventId);
                 if (isPlatformServer(this.platformId)) {
                   this.transferState.set(EVENT_KEY, event);
                 }
@@ -77,6 +81,13 @@ export class EventComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  redirect(title, eventId) {
+    if (title === '') {
+      const sluggified = this.event.name.replace(/\s+/g, '-');
+      this.router.navigate([`/event/${eventId}/${sluggified}`]);
+    }
   }
 
   finishProcessing(event) {
