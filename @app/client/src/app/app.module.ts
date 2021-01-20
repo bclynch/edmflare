@@ -32,6 +32,7 @@ import { UserService } from './services/user.service';
 import { ThemeService } from './services/theme.service';
 import { GlobalObjectService } from './services/globalObject.service';
 import { DeviceService } from './services/device.service';
+import { RouterStateService } from './services/routerState.service';
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { DeviceService } from './services/device.service';
     ThemeService,
     GlobalObjectService,
     DeviceService,
+    RouterStateService,
     { provide: DISQUS_SHORTNAME, useValue: ENV.disqusShortname }
   ],
   bootstrap: [AppComponent]

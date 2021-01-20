@@ -20,7 +20,8 @@
 - Work on some url seo perhaps? Event page anyway
 - Social SSR things
 - Need some better error handling on routes that don't exist. i.e. artist page that returns no data should throw 404
-- Docker + CI pipeline?!?
+- [Animations](https://stackoverflow.com/questions/40413133/angular-2-throwing-error-outlet-is-not-activated) on route changes for mobile
+- Docker + CI pipeline?!? Bleh
 
 ## Mobile Apps
 

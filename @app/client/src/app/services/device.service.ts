@@ -13,7 +13,7 @@ export class DeviceService {
 
   constructor() {
     // @ts-ignore
-    this.device = Capacitor.platform;
+    this.device = Capacitor.getPlatform();
   }
 
 }
